@@ -230,13 +230,6 @@ details.model .ans .marks{font-family:var(--mono); font-size:12.5px; color:var(-
 .fc .from{display:inline-block; font-family:var(--mono); font-size:11px; background:var(--acc2); color:var(--paper); padding:1px 7px; margin-bottom:10px; align-self:center}
 .deck.js .fc{display:none; cursor:pointer}
 .deck.js .fc.current{display:block}
-.deck-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; margin-top:12px}
-.deck-controls button, .btn{font-family:var(--display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; cursor:pointer;
-  background:var(--paper); color:var(--ink); border:1px solid var(--rule-strong); padding:8px 12px}
-.deck-controls button.again{border-color:var(--bad); color:var(--bad)}
-.deck-controls button.got{border-color:var(--good); color:var(--good)}
-.deck-controls .count{font-family:var(--mono); font-size:13px; color:var(--muted); min-width:9ch; text-align:center}
-.deck-controls .boxes{font-family:var(--mono); font-size:12px; color:var(--muted); width:100%; text-align:center}
 
 /* ============ MCQ ============ */
 .mcq{background:var(--paper); border:1px solid var(--rule); padding:16px 18px 10px; margin:14px 0}
@@ -318,6 +311,173 @@ a.ticket[aria-current="page"] .t-date, a.ticket[aria-current="page"] .t-code{col
 }
 .marquee .credit-line{font-family:var(--display); letter-spacing:.34em; text-transform:uppercase; font-size:11.5px; color:var(--acc); margin-top:10px}
 
+/* =====================================================================
+   UI/UX layer: buttons, chips, board, contents rail, flashcards, extras
+   ===================================================================== */
+
+/* ---- buttons ---- */
+.btn{font-family:var(--display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; cursor:pointer;
+  background:var(--paper); color:var(--ink); border:1px solid var(--rule-strong); padding:9px 14px; line-height:1.2;
+  display:inline-flex; align-items:center; gap:8px; transition:background .15s, border-color .15s, transform .15s}
+.btn:hover{background:var(--acc-soft); border-color:var(--acc)}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--acc); color:var(--acc-ink); border-color:var(--acc); min-width:13ch; justify-content:center}
+.btn-primary:hover{background:var(--acc2); border-color:var(--acc2); color:var(--paper)}
+.link-btn{background:none; border:0; padding:0; font:inherit; color:var(--acc); cursor:pointer; text-decoration:underline; text-underline-offset:3px}
+kbd{font-family:var(--mono); font-size:11px; border:1px solid currentColor; border-radius:3px; padding:0 4px; opacity:.7; letter-spacing:0}
+
+/* ---- chips ---- */
+.chip{display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:12.5px; letter-spacing:.04em;
+  border:1px solid var(--acc); color:var(--acc); background:var(--paper); padding:3px 10px; border-radius:999px; white-space:nowrap}
+.chip.urgent{background:var(--acc); color:var(--acc-ink)}
+.chip-row{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:14px}
+.resume{margin-top:14px}
+
+/* ---- lobby: departures board ---- */
+.board-title{text-align:center; padding-block:6px 10px}
+.board-title .code{font-family:var(--mono); color:var(--acc); letter-spacing:.14em}
+.board-title h2{font-size:clamp(28px,4.4vw,44px); letter-spacing:.12em; text-transform:uppercase; margin:.25em 0 .2em; color:var(--acc2)}
+.board-title .meta{font-style:italic; color:var(--muted); max-width:56ch; margin:0 auto}
+.board{margin:26px 0 8px; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink)}
+.board-row{display:grid; grid-template-columns:92px minmax(0,1fr) 128px 200px 84px; gap:18px; align-items:center;
+  padding:16px 14px 16px 22px; border-bottom:1px dashed var(--rule-strong); text-decoration:none; color:var(--ink);
+  position:relative; transition:background .15s}
+.board-row:last-child{border-bottom:0}
+.board-row::before{content:""; position:absolute; left:0; top:12px; bottom:12px; width:5px; background:var(--acc)}
+.board-row:hover{background:var(--acc-soft)}
+.board-row:hover .b-go{color:var(--acc); transform:translateX(3px)}
+.b-date{display:grid; justify-items:center; padding:6px 0; border:1px solid var(--acc); background:var(--paper); line-height:1}
+.b-day{font-family:var(--display); font-size:30px; font-weight:500; color:var(--acc)}
+.b-mon{font-family:var(--display); font-size:11px; letter-spacing:.28em; text-transform:uppercase; margin-top:4px}
+.b-wd{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:3px}
+.b-subj{display:grid; gap:2px; min-width:0}
+.b-code{font-family:var(--mono); font-size:12px; color:var(--acc); letter-spacing:.08em}
+.b-name{font-family:var(--display); font-size:19px; letter-spacing:.06em; text-transform:uppercase; line-height:1.2}
+.b-units{font-size:14px; color:var(--muted); line-height:1.45}
+.b-prog{display:grid; gap:6px}
+.meter{display:block; height:6px; background:var(--paper-2); border:1px solid var(--rule); overflow:hidden}
+.meter i{display:block; height:100%; width:0; background:var(--acc); transition:width .4s}
+.b-prog-t{font-family:var(--mono); font-size:11.5px; color:var(--muted); line-height:1.4}
+.b-go{font-family:var(--display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; text-align:right; color:var(--muted); transition:transform .15s, color .15s}
+.board-row.is-next{background:var(--acc-soft)}
+.board-row.is-next .b-date{background:var(--acc); border-color:var(--acc)}
+.board-row.is-next .b-day,.board-row.is-next .b-mon,.board-row.is-next .b-wd{color:var(--acc-ink)}
+.board-row.is-next .b-code::after{content:" \00B7  NEXT EXAM"; font-weight:700}
+.board-row.is-past{opacity:.55}
+@media (max-width:860px){
+  .board-row{grid-template-columns:78px minmax(0,1fr); grid-template-areas:"d s" "d w" "p p"; gap:10px 16px}
+  .b-date{grid-area:d; align-self:start} .b-subj{grid-area:s} .b-when{grid-area:w} .b-prog{grid-area:p} .b-go{display:none}
+  .b-day{font-size:26px}
+}
+
+/* ---- subject pages: contents rail ---- */
+.rail{position:fixed; top:0; bottom:0; left:0; width:290px; max-width:86vw; z-index:40; background:var(--paper); border-right:1px solid var(--rule-strong);
+  display:flex; flex-direction:column; padding-top:env(safe-area-inset-top,0px); transform:translateX(-105%); transition:transform .25s ease;
+  box-shadow:var(--shadow)}
+.rail-head{padding:20px 20px 14px; border-bottom:1px solid var(--rule); position:relative}
+.rail-kicker{font-family:var(--display); font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--acc)}
+.rail-title{font-family:var(--display); font-size:17px; letter-spacing:.06em; text-transform:uppercase; color:var(--acc2); line-height:1.25; margin:6px 0 12px; padding-right:40px}
+.prog-bar{display:block; height:5px; background:var(--paper-2); border:1px solid var(--rule); overflow:hidden}
+.prog-bar i{display:block; height:100%; width:0; background:var(--acc); transition:width .4s}
+.rail-count{font-family:var(--mono); font-size:11.5px; color:var(--muted); margin-top:6px}
+.rail-close{position:absolute; top:16px; right:14px; background:none; border:1px solid var(--rule-strong); color:var(--muted);
+  font-family:var(--display); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; padding:5px 8px; cursor:pointer}
+.rail-list{overflow-y:auto; padding:10px 10px 40px; flex:1; overscroll-behavior:contain}
+.rail-unit{display:block; font-family:var(--display); font-size:11.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--acc);
+  text-decoration:none; padding:14px 10px 6px}
+.rail-topics{list-style:none; margin:0; padding:0}
+.rail-topics a{display:grid; grid-template-columns:3.2em 1fr; gap:4px; padding:6px 10px; font-size:14px; line-height:1.35; color:var(--ink);
+  text-decoration:none; border-left:3px solid transparent}
+.rail-topics a:hover{background:var(--paper-2)}
+.rail-topics a.is-deck{grid-template-columns:1fr; font-family:var(--display); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); padding-left:calc(10px + 3.2em + 4px)}
+.rail-topics .rn{font-family:var(--mono); font-size:11.5px; color:var(--muted); padding-top:2px}
+.rail-topics a.current{border-left-color:var(--acc); background:var(--acc-soft); font-weight:700}
+.rail-topics a.done .rn::before{content:"\2713  "; color:var(--good); font-weight:700}
+.rail-topics a.done .rt{color:var(--muted)}
+.scrim{position:fixed; inset:0; background:rgba(20,12,18,.45); z-index:35; opacity:0; pointer-events:none; transition:opacity .25s}
+body.rail-open .rail{transform:none}
+body.rail-open .scrim{opacity:1; pointer-events:auto}
+@media (min-width:1200px){
+  body.has-rail{padding-left:306px}
+  .rail{transform:none; box-shadow:none}
+  .rail-close,.fab-contents,.scrim{display:none!important}
+}
+
+/* ---- floating buttons ---- */
+.fab{position:fixed; bottom:calc(18px + env(safe-area-inset-bottom,0px)); z-index:30; font-family:var(--display); font-size:12px; letter-spacing:.16em;
+  text-transform:uppercase; background:var(--acc2); color:var(--paper); border:0; padding:11px 16px; cursor:pointer; box-shadow:0 6px 18px -8px rgba(0,0,0,.5)}
+.fab-contents{left:16px}
+.fab-top{right:16px; opacity:0; pointer-events:none; transform:translateY(8px); transition:opacity .2s, transform .2s}
+body.scrolled .fab-top{opacity:1; pointer-events:auto; transform:none}
+
+/* ---- reading progress (a 3px line; never covers content) ---- */
+.read-line{position:fixed; top:0; left:0; right:0; height:3px; z-index:45; pointer-events:none}
+.read-line i{display:block; height:100%; width:0; background:var(--acc)}
+
+/* ---- "mark as revised" ---- */
+.topic-foot{display:flex; justify-content:flex-end; margin:4px 0 8px}
+.rev-btn{display:inline-flex; align-items:center; gap:10px; background:var(--paper); border:1px solid var(--rule-strong); color:var(--ink);
+  font-family:var(--display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; padding:8px 14px; cursor:pointer}
+.rev-btn i{width:16px; height:16px; border:1.5px solid var(--acc); border-radius:50%; display:grid; place-items:center; font-style:normal}
+.rev-btn:hover{border-color:var(--acc)}
+.rev-btn[aria-pressed="true"]{background:var(--good-soft); border-color:var(--good); color:var(--good)}
+.rev-btn[aria-pressed="true"] i{background:var(--good); border-color:var(--good)}
+.rev-btn[aria-pressed="true"] i::after{content:"\2713"; color:var(--paper); font-size:11px; line-height:1}
+.topic.is-revised > h3 .tno::after{content:"  \2713  revised"; color:var(--good); letter-spacing:.08em}
+
+/* ---- zoomable diagrams + lightbox ---- */
+.frame.zoomable{cursor:zoom-in; position:relative}
+.frame.zoomable::after{content:"\2922  enlarge"; position:absolute; right:8px; bottom:6px; font-family:var(--mono); font-size:11px; color:#6B5462;
+  background:rgba(255,255,255,.9); padding:1px 6px; opacity:0; transition:opacity .15s}
+.frame.zoomable:hover::after,.frame.zoomable:focus-visible::after{opacity:1}
+.lightbox{border:0; padding:0; background:transparent; max-width:min(96vw,1400px); max-height:94vh; overflow:visible}
+.lightbox::backdrop{background:rgba(20,12,18,.82)}
+.lightbox img{display:block; max-width:min(96vw,1400px); max-height:80vh; width:auto; margin:0 auto; background:#fff; padding:14px}
+.lb-cap{color:#F4E7E3; font-size:14px; max-width:80ch; margin:10px auto 0; text-align:center; line-height:1.5}
+.lb-close{position:fixed; top:14px; right:16px; font-family:var(--display); font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+  background:#F4E7E3; color:#2C1D28; border:0; padding:8px 14px; cursor:pointer}
+
+/* ---- expected paper toolbar ---- */
+.answers-bar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:flex-end; margin:-6px 0 18px}
+.answers-hint{font-style:italic; color:var(--muted); font-size:14.5px; margin-right:auto}
+
+/* ---- flashcards ---- */
+.deck{outline:none}
+.fc-face{border-radius:3px; box-shadow:0 12px 22px -16px rgba(0,0,0,.45)}
+.fc-q{font-size:20px}
+.deck-controls{display:grid; gap:12px; justify-items:center; margin-top:16px}
+.dc-row{display:flex; gap:10px; align-items:center}
+.dc-row .prev,.dc-row .next{min-width:48px; justify-content:center; font-size:16px; letter-spacing:0}
+.dc-grade{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:center}
+.dc-grade[hidden]{display:none!important}
+.dc-ask{font-style:italic; color:var(--muted)}
+.dc-grade .again{border-color:var(--bad); color:var(--bad)}
+.dc-grade .again:hover{background:var(--bad-soft)}
+.dc-grade .got{border-color:var(--good); color:var(--good)}
+.dc-grade .got:hover{background:var(--good-soft)}
+.dc-foot{display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:center; align-items:center; font-size:13.5px; color:var(--muted)}
+.dc-foot .count{font-family:var(--mono)}
+.dc-foot .keys{font-family:var(--mono); font-size:11.5px}
+@media (hover:none){ .dc-foot .keys{display:none} }
+.deck-meter{margin-top:14px}
+.dm-bar{display:flex; height:7px; background:var(--paper); border:1px solid var(--rule); overflow:hidden}
+.dm-bar i{display:block; height:100%; transition:width .35s}
+.b1{background:var(--bad)} .b2{background:var(--acc)} .b3{background:var(--good)}
+.dm-legend{display:flex; flex-wrap:wrap; gap:6px 16px; justify-content:center; margin-top:8px; font-family:var(--mono); font-size:11.5px; color:var(--muted)}
+.dm-legend span{display:inline-flex; align-items:center; gap:6px}
+.dm-legend i{width:9px; height:9px; display:inline-block}
+
+/* ---- MCQ scoreboard meter ---- */
+.sb-meter{display:inline-block; width:120px; height:5px; background:rgba(255,255,255,.25); overflow:hidden}
+.sb-meter i{display:block; height:100%; width:0; background:var(--paper); transition:width .3s}
+.mcq ol.opts li{transition:background .12s, border-color .12s}
+
+/* ---- print ---- */
+@media print{
+  .rail,.fab,.scrim,.read-line,.rev-btn,.answers-bar,.deck-meter,.chip-row,.resume{display:none!important}
+  body.has-rail{padding-left:0}
+}
+
 </style>
 </head>
 <body>
@@ -331,7 +491,7 @@ a.ticket[aria-current="page"] .t-date, a.ticket[aria-current="page"] .t-code{col
 </header>
 <nav class="tickets" aria-label="Subjects"><a class="ticket" href="index.html"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="rm.html"><span class="t-date">26 Sept</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="aca.html"><span class="t-date">28 Sept</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="mba.html"><span class="t-date">29 Sept</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a><a class="ticket" href="bi.html" aria-current="page"><span class="t-date">30 Sept</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="llm.html"><span class="t-date">03 Oct</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a></nav>
 <main>
-<section class="panel" id="bi" data-subject="bi">
+<section class="panel" id="bi" data-subject="bi" data-exam="2026-09-30">
 <div class="sheet">
   <div class="subject-title">
     <div class="code">TCS-726 · EXAM ON WEDNESDAY 30 SEPTEMBER</div>
@@ -1211,158 +1371,416 @@ Reports: pass % by course and year (trend) · toppers by department · attendanc
     get: function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
     set: function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
   };
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function $all(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  /* ---------- exam countdown (shared by lobby and subject pages) ---------- */
+  function daysUntil(iso){
+    var p = iso.split('-'), exam = new Date(+p[0], +p[1]-1, +p[2]);
+    var now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.round((exam - today) / 86400000);
+  }
+  function countdownText(d){
+    if (d < 0) return 'Done';
+    if (d === 0) return 'Today';
+    if (d === 1) return 'Tomorrow';
+    return 'In ' + d + ' days';
+  }
+
+  /* ---------- progress bookkeeping (localStorage) ---------- */
+  function revisedList(pid){ return store.get('almanac-rev-' + pid) || []; }
+  function deckMastery(ids){
+    var m = 0; ids.forEach(function(id){ var b = store.get('almanac-deck-' + id) || {}; Object.keys(b).forEach(function(k){ if (b[k] >= 3) m++; }); });
+    return m;
+  }
+  function mcqStats(pid){
+    var right = 0, done = 0;
+    for (var i = 0; i < 4; i++){ var s = store.get('almanac-mcq-' + pid + '-' + i) || {}; Object.keys(s).forEach(function(k){ done++; if (s[k][1]) right++; }); }
+    return {right:right, done:done};
+  }
 
   /* ---------- theme toggle ---------- */
   var root = document.documentElement;
   var savedTheme = store.get('almanac-theme');
   if (savedTheme) root.setAttribute('data-theme', savedTheme);
   var tt = document.getElementById('themeToggle');
-  function paintToggle(){
-    var dark = root.getAttribute('data-theme') === 'dark' ||
+  function isDark(){
+    return root.getAttribute('data-theme') === 'dark' ||
       (!root.getAttribute('data-theme') && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
-    tt.textContent = dark ? 'Day edition' : 'Night edition';
   }
+  function paintToggle(){ tt.textContent = isDark() ? 'Day edition' : 'Night edition'; }
   if (tt){
     paintToggle();
     tt.addEventListener('click', function(){
-      var dark = tt.textContent === 'Day edition';
-      var next = dark ? 'light' : 'dark';
+      var next = isDark() ? 'light' : 'dark';
       root.setAttribute('data-theme', next); store.set('almanac-theme', next); paintToggle();
     });
   }
 
-  /* ---------- pages: remember where you were reading on each page ---------- */
-  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
-  var pageKey = 'almanac-scroll-' + (panels[0] ? panels[0].id : 'page');
-  var saveTimer = null;
+  var panel = document.querySelector('.panel');
+  var pid = panel ? panel.id : 'page';
+
+  /* ---------- lobby: departures board ---------- */
+  var board = document.querySelector('.board');
+  if (board){
+    var nextMarked = false;
+    $all('.board-row', board).forEach(function(row){
+      var d = daysUntil(row.dataset.exam);
+      var chip = row.querySelector('.countdown');
+      chip.textContent = countdownText(d);
+      if (d < 0) row.classList.add('is-past');
+      if (d >= 0 && !nextMarked){ row.classList.add('is-next'); nextMarked = true; }
+      if (d >= 0 && d <= 1) chip.classList.add('urgent');
+      var sid = row.dataset.sid, topics = +row.dataset.topics || 0, cards = +row.dataset.cards || 0;
+      var decks = (row.dataset.decks || '').split(',').filter(Boolean);
+      var rev = revisedList(sid).length, mast = deckMastery(decks);
+      var parts = [], share;
+      if (topics){ parts.push(rev + '/' + topics + ' topics revised'); share = rev / topics; }
+      if (cards){ parts.push(mast + '/' + cards + ' cards mastered'); if (!topics) share = mast / cards; }
+      var mq = mcqStats(sid); if (+row.dataset.mcq){ parts.push('MCQ ' + mq.right + '/' + row.dataset.mcq); share = (mq.done / +row.dataset.mcq + mast / cards) / 2; }
+      row.querySelector('.meter i').style.width = Math.round(Math.min(1, share || 0) * 100) + '%';
+      row.querySelector('.b-prog-t').textContent = parts.join(' · ');
+    });
+  }
+
+  /* ---------- subject pages: header chips, contents rail, revised toggles ---------- */
+  var topics = panel ? $all('section.topic[id]', panel) : [];
+  var chapters = panel ? $all('.chapter-card[id]', panel) : [];
+  var subjTitle = panel ? panel.querySelector('.subject-title') : null;
+
+  // unit buttons under the subject title
+  var unitNav = panel ? panel.querySelector('.unit-nav') : null;
+  if (unitNav){
+    chapters.forEach(function(c){
+      var li = el('li'), a = el('a', null, c.dataset.short || c.querySelector('h2').textContent);
+      a.href = '#' + c.id; li.appendChild(a); unitNav.appendChild(li);
+    });
+  }
+
+  var chipRow = null;
+  function paintProgress(){
+    var rev = revisedList(pid);
+    topics.forEach(function(t){
+      var on = rev.indexOf(t.id) > -1;
+      t.classList.toggle('is-revised', on);
+      var b = t.querySelector('.rev-btn');
+      if (b){ b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.querySelector('span').textContent = on ? 'Revised' : 'Mark as revised'; }
+      var link = document.querySelector('.rail a[href="#' + t.id + '"]');
+      if (link) link.classList.toggle('done', on);
+    });
+    var n = topics.filter(function(t){ return rev.indexOf(t.id) > -1; }).length;
+    $all('.prog-count').forEach(function(x){ x.textContent = n + ' of ' + topics.length + ' topics revised'; });
+    $all('.prog-bar i').forEach(function(x){ x.style.width = (topics.length ? Math.round(n / topics.length * 100) : 0) + '%'; });
+  }
+
+  if (panel && panel.dataset.exam && subjTitle){
+    chipRow = el('div', 'chip-row');
+    var d = daysUntil(panel.dataset.exam);
+    var c1 = el('span', 'chip countdown' + (d >= 0 && d <= 1 ? ' urgent' : ''), d < 0 ? 'Exam done' : 'Exam ' + countdownText(d).toLowerCase());
+    chipRow.appendChild(c1);
+    if (topics.length){ var c2 = el('span', 'chip'); c2.appendChild(el('span', 'prog-count')); chipRow.appendChild(c2); }
+    subjTitle.insertBefore(chipRow, unitNav);
+  }
+
+  if (topics.length){
+    // "mark as revised" at the end of each topic
+    topics.forEach(function(t){
+      var foot = el('div', 'topic-foot');
+      var b = el('button', 'rev-btn'); b.type = 'button';
+      b.innerHTML = '<i aria-hidden="true"></i><span>Mark as revised</span>';
+      b.addEventListener('click', function(){
+        var rev = revisedList(pid), i = rev.indexOf(t.id);
+        if (i > -1) rev.splice(i, 1); else rev.push(t.id);
+        store.set('almanac-rev-' + pid, rev); paintProgress();
+      });
+      foot.appendChild(b); t.appendChild(foot);
+    });
+
+    // contents rail (a side column on wide screens, a drawer on small ones)
+    var rail = el('aside', 'rail'); rail.id = 'rail'; rail.setAttribute('aria-label', 'Contents');
+    var head = el('div', 'rail-head');
+    head.appendChild(el('div', 'rail-kicker', 'Contents'));
+    var st = subjTitle && subjTitle.querySelector('h2');
+    head.appendChild(el('div', 'rail-title', st ? st.textContent : document.title));
+    var pb = el('div', 'prog-bar'); pb.appendChild(el('i')); head.appendChild(pb);
+    head.appendChild(el('div', 'prog-count rail-count'));
+    var close = el('button', 'rail-close', 'Close'); close.type = 'button'; head.appendChild(close);
+    rail.appendChild(head);
+    var list = el('nav', 'rail-list');
+    var all = $all('.chapter-card[id], section.topic[id], .deck[id]', panel);
+    var curUl = null;
+    all.forEach(function(node){
+      if (node.classList.contains('chapter-card')){
+        var g = el('a', 'rail-unit', node.dataset.short || node.querySelector('h2').textContent);
+        g.href = '#' + node.id; list.appendChild(g);
+        curUl = el('ol', 'rail-topics'); list.appendChild(curUl);
+      } else if (curUl){
+        var li = el('li'), a = el('a');
+        a.href = '#' + node.id;
+        if (node.classList.contains('deck')){ a.textContent = 'Flashcards'; a.className = 'is-deck'; }
+        else {
+          var h = node.querySelector('h3'), no = h.querySelector('.tno');
+          a.appendChild(el('span', 'rn', no ? no.textContent.replace('§ ', '').replace('Step ', '') : ''));
+          a.appendChild(el('span', 'rt', no ? h.textContent.replace(no.textContent, '').trim() : h.textContent));
+        }
+        li.appendChild(a); curUl.appendChild(li);
+      }
+    });
+    rail.appendChild(list);
+    document.body.appendChild(rail);
+    document.body.classList.add('has-rail');
+
+    var fab = el('button', 'fab fab-contents', 'Contents'); fab.type = 'button';
+    fab.setAttribute('aria-controls', 'rail'); fab.setAttribute('aria-expanded', 'false');
+    var scrim = el('div', 'scrim');
+    document.body.appendChild(scrim); document.body.appendChild(fab);
+    function openRail(v){
+      document.body.classList.toggle('rail-open', v); fab.setAttribute('aria-expanded', v ? 'true' : 'false');
+      if (v){ var cur = rail.querySelector('a.current'); if (cur) cur.scrollIntoView({block:'center'}); }
+    }
+    fab.addEventListener('click', function(){ openRail(!document.body.classList.contains('rail-open')); });
+    close.addEventListener('click', function(){ openRail(false); });
+    scrim.addEventListener('click', function(){ openRail(false); });
+    rail.addEventListener('click', function(e){ if (e.target.closest('a')) openRail(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') openRail(false); });
+
+    // highlight the section being read
+    var links = {}; $all('a', list).forEach(function(a){ links[a.getAttribute('href').slice(1)] = a; });
+    var ticking = false;
+    function spy(){
+      ticking = false;
+      var line = window.innerHeight * 0.3, current = null;
+      for (var i = 0; i < all.length; i++){ if (all[i].getBoundingClientRect().top <= line) current = all[i]; else break; }
+      $all('a.current', list).forEach(function(a){ a.classList.remove('current'); });
+      if (current && links[current.id]){
+        var a = links[current.id]; a.classList.add('current');
+        if (window.innerWidth >= 1200){
+          var r = a.getBoundingClientRect(), lr = rail.getBoundingClientRect();
+          if (r.top < lr.top + 120 || r.bottom > lr.bottom - 40) a.scrollIntoView({block:'center'});
+        }
+      }
+    }
+    window.addEventListener('scroll', function(){ if (!ticking){ ticking = true; setTimeout(spy, 60); } }, {passive:true});
+    spy();
+  }
+  paintProgress();
+
+  /* ---------- reading progress line + back to top ---------- */
+  if (panel && pid !== 'lobby'){
+    var line = el('div', 'read-line'); line.appendChild(el('i')); document.body.appendChild(line);
+    var top = el('button', 'fab fab-top', '↑ Top'); top.type = 'button'; top.setAttribute('aria-label', 'Back to top');
+    top.addEventListener('click', function(){ window.scrollTo({top:0}); });
+    document.body.appendChild(top);
+    var pt = false;
+    function onScroll(){
+      pt = false;
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      line.firstChild.style.width = (h > 0 ? Math.min(100, window.scrollY / h * 100) : 0) + '%';
+      document.body.classList.toggle('scrolled', window.scrollY > window.innerHeight);
+    }
+    window.addEventListener('scroll', function(){ if (!pt){ pt = true; setTimeout(onScroll, 40); } }, {passive:true});
+    onScroll();
+  }
+
+  /* ---------- remember where you were reading ---------- */
+  var pageKey = 'almanac-scroll-' + pid, saveTimer = null;
   window.addEventListener('scroll', function(){
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function(){ store.set(pageKey, Math.round(window.scrollY)); }, 250);
   }, {passive:true});
   if (!location.hash){
     var y = store.get(pageKey);
-    if (y && y > 400){
-      var tip = document.createElement('button');
-      tip.type = 'button'; tip.className = 'resume';
-      tip.textContent = 'Continue where you left off ↓';
+    if (y && y > 600 && subjTitle){
+      var tip = el('button', 'resume', 'Continue where you left off ↓'); tip.type = 'button';
       tip.addEventListener('click', function(){ window.scrollTo({top:y}); tip.remove(); });
-      var nav = document.querySelector('.tickets');
-      if (nav) nav.insertAdjacentElement('afterend', tip);
-      setTimeout(function(){ if (tip.isConnected) tip.remove(); }, 12000);
+      (chipRow || subjTitle).insertAdjacentElement('afterend', tip);
     }
   }
 
-  /* ---------- unit nav (auto) ---------- */
-  panels.forEach(function(p){
-    var nav = p.querySelector('.unit-nav');
-    if (!nav) return;
-    p.querySelectorAll('.chapter-card[id]').forEach(function(c){
-      var li = document.createElement('li'); var a = document.createElement('a');
-      a.href = '#'+c.id; a.textContent = c.dataset.short || c.querySelector('h2').textContent;
-      a.addEventListener('click', function(e){ e.preventDefault(); c.scrollIntoView({behavior:'smooth'}); });
-      li.appendChild(a); nav.appendChild(li);
-    });
-  });
-
-  /* ---------- images: graceful fallback ---------- */
-  document.querySelectorAll('.plate img').forEach(function(img){
+  /* ---------- images: graceful fallback + click to enlarge ---------- */
+  var dlg = null;
+  function openImage(img){
+    if (!dlg){
+      dlg = el('dialog', 'lightbox');
+      dlg.innerHTML = '<button type="button" class="lb-close">Close</button><img alt=""><p class="lb-cap"></p>';
+      dlg.addEventListener('click', function(e){ if (e.target === dlg || e.target.classList.contains('lb-close')) dlg.close(); });
+      document.body.appendChild(dlg);
+    }
+    var im = dlg.querySelector('img'); im.src = img.currentSrc || img.src; im.alt = img.alt;
+    var cap = img.closest('figure').querySelector('figcaption');
+    dlg.querySelector('.lb-cap').textContent = cap ? cap.textContent.replace(/\s+/g, ' ').trim() : img.alt;
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+  }
+  $all('.plate img').forEach(function(img){
     function fail(){
       var fig = img.closest('.plate'); fig.classList.add('missing');
       var f = img.closest('.frame'); f.textContent = 'Image could not load here. Read the caption below and draw it from the sketch guide. (' + img.alt + ')';
     }
-    if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) { fail(); }
-    else img.addEventListener('error', fail);
+    if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) { fail(); return; }
+    img.addEventListener('error', fail);
+    var frame = img.closest('.frame');
+    frame.classList.add('zoomable'); frame.setAttribute('tabindex', '0'); frame.setAttribute('role', 'button');
+    frame.setAttribute('aria-label', 'Enlarge diagram: ' + img.alt);
+    frame.addEventListener('click', function(){ openImage(img); });
+    frame.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openImage(img); } });
+  });
+
+  /* ---------- expected paper: open / close all answers ---------- */
+  $all('.paper-head').forEach(function(ph){
+    var box = ph.closest('.prose') || ph.parentNode;
+    if (!box.querySelector('details.model')) return;
+    var bar = el('div', 'answers-bar');
+    var o = el('button', 'btn', 'Open all answers'), c = el('button', 'btn', 'Close all');
+    o.type = c.type = 'button';
+    o.onclick = function(){ $all('details.model', box).forEach(function(d){ d.open = true; }); };
+    c.onclick = function(){ $all('details.model', box).forEach(function(d){ d.open = false; }); };
+    bar.appendChild(el('span', 'answers-hint', 'Try each question for 18 minutes before opening its answer.'));
+    bar.appendChild(o); bar.appendChild(c);
+    ph.insertAdjacentElement('afterend', bar);
   });
 
   /* ---------- flashcards with Leitner spaced repetition ---------- */
-  document.querySelectorAll('.deck').forEach(function(deck, di){
-    var cards = Array.prototype.slice.call(deck.querySelectorAll('.fc'));
+  $all('.deck').forEach(function(deck, di){
+    var cards = $all('.fc', deck);
     if (!cards.length) return;
     var key = 'almanac-deck-' + (deck.id || di);
     cards.forEach(function(c){
       var q = c.querySelector('.fc-q'), a = c.querySelector('.fc-a');
-      var inner = document.createElement('div'); inner.className = 'fc-inner';
+      var inner = el('div', 'fc-inner');
       q.classList.add('fc-face'); a.classList.add('fc-face');
-      if (c.dataset.from){
-        var tag = document.createElement('span'); tag.className = 'from'; tag.textContent = '↺ Cumulative · ' + c.dataset.from;
-        q.insertBefore(tag, q.firstChild);
-      }
-      var s1 = document.createElement('span'); s1.className='side'; s1.textContent='Question — tap to turn';
-      var s2 = document.createElement('span'); s2.className='side'; s2.textContent='Model answer';
-      q.insertBefore(s1, q.firstChild); a.insertBefore(s2, a.firstChild);
+      if (c.dataset.from){ q.insertBefore(el('span', 'from', '↺ Cumulative · ' + c.dataset.from), q.firstChild); }
+      q.insertBefore(el('span', 'side', 'Question · tap to turn'), q.firstChild);
+      a.insertBefore(el('span', 'side', 'Model answer'), a.firstChild);
       inner.appendChild(q); inner.appendChild(a); c.appendChild(inner);
-      c.setAttribute('tabindex','0'); c.setAttribute('role','button'); c.setAttribute('aria-label','Flashcard. Press to flip.');
-      c.addEventListener('click', function(e){ if (e.target.closest('a')) return; c.classList.toggle('flipped'); });
-      c.addEventListener('keydown', function(e){ if (e.key===' '||e.key==='Enter'){ e.preventDefault(); c.classList.toggle('flipped'); } });
+      c.setAttribute('tabindex', '0'); c.setAttribute('role', 'button'); c.setAttribute('aria-label', 'Flashcard. Press to turn.');
     });
-    deck.classList.add('js');
-    var boxes = store.get(key) || {}; // card index -> box 1..3
-    var order = cards.map(function(_,i){return i;});
+    deck.classList.add('js'); deck.setAttribute('tabindex', '-1');
+    var boxes = store.get(key) || {};
+    var order = cards.map(function(_, i){ return i; });
     var pos = 0;
-    var ctr = document.createElement('div'); ctr.className = 'deck-controls';
-    ctr.innerHTML = '<button type="button" class="prev">← Previous</button>'+
-      '<span class="count"></span>'+
-      '<button type="button" class="flip">Turn card</button>'+
-      '<button type="button" class="next">Next →</button>'+
-      '<button type="button" class="again">Again</button>'+
-      '<button type="button" class="got">Got it</button>'+
-      '<button type="button" class="shuffle">Review weakest first</button>'+
-      '<span class="boxes"></span>';
-    deck.appendChild(ctr);
-    var count = ctr.querySelector('.count'), bx = ctr.querySelector('.boxes');
+
+    var meter = el('div', 'deck-meter');
+    meter.innerHTML = '<div class="dm-bar"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div><div class="dm-legend"></div>';
+    var ctr = el('div', 'deck-controls');
+    ctr.innerHTML =
+      '<div class="dc-row">' +
+        '<button type="button" class="btn prev" aria-label="Previous card">←</button>' +
+        '<button type="button" class="btn btn-primary flip">Turn card</button>' +
+        '<button type="button" class="btn next" aria-label="Next card">→</button>' +
+      '</div>' +
+      '<div class="dc-grade" hidden><span class="dc-ask">How did you do?</span>' +
+        '<button type="button" class="btn again">Again <kbd>1</kbd></button>' +
+        '<button type="button" class="btn got">Got it <kbd>2</kbd></button>' +
+      '</div>' +
+      '<div class="dc-foot"><span class="count"></span>' +
+        '<button type="button" class="link-btn shuffle">Review weakest first</button>' +
+        '<span class="keys">Keys: ← → · Space turns · 1 / 2 grade</span></div>';
+    deck.appendChild(ctr); deck.appendChild(meter);
+    var count = ctr.querySelector('.count'), grade = ctr.querySelector('.dc-grade'), flipBtn = ctr.querySelector('.flip');
+
+    function cur(){ return cards[order[pos]]; }
+    function paintMeter(){
+      var b = [0, 0, 0, 0]; cards.forEach(function(_, i){ b[boxes[i] || 1]++; });
+      var n = cards.length;
+      meter.querySelector('.b1').style.width = (b[1] / n * 100) + '%';
+      meter.querySelector('.b2').style.width = (b[2] / n * 100) + '%';
+      meter.querySelector('.b3').style.width = (b[3] / n * 100) + '%';
+      meter.querySelector('.dm-legend').innerHTML =
+        '<span><i class="b1"></i>Learning ' + b[1] + '</span><span><i class="b2"></i>Reviewing ' + b[2] + '</span><span><i class="b3"></i>Mastered ' + b[3] + '</span>';
+    }
+    function setFlipped(v){
+      cur().classList.toggle('flipped', v);
+      grade.hidden = !v;
+      flipBtn.textContent = v ? 'Show question' : 'Turn card';
+    }
     function render(){
-      cards.forEach(function(c){ c.classList.remove('current','flipped'); });
-      cards[order[pos]].classList.add('current');
-      count.textContent = (pos+1) + ' / ' + cards.length;
-      var b = [0,0,0,0]; cards.forEach(function(_,i){ b[boxes[i]||1]++; });
-      bx.textContent = 'Box 1 (learning): ' + b[1] + ' · Box 2 (review): ' + b[2] + ' · Box 3 (mastered): ' + b[3];
+      cards.forEach(function(c){ c.classList.remove('current', 'flipped'); });
+      cur().classList.add('current');
+      setFlipped(false);
+      count.textContent = 'Card ' + (pos + 1) + ' of ' + cards.length;
+      paintMeter();
     }
     function go(d){ pos = (pos + d + cards.length) % cards.length; render(); }
+    function flip(){ setFlipped(!cur().classList.contains('flipped')); }
+    function gradeCard(ok){
+      var i = order[pos];
+      boxes[i] = ok ? Math.min(3, (boxes[i] || 1) + 1) : 1;
+      store.set(key, boxes); go(1);
+    }
+    cards.forEach(function(c){
+      c.addEventListener('click', function(e){ if (e.target.closest('a')) return; if (c === cur()) flip(); });
+    });
     ctr.querySelector('.prev').onclick = function(){ go(-1); };
     ctr.querySelector('.next').onclick = function(){ go(1); };
-    ctr.querySelector('.flip').onclick = function(){ cards[order[pos]].classList.toggle('flipped'); };
-    ctr.querySelector('.again').onclick = function(){ boxes[order[pos]] = 1; store.set(key, boxes); go(1); };
-    ctr.querySelector('.got').onclick = function(){ var i = order[pos]; boxes[i] = Math.min(3,(boxes[i]||1)+1); store.set(key, boxes); go(1); };
+    flipBtn.onclick = flip;
+    ctr.querySelector('.again').onclick = function(){ gradeCard(false); };
+    ctr.querySelector('.got').onclick = function(){ gradeCard(true); };
     ctr.querySelector('.shuffle').onclick = function(){
-      order = cards.map(function(_,i){return i;}).sort(function(a,b){ return ((boxes[a]||1)-(boxes[b]||1)) || (Math.random()-.5); });
+      order = cards.map(function(_, i){ return i; }).sort(function(a, b){ return ((boxes[a] || 1) - (boxes[b] || 1)) || (Math.random() - .5); });
       pos = 0; render();
     };
+    deck.addEventListener('keydown', function(e){
+      if (e.target.closest('button') && (e.key === ' ' || e.key === 'Enter')) return;
+      if (e.key === 'ArrowRight'){ e.preventDefault(); go(1); }
+      else if (e.key === 'ArrowLeft'){ e.preventDefault(); go(-1); }
+      else if (e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); flip(); }
+      else if ((e.key === '1' || e.key === '2') && cur().classList.contains('flipped')){ gradeCard(e.key === '2'); }
+    });
     render();
   });
 
-  /* ---------- MCQ engine ---------- */
-  document.querySelectorAll('.mcq-bank').forEach(function(bank){
-    var qs = Array.prototype.slice.call(bank.querySelectorAll('.mcq'));
+  /* ---------- MCQ engine (answers are remembered) ---------- */
+  $all('.mcq-bank').forEach(function(bank, bi){
+    var qs = $all('.mcq', bank);
     var sb = bank.querySelector('.scoreboard');
+    var skey = 'almanac-mcq-' + pid + '-' + bi;
+    var saved = store.get(skey) || {};
     var right = 0, done = 0;
-    function paint(){ if (sb) sb.querySelector('.sc').textContent = 'Score ' + right + ' / ' + done + ' answered · ' + qs.length + ' questions'; }
+    function paint(){
+      if (!sb) return;
+      sb.querySelector('.sc').textContent = 'Score ' + right + ' / ' + done + ' answered · ' + qs.length + ' questions';
+      var m = sb.querySelector('.sb-meter i'); if (m) m.style.width = (done / qs.length * 100) + '%';
+    }
+    if (sb && !sb.querySelector('.sb-meter')){ var sm = el('span', 'sb-meter'); sm.appendChild(el('i')); sb.insertBefore(sm, sb.querySelector('button')); }
     qs.forEach(function(q, i){
       var ans = q.dataset.answer;
-      var num = q.querySelector('.qn'); if (num) num.textContent = 'Q' + (i+1) + '.';
-      q.querySelectorAll('ol.opts li').forEach(function(li){
+      var num = q.querySelector('.qn'); if (num) num.textContent = 'Q' + (i + 1) + '.';
+      function pick(li, restoring){
+        if (q.classList.contains('answered')) return;
+        q.classList.add('answered'); done++;
+        var ok = li.dataset.k === ans;
+        if (ok){ right++; li.classList.add('right'); }
+        else { li.classList.add('wrong'); q.querySelector('li[data-k="' + ans + '"]').classList.add('right'); }
+        if (!restoring){ saved[i] = [li.dataset.k, ok ? 1 : 0]; store.set(skey, saved); }
+        paint();
+      }
+      $all('ol.opts li', q).forEach(function(li){
         if (li.dataset.k === ans) li.classList.add('is-key');
-        li.setAttribute('tabindex','0');
-        function pick(){
-          if (q.classList.contains('answered')) return;
-          q.classList.add('answered'); done++;
-          if (li.dataset.k === ans){ right++; li.classList.add('right'); }
-          else { li.classList.add('wrong'); q.querySelector('li[data-k="'+ans+'"]').classList.add('right'); }
-          paint();
-        }
-        li.addEventListener('click', pick);
-        li.addEventListener('keydown', function(e){ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+        li.setAttribute('tabindex', '0'); li.setAttribute('role', 'button');
+        li.addEventListener('click', function(){ pick(li); });
+        li.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(li); } });
       });
+      if (saved[i]){ var li0 = q.querySelector('li[data-k="' + saved[i][0] + '"]'); if (li0) pick(li0, true); }
     });
     if (sb) sb.querySelector('button').onclick = function(){
-      right = 0; done = 0;
-      qs.forEach(function(q){ q.classList.remove('answered'); q.querySelectorAll('li').forEach(function(li){ li.classList.remove('right','wrong'); }); });
+      right = 0; done = 0; saved = {}; store.set(skey, saved);
+      qs.forEach(function(q){ q.classList.remove('answered'); $all('li', q).forEach(function(li){ li.classList.remove('right', 'wrong'); }); });
       paint();
     };
     paint();
   });
 
+  /* ---------- deep links: re-apply #anchor after the page has been built ---------- */
+  if (location.hash.length > 1){
+    var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target){
+      var d0 = target.closest('details'); if (d0) d0.open = true;
+      setTimeout(function(){ target.scrollIntoView(); window.dispatchEvent(new Event('scroll')); }, 30);
+    }
+  }
+
   /* ---------- print: open every model answer ---------- */
-  window.addEventListener('beforeprint', function(){ document.querySelectorAll('details').forEach(function(d){ d.setAttribute('open',''); }); });
+  window.addEventListener('beforeprint', function(){ $all('details').forEach(function(d){ d.setAttribute('open', ''); }); });
 })();
 
 </script>
