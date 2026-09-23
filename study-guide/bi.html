@@ -1,0 +1,1370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Almanac · Business Intelligence</title>
+<meta name="description" content="Mid-semester study guide, B.Tech CSE Semester VII: Business Intelligence">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Courier+Prime&display=swap">
+<style>
+/* ============ The Mid-Semester Almanac — tokens ============ */
+:root{
+  color-scheme: light;
+  --ground:#F4DEDC;          /* blush wallpaper */
+  --paper:#FFF9F2;           /* hotel stationery */
+  --paper-2:#FBEFE6;
+  --ink:#2C1D28;             /* aubergine ink */
+  --muted:#6B5462;
+  --rule:#D2AFAA;
+  --rule-strong:#9C6F72;
+  --stamp:#8E2F45;
+  --good:#3E7D5A; --good-soft:#DDEFE3;
+  --bad:#A8392E;  --bad-soft:#F6DCD7;
+  --fig-ground:#FFFFFF;
+  --shadow: 0 1px 0 rgba(44,29,40,.06), 0 10px 24px -14px rgba(44,29,40,.35);
+  /* default accent (lobby) */
+  --acc:#8E2F45; --acc2:#5B3A6E; --acc-soft:#F2D2D8; --acc-ink:#FFF9F2;
+  --display:"Jost","Futura","Century Gothic","Trebuchet MS",sans-serif;
+  --body:"Libre Caslon Text","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --mono:"Courier Prime","Courier New",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+    --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+    --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+    --fig-ground:#F7F1EA;
+    --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+    --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+  --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+  --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+  --fig-ground:#F7F1EA;
+  --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+  --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+}
+
+/* per-film subject palettes */
+[data-subject="rm"] { --acc:#A83F63; --acc2:#6B2D5C; --acc-soft:#F5D6DF; }
+[data-subject="aca"]{ --acc:#C0433A; --acc2:#2F6F95; --acc-soft:#D8E9F3; }
+[data-subject="mba"]{ --acc:#A87A12; --acc2:#5E6B3A; --acc-soft:#F4E6BC; }
+[data-subject="bi"] { --acc:#23857C; --acc2:#C8703F; --acc-soft:#D2EEEA; }
+[data-subject="llm"]{ --acc:#BD5A22; --acc2:#6E4A2F; --acc-soft:#F7DDC8; }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+  :root:not([data-theme="light"]) [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+  :root:not([data-theme="light"]) [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+  :root:not([data-theme="light"]) [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+  :root:not([data-theme="light"]) [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+}
+:root[data-theme="dark"] [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+:root[data-theme="dark"] [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+:root[data-theme="dark"] [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+:root[data-theme="dark"] [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+:root[data-theme="dark"] [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+
+/* ============ base ============ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.68;
+  padding-inline:16px; padding-block:0 64px;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 46px, color-mix(in srgb, var(--rule) 22%, transparent) 46px 48px);
+}
+a{color:var(--acc)}
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible{outline:3px solid var(--acc2); outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--display); font-weight:500; text-wrap:balance; line-height:1.2}
+p{margin:0 0 1em}
+.wrap{max-width:1040px; margin-inline:auto}
+
+/* ============ proscenium header ============ */
+.marquee{max-width:1040px; margin:28px auto 0; text-align:center; background:var(--paper);
+  border:1px solid var(--rule-strong); outline:6px double var(--rule); outline-offset:-14px;
+  padding:44px 28px 30px; box-shadow:var(--shadow); position:relative}
+.marquee .eyebrow{font-family:var(--display); letter-spacing:.42em; text-transform:uppercase; font-size:12px; color:var(--muted)}
+.marquee h1{font-size:clamp(34px,6vw,64px); letter-spacing:.14em; text-transform:uppercase; margin:.28em 0 .1em; color:var(--stamp); font-weight:500}
+.marquee .sub{font-family:var(--body); font-style:italic; color:var(--muted); font-size:18px}
+.marquee .fleuron{font-family:var(--display); color:var(--rule-strong); letter-spacing:.8em; margin:14px 0 0}
+.theme-toggle{position:absolute; top:18px; right:22px; font-family:var(--display); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; background:transparent; border:1px solid var(--rule-strong); color:var(--muted); padding:6px 10px; cursor:pointer}
+
+/* ============ ticket-stub tabs ============ */
+.tickets{max-width:1040px; margin:22px auto 0; display:grid; grid-template-columns:repeat(6,1fr); gap:10px;
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20; padding-block:10px; background:var(--ground)}
+.ticket{font:inherit; cursor:pointer; text-align:left; background:var(--paper); color:var(--ink);
+  border:1px solid var(--rule-strong); padding:10px 12px 9px; position:relative; min-width:0;
+  -webkit-mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+          mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+  transition:transform .18s ease, background .18s}
+.ticket:hover{transform:translateY(-2px)}
+.ticket .t-date{display:block; font-family:var(--mono); font-size:12px; color:var(--acc); letter-spacing:.06em}
+.ticket .t-name{display:block; font-family:var(--display); font-size:13.5px; letter-spacing:.08em; text-transform:uppercase; line-height:1.25; overflow-wrap:anywhere}
+.ticket .t-code{display:block; font-family:var(--mono); font-size:11px; color:var(--muted)}
+.ticket[aria-selected="true"]{background:var(--acc); color:var(--acc-ink)}
+.ticket[aria-selected="true"] .t-date,.ticket[aria-selected="true"] .t-code{color:var(--acc-ink); opacity:.85}
+@media (max-width:820px){ .tickets{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:460px){ .tickets{grid-template-columns:repeat(2,1fr); position:static} }
+
+/* ============ panels & paper ============ */
+.panel{max-width:1040px; margin:18px auto 0}
+.panel[hidden]{display:none!important}
+.sheet{background:var(--paper); border:1px solid var(--rule); box-shadow:var(--shadow); padding:clamp(20px,4vw,56px); margin-top:22px}
+.prose{max-width:70ch; margin-inline:auto}
+.subject-title{text-align:center; padding-block:10px 4px}
+.subject-title .code{font-family:var(--mono); color:var(--acc); letter-spacing:.12em}
+.subject-title h2{font-size:clamp(28px,4.4vw,46px); letter-spacing:.12em; text-transform:uppercase; margin:.2em 0; color:var(--acc2)}
+.subject-title .meta{font-style:italic; color:var(--muted)}
+.unit-nav{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:18px 0 0; padding:0; list-style:none}
+.unit-nav a{font-family:var(--display); font-size:12px; letter-spacing:.18em; text-transform:uppercase; text-decoration:none;
+  color:var(--acc2); border:1px solid var(--acc2); padding:6px 12px; background:var(--paper)}
+.unit-nav a:hover{background:var(--acc-soft)}
+
+/* intertitle chapter card */
+.chapter-card{background:var(--acc-soft); border:1px solid var(--acc); outline:4px double var(--acc); outline-offset:-12px;
+  text-align:center; padding:46px 24px 40px; margin-top:34px; scroll-margin-top:110px}
+.chapter-card .ch-no{font-family:var(--display); letter-spacing:.5em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.chapter-card h2{font-size:clamp(26px,4vw,40px); letter-spacing:.1em; text-transform:uppercase; margin:.3em 0 .25em; color:var(--ink)}
+.chapter-card .in-which{font-style:italic; color:var(--muted); max-width:52ch; margin:0 auto}
+.chapter-card .syll{font-family:var(--mono); font-size:13px; color:var(--muted); margin-top:14px; max-width:70ch; margin-inline:auto}
+
+/* topic */
+.topic{scroll-margin-top:110px}
+.topic > h3{font-size:clamp(22px,3vw,30px); letter-spacing:.06em; text-transform:uppercase; color:var(--acc2);
+  border-bottom:2px solid var(--acc); padding-bottom:.35em; margin:1.6em 0 .8em}
+.topic > h3 .tno{font-family:var(--mono); font-size:.6em; color:var(--acc); letter-spacing:.05em; display:block; text-transform:none}
+.facet{font-family:var(--display); font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:var(--acc);
+  margin:1.8em 0 .6em; display:flex; align-items:center; gap:12px}
+.facet::after{content:""; flex:1; height:1px; background:var(--rule)}
+.prose h5{font-family:var(--display); font-size:16px; letter-spacing:.06em; margin:1.3em 0 .4em; color:var(--ink); font-weight:600}
+.prose ul,.prose ol{padding-left:1.3em; margin:0 0 1em}
+.prose li{margin-bottom:.35em}
+.prose strong{color:var(--acc2); font-weight:700}
+.defn{border-left:4px solid var(--acc); background:var(--paper-2); padding:14px 18px; margin:0 0 1em; font-style:italic}
+.defn b{font-style:normal; font-family:var(--display); letter-spacing:.06em; text-transform:uppercase; font-size:13px; color:var(--acc); display:block; margin-bottom:4px}
+.plain{background:var(--acc-soft); padding:12px 16px; margin:0 0 1em; border-radius:2px}
+.plain::before{content:"In plain words — "; font-family:var(--display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acc)}
+.formula{font-family:var(--mono); background:var(--paper-2); border:1px dashed var(--rule-strong); padding:12px 16px; margin:0 0 1em; overflow-x:auto; white-space:pre; font-size:15px; line-height:1.55}
+.checklist{border:2px solid var(--acc2); padding:16px 20px 8px; margin:1em 0 1.6em; background:var(--paper); position:relative}
+.checklist::before{content:"Evaluator's Scoring Checklist"; position:absolute; top:-12px; left:16px; background:var(--paper); padding:0 8px;
+  font-family:var(--display); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--acc2)}
+.checklist ul{list-style:none; padding-left:0}
+.checklist li{padding-left:1.6em; position:relative}
+.checklist li::before{content:"✓"; position:absolute; left:0; color:var(--good); font-weight:700}
+.tip{font-size:15px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:10px 0; margin:0 0 1em; color:var(--muted)}
+.tip b{font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+
+/* tables */
+.tbl{overflow-x:auto; margin:0 0 1.2em}
+.tbl table{border-collapse:collapse; width:100%; font-size:15px; min-width:520px}
+.tbl th{font-family:var(--display); font-weight:500; letter-spacing:.06em; text-align:left; background:var(--acc-soft); color:var(--ink); border-bottom:2px solid var(--acc)}
+.tbl th,.tbl td{padding:8px 10px; border-bottom:1px solid var(--rule); vertical-align:top}
+.tbl td{font-variant-numeric:tabular-nums}
+
+/* figures */
+.plate{margin:1.4em auto 1.8em; max-width:760px; text-align:center}
+.plate .frame{background:var(--fig-ground); border:1px solid var(--rule-strong); outline:5px solid var(--paper-2); padding:14px; overflow-x:auto}
+.plate img{display:block; margin:0 auto; max-height:520px; width:auto; max-width:100%}
+.plate svg{display:block; margin:0 auto; max-width:100%; height:auto}
+.plate.svgplate .frame{background:var(--paper)}
+.plate figcaption{text-align:left; font-size:14.5px; color:var(--muted); margin-top:10px; line-height:1.55}
+.plate figcaption .pl{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+.plate figcaption .sketch{display:block; margin-top:6px; font-family:var(--mono); font-size:13px; color:var(--ink)}
+.plate figcaption .credit{display:block; font-size:12px; margin-top:4px}
+.plate.missing .frame{padding:30px; font-style:italic; color:var(--muted)}
+/* svg tokens */
+.dg text{font-family:var(--display); fill:var(--ink); font-size:13px}
+.dg .box{fill:var(--paper-2); stroke:var(--acc2); stroke-width:1.6}
+.dg .box2{fill:var(--acc-soft); stroke:var(--acc); stroke-width:1.6}
+.dg .box3{fill:var(--paper); stroke:var(--rule-strong); stroke-width:1.2; stroke-dasharray:4 3}
+.dg .ln{stroke:var(--ink); stroke-width:1.6; fill:none}
+.dg .ln2{stroke:var(--acc); stroke-width:1.8; fill:none}
+.dg .lnd{stroke:var(--muted); stroke-width:1.4; fill:none; stroke-dasharray:5 4}
+.dg .small{font-size:11px; fill:var(--muted)}
+.dg .hd{font-size:14px; letter-spacing:.08em; font-weight:600}
+.dg .ac{fill:var(--acc)}
+.dg .mk{fill:var(--ink)} .dg .mk2{fill:var(--acc)}
+
+/* exam blueprint + model answers */
+.paper-head{text-align:center; border:1px solid var(--ink); padding:18px; font-family:var(--display); margin-bottom:18px; background:var(--paper)}
+.paper-head .ph1{letter-spacing:.3em; text-transform:uppercase; font-size:13px}
+.paper-head .ph2{font-size:22px; letter-spacing:.1em; text-transform:uppercase; margin:6px 0}
+.paper-head .ph3{font-family:var(--mono); font-size:13px; color:var(--muted)}
+.qblock{border-top:1px solid var(--rule-strong); padding-top:10px; margin-top:22px}
+.qblock > .qno{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.pyq-tag{display:inline-block; font-family:var(--mono); font-size:11.5px; border:1px solid var(--acc); color:var(--acc); padding:0 6px; margin-left:6px; vertical-align:middle}
+details.model{border:1px solid var(--rule-strong); background:var(--paper); margin:10px 0}
+details.model > summary{cursor:pointer; list-style:none; padding:12px 16px 12px 46px; position:relative; font-weight:600}
+details.model > summary::-webkit-details-marker{display:none}
+details.model > summary::before{content:"+"; position:absolute; left:14px; top:9px; width:22px; height:22px; border:1px solid var(--acc); color:var(--acc);
+  display:grid; place-items:center; font-family:var(--display)}
+details.model[open] > summary::before{content:"–"}
+details.model[open] > summary{border-bottom:1px dashed var(--rule)}
+details.model .ans{padding:14px 18px 6px}
+details.model .ans .marks{font-family:var(--mono); font-size:12.5px; color:var(--acc)}
+.or{text-align:center; font-family:var(--display); letter-spacing:.4em; color:var(--muted); font-size:12px; margin:4px 0}
+
+/* ============ flashcards ============ */
+.deck{margin:2em 0 1em; border:1px solid var(--acc2); background:var(--acc-soft); padding:22px clamp(12px,3vw,28px) 18px}
+.deck > .deck-title{font-family:var(--display); letter-spacing:.24em; text-transform:uppercase; text-align:center; font-size:14px; color:var(--acc2); margin:0 0 4px}
+.deck > .deck-sub{text-align:center; font-style:italic; color:var(--muted); font-size:14.5px; margin:0 0 14px}
+.fc{margin:10px 0}
+.fc-inner{display:grid; perspective:1400px}
+.fc-face{grid-area:1/1; background:var(--paper); border:1px solid var(--rule-strong); padding:22px 24px; min-height:210px;
+  backface-visibility:hidden; -webkit-backface-visibility:hidden; transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.fc-q{display:flex; flex-direction:column; justify-content:center; text-align:center; font-family:var(--display); font-size:19px; letter-spacing:.02em}
+.fc-a{transform:rotateY(180deg); font-size:15.5px}
+.fc.flipped .fc-q{transform:rotateY(-180deg)}
+.fc.flipped .fc-a{transform:rotateY(0deg)}
+.fc-face .side{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:10px}
+.fc .from{display:inline-block; font-family:var(--mono); font-size:11px; background:var(--acc2); color:var(--paper); padding:1px 7px; margin-bottom:10px; align-self:center}
+.deck.js .fc{display:none; cursor:pointer}
+.deck.js .fc.current{display:block}
+.deck-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; margin-top:12px}
+.deck-controls button, .btn{font-family:var(--display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; cursor:pointer;
+  background:var(--paper); color:var(--ink); border:1px solid var(--rule-strong); padding:8px 12px}
+.deck-controls button.again{border-color:var(--bad); color:var(--bad)}
+.deck-controls button.got{border-color:var(--good); color:var(--good)}
+.deck-controls .count{font-family:var(--mono); font-size:13px; color:var(--muted); min-width:9ch; text-align:center}
+.deck-controls .boxes{font-family:var(--mono); font-size:12px; color:var(--muted); width:100%; text-align:center}
+
+/* ============ MCQ ============ */
+.mcq{background:var(--paper); border:1px solid var(--rule); padding:16px 18px 10px; margin:14px 0}
+.mcq .stem{font-weight:600; margin-bottom:10px}
+.mcq .stem .qn{font-family:var(--mono); color:var(--acc); margin-right:6px}
+.mcq ol.opts{list-style:none; padding:0; margin:0 0 8px; display:grid; gap:6px}
+.mcq ol.opts li{border:1px solid var(--rule); padding:8px 12px 8px 40px; position:relative; cursor:pointer; background:var(--paper-2)}
+.mcq ol.opts li::before{content:attr(data-k); position:absolute; left:10px; top:7px; font-family:var(--mono); color:var(--acc); text-transform:uppercase}
+.mcq ol.opts li:hover{border-color:var(--acc)}
+.mcq.answered ol.opts li{cursor:default}
+.mcq ol.opts li.right{background:var(--good-soft); border-color:var(--good)}
+.mcq ol.opts li.wrong{background:var(--bad-soft); border-color:var(--bad); text-decoration:line-through; text-decoration-color:var(--bad)}
+.mcq .why{display:none; font-size:15px; border-top:1px dashed var(--rule); padding-top:10px; margin-top:6px}
+.mcq.answered .why{display:block}
+.mcq .why b.key{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:12px; color:var(--good)}
+.scoreboard{position:sticky; top:84px; z-index:5; display:flex; justify-content:center; gap:14px; align-items:center; background:var(--acc2); color:var(--paper);
+  font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; padding:8px 12px; margin:12px 0}
+.scoreboard button{background:transparent; color:var(--paper); border:1px solid var(--paper); font:inherit; padding:3px 8px; cursor:pointer}
+@media (max-width:460px){ .scoreboard{position:static} }
+
+/* lobby */
+.grid-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:16px 0}
+.lobby-card{background:var(--acc-soft); border:1px solid var(--acc); padding:18px; text-align:center}
+.lobby-card .ld{font-family:var(--mono); color:var(--acc)}
+.lobby-card h4{margin:.3em 0; letter-spacing:.1em; text-transform:uppercase; font-size:17px}
+.lobby-card p{font-size:14.5px; color:var(--muted); margin:.4em 0 .8em}
+.note-box{border:1px solid var(--stamp); padding:14px 18px; background:var(--paper-2); margin:1em 0}
+.note-box b.h{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:12px; color:var(--stamp); display:block}
+.footer{text-align:center; font-family:var(--display); letter-spacing:.3em; text-transform:uppercase; font-size:11px; color:var(--muted); margin-top:40px}
+
+/* ============ print ============ */
+@media print{
+  body{background:#fff; color:#000; padding:0; font-size:11pt}
+  .tickets,.theme-toggle,.deck-controls,.scoreboard,.unit-nav{display:none!important}
+  .panel[hidden]{display:block!important}
+  .panel{page-break-before:always}
+  .sheet,.marquee{box-shadow:none; border:none; outline:none}
+  .chapter-card{page-break-before:always; outline:none}
+  .deck.js .fc{display:block!important; page-break-inside:avoid}
+  .fc-inner{display:block}
+  .fc-face{transform:none!important; min-height:0; border:none; border-bottom:1px solid #999; padding:6px 0}
+  .fc-q{font-size:12pt; text-align:left; font-weight:600}
+  .mcq .why{display:block!important}
+  .plate{page-break-inside:avoid}
+  details.model > summary::before{display:none}
+  details.model > summary{padding-left:12px}
+}
+@media print{ .mcq ol.opts li.is-key{border:2px solid #000; font-weight:700} .mcq ol.opts li.is-key::after{content:"  ✓ correct"} }
+.prose code{font-family:var(--mono); font-size:.92em; background:var(--paper-2); padding:0 4px; overflow-wrap:anywhere; word-break:break-word}
+.formula code{background:none; padding:0}
+/* "Starting from zero" beginner boxes */
+.zero{background:var(--paper-2); border:2px dashed var(--acc); padding:18px 20px 8px; margin:0 0 1.6em; position:relative; font-size:16.5px}
+.zero-h{font-family:var(--display); letter-spacing:.22em; text-transform:uppercase; font-size:12.5px; color:var(--acc-ink); background:var(--acc); display:inline-block; padding:3px 10px; margin:-4px 0 12px}
+.zero p, .zero li{line-height:1.72}
+.zero-f{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:11.5px; color:var(--muted); text-align:right; margin:.4em 0 .6em}
+/* ============ multi-page navigation ============ */
+a.ticket{display:block; text-decoration:none}
+a.ticket[aria-current="page"]{background:var(--acc); color:var(--acc-ink)}
+a.ticket[aria-current="page"] .t-date, a.ticket[aria-current="page"] .t-code{color:var(--acc-ink); opacity:.85}
+.marquee a{color:inherit; text-decoration:none}
+.marquee h1 a:hover{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px}
+.marquee-slim{padding:26px 24px 18px}
+.marquee-slim h1{font-size:clamp(24px,3.6vw,38px)}
+.marquee-slim .fleuron{margin-top:8px}
+.pager{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:stretch; margin:36px 0 0}
+.pager a{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:13px; text-decoration:none;
+  color:var(--ink); background:var(--paper); border:1px solid var(--rule-strong); padding:14px 16px; display:flex; align-items:center}
+.pager a:hover{background:var(--acc-soft)}
+.pager .pg-next{justify-content:flex-end; text-align:right}
+.pager .pg-home{color:var(--acc)}
+@media (max-width:560px){ .pager{grid-template-columns:1fr} .pager .pg-next{justify-content:flex-start; text-align:left} }
+.resume{display:block; margin:10px auto 0; font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px;
+  background:var(--acc2); color:var(--paper); border:0; padding:9px 16px; cursor:pointer}
+@media print{ .pager,.resume{display:none!important} .panel{page-break-before:auto} }
+.marquee .eyebrow{padding-inline:130px}
+@media (max-width:980px){
+  .marquee .eyebrow{padding-inline:0}
+  .theme-toggle{position:static; display:block; margin:0 auto 14px}
+}
+.marquee .credit-line{font-family:var(--display); letter-spacing:.34em; text-transform:uppercase; font-size:11.5px; color:var(--acc); margin-top:10px}
+
+</style>
+</head>
+<body>
+<header class="marquee marquee-slim">
+  <button class="theme-toggle" id="themeToggle" type="button">Night edition</button>
+  <div class="eyebrow"><a href="index.html">B.Tech CSE · Semester VII · Graphic Era (Deemed to be University)</a></div>
+  <h1><a href="index.html">The Mid-Semester Almanac</a></h1>
+  <div class="sub">Business Intelligence · exam on 30 Sept · TCS-726</div>
+  <div class="credit-line">Created by Harshit</div>
+  <div class="fleuron">◆ ◆ ◆</div>
+</header>
+<nav class="tickets" aria-label="Subjects"><a class="ticket" href="index.html"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="rm.html"><span class="t-date">26 Sept</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="aca.html"><span class="t-date">28 Sept</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="mba.html"><span class="t-date">29 Sept</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a><a class="ticket" href="bi.html" aria-current="page"><span class="t-date">30 Sept</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="llm.html"><span class="t-date">03 Oct</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a></nav>
+<main>
+<section class="panel" id="bi" data-subject="bi">
+<div class="sheet">
+  <div class="subject-title">
+    <div class="code">TCS-726 · EXAM ON WEDNESDAY 30 SEPTEMBER</div>
+    <h2>Business Intelligence</h2>
+    <div class="meta">Units 1–3 · IT in business, types of digital data, OLTP &amp; OLAP (with the data-warehouse lectures)</div>
+    <ul class="unit-nav"></ul>
+  </div>
+  <div class="prose">
+    <p class="tip"><b>What the 2023 paper shows.</b> The BI mid-sem (TIT-721, Oct 2023) had 5 × (a/b) questions of 10 marks. Q1–Q3(a) were Unit 1 (CO1): IT applications in a university, the Malcolm Baldrige framework (asked <em>twice</em>, as 1(b) and 2(b)), business process management, and the connected world. Q3(b)–Q5(a) were Unit 2 (CO2): unstructured-data growth, why web pages are unstructured, XML to structured, and backup and recovery. Q5(b) was Unit 3 (CO3): OLTP vs ERP and OLTP queries. The questions are <em>applied</em> ("your university", "what according to you"), so answers must give examples as well as definitions. Your syllabus now covers three units, so expect more OLAP questions this year. The professor also taught data warehousing and integration (slides and Assignments 3–4), which is covered here as § 3.6–3.8.</p>
+  </div>
+</div>
+
+<!-- ======================= UNIT 1 ======================= -->
+<div class="chapter-card" id="bi-u1" data-short="Unit 1 · IT in Business">
+  <div class="ch-no">Unit One</div>
+  <h2>A Business View of Information Technology</h2>
+  <p class="in-which">How an enterprise is organised, what the Baldrige framework measures, and why businesses use enterprise and bespoke IT applications.</p>
+  <p class="syll">Syllabus: business enterprise organisation, functions and core business processes · Baldrige Business Excellence Framework (leadership, strategic planning, customer focus, measurement/analysis/knowledge management, workforce focus, process management) · key purpose of using IT in business · enterprise applications (ERP/CRM etc.) and bespoke IT applications</p>
+</div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="bi-enterprise">
+<h3><span class="tno">§ 1.1</span>Business Enterprise Organisation, Functions &amp; Core Business Processes</h3>
+<div class="facet">I · Definition &amp; Core Premise</div>
+<div class="defn"><b>Business enterprise</b>An organisation that brings together people, capital, technology and processes to create and deliver products or services to customers profitably (or, for non-profits, sustainably). It is organised into <em>functions</em> (departments with specialised responsibilities) that work together through <em>business processes</em>.</div>
+<p class="plain">Think of a company as an orchestra. Each section (sales, finance, HR) is a function, and the piece they play together, such as taking an order and delivering it, is a business process. IT is the sheet music and the conductor's baton: it coordinates everyone.</p>
+<div class="facet">II · Functions</div>
+<div class="tbl"><table><thead><tr><th>Core (value-creating) functions</th><th>Support functions</th></tr></thead><tbody>
+<tr><td>Sales &amp; Marketing: find and win customers<br>Product / Service Delivery (operations, manufacturing, supply chain)<br>Research &amp; Development: create new offerings<br>Quality: make sure output meets standards<br>Customer Service / Support</td><td>Finance &amp; Accounts<br>Human Resources<br>Information Technology<br>Legal &amp; Compliance<br>Facilities / Administration, Procurement</td></tr>
+</tbody></table></div>
+<p>A typical <strong>organisation structure</strong> is hierarchical: a CEO with functional heads (CFO, CMO, CTO/CIO, CHRO, COO), then managers, then operational staff. Information needs differ by level: <em>strategic</em> (top management: trends, KPIs, what-if), <em>tactical</em> (middle management: summaries, exceptions) and <em>operational</em> (staff: detailed, real-time transactions). This distinction later motivates OLTP (operational) vs OLAP and BI (strategic and tactical).</p>
+<div class="facet">III · Core Business Processes</div>
+<div class="defn"><b>Business process</b>A set of related, structured activities, usually <em>crossing functional boundaries</em>, that turns inputs into an output of value to a customer.</div>
+<div class="tbl"><table><thead><tr><th>Process</th><th>Steps</th><th>Functions involved</th></tr></thead><tbody>
+<tr><td><strong>Order-to-Cash</strong></td><td>Enquiry → quotation → sales order → fulfilment/shipping → invoice → payment collection</td><td>Sales, Operations, Finance</td></tr>
+<tr><td><strong>Procure-to-Pay</strong></td><td>Requisition → PO → goods receipt → vendor invoice → payment</td><td>Procurement, Stores, Finance</td></tr>
+<tr><td><strong>Hire-to-Retire</strong></td><td>Recruit → onboard → payroll → appraisal → training → exit</td><td>HR, Finance, IT</td></tr>
+<tr><td><strong>Idea-to-Product / Concept-to-Market</strong></td><td>Ideation → design → prototype → test → launch</td><td>R&amp;D, Marketing, Operations</td></tr>
+<tr><td><strong>Record-to-Report</strong></td><td>Transactions → ledger → close → financial statements</td><td>Finance</td></tr>
+</tbody></table></div>
+<div class="facet">IV · Case: A University as an Enterprise (PYQ 2023 Q1a)</div>
+<p>A university is also an enterprise. Its "customers" are students, recruiters and funding bodies; its core process is <em>admission-to-alumni</em>. The <strong>automated IT applications</strong> that help its day-to-day functioning:</p>
+<div class="tbl"><table><thead><tr><th>Application</th><th>What it automates</th><th>Benefit</th></tr></thead><tbody>
+<tr><td>Admission / enrolment portal</td><td>Online applications, fee payment, document verification, merit lists</td><td>No queues; faster, transparent selection</td></tr>
+<tr><td>ERP / Student Information System (SIS)</td><td>Student records, course registration, attendance, timetables, results</td><td>A single source of truth for student data</td></tr>
+<tr><td>Learning Management System (Moodle, Google Classroom)</td><td>Course material, assignments, quizzes, grading</td><td>Anytime learning; plagiarism checks (Turnitin)</td></tr>
+<tr><td>Examination management</td><td>Question banks, hall tickets, seating, result processing, mark sheets</td><td>Accuracy and speed; secure grading</td></tr>
+<tr><td>Fee and finance system</td><td>Fee collection (UPI/online), scholarships, payroll, budgeting</td><td>Reconciliation, audit trail</td></tr>
+<tr><td>Library management (KOHA, SOUL)</td><td>Cataloguing, issue/return with barcode/RFID, OPAC search, e-journals</td><td>Self-service, inventory control</td></tr>
+<tr><td>HRMS</td><td>Faculty recruitment, leave, appraisal, payroll</td><td>Transparent HR processes</td></tr>
+<tr><td>Hostel and transport</td><td>Room allocation, mess billing, bus-route tracking</td><td>Logistics efficiency</td></tr>
+<tr><td>Placement portal / CRM</td><td>Recruiter relations, drive scheduling, student eligibility</td><td>Better placement outcomes</td></tr>
+<tr><td>Biometric / RFID attendance, CCTV, campus Wi-Fi</td><td>Attendance capture, security</td><td>Real-time monitoring</td></tr>
+<tr><td>BI dashboards (NAAC/NIRF reporting)</td><td>Pass %, placement %, research output, feedback analytics</td><td>Data-driven decisions and accreditation</td></tr>
+</tbody></table></div>
+<div class="facet">V · Critical Evaluation</div>
+<p>Functional organisation builds expertise but creates <strong>silos</strong>: each department's separate system holds its own version of data (for example, the student's address in the admissions system differs from the hostel system). Cross-functional processes then break at the hand-offs. This is exactly the problem that <em>integrated</em> enterprise applications (ERP) and later <em>data warehouses and BI</em> were created to solve.</p>
+<div class="checklist"><ul><li>Definition of enterprise, functions (core vs support), and business process (cross-functional).</li><li>Named processes: order-to-cash, procure-to-pay, hire-to-retire.</li><li>For "your university": at least 8 applications in a table, with the benefit of each.</li><li>The silo problem as the link to ERP and BI.</li></ul></div>
+</section>
+
+<section class="topic" id="bi-baldrige">
+<h3><span class="tno">§ 1.2</span>The Malcolm Baldrige Performance Excellence Framework</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Baldrige Excellence Framework</b>A systems-based framework for organisational performance excellence, created by the US <em>Malcolm Baldrige National Quality Improvement Act of 1987</em> (named after Commerce Secretary Malcolm Baldrige) and administered by NIST's Baldrige Performance Excellence Program. It gives <strong>seven categories of criteria</strong>, <strong>core values and concepts</strong> and a scoring system, used both for the <em>Malcolm Baldrige National Quality Award</em> and for self-assessment by any organisation (business, healthcare, education, non-profit).</div>
+<p class="plain">It is a health check-up for an organisation. It does not tell you <em>what</em> to do; it asks structured questions about how you lead, plan, serve customers, measure, manage people and run processes, and what results you achieve.</p>
+<div class="facet">II · The Seven Categories (PYQ 2023 Q1b and Q2b)</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 680 330" role="img" aria-label="Baldrige framework: organisational profile on top, leadership triad and results triad linked by measurement">
+<defs><marker id="biA1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="100" y="10" width="480" height="38" class="box3"/><text x="340" y="34" text-anchor="middle" class="hd">ORGANISATIONAL PROFILE (environment, relationships, strategic situation)</text>
+<rect x="30" y="80" width="170" height="48" class="box2"/><text x="115" y="100" text-anchor="middle">2 · Strategy</text><text x="115" y="117" text-anchor="middle" class="small">(Strategic Planning)</text>
+<rect x="30" y="140" width="170" height="48" class="box2"/><text x="115" y="160" text-anchor="middle">1 · Leadership</text>
+<rect x="30" y="200" width="170" height="48" class="box2"/><text x="115" y="220" text-anchor="middle">3 · Customers</text><text x="115" y="237" text-anchor="middle" class="small">(Customer Focus)</text>
+<rect x="250" y="95" width="170" height="48" class="box"/><text x="335" y="115" text-anchor="middle">5 · Workforce</text><text x="335" y="132" text-anchor="middle" class="small">(Workforce Focus)</text>
+<rect x="250" y="185" width="170" height="48" class="box"/><text x="335" y="205" text-anchor="middle">6 · Operations</text><text x="335" y="222" text-anchor="middle" class="small">(Process Management)</text>
+<rect x="480" y="120" width="170" height="90" class="box2"/><text x="565" y="160" text-anchor="middle" class="hd">7 · RESULTS</text><text x="565" y="180" text-anchor="middle" class="small">product, customer, workforce,</text><text x="565" y="194" text-anchor="middle" class="small">leadership, financial</text>
+<rect x="30" y="280" width="620" height="40" class="box3"/><text x="340" y="305" text-anchor="middle" class="hd">4 · MEASUREMENT, ANALYSIS &amp; KNOWLEDGE MANAGEMENT (the foundation)</text>
+<line x1="200" y1="164" x2="248" y2="120" class="ln" marker-end="url(#biA1)"/><line x1="200" y1="164" x2="248" y2="208" class="ln" marker-end="url(#biA1)"/>
+<line x1="420" y1="119" x2="478" y2="150" class="ln" marker-end="url(#biA1)"/><line x1="420" y1="209" x2="478" y2="180" class="ln" marker-end="url(#biA1)"/>
+<line x1="340" y1="233" x2="340" y2="278" class="ln" marker-start="url(#biA1)" marker-end="url(#biA1)"/>
+<text x="115" y="72" text-anchor="middle" class="small">LEADERSHIP TRIAD</text><text x="455" y="90" text-anchor="middle" class="small">RESULTS TRIAD</text>
+</svg></div>
+<figcaption><span class="pl">Plate C1 · The Baldrige framework</span> The <em>leadership triad</em> (Leadership, Strategy, Customers) drives the <em>results triad</em> (Workforce, Operations, Results). Everything rests on <em>Measurement, Analysis &amp; Knowledge Management</em>, which is where BI fits in. The <em>Organisational Profile</em> gives context.
+<span class="sketch">How to sketch: a top bar (Profile), three boxes on the left, two in the middle, one "Results" box on the right, and a bottom bar (Measurement). Draw arrows left to right.</span></figcaption></figure>
+<ol>
+<li><strong>Leadership:</strong> how senior leaders set vision, values and direction, communicate and create a sustainable organisation; plus <em>governance and societal responsibilities</em> (ethics, legal compliance, community support).</li>
+<li><strong>Strategic Planning (Strategy):</strong> how the organisation develops strategic objectives and action plans, deploys them, changes them if circumstances demand, and measures progress.</li>
+<li><strong>Customer Focus:</strong> how it listens to the voice of the customer, determines requirements and satisfaction, builds relationships, and uses customer information to improve.</li>
+<li><strong>Measurement, Analysis &amp; Knowledge Management:</strong> how it selects, gathers, analyses, manages and improves data, information and knowledge assets; how it reviews performance and uses the results. <em>This is the category that BI serves directly.</em></li>
+<li><strong>Workforce Focus:</strong> how it assesses capability and capacity needs, and builds an engaged, high-performing environment (learning, development, well-being).</li>
+<li><strong>Process Management (Operations):</strong> how it designs, manages and improves key work processes and work systems for efficiency, effectiveness and innovation, including supply chain and emergency readiness.</li>
+<li><strong>Results:</strong> performance and trends in product/process outcomes, customer, workforce, leadership/governance, and financial/market results, compared with competitors and benchmarks.</li>
+</ol>
+<p><strong>Scoring:</strong> 1,000 points in total. Process categories (1–6) are assessed on <strong>ADLI</strong> (Approach, Deployment, Learning, Integration); Results (7) on <strong>LeTCI</strong> (Levels, Trends, Comparisons, Integration). Results carries the largest single weight (450 points).</p>
+<p><strong>Core values and concepts</strong> (examples): systems perspective, visionary leadership, customer-focused excellence, valuing people, organisational learning and agility, focus on success, managing for innovation, <em>management by fact</em>, societal contributions, ethics and transparency, delivering value and results.</p>
+<div class="facet">IV · Applying Baldrige to a University (for "any organisation" questions)</div>
+<div class="tbl"><table><thead><tr><th>Category</th><th>University example</th></tr></thead><tbody>
+<tr><td>Leadership</td><td>Vice-Chancellor's vision (e.g. NAAC A++), code of ethics, social outreach</td></tr>
+<tr><td>Strategic Planning</td><td>5-year institutional development plan; NIRF ranking targets</td></tr>
+<tr><td>Customer Focus</td><td>Student feedback surveys, recruiter satisfaction, grievance cell</td></tr>
+<tr><td>Measurement &amp; KM</td><td>ERP data, BI dashboards (pass %, attendance, placement), research repository</td></tr>
+<tr><td>Workforce Focus</td><td>Faculty development programmes, appraisal, workload balance</td></tr>
+<tr><td>Process Management</td><td>Admission, examination and placement processes documented and improved</td></tr>
+<tr><td>Results</td><td>Placement %, research citations, accreditation grade, finances</td></tr>
+</tbody></table></div>
+<div class="facet">V · Critical Evaluation</div>
+<p>Strengths: holistic and systems-based; links leadership to results; adaptable to any sector; <em>management by fact</em> encourages data-driven decisions. Criticisms: documentation-heavy and resource-intensive; award-seeking can become box-ticking; some award winners later declined financially, which shows that the criteria are necessary but not sufficient. Comparable frameworks: the EFQM Excellence Model (Europe) and India's <strong>Rajiv Gandhi National Quality Award</strong> (Bureau of Indian Standards). In India, <strong>Tata Group's TBEM</strong> (Tata Business Excellence Model) is adapted directly from Baldrige.</p>
+<div class="checklist"><ul>
+<li>Origin: 1987 Act, NIST, named after Malcolm Baldrige; award plus self-assessment.</li>
+<li>All seven categories in order, each with a one-line explanation and example; the diagram showing the triads and foundation.</li>
+<li>Scoring (1,000 points; ADLI/LeTCI) and core values, especially management by fact.</li>
+<li>Link to BI: category 4 is where BI lives. Mention TBEM for the Indian case.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="bi-bpm">
+<h3><span class="tno">§ 1.3</span>Business Process Management (PYQ 2023 Q2a)</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Business Process Management (BPM)</b>A discipline that uses methods, tools and technology to <em>discover, model, analyse, measure, improve, automate and optimise</em> business processes continuously, so that they align with business goals. BPM is <em>continuous</em> improvement, unlike one-time BPR (Business Process Re-engineering, Hammer &amp; Champy's radical redesign).</div>
+<div class="facet">II–III · The BPM Lifecycle (the "processes involved in BPM")</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 520 300" role="img" aria-label="BPM lifecycle: design, model, execute, monitor, optimise in a cycle">
+<defs><marker id="biA2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk2"/></marker></defs>
+<circle cx="260" cy="150" r="52" class="box3"/><text x="260" y="146" text-anchor="middle" class="hd">BPM</text><text x="260" y="164" text-anchor="middle" class="small">continuous</text>
+<rect x="200" y="12" width="120" height="44" class="box2"/><text x="260" y="39" text-anchor="middle">1 Design</text>
+<rect x="390" y="92" width="120" height="44" class="box"/><text x="450" y="119" text-anchor="middle">2 Model</text>
+<rect x="340" y="236" width="120" height="44" class="box"/><text x="400" y="263" text-anchor="middle">3 Execute</text>
+<rect x="60" y="236" width="120" height="44" class="box"/><text x="120" y="263" text-anchor="middle">4 Monitor</text>
+<rect x="10" y="92" width="120" height="44" class="box2"/><text x="70" y="119" text-anchor="middle">5 Optimise</text>
+<path d="M322,34 C380,40 430,60 446,88" class="ln2" marker-end="url(#biA2)"/>
+<path d="M458,138 C460,180 440,210 420,232" class="ln2" marker-end="url(#biA2)"/>
+<path d="M338,258 C280,272 240,272 184,258" class="ln2" marker-end="url(#biA2)"/>
+<path d="M100,234 C80,200 70,170 70,140" class="ln2" marker-end="url(#biA2)"/>
+<path d="M90,90 C120,50 160,36 196,34" class="ln2" marker-end="url(#biA2)"/>
+</svg></div>
+<figcaption><span class="pl">Plate C2 · BPM lifecycle</span> <span class="sketch">How to sketch: five boxes in a circle with arrows, "BPM" in the centre.</span></figcaption></figure>
+<ol>
+<li><strong>Design (and discovery):</strong> identify existing processes ("as-is") and design the desired ones ("to-be"), including goals, owners, inputs and outputs, and SLAs.</li>
+<li><strong>Model:</strong> represent the process formally, usually in <strong>BPMN</strong> (Business Process Model and Notation: events, activities, gateways, swim-lanes), and simulate "what-if" scenarios (cost, cycle time).</li>
+<li><strong>Execute (implement and automate):</strong> deploy the process in a BPM suite or workflow engine and integrate it with ERP/CRM; automate rule-based steps (including RPA bots); train people.</li>
+<li><strong>Monitor:</strong> track KPIs in real time (cycle time, throughput, error rate, cost per transaction) using dashboards and process mining. This is where BI plugs in.</li>
+<li><strong>Optimise:</strong> use the monitoring data to remove bottlenecks and waste, then redesign, which starts the cycle again.</li>
+</ol>
+<p>Supporting activities: process <strong>governance</strong> (process owners, standards), <strong>documentation</strong>, <strong>change management</strong>, and <strong>compliance</strong>.</p>
+<div class="facet">IV · Case</div>
+<p>An Indian bank redesigns its <em>loan-approval</em> process. It maps the "as-is" flow (7 days, 5 hand-offs), models it in BPMN, automates KYC checks with Aadhaar e-KYC and credit bureau APIs (execute), monitors turnaround time on a dashboard, and optimises by adding auto-approval for low-risk applicants. The result: approval in minutes for most applicants, which is the model behind "instant loan" fintech apps.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>BPM works when processes are stable and repeatable. It struggles with knowledge work that cannot be standardised. Automating a bad process just makes a bad process faster, so redesign must come before automation. Good BPM needs data: without monitoring (BI), "optimise" is guesswork.</p>
+<div class="checklist"><ul><li>Definition; continuous vs BPR.</li><li>Five lifecycle stages with a cycle diagram; BPMN named.</li><li>Link monitoring to BI and KPIs; one worked example.</li></ul></div>
+</section>
+
+<section class="topic" id="bi-itpurpose">
+<h3><span class="tno">§ 1.4</span>Key Purpose of Using IT in Business &amp; the Connected World</h3>
+<div class="facet">I–III · Why Businesses Use IT</div>
+<ol>
+<li><strong>Automate operations:</strong> replace manual, repetitive work (billing, payroll) for speed, accuracy and lower cost.</li>
+<li><strong>Integrate functions and processes:</strong> share one data source across departments (ERP), which removes silos.</li>
+<li><strong>Support decision-making:</strong> reports, dashboards, analytics (BI), moving from gut feel to <em>fact-based</em> decisions.</li>
+<li><strong>Improve customer experience:</strong> self-service portals, apps, CRM, personalisation.</li>
+<li><strong>Enable collaboration and communication:</strong> email, intranets, video conferencing.</li>
+<li><strong>Competitive advantage and innovation:</strong> new digital products and business models (e-commerce, platforms).</li>
+<li><strong>Compliance, security and record-keeping:</strong> audit trails, statutory reporting (GST filing).</li>
+<li><strong>Reach and scale:</strong> global, 24×7 operations.</li>
+</ol>
+<h5 id="bi-connected">The connected world and Internet-ready applications (PYQ 2023 Q3a)</h5>
+<p>The <strong>connected world</strong> is today's environment in which people, organisations, devices and applications are permanently linked through the Internet, mobile networks, cloud and IoT, so that transactions and information flow <em>anytime, anywhere, on any device</em>. Customers expect to order, pay, track and complain online, and partners expect systems to talk to each other through APIs. Business IT applications must therefore be <strong>Internet-ready</strong>, with these common advanced capabilities:</p>
+<div class="tbl"><table><thead><tr><th>Capability</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
+<tr><td>Anytime, anywhere, multi-channel access</td><td>Browser, mobile app, kiosk, voice; responsive UI</td><td>IRCTC ticketing on web and app</td></tr>
+<tr><td>Scalability</td><td>Handles sudden spikes of users (elastic cloud)</td><td>Flipkart Big Billion Days</td></tr>
+<tr><td>High availability and reliability</td><td>24×7, fault-tolerant, disaster recovery</td><td>UPI's uptime targets</td></tr>
+<tr><td>Security</td><td>Authentication (OTP/2FA), encryption (HTTPS/TLS), authorisation, audit</td><td>Net banking</td></tr>
+<tr><td>Performance</td><td>Low response time (caching, CDNs)</td><td>Page loads in &lt; 2 s</td></tr>
+<tr><td>Interoperability and integration</td><td>Open standards, APIs/web services (REST, XML/JSON) to connect partners</td><td>Payment-gateway and courier APIs</td></tr>
+<tr><td>Personalisation</td><td>Content tailored to the user profile and history</td><td>Amazon recommendations</td></tr>
+<tr><td>Localisation / multi-lingual</td><td>Language, currency, time-zone, regulations</td><td>Vernacular apps (ShareChat)</td></tr>
+<tr><td>Collaboration and social features</td><td>Sharing, reviews, chat</td><td>Customer ratings</td></tr>
+<tr><td>Manageability and analytics</td><td>Logging, monitoring, usage analytics feeding BI</td><td>Clickstream analysis</td></tr>
+</tbody></table></div>
+<div class="facet">IV–V · Case &amp; Evaluation</div>
+<p>During the COVID-19 lockdowns, retailers with Internet-ready systems (online catalogue, UPI, delivery tracking APIs) kept selling while others shut. Connectivity also widens the <em>attack surface</em> (ransomware, data leaks, now regulated by India's DPDP Act 2023) and creates a flood of semi-structured and unstructured data (clickstreams, reviews, logs), which leads directly into Unit 2.</p>
+<div class="checklist"><ul><li>At least 6 purposes of IT in business.</li><li>Define the connected world, then list 8–10 capabilities with examples.</li><li>Link to data growth and security risks.</li></ul></div>
+</section>
+
+<section class="topic" id="bi-erp">
+<h3><span class="tno">§ 1.5</span>Enterprise Applications (ERP, CRM, SCM…) vs Bespoke IT Applications</h3>
+<div class="facet">I · Definitions</div>
+<div class="defn"><b>Enterprise application</b>Large, packaged (commercial off-the-shelf, COTS) software that supports cross-functional business processes for the whole organisation, built on standard best practices and configured, rather than coded, to fit.</div>
+<div class="defn"><b>Bespoke (custom) IT application</b>Software developed specifically for one organisation's unique requirements, in-house or by a contracted vendor.</div>
+<div class="facet">II–III · The Main Enterprise Applications</div>
+<div class="tbl"><table><thead><tr><th>Application</th><th>Purpose</th><th>Vendors / examples</th></tr></thead><tbody>
+<tr><td><strong>ERP</strong> (Enterprise Resource Planning)</td><td>Integrates finance, HR, procurement, inventory, manufacturing and sales on <em>one database</em></td><td>SAP S/4HANA, Oracle, Microsoft Dynamics, Tally Prime (SMEs)</td></tr>
+<tr><td><strong>CRM</strong> (Customer Relationship Management)</td><td>Sales pipeline, marketing campaigns, service tickets: the 360° customer view</td><td>Salesforce, Zoho CRM, Freshworks</td></tr>
+<tr><td><strong>SCM</strong> (Supply Chain Management)</td><td>Planning, sourcing, logistics, warehouse, demand forecasting</td><td>SAP IBP, Oracle SCM, Blue Yonder</td></tr>
+<tr><td><strong>HRMS / HCM</strong></td><td>Hire-to-retire processes</td><td>Workday, Darwinbox, SAP SuccessFactors</td></tr>
+<tr><td><strong>PLM, SRM, EAM, KMS</strong></td><td>Product lifecycle, supplier relations, asset maintenance, knowledge</td><td>Siemens Teamcenter, etc.</td></tr>
+</tbody></table></div>
+<div class="tbl"><table><thead><tr><th>Aspect</th><th>Enterprise (packaged)</th><th>Bespoke (custom)</th></tr></thead><tbody>
+<tr><td>Fit to requirements</td><td>Standard best practice; organisation adapts to software</td><td>Exact fit to unique processes</td></tr>
+<tr><td>Time to deploy</td><td>Faster (configure)</td><td>Slower (build from scratch)</td></tr>
+<tr><td>Cost</td><td>Licence/subscription + implementation; shared R&amp;D</td><td>High development cost; the organisation owns the code</td></tr>
+<tr><td>Upgrades and support</td><td>Vendor provides; regular updates</td><td>In-house responsibility</td></tr>
+<tr><td>Competitive differentiation</td><td>Low (competitors use the same)</td><td>High (unique capability)</td></tr>
+<tr><td>Risk</td><td>Vendor lock-in; heavy customisation breaks upgrades</td><td>Key-person dependency; quality varies</td></tr>
+<tr><td>Examples</td><td>SAP at Tata Steel; Salesforce at banks</td><td>IRCTC booking engine; Zerodha Kite; a university's own exam system</td></tr>
+</tbody></table></div>
+<div class="facet">IV · Case</div>
+<p>Most firms use a <strong>hybrid</strong>: ERP for commodity processes (accounting, payroll) and bespoke applications where they compete (Amazon's recommendation engine, Swiggy's delivery-routing system). ERP ensures <em>one version of the truth</em> for operations, but operational ERP databases are optimised for transactions (OLTP), not analysis, which is why BI and data warehouses are added on top (Unit 3).</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>ERP implementations are notoriously risky. The Hershey's 1999 SAP go-live disrupted Halloween shipments and cost about $100M in lost sales. Common reasons are poor change management and over-customisation. Bespoke software gives an exact fit but creates technical debt. Cloud SaaS (Zoho, Salesforce) has lowered entry cost for SMEs, which blurs the old trade-offs.</p>
+<div class="checklist"><ul><li>Both definitions; ERP, CRM, SCM, HRMS with purposes and vendors.</li><li>Comparison table (fit, time, cost, support, differentiation, risk).</li><li>Hybrid strategy; link from ERP (OLTP) to BI.</li></ul></div>
+</section>
+
+<div class="deck" id="deck-bi-u1">
+  <p class="deck-title">Flashcards · Unit One</p>
+  <p class="deck-sub">Tap a card to turn it over.</p>
+  <div class="fc"><div class="fc-q">Core vs support functions of an enterprise?</div><div class="fc-a">Core: sales &amp; marketing, product/service delivery, R&amp;D, quality, customer service. Support: finance, HR, IT, legal, administration/procurement.</div></div>
+  <div class="fc"><div class="fc-q">Name three cross-functional core business processes.</div><div class="fc-a">Order-to-cash, procure-to-pay, hire-to-retire (also idea-to-product, record-to-report).</div></div>
+  <div class="fc"><div class="fc-q">Seven Baldrige categories?</div><div class="fc-a">Leadership · Strategic Planning · Customer Focus · Measurement, Analysis &amp; Knowledge Management · Workforce Focus · Process Management (Operations) · Results.</div></div>
+  <div class="fc"><div class="fc-q">Baldrige origin and scoring?</div><div class="fc-a">Malcolm Baldrige National Quality Improvement Act, 1987 (USA, NIST). 1,000 points; processes scored on ADLI, results on LeTCI. Indian adaptation: Tata's TBEM.</div></div>
+  <div class="fc"><div class="fc-q">BPM lifecycle stages?</div><div class="fc-a">Design → Model (BPMN) → Execute (automate) → Monitor (KPIs, BI) → Optimise, then repeat. BPM is continuous, unlike one-time BPR.</div></div>
+  <div class="fc"><div class="fc-q">Capabilities of Internet-ready applications?</div><div class="fc-a">Anytime/anywhere multi-channel access, scalability, availability, security, performance, interoperability (APIs), personalisation, localisation, collaboration, analytics.</div></div>
+  <div class="fc"><div class="fc-q">ERP vs bespoke application?</div><div class="fc-a">ERP: packaged, integrated, faster, best practices, vendor support, low differentiation. Bespoke: custom fit, slower and costlier, in-house support, high differentiation.</div></div>
+  <div class="fc"><div class="fc-q">Automated IT applications in a university (name 6)?</div><div class="fc-a">Admission portal, ERP/SIS, LMS, exam management, fee/finance, library (KOHA), HRMS, placement portal, biometric attendance, BI dashboards for NAAC/NIRF.</div></div>
+</div>
+
+</div></div>
+
+<!-- ======================= UNIT 2 ======================= -->
+<div class="chapter-card" id="bi-u2" data-short="Unit 2 · Types of Digital Data">
+  <div class="ch-no">Unit Two</div>
+  <h2>Types of Digital Data</h2>
+  <p class="in-which">Structured, semi-structured and unstructured data: what each is, where it comes from, and how to store, manage and extract information from it.</p>
+  <p class="syll">Syllabus: structured data (characteristics, sources, hassle-free retrieval) · unstructured data (sources, management, storage, storage challenges, extracting information, UIMA) · semi-structured data (sources, management, modelling with OEM, extracting information, XML as a solution)</p>
+</div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="bi-datatypes">
+<h3><span class="tno">§ 2.1</span>The Three Types at a Glance</h3>
+<div class="facet">I · Core Premise</div>
+<p>Digital data is classified by <strong>how much structure</strong> it has, meaning how far it conforms to a predefined data model. The Prasad &amp; Acharya textbook (the prescribed book, and the source of the professor's slides) estimates that in a typical enterprise about <strong>80% of data is unstructured, about 10% semi-structured and about 10% structured</strong>.</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 640 210" role="img" aria-label="Spectrum of digital data from structured to unstructured with shares">
+<rect x="20" y="40" width="64" height="70" class="box2"/><rect x="84" y="40" width="64" height="70" class="box"/><rect x="148" y="40" width="472" height="70" class="box3"/>
+<text x="52" y="72" text-anchor="middle" class="hd">~10%</text><text x="52" y="92" text-anchor="middle" class="small">structured</text>
+<text x="116" y="72" text-anchor="middle" class="hd">~10%</text><text x="116" y="92" text-anchor="middle" class="small">semi</text>
+<text x="384" y="72" text-anchor="middle" class="hd">~80% UNSTRUCTURED</text><text x="384" y="92" text-anchor="middle" class="small">emails, documents, images, audio, video, social media…</text>
+<text x="20" y="140">rows &amp; columns · schema first</text><text x="620" y="140" text-anchor="end">no data model · meaning must be inferred</text>
+<text x="20" y="165" class="small">RDBMS · spreadsheets · OLTP</text><text x="320" y="165" text-anchor="middle" class="small">XML · JSON · email headers · HTML</text><text x="620" y="165" text-anchor="end" class="small">PDF · JPG · MP4 · chat</text>
+<line x1="20" y1="190" x2="620" y2="190" class="ln2"/><text x="320" y="205" text-anchor="middle" class="small">← ease of query and management decreases · volume and richness increase →</text>
+</svg></div>
+<figcaption><span class="pl">Plate C3 · The data spectrum</span> <span class="sketch">How to sketch: one long bar split roughly 10 / 10 / 80, with examples written under each part and an arrow showing "ease of management decreases".</span></figcaption></figure>
+<div class="tbl"><table><thead><tr><th>Basis</th><th>Structured</th><th>Semi-structured</th><th>Unstructured</th></tr></thead><tbody>
+<tr><td>Structure</td><td>Conforms to a predefined data model (schema); rows and columns</td><td>No rigid schema but has <em>tags/markers</em> that describe and group data; self-describing</td><td>No data model; cannot be stored in rows and columns; unpredictable</td></tr>
+<tr><td>Schema</td><td>Schema-on-write, fixed in advance</td><td>Schema is embedded in the data and can vary between records</td><td>None</td></tr>
+<tr><td>Examples</td><td>Student marks table, bank transactions, inventory</td><td>XML, JSON, email (headers + body), HTML, CSV logs</td><td>Word/PDF documents, images, audio, video, chat, social posts</td></tr>
+<tr><td>Storage</td><td>RDBMS (Oracle, MySQL, SQL Server), spreadsheets</td><td>XML/document databases (MongoDB), OEM graphs, files</td><td>File systems, BLOBs, content-addressable storage, data lakes, object stores (S3)</td></tr>
+<tr><td>Retrieval</td><td>SQL; easy, fast, precise (indexes)</td><td>XPath/XQuery, JSON queries; moderate</td><td>Text search, tagging, text mining, AI; hard and imprecise</td></tr>
+<tr><td>Scalability</td><td>Vertical, harder at huge scale</td><td>Good</td><td>Scales in storage, but analysis is hard</td></tr>
+</tbody></table></div>
+<div class="facet">Case: University &amp; Hospital (Assignment 1)</div>
+<div class="tbl"><table><thead><tr><th>Setting</th><th>Structured</th><th>Semi-structured</th><th>Unstructured</th></tr></thead><tbody>
+<tr><td>University</td><td>Marks and attendance in a database</td><td>XML files; emails (headers are structured, the body is not)</td><td>PDF documents, student photographs, lecture videos, email bodies</td></tr>
+<tr><td>Hospital</td><td>Patient ID, age, blood group, test results in a database</td><td>XML used to exchange records between systems (HL7/FHIR)</td><td>Doctors' reports and prescriptions as PDFs, X-ray and MRI images</td></tr>
+</tbody></table></div>
+<p><strong>Why are marks, attendance, patient ID, age, blood group and test results structured?</strong> They are discrete, typed attributes (numbers, dates, fixed codes) with a fixed format for every record. They fit predefined columns with constraints (primary key, data type, range) and can be queried directly with SQL (e.g. <code>SELECT AVG(marks) … GROUP BY course</code>).</p>
+<p><strong>Why are emails, PDFs, photos, videos and scans hard to manage and search?</strong> They have no predefined attributes, so there are no fields to index or query. Their meaning is in free text or pixels and must be <em>interpreted</em> (NLP, OCR, image recognition). Files are large, formats are many, metadata is often missing, and naming conventions are inconsistent.</p>
+</section>
+
+<section class="topic" id="bi-structured">
+<h3><span class="tno">§ 2.2</span>Structured Data</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Structured data</b>Data that conforms to a <em>predefined data model or schema</em> and is organised in rows (records/tuples) and columns (attributes/fields) with defined data types, so that it can be stored in and queried from a relational database.</div>
+<div class="facet">II · Characteristics</div>
+<ul>
+<li><strong>Conforms to a data model:</strong> has a well-defined structure, and every record has the same attributes.</li>
+<li><strong>Data is stored as rows and columns</strong> (tables), with defined data types (INT, VARCHAR, DATE) and lengths.</li>
+<li><strong>Similar entities are grouped</strong> (the Student table, the Course table), and attributes in a group are the same.</li>
+<li><strong>Relationships are explicit:</strong> primary and foreign keys link tables (ER model).</li>
+<li><strong>Constraints enforce data integrity:</strong> NOT NULL, UNIQUE, CHECK, referential integrity.</li>
+<li><strong>Definition, format and meaning are explicitly known</strong>, so it is easily accessed and queried.</li>
+</ul>
+<div class="facet">III · Sources, Ease of Use &amp; Hassle-free Retrieval</div>
+<p><strong>Sources:</strong> databases (Oracle, DB2, Teradata, MySQL, PostgreSQL, SQL Server), spreadsheets (Excel), OLTP systems (banking, POS, reservations), ERP/CRM back-ends, sensors writing fixed-format readings, web forms.</p>
+<p><strong>What is easy with structured data</strong> (professor's "Easy with Structured Data" slide):</p>
+<ul>
+<li><strong>Insert/update/delete:</strong> DML operations are straightforward.</li>
+<li><strong>Security:</strong> robust encryption, tokenisation, and fine-grained access control (GRANT/REVOKE, row/column-level security).</li>
+<li><strong>Indexing:</strong> indexes on attributes speed up search and retrieval.</li>
+<li><strong>Scalability:</strong> storage and processing can be scaled (partitioning, replication).</li>
+<li><strong>Transaction processing:</strong> ACID properties (Atomicity, Consistency, Isolation, Durability) keep data consistent under concurrent use.</li>
+</ul>
+<p><strong>Hassle-free retrieval:</strong> declarative SQL lets users say <em>what</em> they want, not how to get it. The optimiser uses indexes, and results are precise and repeatable. Retrieval can be by attribute (<code>WHERE branch='CSE'</code>), by aggregation (<code>GROUP BY</code>), by joins across tables, and through BI tools built on SQL. Data mining algorithms work on it directly.</p>
+<div class="facet">IV–V · Case &amp; Evaluation</div>
+<p>IRCTC's reservation system handles millions of bookings a day because every ticket is a structured record (PNR, train, date, class, berth, status) under ACID transactions. The limitation: structure must be decided <em>before</em> data arrives, and schema changes are costly. Much valuable information (reviews, images) simply does not fit, which is why the other 80–90% of data needs different approaches.</p>
+<div class="checklist"><ul><li>Definition (conforms to a schema; rows and columns).</li><li>5–6 characteristics.</li><li>Sources list; the five "easy" properties (DML, security, indexing, scalability, ACID).</li><li>Why retrieval is hassle-free (SQL, indexes, precision).</li></ul></div>
+</section>
+
+<section class="topic" id="bi-unstructured">
+<h3><span class="tno">§ 2.3</span>Unstructured Data</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Professor's definition</b>Unstructured data is data that <em>cannot be stored in the form of rows and columns</em> as in a database and <em>does not conform to any data model</em>, so it is difficult to determine its meaning. It does not follow any rules or semantics. It can be of any type and is therefore unpredictable.</div>
+<div class="facet">II · Characteristics &amp; Sources</div>
+<ul><li>No fixed format or sequence; no easily identifiable structure; not based on a schema; no rules; unpredictable; not directly usable by programs; the largest and fastest-growing share.</li></ul>
+<p>Broadly, <em>anything in a non-database form</em> is unstructured, in two categories: <strong>bitmap objects</strong> (image, video, audio files) and <strong>textual objects</strong> (Word documents, emails, Excel spreadsheets used as free-form documents). <strong>Sources:</strong> web pages, memos, videos (MPEG), images (JPEG, GIF), body of emails, Word documents, PowerPoint presentations, chats, reports, white papers, surveys, social media posts, call-centre recordings, CCTV feeds, scanned forms.</p>
+<div class="facet">III · Managing Unstructured Data</div>
+<ol>
+<li><strong>Indexing:</strong> as in an RDBMS, an index is an identifier that represents a large record so it can be retrieved without scanning everything. Unstructured data is indexed on text or on attributes such as the file name. <em>Hard because</em> there are no predefined attributes and no pattern or naming conventions. Text can be indexed on strings, but audio and video indexing depends on file names, which fails when naming conventions are not followed.</li>
+<li><strong>Tags / metadata:</strong> tag documents with metadata (author, date, topic) to enable search. <em>Hard because</em> little or no metadata is usually available, and the structure must be worked out from multi-source data with no format.</li>
+<li><strong>Classification / taxonomy:</strong> arrange data into groups and hierarchies according to relationships in the organisation's taxonomy. <em>Hard because</em> relationships in unstructured data are difficult to identify.</li>
+<li><strong>CAS (Content Addressable Storage):</strong> stores data based on its metadata, gives each object a <em>unique name</em> (a content hash), and retrieves the object by its <em>content</em>, not its location. Used extensively for emails and compliance archives (write-once, tamper-evident).</li>
+</ol>
+<h5>Storage challenges (Assignment 1 Q3)</h5>
+<div class="tbl"><table><thead><tr><th>Challenge</th><th>Why it arises</th></tr></thead><tbody>
+<tr><td>Storage space</td><td>Images, audio and video are huge; a lot of space is needed</td></tr>
+<tr><td>Scalability</td><td>As volume grows, storage cost and management effort grow</td></tr>
+<tr><td>Retrieving information</td><td>Even when stored, it is hard to retrieve and recover from</td></tr>
+<tr><td>Security</td><td>Varied sources (emails, web pages) make security hard to enforce</td></tr>
+<tr><td>Update and delete</td><td>With no clear structure, locating what to update or delete is hard</td></tr>
+<tr><td>Indexing and searching</td><td>No predefined attributes, so indexing is error-prone and search results inaccurate, and it gets worse as volume grows</td></tr>
+</tbody></table></div>
+<h5>Possible solutions to storage challenges</h5>
+<ul>
+<li><strong>Changing format:</strong> convert to formats that are easier to manage and search, e.g. speech-to-text (IBM's audio/video-to-text work), OCR for scans.</li>
+<li><strong>Developing new hardware:</strong> storage designed for unstructured data, complementing or replacing existing devices.</li>
+<li><strong>Storing in RDBMS as BLOBs</strong> (Binary Large Objects): the image or video cannot be queried inside the column, but its <em>metadata</em> (date created, owner, author) can be.</li>
+<li><strong>Storing in XML format:</strong> tags and elements give it some structure.</li>
+<li><strong>CAS:</strong> content-based naming and retrieval.</li>
+<li>Modern additions: object storage (Amazon S3), data lakes (Hadoop HDFS), tiered and cold storage, compression and deduplication.</li>
+</ul>
+<h5>Extracting information from stored unstructured data</h5>
+<div class="tbl"><table><thead><tr><th>Challenge</th><th>Possible solution</th></tr></thead><tbody>
+<tr><td>Interpretation: not easily interpreted by conventional search algorithms</td><td><strong>Text mining</strong> tools that group and classify data, considering grammar, context and synonyms</td></tr>
+<tr><td>Classification/taxonomy: different naming conventions across the organisation</td><td>Automatically managed <strong>taxonomies</strong> that organise data into hierarchies</td></tr>
+<tr><td>Indexing: algorithms to understand meaning and then tag are hard to design</td><td><strong>Automatic tagging</strong> in a virtual repository (e.g. Documentum)</td></tr>
+<tr><td>Deriving meaning: programs cannot automatically infer structure</td><td>NLP and ML: entity extraction, sentiment, topic modelling, <strong>UIMA</strong></td></tr>
+<tr><td>File formats: an increasing number of formats</td><td>Format converters; application platforms like <strong>XOLAP</strong> that extract from email and XML documents</td></tr>
+<tr><td>Tags: manual tagging is impossible at scale</td><td>Auto-tagging and ML classifiers</td></tr>
+</tbody></table></div>
+<div class="facet">UIMA: Unstructured Information Management Architecture</div>
+<div class="defn"><b>UIMA</b>An open, industry-standard architecture and framework (developed by IBM, now <strong>Apache UIMA</strong>, standardised by <strong>OASIS</strong> in 2009) for building applications that <em>analyse large volumes of unstructured content</em> (text, audio, video) to discover knowledge relevant to an end user. It famously powered parts of <strong>IBM Watson</strong>, which won <em>Jeopardy!</em> in 2011.</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 680 230" role="img" aria-label="UIMA pipeline: collection reader, analysis engines with annotators operating on CAS, CAS consumers to structured stores">
+<defs><marker id="biA3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="10" y="80" width="110" height="60" class="box3"/><text x="65" y="105" text-anchor="middle">Unstructured</text><text x="65" y="122" text-anchor="middle">documents</text>
+<rect x="150" y="80" width="110" height="60" class="box"/><text x="205" y="105" text-anchor="middle">Collection</text><text x="205" y="122" text-anchor="middle">Reader</text>
+<rect x="290" y="30" width="200" height="160" class="box2"/><text x="390" y="52" text-anchor="middle" class="hd">ANALYSIS ENGINE(S)</text>
+<rect x="305" y="65" width="80" height="34" class="box"/><text x="345" y="87" text-anchor="middle" class="small">Tokeniser</text>
+<rect x="395" y="65" width="80" height="34" class="box"/><text x="435" y="87" text-anchor="middle" class="small">Entity annot.</text>
+<rect x="305" y="110" width="80" height="34" class="box"/><text x="345" y="132" text-anchor="middle" class="small">Language ID</text>
+<rect x="395" y="110" width="80" height="34" class="box"/><text x="435" y="132" text-anchor="middle" class="small">Sentiment</text>
+<rect x="305" y="152" width="170" height="28" class="box3"/><text x="390" y="171" text-anchor="middle" class="small">CAS: Common Analysis Structure</text>
+<rect x="520" y="80" width="150" height="60" class="box"/><text x="595" y="105" text-anchor="middle">CAS Consumers</text><text x="595" y="122" text-anchor="middle" class="small">→ DB · index · warehouse</text>
+<line x1="120" y1="110" x2="147" y2="110" class="ln" marker-end="url(#biA3)"/><line x1="260" y1="110" x2="287" y2="110" class="ln" marker-end="url(#biA3)"/><line x1="490" y1="110" x2="517" y2="110" class="ln" marker-end="url(#biA3)"/>
+</svg></div>
+<figcaption><span class="pl">Plate C4 · The UIMA pipeline</span> A <em>Collection Reader</em> feeds documents to <em>Analysis Engines</em> made of <em>Annotators</em>. Each annotator adds metadata (tokens, entities, sentiment) to a shared <em>CAS (Common Analysis Structure)</em>. <em>CAS Consumers</em> write the resulting structured output to databases, search indexes or the warehouse. (Do not confuse this CAS with Content Addressable Storage.)
+<span class="sketch">How to sketch: Docs → Reader → [AE box with 3–4 annotators over a CAS strip] → Consumers → DB.</span></figcaption></figure>
+<p><strong>Why UIMA matters:</strong> it separates analysis components (reusable, pluggable annotators written by different teams) from the framework that runs them (scaled out across machines), and it turns unstructured text into <em>structured</em> annotations that BI and search can use.</p>
+<div class="facet">IV · Impact of Unstructured Data on Backup &amp; Recovery (PYQ 2023 Q5a)</div>
+<ul>
+<li><strong>Volume and growth:</strong> backup windows overflow because TB–PB of files grow 40–60% a year, and full backups take too long.</li>
+<li><strong>Many small files and deep folder trees:</strong> file-by-file scanning is slow (millions of emails, images); the metadata overhead dominates.</li>
+<li><strong>Duplication:</strong> the same attachment is stored many times, inflating backup size. The solution is deduplication.</li>
+<li><strong>Cost:</strong> storage, network bandwidth, cloud egress and retention costs rise.</li>
+<li><strong>Recovery time and point objectives (RTO/RPO):</strong> restoring huge unindexed file shares is slow, and finding <em>one</em> needed file ("the contract from 2021") is hard without metadata.</li>
+<li><strong>Consistency:</strong> files open during backup; no transactional guarantees as in a DB.</li>
+<li><strong>Compliance and security:</strong> unstructured data holds hidden sensitive information (PII in PDFs), so backups must be encrypted, retained or deleted by policy (DPDP Act, legal hold); "dark data" is backed up without anyone knowing what it is.</li>
+<li><strong>Ransomware</strong> targets file shares, so immutable, air-gapped copies are needed.</li>
+</ul>
+<p><strong>Responses:</strong> incremental-forever backup and snapshots, deduplication and compression, tiering (hot/cold/archive), classification before backup, CAS or WORM for compliance archives, cloud object storage with versioning, and the 3-2-1 rule (3 copies, 2 media, 1 off-site).</p>
+<div class="facet">IV-b · Best Practices for Managing the Growth of Unstructured Data (PYQ 2023 Q3b)</div>
+<ol>
+<li><strong>Discover and classify</strong> what exists: data inventory, auto-classification by type, owner, sensitivity and value.</li>
+<li><strong>Apply metadata and tagging at creation</strong>, with naming conventions and document templates.</li>
+<li><strong>Define information-lifecycle and retention policies:</strong> keep, archive or delete by age, value and legal need.</li>
+<li><strong>Tiered storage:</strong> move cold data to cheaper storage or the cloud; use object stores for scale.</li>
+<li><strong>Deduplicate and compress</strong>; remove ROT data (Redundant, Obsolete, Trivial).</li>
+<li><strong>Centralise</strong> in content-management systems (SharePoint, Documentum) or data lakes rather than scattered drives.</li>
+<li><strong>Index and enable enterprise search</strong>; apply text mining, NLP and UIMA to extract structure.</li>
+<li><strong>Govern and secure:</strong> access controls, encryption, DLP, audit; comply with privacy law.</li>
+<li><strong>Monitor growth</strong> with storage analytics and quotas; budget capacity.</li>
+<li><strong>Convert where possible:</strong> OCR scans, transcribe audio, extract data from forms into structured stores.</li>
+</ol>
+<div class="facet">V · Web Pages: Unstructured Despite HTML (PYQ 2023 Q4a)</div>
+<p>HTML <em>does</em> have rich structure, but it is structure of <strong>presentation</strong>, not <strong>meaning</strong>. Tags such as <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;h1&gt;</code>, <code>&lt;table&gt;</code> say how to <em>display</em> content, not what it <em>is</em>. A price and a phone number both sit in plain <code>&lt;span&gt;</code>s. So:</p>
+<ul>
+<li>The <strong>content inside the tags is free text, images and media</strong> with no data model, and its meaning must be interpreted.</li>
+<li>There is <strong>no fixed schema across pages</strong>: two product pages from different sites (or the same site after a redesign) arrange the same information differently.</li>
+<li>HTML is often <strong>not well-formed</strong> (browsers tolerate missing closing tags), and content is generated dynamically by JavaScript.</li>
+<li>You cannot run SQL-like queries such as "all laptops under ₹50,000" across web pages. You need scraping, wrappers or NLP.</li>
+</ul>
+<p>So web pages are usually treated as <strong>unstructured</strong> (some texts say semi-structured, since the markup gives partial structure). Semantic efforts such as <em>schema.org microdata / JSON-LD</em> and RDF add meaning-level tags precisely to fix this gap.</p>
+<div class="checklist"><ul><li>Professor's definition (no rows/columns, no data model, no rules, unpredictable).</li><li>Bitmap vs textual objects; sources list.</li><li>Management: indexing, tags/metadata, taxonomy, CAS, each with its difficulty.</li><li>Six storage challenges plus five solutions; the extraction challenge/solution table.</li><li>UIMA definition, components and diagram; backup impact; best practices; the HTML paradox.</li></ul></div>
+</section>
+
+<section class="topic" id="bi-semi">
+<h3><span class="tno">§ 2.4</span>Semi-structured Data, OEM &amp; XML</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Professor's definition</b>Semi-structured data does not conform to a formal data model and cannot be stored in rows and columns as in a database. It does, however, have <em>tags and markers</em> that help group the data and describe how it is stored, giving some metadata, though not enough for full management and automation. Similar entities are grouped and organised in a <em>hierarchy</em>, and the attributes within a group <em>may or may not be the same</em>.</div>
+<div class="facet">II · Characteristics &amp; Sources</div>
+<ul>
+<li><strong>Inconsistent structure:</strong> records of the same type can have different fields (one customer has 2 phones, another has none).</li>
+<li><strong>Self-describing:</strong> label/value pairs; the schema is blended with the data.</li>
+<li><strong>Hierarchical or nested</strong> (tree or graph).</li>
+<li>Data objects may have different attributes, not known in advance.</li>
+</ul>
+<p><strong>Sources:</strong> <strong>XML</strong> (web services, SOAP), <strong>JSON</strong> (REST APIs, MongoDB, Couchbase), <strong>email</strong> (structured headers + unstructured body), HTML, TCP/IP packets, zipped files, binary executables, <em>integration of data from heterogeneous sources</em>, NoSQL stores, log files, EDI messages.</p>
+<div class="facet">III · Managing, Modelling (OEM), Storing &amp; Extracting</div>
+<p><strong>Managing semi-structured data</strong> (professor's three approaches):</p>
+<ol>
+<li><strong>Schemas:</strong> describe the structure and constraints (XML Schema/XSD, DTD, JSON Schema). The problem is that requirements change constantly, and changes in data force changes in the schema.</li>
+<li><strong>Graph-based data models:</strong> a "schema-less" or <em>self-describing</em> approach. Relationships and hierarchies are a tree-like graph, where vertices contain objects or entities and leaves contain data. <strong>OEM</strong> is the classic example.</li>
+<li><strong>XML:</strong> widely used to store and exchange semi-structured data; user-defined tags store data in hierarchical or nested form; the schema is <em>not tightly coupled</em> to the data.</li>
+</ol>
+<h5>OEM: the Object Exchange Model</h5>
+<p>OEM was proposed in Stanford's <em>TSIMMIS</em> project (Papakonstantinou, Garcia-Molina &amp; Widom, 1995) to exchange data between heterogeneous sources. Data is a <strong>labelled directed graph</strong>. Each object has an <strong>object ID (OID)</strong>, a <strong>label</strong> (what it is, e.g. "name"), a <strong>type</strong>, and a <strong>value</strong>. <em>Atomic</em> objects hold a value (string, integer); <em>complex</em> objects hold a set of references to sub-objects. There is no schema: labels travel with the data.</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 660 270" role="img" aria-label="OEM graph of a university with students having different attributes">
+<defs><marker id="biA4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<circle cx="330" cy="30" r="20" class="box2"/><text x="330" y="35" text-anchor="middle" class="small">&amp;1</text><text x="360" y="22" class="small">University</text>
+<circle cx="170" cy="110" r="20" class="box"/><text x="170" y="115" text-anchor="middle" class="small">&amp;2</text>
+<circle cx="490" cy="110" r="20" class="box"/><text x="490" y="115" text-anchor="middle" class="small">&amp;3</text>
+<line x1="315" y1="42" x2="186" y2="98" class="ln" marker-end="url(#biA4)"/><text x="232" y="62" class="small">student</text>
+<line x1="345" y1="42" x2="474" y2="98" class="ln" marker-end="url(#biA4)"/><text x="410" y="62" class="small">student</text>
+<g class="small">
+<line x1="160" y1="128" x2="70" y2="200" class="ln" marker-end="url(#biA4)"/><text x="88" y="160">name</text><text x="30" y="220">"Asha"</text>
+<line x1="170" y1="130" x2="170" y2="198" class="ln" marker-end="url(#biA4)"/><text x="176" y="165">roll</text><text x="150" y="220">2201</text>
+<line x1="182" y1="126" x2="270" y2="200" class="ln" marker-end="url(#biA4)"/><text x="232" y="158">phone</text><text x="240" y="220">98xxxx…</text>
+<line x1="480" y1="128" x2="400" y2="200" class="ln" marker-end="url(#biA4)"/><text x="415" y="160">name</text><text x="370" y="220">"Ravi"</text>
+<line x1="490" y1="130" x2="490" y2="198" class="ln" marker-end="url(#biA4)"/><text x="496" y="165">roll</text><text x="472" y="220">2202</text>
+<line x1="502" y1="126" x2="590" y2="200" class="ln" marker-end="url(#biA4)"/><text x="550" y="158">email</text><text x="560" y="220">r@geu…</text>
+</g>
+<text x="330" y="258" text-anchor="middle" class="small">Both students share name and roll; one has a phone and the other an email, which is irregular structure.</text>
+</svg></div>
+<figcaption><span class="pl">Plate C5 · An OEM graph</span> Nodes are objects (&amp;OIDs); edge labels say what the child is; leaves hold atomic values. <span class="sketch">How to sketch: a root, two child nodes, labelled edges to leaf values, with the two children having different labels.</span></figcaption></figure>
+<p><strong>Challenges in storing semi-structured data:</strong> storage cost (tags repeat with every record); an RDBMS cannot handle it directly because the structure is irregular; irregular and partial structure (some fields missing); implicit structure (the schema is not declared); evolving schemas; the distinction between schema and data is blurred (a label is both); queries become less efficient.</p>
+<p><strong>Possible solutions:</strong> special-purpose DBMSs (XML-native databases such as BaseX, MarkLogic; document stores such as MongoDB); mapping to an RDBMS (shredding XML into tables, or JSON columns in PostgreSQL); OEM/graph storage; XML with schemas where possible.</p>
+<p><strong>Extracting information:</strong> <em>challenges</em>: data is often in flat files, comes from heterogeneous sources, and is incomplete or irrelevant. <em>Solutions</em>: indexing (XML indexes), OEM-based querying (Lorel), XML query languages (<strong>XPath, XQuery</strong>, XSLT), mining tools.</p>
+<div class="facet">IV · XML as a Solution, and Converting XML to Structured Form (PYQ 2023 Q4b)</div>
+<p><strong>XML (eXtensible Markup Language, W3C, 1998)</strong> lets users define their own tags, nests data hierarchically, is self-describing, platform-independent and human-readable, and can be validated with a DTD or XSD. This makes it a standard for exchanging semi-structured data between heterogeneous systems (the hospital's HL7 messages, GST e-invoices, RSS). <strong>Yes, XML can be converted into structured format</strong> by mapping elements to tables, repeated elements to rows, and child elements or attributes to columns ("shredding"):</p>
+<div class="formula">&lt;students&gt;
+  &lt;student roll="2201"&gt;
+     &lt;name&gt;Asha&lt;/name&gt; &lt;branch&gt;CSE&lt;/branch&gt;
+     &lt;phone&gt;98xxxx1111&lt;/phone&gt;
+  &lt;/student&gt;
+  &lt;student roll="2202"&gt;
+     &lt;name&gt;Ravi&lt;/name&gt; &lt;branch&gt;IT&lt;/branch&gt;
+     &lt;email&gt;r@geu.ac.in&lt;/email&gt;
+  &lt;/student&gt;
+&lt;/students&gt;
+
+                ↓ shred (XPath /students/student)
+
+STUDENT( roll PK | name | branch | phone      | email       )
+         2201    | Asha | CSE    | 98xxxx1111 | NULL
+         2202    | Ravi | IT     | NULL       | r@geu.ac.in</div>
+<p><strong>Steps:</strong> (1) study or infer the XML schema (XSD); (2) map each repeating element to a table and each leaf or attribute to a column, choosing a key; (3) flatten nested repeating groups into child tables with foreign keys (e.g. a student with many courses gives a STUDENT_COURSE table); (4) handle missing elements as NULLs; (5) load with tools (SQL Server <code>OPENXML</code>, Oracle XMLTABLE, Python <code>pandas.read_xml</code>, ETL tools). <strong>Caveats:</strong> deep or irregular nesting produces many sparse columns or tables, and some hierarchy semantics are lost, so an XML-native database may be preferable when the structure changes often.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>JSON has largely replaced XML for web APIs (lighter, native to JavaScript), but XML still dominates in documents, enterprise integration and regulated data exchange. Semi-structured data is the <em>bridge</em> in BI: much of what enters a data warehouse through ETL arrives as XML or JSON from APIs and must be parsed and conformed to the dimensional model (Unit 3).</p>
+<div class="checklist"><ul><li>Professor's definition (tags/markers, hierarchy, attributes may differ).</li><li>Characteristics and sources (XML, JSON, email, heterogeneous integration).</li><li>Three management approaches: schemas, graph models, XML.</li><li>OEM: TSIMMIS, OID/label/type/value, atomic vs complex, with a graph diagram.</li><li>Storage challenges and solutions; XPath/XQuery; a worked XML → table conversion.</li></ul></div>
+</section>
+
+<div class="deck" id="deck-bi-u2">
+  <p class="deck-title">Flashcards · Unit Two</p>
+  <p class="deck-sub">Includes cumulative cards from Unit One (↺).</p>
+  <div class="fc"><div class="fc-q">Share of structured / semi-structured / unstructured data in an enterprise?</div><div class="fc-a">About 10% / 10% / 80% (Prasad &amp; Acharya).</div></div>
+  <div class="fc"><div class="fc-q">Five things that are easy with structured data?</div><div class="fc-a">Insert/update/delete (DML), security, indexing, scalability, transaction processing (ACID).</div></div>
+  <div class="fc"><div class="fc-q">Two categories of unstructured data?</div><div class="fc-a">Bitmap objects (image, video, audio) and textual objects (Word documents, emails, spreadsheets used as documents).</div></div>
+  <div class="fc"><div class="fc-q">Four ways to manage unstructured data?</div><div class="fc-a">Indexing, tags/metadata, classification/taxonomy, CAS (content-addressable storage: retrieve by content, unique name).</div></div>
+  <div class="fc"><div class="fc-q">Six storage challenges of unstructured data?</div><div class="fc-a">Storage space, scalability, retrieving information, security, update/delete, indexing and searching.</div></div>
+  <div class="fc"><div class="fc-q">Solutions to those storage challenges?</div><div class="fc-a">Change format (e.g. speech → text), new hardware, RDBMS BLOBs (+ metadata), XML format, CAS.</div></div>
+  <div class="fc"><div class="fc-q">What is UIMA?</div><div class="fc-a">Unstructured Information Management Architecture: IBM → Apache, OASIS standard. Collection reader → analysis engines of annotators writing to the CAS (Common Analysis Structure) → CAS consumers. Powered IBM Watson.</div></div>
+  <div class="fc"><div class="fc-q">Three approaches to managing semi-structured data?</div><div class="fc-a">Schemas (XSD/DTD; brittle as data changes), graph-based self-describing models (OEM), XML.</div></div>
+  <div class="fc"><div class="fc-q">What is OEM?</div><div class="fc-a">Object Exchange Model (Stanford TSIMMIS, 1995): a labelled directed graph; each object has an OID, label, type and value; atomic vs complex objects; schema-less and self-describing.</div></div>
+  <div class="fc"><div class="fc-q">Why are web pages unstructured despite HTML?</div><div class="fc-a">HTML tags describe presentation, not meaning; the content is free text and media; there is no common schema across pages; HTML is often malformed and dynamic; you cannot query by meaning without scraping or NLP.</div></div>
+  <div class="fc"><div class="fc-q">Convert XML to structured form: how?</div><div class="fc-a">Repeating element → table; leaf or attribute → column; key chosen; nested repeats → child table with FK; missing → NULL; tools: XPath, OPENXML, pandas.read_xml.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">Which Baldrige category depends most on managing all three data types?</div><div class="fc-a">Category 4, Measurement, Analysis &amp; Knowledge Management: data, information and knowledge assets for fact-based decisions.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">How does the connected world increase unstructured data?</div><div class="fc-a">Internet-ready, multi-channel apps generate emails, chats, reviews, images, clickstreams and logs, most of which is unstructured or semi-structured.</div></div>
+</div>
+
+</div></div>
+
+<!-- ======================= UNIT 3 ======================= -->
+<div class="chapter-card" id="bi-u3" data-short="Unit 3 · OLTP, OLAP &amp; the Warehouse">
+  <div class="ch-no">Unit Three</div>
+  <h2>OLTP, OLAP &amp; the Data Warehouse</h2>
+  <p class="in-which">Systems that record transactions, systems that analyse them, and the warehouse that connects the two.</p>
+  <p class="syll">Syllabus: OLTP (queries, advantages, challenges, queries OLTP cannot answer) · OLAP (1-D, 2-D, 3-D and beyond, queries, advantages) · MOLAP, ROLAP, HOLAP · data models for OLTP and OLAP · role of OLAP tools in BI architecture · OLAP operations. <em>Also taught (slides + Assignments 3–4):</em> data warehouse, Inmon vs Kimball, goals, data integration, federated DB, ETL, data mart, metadata, data mining.</p>
+</div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="bi-oltp">
+<h3><span class="tno">§ 3.1</span>OLTP: On-Line Transaction Processing</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>OLTP</b>A class of systems that manage <em>transaction-oriented</em> applications: large numbers of short, concurrent, atomic operations (INSERT, UPDATE, DELETE, simple SELECT) on <em>current, detailed</em> data, with fast response and strict data integrity (ACID).</div>
+<p class="plain">OLTP is the cash counter of the business: every sale, booking, withdrawal or registration is recorded immediately and correctly, thousands of times a second.</p>
+<div class="facet">II · Purpose &amp; Examples (Assignment 2 Q1)</div>
+<p>Purpose: to <strong>run</strong> the business day to day, capturing and updating operational data reliably. Examples: <strong>ATM/core banking</strong> (withdraw ₹2,000: check balance, debit account, log transaction, all or nothing); <strong>IRCTC railway reservation</strong> (book a berth while thousands compete for the same seats); POS billing at a supermarket; e-commerce order placement; university fee payment and course registration; hotel booking.</p>
+<div class="facet">III · OLTP Queries, Advantages, Challenges &amp; Limits</div>
+<p><strong>Typical queries OLTP processes easily</strong> (PYQ 2023 Q5b):</p>
+<div class="formula">-- Point lookups and small updates on current data, answered in milliseconds
+SELECT balance FROM account WHERE acc_no = 'SB1029';
+UPDATE account SET balance = balance - 2000 WHERE acc_no = 'SB1029';
+INSERT INTO orders(order_id, cust_id, item, qty, ts) VALUES (…);
+SELECT status FROM pnr WHERE pnr_no = '4521789632';
+SELECT * FROM student WHERE roll_no = 2201;           -- fetch one student's record
+UPDATE inventory SET qty = qty - 1 WHERE sku = 'MLK-1L';</div>
+<p><strong>Advantages:</strong> simple and efficient for day-to-day operations; high concurrency (many users); ACID guarantees integrity; fast response; normalised design reduces redundancy and update anomalies; real-time, up-to-date data.</p>
+<p><strong>Challenges:</strong> <em>security</em> (many users and entry points), <em>backup and recovery</em> without downtime (24×7 systems), <em>concurrency control</em> (locks, deadlocks), <em>scalability</em> at peak (Tatkal booking rush), maintaining <em>data integrity</em>, and <em>performance degradation</em> if heavy analytical queries run on the same database.</p>
+<p><strong>Queries OLTP cannot answer (well):</strong> analytical, historical, multi-dimensional questions that scan and aggregate millions of rows across time. For example: <em>"What were total sales by region by quarter for the last 5 years, and which product category grew fastest?" · "Which customers' purchase frequency dropped after the price change?" · "Compare this Diwali's sales with the last three Diwalis by city." · "What is the average marks trend per subject across 10 batches?"</em> Reasons: OLTP keeps only <em>current</em> data (history is overwritten or purged), is <em>normalised</em> (many joins), is spread across <em>separate systems</em> (sales, CRM, inventory), and such scans would slow down live transactions.</p>
+<div class="facet">IV · OLTP vs ERP (PYQ 2023 Q5b)</div>
+<div class="tbl"><table><thead><tr><th>Aspect</th><th>OLTP</th><th>ERP</th></tr></thead><tbody>
+<tr><td>What it is</td><td>A <em>processing style / class of system</em>: fast transactional database processing</td><td>A <em>packaged enterprise application suite</em> integrating business functions</td></tr>
+<tr><td>Scope</td><td>Can serve a single application (ATM, booking)</td><td>Enterprise-wide: finance, HR, SCM, sales, manufacturing on one database</td></tr>
+<tr><td>Focus</td><td>Speed, concurrency, ACID of individual transactions</td><td>Integration of business processes and a single version of operational data</td></tr>
+<tr><td>Relationship</td><td>The underlying mode of processing</td><td>An ERP <em>uses</em> OLTP underneath: every ERP posting is an OLTP transaction</td></tr>
+<tr><td>Examples</td><td>IRCTC reservations, a bank's core system, POS</td><td>SAP S/4HANA, Oracle ERP, Microsoft Dynamics</td></tr>
+</tbody></table></div>
+<p>So all ERPs are OLTP systems, but not all OLTP systems are ERPs. Neither is built for analysis, which is why OLAP and data warehouses are added on top.</p>
+<div class="checklist"><ul><li>Definition, ACID, current and detailed data; two real examples.</li><li>At least 4 OLTP queries in SQL.</li><li>Advantages and challenges; queries OLTP cannot answer, with reasons.</li><li>OLTP vs ERP table.</li></ul></div>
+</section>
+
+<section class="topic" id="bi-olap">
+<h3><span class="tno">§ 3.2</span>OLAP: On-Line Analytical Processing &amp; Multidimensional Data</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>OLAP</b>Technology that lets analysts and managers <em>interactively analyse large volumes of historical, aggregated data from multiple perspectives (dimensions)</em>, quickly and consistently, to support decision making. Data is organised as <strong>measures</strong> (numeric facts such as sales amount or units) viewed along <strong>dimensions</strong> (time, product, region, customer), each with <strong>hierarchies</strong> (day → month → quarter → year).</div>
+<div class="facet">II · One, Two, Three Dimensions and Beyond</div>
+<div class="tbl"><table><thead><tr><th>Dimensionality</th><th>Shape</th><th>Example</th></tr></thead><tbody>
+<tr><td><strong>One-dimensional</strong></td><td>A list or column</td><td>Sales by <em>product</em>: Laptops 120, Phones 340, Tablets 80</td></tr>
+<tr><td><strong>Two-dimensional</strong></td><td>A table / spreadsheet (cross-tab)</td><td>Sales by <em>product × region</em> (rows = products, columns = North/South/East/West)</td></tr>
+<tr><td><strong>Three-dimensional</strong></td><td>A <strong>cube</strong></td><td>Sales by <em>product × region × time (quarter)</em>: each cell is one product, in one region, in one quarter</td></tr>
+<tr><td><strong>Beyond three</strong></td><td>A <strong>hypercube</strong> (n-D)</td><td>Add <em>customer segment</em>, <em>channel</em>, <em>promotion</em>. It cannot be drawn, but OLAP handles it and shows 2-D or 3-D slices at a time</td></tr>
+</tbody></table></div>
+<figure class="plate">
+  <div class="frame"><img src="img/olap-cube.png" alt="OLAP cube with three dimensions: products, cities and time" loading="lazy"></div>
+  <figcaption><span class="pl">Plate C6 · A three-dimensional data cube</span> Dimensions <em>Products</em>, <em>Cities</em> and <em>Time</em>. Every small cell inside holds a measure (e.g. sales ₹) for one product in one city at one time. More dimensions make a hypercube.
+  <span class="sketch">How to sketch: a cube; label three edges with dimension names and their members (Q1–Q4, Delhi/Mumbai/Pune, Laptop/Phone); shade one cell and write "₹ 4.2 L = measure".</span>
+  <span class="credit">Source: Wikimedia Commons, "OLAP Cube.svg" (openly licensed; see file page).</span></figcaption>
+</figure>
+<div class="facet">III · Queries OLAP Can Process, and Advantages</div>
+<p><strong>Queries:</strong> "Total revenue by region and quarter for 2021–2025?" · "Top 10 products by profit margin in the South, Q3?" · "Year-on-year growth of each category?" · "Drill from yearly to monthly sales for Pune stores" · "What-if: effect of a 5% price rise on margin?" · "Compare budget vs actual by department". Such queries are read-heavy, aggregate large amounts of data, span long periods, and have to be answered in seconds.</p>
+<p><strong>Advantages:</strong> fast, interactive analysis thanks to pre-aggregation; a multidimensional view that matches how managers think; a consistent single version of data; supports trend analysis, forecasting and what-if; self-service for business users; a foundation for dashboards and KPIs; offloads analysis from OLTP systems.</p>
+<div class="facet">IV · OLTP vs OLAP (Assignment 2 Q2, the most frequent short-comparison question)</div>
+<div class="tbl"><table><thead><tr><th>Basis</th><th>OLTP</th><th>OLAP</th></tr></thead><tbody>
+<tr><td>Purpose</td><td>Run the business (operations)</td><td>Analyse the business (decisions)</td></tr>
+<tr><td>Users</td><td>Clerks, customers, operational staff (thousands)</td><td>Analysts, managers, executives (hundreds)</td></tr>
+<tr><td>Data</td><td>Current, detailed, up to date</td><td>Historical, summarised, consolidated from many sources</td></tr>
+<tr><td>Operations</td><td>Read/write: INSERT, UPDATE, DELETE</td><td>Mostly read: complex SELECT with aggregations</td></tr>
+<tr><td>Transactions</td><td>Short, simple, many</td><td>Long, complex, few</td></tr>
+<tr><td>Records per query</td><td>Tens</td><td>Millions</td></tr>
+<tr><td>Design / model</td><td>Normalised (3NF), ER model</td><td>Denormalised: star, snowflake, fact constellation</td></tr>
+<tr><td>Size</td><td>GB</td><td>TB–PB</td></tr>
+<tr><td>Response time</td><td>Milliseconds</td><td>Seconds to minutes</td></tr>
+<tr><td>Key metric</td><td>Transaction throughput</td><td>Query throughput, response time</td></tr>
+<tr><td>Integrity</td><td>ACID, concurrency control critical</td><td>Mostly read-only; loaded periodically in batches</td></tr>
+<tr><td>Backup</td><td>Very frequent (business-critical)</td><td>Less frequent (can be reloaded)</td></tr>
+<tr><td>Example</td><td>ATM withdrawal, PNR booking</td><td>Quarterly sales analysis by region</td></tr>
+</tbody></table></div>
+<div class="checklist"><ul><li>Definition with measures, dimensions and hierarchies.</li><li>1-D, 2-D, 3-D and beyond, with one running example and a cube sketch.</li><li>4–5 OLAP queries; advantages.</li><li>OLTP vs OLAP table with at least 10 rows.</li></ul></div>
+</section>
+
+<section class="topic" id="bi-olaparch">
+<h3><span class="tno">§ 3.3</span>OLAP Architectures: MOLAP, ROLAP, HOLAP</h3>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 690 250" role="img" aria-label="MOLAP ROLAP HOLAP storage comparison">
+<defs><marker id="biA5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<g>
+<text x="115" y="20" text-anchor="middle" class="hd">MOLAP</text>
+<rect x="40" y="200" width="150" height="36" class="box3"/><text x="115" y="223" text-anchor="middle" class="small">Data warehouse (RDBMS)</text>
+<rect x="55" y="100" width="120" height="70" class="box2"/><text x="115" y="130" text-anchor="middle">Proprietary</text><text x="115" y="148" text-anchor="middle">MD cube</text>
+<line x1="115" y1="198" x2="115" y2="173" class="ln" marker-end="url(#biA5)"/><text x="122" y="190" class="small">pre-load</text>
+<rect x="65" y="34" width="100" height="36" class="box"/><text x="115" y="57" text-anchor="middle">Client</text>
+<line x1="115" y1="98" x2="115" y2="73" class="ln" marker-end="url(#biA5)"/>
+</g>
+<g>
+<text x="345" y="20" text-anchor="middle" class="hd">ROLAP</text>
+<rect x="270" y="200" width="150" height="36" class="box2"/><text x="345" y="223" text-anchor="middle" class="small">Relational DB (star schema)</text>
+<rect x="285" y="100" width="120" height="70" class="box"/><text x="345" y="130" text-anchor="middle">ROLAP engine</text><text x="345" y="148" text-anchor="middle" class="small">slice = WHERE clause</text>
+<line x1="345" y1="198" x2="345" y2="173" class="ln" marker-end="url(#biA5)"/><text x="352" y="190" class="small">SQL</text>
+<rect x="295" y="34" width="100" height="36" class="box"/><text x="345" y="57" text-anchor="middle">Client</text>
+<line x1="345" y1="98" x2="345" y2="73" class="ln" marker-end="url(#biA5)"/>
+</g>
+<g>
+<text x="575" y="20" text-anchor="middle" class="hd">HOLAP</text>
+<rect x="500" y="200" width="150" height="36" class="box2"/><text x="575" y="223" text-anchor="middle" class="small">Detail in RDBMS</text>
+<rect x="515" y="100" width="120" height="70" class="box2"/><text x="575" y="130" text-anchor="middle">Aggregates</text><text x="575" y="148" text-anchor="middle">in cube</text>
+<line x1="575" y1="198" x2="575" y2="173" class="ln" marker-end="url(#biA5)"/>
+<path d="M640,120 C680,150 680,190 650,212" class="lnd" marker-end="url(#biA5)"/><text x="660" y="165" class="small">drill-</text><text x="660" y="178" class="small">through</text>
+<rect x="525" y="34" width="100" height="36" class="box"/><text x="575" y="57" text-anchor="middle">Client</text>
+<line x1="575" y1="98" x2="575" y2="73" class="ln" marker-end="url(#biA5)"/>
+</g>
+</svg></div>
+<figcaption><span class="pl">Plate C7 · Three OLAP architectures</span> <span class="sketch">How to sketch: three columns (client → engine/cube → storage). Shade the "cube" in MOLAP, the "RDBMS" in ROLAP, and both in HOLAP, with a drill-through arrow.</span></figcaption></figure>
+<div class="tbl"><table><thead><tr><th></th><th>MOLAP (Multidimensional)</th><th>ROLAP (Relational)</th><th>HOLAP (Hybrid)</th></tr></thead><tbody>
+<tr><td>Storage</td><td>Data stored in a <strong>multidimensional cube</strong>, in proprietary formats, <em>not</em> in the relational DB</td><td>Data stored in a <strong>relational database</strong>; each slice/dice action is equivalent to <strong>adding a WHERE clause</strong> to SQL</td><td>Combines both: detailed data in the RDBMS (ROLAP scalability), aggregates and summaries in cubes (MOLAP speed); can <strong>drill through</strong> from cube to relational data</td></tr>
+<tr><td>Advantages</td><td>Fast retrieval; optimal for slicing and dicing; complex calculations, all <em>pre-generated</em> when the cube is created</td><td>Handles <em>large</em> amounts of data (limited only by the underlying DB); uses the RDBMS's built-in features (security, SQL, scale)</td><td>Balance of speed for summaries and scalability for detail</td></tr>
+<tr><td>Disadvantages</td><td><em>Limited in data volume</em>, because all calculations are pre-generated at cube build (the cube can be derived from large data, but cannot contain all of it); proprietary technology may need extra investment in people and capital</td><td>Complex calculations are hard in SQL; performance can be <em>slow</em>, since every report is one or more SQL queries over large data</td><td>More complex to design and manage; two storage engines</td></tr>
+<tr><td>Examples</td><td>Oracle Essbase, IBM Cognos TM1, SSAS Multidimensional</td><td>MicroStrategy, SAP BusinessObjects, SSAS ROLAP mode</td><td>SSAS HOLAP, Microsoft Analysis Services, Mondrian + aggregates</td></tr>
+</tbody></table></div>
+<p>Modern variants: <strong>DOLAP</strong> (desktop OLAP), <strong>WOLAP</strong> (web OLAP), in-memory columnar OLAP (SAP HANA, Power BI VertiPaq), and cloud data warehouses (Snowflake, BigQuery), which make ROLAP fast enough that the line between the two blurs.</p>
+</section>
+
+<section class="topic" id="bi-models">
+<h3><span class="tno">§ 3.4</span>Data Models for OLTP and OLAP</h3>
+<div class="facet">I–II · OLTP Model: the Normalised ER Model</div>
+<p>OLTP databases use <strong>Entity–Relationship modelling normalised to 3NF</strong>: each fact is stored once, which avoids insert, update and delete anomalies and keeps writes fast and consistent. The cost is that analytical queries need many joins.</p>
+<div class="facet">III · OLAP Models: Dimensional Modelling</div>
+<p>A multidimensional model takes the form of a <strong>star schema</strong>, a <strong>snowflake schema</strong>, or a <strong>fact constellation (galaxy) schema</strong>.</p>
+<ul>
+<li><strong>Fact table:</strong> holds <em>measures</em> (numeric, additive facts such as sales_amount, units_sold) plus <em>foreign keys</em> to every dimension. It is long and narrow, with millions of rows. Its <strong>grain</strong> is what one row represents (e.g. one product sold in one store on one day).</li>
+<li><strong>Dimension table:</strong> descriptive context (textual attributes, hierarchies) such as product name, brand, category; date, month, quarter; store, city, state. It is short and wide.</li>
+</ul>
+<div class="grid-cards" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+<figure class="plate" style="margin:0"><div class="frame"><img src="img/star.png" alt="Star schema: a central fact table connected to four dimension tables" loading="lazy"></div><figcaption><span class="pl">Plate C8 · Star schema</span> One central fact table joined directly to denormalised dimension tables, each represented by <em>only one</em> table.<span class="credit">Wikimedia Commons, "Star-schema.png" (see file page).</span></figcaption></figure>
+<figure class="plate" style="margin:0"><div class="frame"><img src="img/snowflake.png" alt="Snowflake schema: fact table with dimensions further normalised into sub-dimension tables" loading="lazy"></div><figcaption><span class="pl">Plate C9 · Snowflake schema</span> Same as star, but dimensions are <em>normalised</em> into further tables (e.g. Product → Category → Department), which reduces redundancy.<span class="credit">Wikimedia Commons, "Snowflake-schema.png" (see file page).</span></figcaption></figure>
+</div>
+<h5>Worked design: retail sales star schema</h5>
+<div class="formula">FACT_SALES( date_key FK, product_key FK, store_key FK, customer_key FK,
+            units_sold, sales_amount, discount, profit )          ← grain: product × store × day × customer
+
+DIM_DATE    ( date_key PK, date, day, month, quarter, year, is_holiday, festival )
+DIM_PRODUCT ( product_key PK, name, brand, category, department, price_band )
+DIM_STORE   ( store_key PK, store_name, city, state, region, format )
+DIM_CUSTOMER( customer_key PK, name, gender, age_group, segment, city )
+
+Snowflake version: DIM_PRODUCT(category_key FK) → DIM_CATEGORY(category_key, category, department_key FK) → DIM_DEPARTMENT
+Fact constellation: add FACT_INVENTORY(date_key, product_key, store_key, qty_on_hand) sharing DIM_DATE, DIM_PRODUCT, DIM_STORE</div>
+<div class="tbl"><table><thead><tr><th></th><th>Star</th><th>Snowflake</th><th>Fact constellation (galaxy)</th></tr></thead><tbody>
+<tr><td>Structure</td><td>1 fact + denormalised dimensions</td><td>1 fact + normalised dimension hierarchies</td><td>Multiple facts sharing <em>conformed</em> dimensions</td></tr>
+<tr><td>Joins</td><td>Fewest, so fastest queries</td><td>More joins, so slower</td><td>Depends on the query; supports cross-process analysis</td></tr>
+<tr><td>Redundancy / storage</td><td>Higher</td><td>Lower (redundancy reduced by splitting)</td><td>Shared dimensions save space</td></tr>
+<tr><td>Ease for users</td><td>Simplest</td><td>More complex</td><td>Most complex</td></tr>
+<tr><td>Use</td><td>Most data marts</td><td>Large, deep hierarchies; storage-sensitive</td><td>Enterprise warehouses (sales + inventory + shipping); enables <strong>drill-across</strong></td></tr>
+</tbody></table></div>
+<div class="facet">IV · Case: Healthcare OLAP Design (Assignment 2 Q6)</div>
+<div class="formula">FACT_TREATMENT( patient_key, doctor_key, disease_key, treatment_key, dept_key, date_key,
+                cost, length_of_stay, outcome_flag, readmitted_30d )
+Dimensions: DIM_PATIENT(age group, gender, city, insurance) · DIM_DOCTOR(specialty, experience)
+            DIM_DISEASE(ICD code, disease, category) · DIM_TREATMENT(procedure, type)
+            DIM_DEPARTMENT(dept, block) · DIM_DATE(day, month, quarter, year, season)</div>
+<ul>
+<li><strong>Slice:</strong> Year = 2025, giving all treatment data for that year.</li>
+<li><strong>Dice:</strong> Disease ∈ {Dengue, Malaria} AND Dept = Medicine AND Quarter = Q3 (monsoon analysis).</li>
+<li><strong>Roll-up:</strong> monthly admissions → quarterly → yearly; or city → state.</li>
+<li><strong>Drill-down:</strong> from "Cardiology cost ↑ in 2025" to month to doctor to procedure.</li>
+<li><strong>Pivot:</strong> swap rows and columns from disease × month to month × disease to see seasonality.</li>
+<li><strong>Drill-across:</strong> join the treatment fact with a pharmacy-billing fact on shared dimensions.</li>
+</ul>
+<div class="checklist"><ul><li>OLTP = ER/3NF; OLAP = dimensional.</li><li>Fact vs dimension (measures, FKs, grain; descriptive attributes, hierarchies).</li><li>Star, snowflake and constellation, each with a diagram and the comparison table.</li><li>One worked schema with keys.</li></ul></div>
+</section>
+
+<section class="topic" id="bi-olapops">
+<h3><span class="tno">§ 3.5</span>OLAP Operations &amp; the Role of OLAP Tools in BI Architecture</h3>
+<div class="facet">I–III · Operations on Multidimensional Data</div>
+<p>Several OLAP cube operations allow interactive querying and analysis:</p>
+<div class="tbl"><table><thead><tr><th>Operation</th><th>Professor's definition</th><th>Example (cube: Product × City × Quarter, measure = sales)</th></tr></thead><tbody>
+<tr><td><strong>Slice</strong></td><td>Filtering/selecting data using <em>one</em> dimension of the cube</td><td>Quarter = Q1 gives a 2-D Product × City table</td></tr>
+<tr><td><strong>Dice</strong></td><td>Filtering using <em>two or more</em> dimensions, giving a sub-cube</td><td>Quarter ∈ {Q1,Q2} AND City ∈ {Delhi, Pune} AND Product = Phones</td></tr>
+<tr><td><strong>Roll-up (drill-up)</strong></td><td>View data at a <em>higher</em> level of a dimension's hierarchy (aggregate)</td><td>City → State → Region; Quarter → Year</td></tr>
+<tr><td><strong>Drill-down</strong></td><td>View data at a <em>lower</em> level of the hierarchy, the reverse of roll-up (less → more detailed)</td><td>Year → Quarter → Month for Pune</td></tr>
+<tr><td><strong>Pivot (rotate)</strong></td><td>Rotate the data axes for an alternative presentation</td><td>Swap rows (Product) and columns (City)</td></tr>
+<tr><td><strong>Drill-across</strong></td><td>View data across <em>two or more fact tables</em> (via shared dimensions)</td><td>Sales fact vs inventory fact by product and month</td></tr>
+<tr><td>Drill-through</td><td>From a cube cell to the underlying detailed (relational) records</td><td>Click "Pune, Q1 = ₹4.2 L" to see the individual invoices</td></tr>
+</tbody></table></div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 680 220" role="img" aria-label="Slice, dice and roll-up illustrated on cubes">
+<g>
+<polygon points="40,70 120,70 150,45 70,45" class="box"/><polygon points="120,70 150,45 150,125 120,150" class="box"/><rect x="40" y="70" width="80" height="80" class="box"/>
+<rect x="40" y="70" width="26" height="80" class="box2"/><text x="95" y="180" text-anchor="middle" class="hd">SLICE</text><text x="95" y="198" text-anchor="middle" class="small">fix ONE dimension</text>
+<polygon points="260,70 340,70 370,45 290,45" class="box"/><polygon points="340,70 370,45 370,125 340,150" class="box"/><rect x="260" y="70" width="80" height="80" class="box"/>
+<rect x="286" y="96" width="30" height="30" class="box2"/><text x="315" y="180" text-anchor="middle" class="hd">DICE</text><text x="315" y="198" text-anchor="middle" class="small">sub-cube on 2+ dims</text>
+<rect x="470" y="60" width="40" height="30" class="box"/><rect x="470" y="90" width="40" height="30" class="box"/><rect x="470" y="120" width="40" height="30" class="box"/><rect x="510" y="60" width="40" height="30" class="box"/><rect x="510" y="90" width="40" height="30" class="box"/><rect x="510" y="120" width="40" height="30" class="box"/>
+<text x="580" y="100" class="small">roll-up →</text><text x="580" y="140" class="small">← drill-down</text>
+<rect x="630" y="60" width="40" height="90" class="box2"/>
+<text x="560" y="180" text-anchor="middle" class="hd">ROLL-UP / DRILL-DOWN</text><text x="560" y="198" text-anchor="middle" class="small">month ⇄ quarter ⇄ year</text>
+</g></svg></div>
+<figcaption><span class="pl">Plate C10 · Operations at a glance</span> <span class="sketch">How to sketch: three mini-cubes. Shade one face strip for slice, a small inner block for dice, and many thin bars merging into one for roll-up.</span></figcaption></figure>
+<p>In SQL terms (ROLAP): slice or dice = <code>WHERE</code>; roll-up = <code>GROUP BY</code> at a coarser level (or <code>GROUP BY ROLLUP(year, quarter, month)</code>); drill-down = a finer <code>GROUP BY</code>; pivot = <code>PIVOT</code> or cross-tab; drill-across = joining two fact queries on conformed dimensions.</p>
+<div class="facet">IV · Role of OLAP Tools in the BI Architecture</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 690 220" role="img" aria-label="BI architecture: sources, ETL, data warehouse, OLAP server, front-end tools">
+<defs><marker id="biA6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="10" y="30" width="110" height="34" class="box"/><text x="65" y="52" text-anchor="middle" class="small">ERP / OLTP</text>
+<rect x="10" y="74" width="110" height="34" class="box"/><text x="65" y="96" text-anchor="middle" class="small">CRM, files</text>
+<rect x="10" y="118" width="110" height="34" class="box"/><text x="65" y="140" text-anchor="middle" class="small">XML/JSON, web</text>
+<rect x="150" y="60" width="100" height="70" class="box2"/><text x="200" y="88" text-anchor="middle">ETL</text><text x="200" y="106" text-anchor="middle" class="small">extract·clean·</text><text x="200" y="119" text-anchor="middle" class="small">transform·load</text>
+<rect x="280" y="50" width="120" height="90" class="box2"/><text x="340" y="88" text-anchor="middle">Data</text><text x="340" y="106" text-anchor="middle">warehouse</text><text x="340" y="124" text-anchor="middle" class="small">+ marts + metadata</text>
+<rect x="430" y="60" width="100" height="70" class="box"/><text x="480" y="90" text-anchor="middle">OLAP</text><text x="480" y="108" text-anchor="middle">server</text>
+<rect x="560" y="20" width="120" height="30" class="box"/><text x="620" y="40" text-anchor="middle" class="small">Reports</text>
+<rect x="560" y="58" width="120" height="30" class="box"/><text x="620" y="78" text-anchor="middle" class="small">Dashboards / KPIs</text>
+<rect x="560" y="96" width="120" height="30" class="box"/><text x="620" y="116" text-anchor="middle" class="small">Ad-hoc analysis</text>
+<rect x="560" y="134" width="120" height="30" class="box"/><text x="620" y="154" text-anchor="middle" class="small">Data mining</text>
+<line x1="120" y1="47" x2="148" y2="80" class="ln" marker-end="url(#biA6)"/><line x1="120" y1="91" x2="148" y2="95" class="ln" marker-end="url(#biA6)"/><line x1="120" y1="135" x2="148" y2="110" class="ln" marker-end="url(#biA6)"/>
+<line x1="250" y1="95" x2="278" y2="95" class="ln" marker-end="url(#biA6)"/><line x1="400" y1="95" x2="428" y2="95" class="ln" marker-end="url(#biA6)"/>
+<line x1="530" y1="85" x2="558" y2="36" class="ln" marker-end="url(#biA6)"/><line x1="530" y1="90" x2="558" y2="73" class="ln" marker-end="url(#biA6)"/><line x1="530" y1="100" x2="558" y2="111" class="ln" marker-end="url(#biA6)"/><line x1="530" y1="105" x2="558" y2="148" class="ln" marker-end="url(#biA6)"/>
+<text x="65" y="185" text-anchor="middle" class="small">SOURCE LAYER</text><text x="270" y="185" text-anchor="middle" class="small">INTEGRATION + STORAGE LAYER</text><text x="480" y="185" text-anchor="middle" class="small">ANALYSIS LAYER</text><text x="620" y="185" text-anchor="middle" class="small">PRESENTATION</text>
+</svg></div>
+<figcaption><span class="pl">Plate C11 · Where OLAP sits in BI</span> <span class="sketch">How to sketch: four layers left to right: sources → ETL → DW/marts → OLAP server → front ends.</span></figcaption></figure>
+<p>OLAP tools form the <strong>analysis layer</strong> between the warehouse and the users. They <em>present</em> warehouse data as intuitive business cubes (a semantic layer: "Revenue", "Region" instead of table names), <em>pre-compute aggregates</em> for speed, provide <em>slice, dice, drill and pivot</em> for self-service exploration, run <em>calculations</em> (YoY growth, ratios, forecasting, what-if), feed <em>reports, dashboards and scorecards</em>, and enforce <em>consistent definitions</em> (one KPI calculation for all). Tools: Power BI, Tableau, SSAS, Oracle Essbase, SAP BW/BO, Qlik, Apache Kylin.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>OLAP is only as good as the warehouse beneath it: poor ETL means cubes that answer questions quickly and wrongly. Pre-aggregated cubes can become stale (batch loads) and can explode in size with many dimensions (the "curse of dimensionality" in the number of possible aggregates). This is why modern stacks favour in-memory columnar engines and incremental or real-time loading.</p>
+<div class="checklist"><ul><li>All six professor's operations with a definition and a concrete example; the SQL equivalents.</li><li>A diagram of slice, dice and roll-up.</li><li>MOLAP/ROLAP/HOLAP with the professor's advantages and disadvantages.</li><li>BI architecture layers and the role OLAP tools play.</li></ul></div>
+</section>
+
+<section class="topic" id="bi-dw">
+<h3><span class="tno">§ 3.6</span>The Data Warehouse (taught in class, Assignment 3)</h3>
+<div class="facet">I · Definitions</div>
+<p>A data warehouse is a <em>heterogeneous collection of different data sources organised under a unified schema</em>. It is a data store structured on the <strong>dimensional model</strong>, optimised for <em>data retrieval rather than update</em>.</p>
+<div class="defn"><b>W.H. Inmon's definition</b>"A data warehouse is a <em>subject-oriented, integrated, time-variant and non-volatile</em> collection of data in support of management's decision-making process."</div>
+<ul>
+<li><strong>Subject-oriented:</strong> organised around subjects (customers, suppliers, partners, sales, products) spread across the enterprise, not around applications. A data mart deals with one subject (e.g. sales).</li>
+<li><strong>Integrated:</strong> data from many disparate applications (heterogeneous platforms and databases, some in silos) is cleansed and transformed into a unified format.</li>
+<li><strong>Time-variant:</strong> it keeps history (3, 6, 12 months or years), whereas OLTP holds the most up-to-date data. A transaction system holds a customer's latest address; the warehouse holds all their addresses from the last five years.</li>
+<li><strong>Non-volatile:</strong> permanent storage. Data is loaded and read but not updated or deleted in place.</li>
+</ul>
+<p><strong>Five roles of data warehousing:</strong> <em>Intake</em> (acquire from sources), <em>Integration</em> (cleanse and unify), <em>Distribution</em> (to marts and applications), <em>Delivery</em> (to users in the right form and time), <em>Access</em> (query and analysis tools).</p>
+<div class="facet">II · Inmon vs Kimball</div>
+<div class="tbl"><table><thead><tr><th></th><th>Inmon (top-down)</th><th>Kimball (bottom-up)</th></tr></thead><tbody>
+<tr><td>Philosophy</td><td>Build an enterprise-wide, normalised (3NF) warehouse first; derive data marts from it</td><td>"A data warehouse is made up of all the data marts in an enterprise"; build dimensional marts first with conformed dimensions (the "bus architecture")</td></tr>
+<tr><td>Speed / cost / complexity</td><td>Slower, more expensive, more complex</td><td>Faster, cheaper, less complex</td></tr>
+<tr><td>Single version of truth</td><td>Achieved, which is worth the effort for large organisations</td><td>May be compromised: several independent marts may each claim to hold the genuine corporate data</td></tr>
+<tr><td>Best for</td><td>Large enterprises needing strong governance</td><td>Quick wins, departmental needs, iterative delivery</td></tr>
+</tbody></table></div>
+<p><strong>Why is Kimball's approach called bottom-up?</strong> Because the enterprise warehouse is <em>assembled from</em> individual subject-area data marts (sales, then finance, then HR), each delivering value early, and integrated through shared (conformed) dimensions. It builds up from the parts to the whole.</p>
+<div class="facet">III · Goals of a Data Warehouse (professor's six)</div>
+<ol>
+<li><strong>Information accessibility:</strong> easy to understand for business users and developers; properly labelled; supports slicing and dicing in every possible way.</li>
+<li><strong>Information credibility:</strong> credible, complete data of the desired quality.</li>
+<li><strong>Flexible to change:</strong> adapts to changing business, requirements and technology; new sources or queries do not invalidate existing information.</li>
+<li><strong>Support for more fact-based decision making:</strong> "manage by fact"; enough relevant data, easily accessible.</li>
+<li><strong>Support for data security:</strong> confidential data must reach only those entitled to it. A breach does more damage than having no warehouse at all.</li>
+<li><strong>Information consistency:</strong> a single, consistent version of truth across the organisation.</li>
+</ol>
+<div class="facet">IV · Case: Bank (Assignment 3 Q5)</div>
+<p>Separate customer, loan, savings and credit-card databases (different formats, different departments) are integrated through ETL into a customer-centric warehouse with conformed DIM_CUSTOMER. <em>Integration</em> gives a 360° view (total relationship value, cross-sell). <em>History</em> enables trend and risk analysis (payment behaviour over 5 years). <em>Consistency</em> means one customer count and one exposure figure for management and the RBI. <em>Security</em> means role-based access and masking of account numbers.</p>
+</section>
+
+<section class="topic" id="bi-integration">
+<h3><span class="tno">§ 3.7</span>Data Integration, ETL &amp; Federated Databases</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Data integration</b>Combining data residing in different sources to provide a <em>unified view</em>: the ability to consolidate data from several sources while <em>maintaining its integrity and reliability</em>.</div>
+<div class="facet">II · Two Approaches</div>
+<ul>
+<li><strong>Schema integration:</strong> several sources provide data on the same entity type. The goal is for applications to view and query the data transparently as one uniform source, using <em>mapping rules</em> to handle structural differences. "Developing a unified representation of semantically similar information, structured and stored differently in the individual databases." Example: <code>cust_name</code> (CRM) and <code>customerName</code> (billing), plus a date stored as DD/MM vs MM/DD, both mapped to one <code>DIM_CUSTOMER.name</code>.</li>
+<li><strong>Instance integration:</strong> information is retrieved directly from the data to obtain accurate semantics. It identifies and integrates all the <em>instances</em> of data items that represent the same real-world entity. Example: "R. Sharma, Dehradun" in the lab system and "Rahul Sharma, DDN" in pharmacy are recognised as the same patient (entity resolution or record linkage, de-duplication).</li>
+</ul>
+<div class="facet">III · ETL: Extract, Clean, Transform, Load (Assignment 3 Q4)</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 660 130" role="img" aria-label="ETL pipeline">
+<defs><marker id="biA7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="10" y="30" width="130" height="60" class="box"/><text x="75" y="56" text-anchor="middle" class="hd">EXTRACT</text><text x="75" y="76" text-anchor="middle" class="small">from sources</text>
+<rect x="180" y="30" width="130" height="60" class="box2"/><text x="245" y="56" text-anchor="middle" class="hd">CLEAN</text><text x="245" y="76" text-anchor="middle" class="small">errors, dupes, nulls</text>
+<rect x="350" y="30" width="130" height="60" class="box2"/><text x="415" y="56" text-anchor="middle" class="hd">TRANSFORM</text><text x="415" y="76" text-anchor="middle" class="small">standardise, derive</text>
+<rect x="520" y="30" width="130" height="60" class="box"/><text x="585" y="56" text-anchor="middle" class="hd">LOAD</text><text x="585" y="76" text-anchor="middle" class="small">into DW / marts</text>
+<line x1="140" y1="60" x2="177" y2="60" class="ln" marker-end="url(#biA7)"/><line x1="310" y1="60" x2="347" y2="60" class="ln" marker-end="url(#biA7)"/><line x1="480" y1="60" x2="517" y2="60" class="ln" marker-end="url(#biA7)"/>
+<text x="330" y="118" text-anchor="middle" class="small">staging area · metadata captured at every step</text>
+</svg></div>
+<figcaption><span class="pl">Plate C12 · The ETL pipeline</span></figcaption></figure>
+<ul>
+<li><strong>Extract:</strong> pull data (full or incremental/CDC) from heterogeneous sources (registration, lab, pharmacy, medical-records systems) into a staging area.</li>
+<li><strong>Clean:</strong> fix errors and inconsistencies: missing values, invalid codes, duplicates, typos, conflicting records.</li>
+<li><strong>Transform:</strong> standardise formats (dates, units, codes such as ICD-10), apply business rules, derive attributes (age from DOB), aggregate, assign surrogate keys, and conform dimensions.</li>
+<li><strong>Load:</strong> insert into fact and dimension tables (initial and periodic incremental loads), build indexes and aggregates, and refresh cubes.</li>
+</ul>
+<p><strong>Hospital case:</strong> ETL creates one <em>unified patient view</em> (demographics + lab results + prescriptions + history), so doctors see complete records and management can analyse outcomes. The same pattern applies to the retail case (sales, customer, product and supplier sources in different formats → central DW), with <em>consistency</em> through conformed dimensions and master data, <em>accessibility</em> through BI tools, and <em>credibility</em> through data-quality rules and lineage.</p>
+<div class="facet">IV · Federated Database System (FDBS)</div>
+<p>A <strong>federated database system</strong> is a type of DBMS that integrates multiple disparate, <em>autonomous</em> databases into a single <em>federated</em> (virtual) database. The constituent databases may be geographically decentralised and connected by a network. Because they remain autonomous, an FDBS is a contrasting but feasible <em>alternative to physically merging</em> them. It is also called a <strong>virtual database</strong>: a fully integrated, logical composite of its constituent databases. Queries are translated and sent to each source at run time (data virtualisation), which gives fresh data without copying, but performance is slower and history is limited compared with a warehouse.</p>
+</section>
+
+<section class="topic" id="bi-mart">
+<h3><span class="tno">§ 3.8</span>Data Mart, Metadata &amp; Data Mining (Assignment 4)</h3>
+<p><strong>Data mart:</strong> a subject- or department-specific subset of a data warehouse (sales mart, finance mart). It is smaller, faster to build, and focused on one user group. <em>Dependent</em> marts are fed from the enterprise DW (Inmon); <em>independent</em> marts are fed directly from sources (risking inconsistency). DW vs data mart: enterprise-wide vs departmental; many subjects vs one; months or years vs weeks to build; TB vs GB.</p>
+<p><strong>Metadata ("data about data"):</strong> <em>technical metadata</em> (table and column definitions, data types, source-to-target mappings, ETL job schedules, lineage, indexes) and <em>business metadata</em> (business definitions such as "Active customer = purchased in the last 90 days", KPI formulas, data owners and stewards, report descriptions). Importance: users can find and trust data, it supports impact analysis when sources change, and it supports governance and audit.</p>
+<p><strong>Data mining:</strong> discovering hidden patterns, correlations and predictions in large datasets (knowledge discovery). Techniques: <em>classification</em> (loan default yes/no; decision trees), <em>clustering</em> (customer segmentation; k-means), <em>association rules</em> (market-basket analysis "bread → butter", support and confidence; Apriori), <em>prediction/regression</em> (sales forecast). <strong>DW vs data mining:</strong> the warehouse <em>stores and organises</em> integrated historical data; mining <em>analyses</em> it to find patterns. They work together: the DW supplies clean, consistent data, mining produces insight, and OLAP and dashboards present it.</p>
+<h5>Case: university student-performance mart (Assignment 4 Q3)</h5>
+<div class="formula">FACT_RESULT( student_key, course_key, dept_key, exam_key, year_key,
+             marks, grade_point, attendance_pct, pass_flag )
+DIM_STUDENT(roll, name, gender, category, admission_year, city) · DIM_COURSE(code, title, credits, semester)
+DIM_DEPARTMENT(dept, school) · DIM_EXAM(type: mid/end/practical) · DIM_YEAR(academic year, semester)
+Reports: pass % by course and year (trend) · toppers by department · attendance vs marks correlation ·
+         at-risk students (drill-down) · faculty-wise result comparison · NAAC/NIRF indicators</div>
+</section>
+
+<div class="deck" id="deck-bi-u3">
+  <p class="deck-title">Flashcards · Unit Three</p>
+  <p class="deck-sub">Includes cumulative cards from Units One and Two (↺).</p>
+  <div class="fc"><div class="fc-q">OLTP: definition, with two examples.</div><div class="fc-a">Transaction-oriented processing of many short, concurrent, ACID operations on current, detailed data. ATM/core banking; IRCTC booking (also POS billing).</div></div>
+  <div class="fc"><div class="fc-q">Give a query OLTP cannot answer well, and why.</div><div class="fc-a">"Sales by region by quarter for 5 years, fastest-growing category." OLTP holds only current data, is normalised (many joins), is spread across systems, and such scans would slow live transactions.</div></div>
+  <div class="fc"><div class="fc-q">OLTP vs ERP?</div><div class="fc-a">OLTP is a processing style (fast ACID transactions); ERP is an integrated enterprise application suite that runs on OLTP. All ERPs are OLTP, not all OLTP systems are ERPs.</div></div>
+  <div class="fc"><div class="fc-q">1-D, 2-D, 3-D and beyond in OLAP?</div><div class="fc-a">List (sales by product) → cross-tab (product × region) → cube (product × region × time) → hypercube (add customer, channel…).</div></div>
+  <div class="fc"><div class="fc-q">MOLAP vs ROLAP vs HOLAP in one line each?</div><div class="fc-a">MOLAP: proprietary cube, pre-calculated, fast, limited volume. ROLAP: relational, slice = WHERE, scalable, slower, complex calculations hard. HOLAP: detail in RDBMS + aggregates in cube, with drill-through.</div></div>
+  <div class="fc"><div class="fc-q">Star vs snowflake vs constellation?</div><div class="fc-a">Star: one fact + denormalised dimensions (fast). Snowflake: dimensions normalised into sub-tables (less redundancy, more joins). Constellation: several facts sharing conformed dimensions (enables drill-across).</div></div>
+  <div class="fc"><div class="fc-q">Six OLAP operations?</div><div class="fc-a">Slice (1 dimension) · Dice (2+ dimensions, sub-cube) · Roll-up (higher level) · Drill-down (lower level) · Pivot (rotate axes) · Drill-across (across fact tables). Also drill-through (to detail rows).</div></div>
+  <div class="fc"><div class="fc-q">Inmon's four characteristics of a DW?</div><div class="fc-a">Subject-oriented, integrated, time-variant, non-volatile, in support of management's decision making.</div></div>
+  <div class="fc"><div class="fc-q">Inmon vs Kimball?</div><div class="fc-a">Inmon: top-down, enterprise 3NF DW first, slower and costlier, single version of truth. Kimball: bottom-up, "DW = all data marts", faster and cheaper, the truth may fragment across marts.</div></div>
+  <div class="fc"><div class="fc-q">Six goals of a DW?</div><div class="fc-a">Information accessibility, credibility, flexibility to change, fact-based decisions, data security, information consistency.</div></div>
+  <div class="fc"><div class="fc-q">Schema integration vs instance integration?</div><div class="fc-a">Schema: mapping rules unify differently structured representations of the same entity type. Instance: identify records across sources that are the same real-world entity (entity resolution).</div></div>
+  <div class="fc"><div class="fc-q">What is a federated database?</div><div class="fc-a">A DBMS that integrates autonomous, possibly distributed databases into one virtual database without physically merging them.</div></div>
+  <div class="fc" data-from="Unit 2"><div class="fc-q">Where does semi-structured XML/JSON data enter the BI architecture?</div><div class="fc-a">At the source layer. ETL extracts, parses (shreds) and transforms it into fact and dimension tables.</div></div>
+  <div class="fc" data-from="Unit 2"><div class="fc-q">Why can't most unstructured data go directly into a star schema?</div><div class="fc-a">It has no attributes or measures. It must first be processed (text mining, UIMA annotators, OCR) to extract structured facts (sentiment score, entities) that can be stored as dimensions or measures.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">Connect BI with Baldrige.</div><div class="fc-a">Baldrige category 4 (Measurement, Analysis &amp; KM) and the core value "management by fact" are what a DW + OLAP + dashboards deliver.</div></div>
+</div>
+
+</div></div>
+
+<div class="chapter-card" id="bi-exam" data-short="Expected Paper">
+  <div class="ch-no">The Examination Hall</div>
+  <h2>Expected Question Paper</h2>
+  <p class="in-which">The 2023 TIT-721 format, with the weighting moved towards Unit 3, which is now in the syllabus.</p>
+</div>
+<div class="sheet"><div class="prose">
+<div class="paper-head">
+  <div class="ph1">TCS-726 · B. Tech. (CSE) (Seventh Semester) · Mid Semester Examination</div>
+  <div class="ph2">Business Intelligence</div>
+  <div class="ph3">Time: 1½ Hours · Maximum Marks: 50 · Answer all questions choosing any one sub-question · each carries 10 marks</div>
+</div>
+<p class="tip"><b>Rationale.</b> In 2023, Baldrige was asked twice and unstructured data three times. Expect at least one of each again. OLAP and OLTP now fill Q4–Q5, based on the professor's slides and Assignment 2 questions.</p>
+
+<div class="qblock"><div class="qno">Question 1 · CO1</div>
+<p><strong>(a)</strong> What are some of the automated IT applications that are a great help to your university in its day-to-day functioning? Explain. <span class="pyq-tag">PYQ 2023</span></p>
+<details class="model"><summary>Model answer blueprint · 1(a)</summary><div class="ans">
+<p class="marks">[Framing 2] + [8–10 applications 6] + [Integration/BI angle 2]</p>
+<ol><li>Frame the university as an enterprise: functions, core process (admission to alumni), and the purposes of IT (automate, integrate, decide).</li>
+<li>Table of applications, with what each automates and its benefit (admission portal, ERP/SIS, LMS, exams, fees, library, HRMS, hostel/transport, placement, attendance, BI dashboards).</li>
+<li>Close: silos → integrated ERP → BI dashboards for NAAC/NIRF (management by fact).</li></ol>
+<p>Content: <a href="#bi-enterprise">§ 1.1</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Explain the Malcolm Baldrige Criteria framework for any organisation and its key components. <span class="pyq-tag">PYQ 2023 (×2)</span></p>
+<details class="model"><summary>Model answer blueprint · 1(b)</summary><div class="ans">
+<p class="marks">[Origin + purpose 1½] + [Diagram 1½] + [7 categories 5] + [Application + evaluation 2]</p>
+<ol><li>1987 Act, NIST, award plus self-assessment; organisational profile.</li><li>Diagram: leadership triad → results triad on the measurement foundation.</li><li>Seven categories, each with a definition and example.</li><li>Scoring (1,000 points, ADLI/LeTCI), core values (management by fact); apply to a university or to Tata (TBEM); pros and cons.</li></ol>
+<p>Content: <a href="#bi-baldrige">§ 1.2</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 2 · CO1</div>
+<p><strong>(a)</strong> What are the processes involved in Business Process Management? <span class="pyq-tag">PYQ 2023</span></p>
+<details class="model"><summary>Model answer blueprint · 2(a)</summary><div class="ans"><ol><li>Definition of business process and BPM; BPM vs BPR.</li><li>Lifecycle diagram: Design → Model (BPMN) → Execute → Monitor → Optimise, with 3–4 lines on each.</li><li>Supporting governance and change management; a worked example (loan approval or university admission); the role of BI in monitoring.</li></ol><p>Content: <a href="#bi-bpm">§ 1.3</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> What is your understanding of the connected world? Discuss the advanced common capabilities of Internet-ready applications. <span class="pyq-tag">PYQ 2023</span></p>
+<details class="model"><summary>Model answer blueprint · 2(b)</summary><div class="ans"><ol><li>Define the connected world (Internet, mobile, cloud, IoT, APIs; anytime, anywhere, any device).</li><li>Capabilities table with examples: multi-channel access, scalability, availability, security, performance, interoperability, personalisation, localisation, collaboration, analytics.</li><li>Implications: data explosion (link to Unit 2) and security or privacy risks.</li></ol><p>Content: <a href="#bi-connected">§ 1.4</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 3 · CO2</div>
+<p><strong>(a)</strong> Differentiate between structured, semi-structured and unstructured data on the basis of structure, examples, storage and retrieval. Identify each type in a hospital that stores patient ID, age, blood group, PDF prescriptions, MRI images and XML exchange files. <span class="pyq-tag">Assignment-style</span></p>
+<details class="model"><summary>Model answer blueprint · 3(a)</summary><div class="ans"><ol><li>Three definitions (the professor's wording for unstructured and semi-structured), plus the 10/10/80 spectrum sketch.</li><li>Comparison table (structure, schema, examples, storage, retrieval, scalability).</li><li>Hospital mapping plus <em>why</em>: typed attributes fit columns; PDFs and images need OCR or vision; XML has tags.</li></ol><p>Content: <a href="#bi-datatypes">§ 2.1</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Discuss best practices for managing the growth of unstructured data. What is the impact of unstructured data on backup and recovery? <span class="pyq-tag">PYQ 2023 (Q3b + Q5a)</span></p>
+<details class="model"><summary>Model answer blueprint · 3(b)</summary><div class="ans"><ol><li>Definition and sources; the six storage challenges (brief).</li><li>Ten best practices (classify, tag, lifecycle, tiering, dedupe/ROT, centralise, index/text-mine/UIMA, govern, monitor, convert).</li><li>Backup impact: volume, many small files, duplication, cost, RTO/RPO, compliance, ransomware; remedies (incremental, dedupe, tiering, 3-2-1, WORM/CAS).</li></ol><p>Content: <a href="#bi-unstructured">§ 2.3</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 4 · CO2</div>
+<p><strong>(a)</strong> Web pages are said to be unstructured data even though they are defined by HTML, which has a rich structure. Why? <span class="pyq-tag">PYQ 2023</span> <em>Also be ready for:</em> explain UIMA with a diagram.</p>
+<details class="model"><summary>Model answer blueprint · 4(a)</summary><div class="ans"><ol><li>Define unstructured data; acknowledge HTML's structure.</li><li>Key argument: HTML describes <em>presentation</em>, not <em>semantics</em> (the <code>&lt;span&gt;</code>-price example); content is free text and media; no common schema across sites; malformed and dynamic pages; SQL-like queries are impossible.</li><li>Consequences: scraping, wrappers, NLP; fixes such as schema.org, JSON-LD and RDF. Note that some authors call web pages semi-structured, and state your position.</li></ol><p>Content: <a href="#bi-unstructured">§ 2.3 (V)</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Can XML data be converted into a structured format? Explain with an example. How does the OEM model represent semi-structured data? <span class="pyq-tag">PYQ 2023 + syllabus</span></p>
+<details class="model"><summary>Model answer blueprint · 4(b)</summary><div class="ans"><ol><li>Semi-structured definition; XML features (user-defined tags, nesting, self-describing, XSD).</li><li>Yes: a worked XML → STUDENT table shred with NULLs; steps 1–5; caveats.</li><li>OEM: TSIMMIS; OID/label/type/value; atomic vs complex; graph sketch showing irregular attributes.</li></ol><p>Content: <a href="#bi-semi">§ 2.4</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 5 · CO3</div>
+<p><strong>(a)</strong> How is OLTP different from ERP? Write some queries that an OLTP system can process easily, and some that it cannot answer. Differentiate OLTP from OLAP. <span class="pyq-tag">PYQ 2023 + extension</span></p>
+<details class="model"><summary>Model answer blueprint · 5(a)</summary><div class="ans"><ol><li>OLTP definition plus ACID; the ERP definition; OLTP vs ERP table ("all ERPs are OLTP").</li><li>4–5 SQL OLTP queries; 3–4 analytical questions it cannot answer, with reasons.</li><li>OLTP vs OLAP table (at least 10 rows).</li></ol><p>Content: <a href="#bi-oltp">§ 3.1</a>, <a href="#bi-olap">§ 3.2</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Explain MOLAP, ROLAP and HOLAP architectures, and the OLAP operations slice, dice, roll-up, drill-down, pivot and drill-across with a suitable example (e.g. a hospital or retail data cube). <span class="pyq-tag">Slides + Assignment 2</span></p>
+<details class="model"><summary>Model answer blueprint · 5(b)</summary><div class="ans"><ol><li>Define the cube (measures, dimensions, hierarchies) with a 3-D sketch.</li><li>Three architectures (diagram plus the advantages and disadvantages table in the professor's words).</li><li>Six operations applied to one running cube; SQL analogues; an operations sketch.</li><li>One line on the star schema beneath the cube and on OLAP's role in the BI architecture.</li></ol><p>Content: <a href="#bi-olaparch">§ 3.3</a>, <a href="#bi-olapops">§ 3.5</a>.</p></div></details>
+</div>
+</div></div>
+
+<nav class="pager" aria-label="Subjects"><a class="pg-prev" href="mba.html">← Innovation &amp; Venture Dev.</a><a class="pg-home" href="index.html">Lobby</a><a class="pg-next" href="llm.html">Large Language Models →</a></nav>
+</section>
+</main>
+<p class="footer">Created by Harshit · Printed on hotel stationery · Good luck in the examination hall</p>
+<script>
+(function(){
+  var store = {
+    get: function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+    set: function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  };
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement;
+  var savedTheme = store.get('almanac-theme');
+  if (savedTheme) root.setAttribute('data-theme', savedTheme);
+  var tt = document.getElementById('themeToggle');
+  function paintToggle(){
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    tt.textContent = dark ? 'Day edition' : 'Night edition';
+  }
+  if (tt){
+    paintToggle();
+    tt.addEventListener('click', function(){
+      var dark = tt.textContent === 'Day edition';
+      var next = dark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next); store.set('almanac-theme', next); paintToggle();
+    });
+  }
+
+  /* ---------- pages: remember where you were reading on each page ---------- */
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var pageKey = 'almanac-scroll-' + (panels[0] ? panels[0].id : 'page');
+  var saveTimer = null;
+  window.addEventListener('scroll', function(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ store.set(pageKey, Math.round(window.scrollY)); }, 250);
+  }, {passive:true});
+  if (!location.hash){
+    var y = store.get(pageKey);
+    if (y && y > 400){
+      var tip = document.createElement('button');
+      tip.type = 'button'; tip.className = 'resume';
+      tip.textContent = 'Continue where you left off ↓';
+      tip.addEventListener('click', function(){ window.scrollTo({top:y}); tip.remove(); });
+      var nav = document.querySelector('.tickets');
+      if (nav) nav.insertAdjacentElement('afterend', tip);
+      setTimeout(function(){ if (tip.isConnected) tip.remove(); }, 12000);
+    }
+  }
+
+  /* ---------- unit nav (auto) ---------- */
+  panels.forEach(function(p){
+    var nav = p.querySelector('.unit-nav');
+    if (!nav) return;
+    p.querySelectorAll('.chapter-card[id]').forEach(function(c){
+      var li = document.createElement('li'); var a = document.createElement('a');
+      a.href = '#'+c.id; a.textContent = c.dataset.short || c.querySelector('h2').textContent;
+      a.addEventListener('click', function(e){ e.preventDefault(); c.scrollIntoView({behavior:'smooth'}); });
+      li.appendChild(a); nav.appendChild(li);
+    });
+  });
+
+  /* ---------- images: graceful fallback ---------- */
+  document.querySelectorAll('.plate img').forEach(function(img){
+    function fail(){
+      var fig = img.closest('.plate'); fig.classList.add('missing');
+      var f = img.closest('.frame'); f.textContent = 'Image could not load here. Read the caption below and draw it from the sketch guide. (' + img.alt + ')';
+    }
+    if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) { fail(); }
+    else img.addEventListener('error', fail);
+  });
+
+  /* ---------- flashcards with Leitner spaced repetition ---------- */
+  document.querySelectorAll('.deck').forEach(function(deck, di){
+    var cards = Array.prototype.slice.call(deck.querySelectorAll('.fc'));
+    if (!cards.length) return;
+    var key = 'almanac-deck-' + (deck.id || di);
+    cards.forEach(function(c){
+      var q = c.querySelector('.fc-q'), a = c.querySelector('.fc-a');
+      var inner = document.createElement('div'); inner.className = 'fc-inner';
+      q.classList.add('fc-face'); a.classList.add('fc-face');
+      if (c.dataset.from){
+        var tag = document.createElement('span'); tag.className = 'from'; tag.textContent = '↺ Cumulative · ' + c.dataset.from;
+        q.insertBefore(tag, q.firstChild);
+      }
+      var s1 = document.createElement('span'); s1.className='side'; s1.textContent='Question — tap to turn';
+      var s2 = document.createElement('span'); s2.className='side'; s2.textContent='Model answer';
+      q.insertBefore(s1, q.firstChild); a.insertBefore(s2, a.firstChild);
+      inner.appendChild(q); inner.appendChild(a); c.appendChild(inner);
+      c.setAttribute('tabindex','0'); c.setAttribute('role','button'); c.setAttribute('aria-label','Flashcard. Press to flip.');
+      c.addEventListener('click', function(e){ if (e.target.closest('a')) return; c.classList.toggle('flipped'); });
+      c.addEventListener('keydown', function(e){ if (e.key===' '||e.key==='Enter'){ e.preventDefault(); c.classList.toggle('flipped'); } });
+    });
+    deck.classList.add('js');
+    var boxes = store.get(key) || {}; // card index -> box 1..3
+    var order = cards.map(function(_,i){return i;});
+    var pos = 0;
+    var ctr = document.createElement('div'); ctr.className = 'deck-controls';
+    ctr.innerHTML = '<button type="button" class="prev">← Previous</button>'+
+      '<span class="count"></span>'+
+      '<button type="button" class="flip">Turn card</button>'+
+      '<button type="button" class="next">Next →</button>'+
+      '<button type="button" class="again">Again</button>'+
+      '<button type="button" class="got">Got it</button>'+
+      '<button type="button" class="shuffle">Review weakest first</button>'+
+      '<span class="boxes"></span>';
+    deck.appendChild(ctr);
+    var count = ctr.querySelector('.count'), bx = ctr.querySelector('.boxes');
+    function render(){
+      cards.forEach(function(c){ c.classList.remove('current','flipped'); });
+      cards[order[pos]].classList.add('current');
+      count.textContent = (pos+1) + ' / ' + cards.length;
+      var b = [0,0,0,0]; cards.forEach(function(_,i){ b[boxes[i]||1]++; });
+      bx.textContent = 'Box 1 (learning): ' + b[1] + ' · Box 2 (review): ' + b[2] + ' · Box 3 (mastered): ' + b[3];
+    }
+    function go(d){ pos = (pos + d + cards.length) % cards.length; render(); }
+    ctr.querySelector('.prev').onclick = function(){ go(-1); };
+    ctr.querySelector('.next').onclick = function(){ go(1); };
+    ctr.querySelector('.flip').onclick = function(){ cards[order[pos]].classList.toggle('flipped'); };
+    ctr.querySelector('.again').onclick = function(){ boxes[order[pos]] = 1; store.set(key, boxes); go(1); };
+    ctr.querySelector('.got').onclick = function(){ var i = order[pos]; boxes[i] = Math.min(3,(boxes[i]||1)+1); store.set(key, boxes); go(1); };
+    ctr.querySelector('.shuffle').onclick = function(){
+      order = cards.map(function(_,i){return i;}).sort(function(a,b){ return ((boxes[a]||1)-(boxes[b]||1)) || (Math.random()-.5); });
+      pos = 0; render();
+    };
+    render();
+  });
+
+  /* ---------- MCQ engine ---------- */
+  document.querySelectorAll('.mcq-bank').forEach(function(bank){
+    var qs = Array.prototype.slice.call(bank.querySelectorAll('.mcq'));
+    var sb = bank.querySelector('.scoreboard');
+    var right = 0, done = 0;
+    function paint(){ if (sb) sb.querySelector('.sc').textContent = 'Score ' + right + ' / ' + done + ' answered · ' + qs.length + ' questions'; }
+    qs.forEach(function(q, i){
+      var ans = q.dataset.answer;
+      var num = q.querySelector('.qn'); if (num) num.textContent = 'Q' + (i+1) + '.';
+      q.querySelectorAll('ol.opts li').forEach(function(li){
+        if (li.dataset.k === ans) li.classList.add('is-key');
+        li.setAttribute('tabindex','0');
+        function pick(){
+          if (q.classList.contains('answered')) return;
+          q.classList.add('answered'); done++;
+          if (li.dataset.k === ans){ right++; li.classList.add('right'); }
+          else { li.classList.add('wrong'); q.querySelector('li[data-k="'+ans+'"]').classList.add('right'); }
+          paint();
+        }
+        li.addEventListener('click', pick);
+        li.addEventListener('keydown', function(e){ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+      });
+    });
+    if (sb) sb.querySelector('button').onclick = function(){
+      right = 0; done = 0;
+      qs.forEach(function(q){ q.classList.remove('answered'); q.querySelectorAll('li').forEach(function(li){ li.classList.remove('right','wrong'); }); });
+      paint();
+    };
+    paint();
+  });
+
+  /* ---------- print: open every model answer ---------- */
+  window.addEventListener('beforeprint', function(){ document.querySelectorAll('details').forEach(function(d){ d.setAttribute('open',''); }); });
+})();
+
+</script>
+</body>
+</html>

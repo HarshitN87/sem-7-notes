@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="620.16" height="595.84" font-family="Liberation Sans,Arial,Nimbus Sans L,Helvetica,sans-serif" font-size="14" font-weight="bold" text-anchor="middle">
+  <defs>
+    <marker id="a" markerHeight="1" markerWidth="1" orient="auto-start-reverse" overflow="visible" preserveAspectRatio="xMidYMid" viewBox="0 0 1 1">
+      <path fill="context-stroke" fill-rule="evenodd" stroke="context-stroke" stroke-width=".5pt" d="M2.885 0-1.44 2.5v-5z"/>
+    </marker>
+    <filter id="b" width="63.931" height="29.107" x="-31.314" y="-13.672" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="1.309"/>
+    </filter>
+  </defs>
+  <g stroke="#658cca" stroke-width="2.5">
+    <path fill="#cad9f0" d="M393.13 203.04h215.96v47.326H393.13z"/>
+    <path fill="#fff" d="M126.97 490.32h217.39v94.778H126.97z"/>
+    <path fill="#cad9f0" d="M129.26 392.42h216.92v73.209H129.26z"/>
+    <path fill="#fff" d="M127.13 297.98h216.92v73.209H127.13z"/>
+    <path fill="#cad9f0" d="M128.05 201.61h216.92v73.209H128.05z"/>
+    <path fill="#fff" d="M127.73 106.18h216.92v73.209H127.73z"/>
+    <path fill="#cad9f0" d="M248.13 9.243h216.92v73.209H248.13zM8.304 9.49h216.92v73.209H8.304z"/>
+  </g>
+  <path fill="#fff" stroke="#658cca" stroke-width="2.5" d="M392.56 298.14h217.13v70.939H392.56z"/>
+  <g id="c" fill="none" stroke-width="2.5" marker-end="url(#a)">
+    <path stroke="#999" d="m177.94 84.394.339 12.71" filter="url(#b)" style="mix-blend-mode:normal"/>
+    <path stroke="#658cca" d="M175.99 82.699v13.303"/>
+  </g>
+  <use xlink:href="#c" transform="translate(143.71 -1.017)"/>
+  <use xlink:href="#c" transform="translate(72.87 95.917)"/>
+  <use xlink:href="#c" transform="translate(72.531 191.83)"/>
+  <use xlink:href="#c" transform="translate(71.853 287.41)"/>
+  <use xlink:href="#c" transform="translate(73.887 383.67)"/>
+  <g id="d" stroke-width="2.5" marker-end="url(#a)">
+    <path fill="#666" stroke="#999" d="m150.38 126.14 37.269.745" filter="url(#b)" style="mix-blend-mode:normal" transform="translate(195.9 101.68)"/>
+    <path fill="none" stroke="#658cca" d="m345.57 225.97 38.169.184"/>
+  </g>
+  <use xlink:href="#d" transform="translate(-1.356 96.595)"/>
+  <text transform="translate(117.061 41.179)"># Records identified through<tspan x="0" y="1em">database searching</tspan></text>
+  <text transform="translate(356.891 42.279)"># Records identified through<tspan x="0" y="1em">other sources</tspan></text>
+  <text transform="translate(238.244 234.642)"># Records screened for<tspan x="0" y="1em">relevance</tspan></text>
+  <text transform="translate(237.928 139.221)"># Records after duplicates<tspan x="0" y="1em">removed</tspan></text>
+  <text transform="translate(235.917 329.667)"># Full-text articles assesed<tspan x="0" y="1em">for eligibility</tspan></text>
+  <text transform="translate(238.022 424.141)"># Studies included in<tspan x="0" y="1em">qualitative synthesis</tspan></text>
+  <text x="500.939" y="228.439"># Records excluded</text>
+  <text transform="translate(501.455 330.039)"># Full-text articles excluded<tspan x="0" y="1em">with reason for excusion</tspan></text>
+  <text transform="translate(235.659 524.486)"># Studies included in<tspan x="0" y="1em">quantitative synthesis (meta-</tspan><tspan x="0" y="2em">analysis), if any</tspan></text>
+</svg>

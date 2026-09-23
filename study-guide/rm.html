@@ -1,0 +1,1388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Almanac · Research Methodology</title>
+<meta name="description" content="Mid-semester study guide, B.Tech CSE Semester VII: Research Methodology &amp; IPR">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Courier+Prime&display=swap">
+<style>
+/* ============ The Mid-Semester Almanac — tokens ============ */
+:root{
+  color-scheme: light;
+  --ground:#F4DEDC;          /* blush wallpaper */
+  --paper:#FFF9F2;           /* hotel stationery */
+  --paper-2:#FBEFE6;
+  --ink:#2C1D28;             /* aubergine ink */
+  --muted:#6B5462;
+  --rule:#D2AFAA;
+  --rule-strong:#9C6F72;
+  --stamp:#8E2F45;
+  --good:#3E7D5A; --good-soft:#DDEFE3;
+  --bad:#A8392E;  --bad-soft:#F6DCD7;
+  --fig-ground:#FFFFFF;
+  --shadow: 0 1px 0 rgba(44,29,40,.06), 0 10px 24px -14px rgba(44,29,40,.35);
+  /* default accent (lobby) */
+  --acc:#8E2F45; --acc2:#5B3A6E; --acc-soft:#F2D2D8; --acc-ink:#FFF9F2;
+  --display:"Jost","Futura","Century Gothic","Trebuchet MS",sans-serif;
+  --body:"Libre Caslon Text","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --mono:"Courier Prime","Courier New",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+    --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+    --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+    --fig-ground:#F7F1EA;
+    --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+    --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+  --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+  --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+  --fig-ground:#F7F1EA;
+  --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+  --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+}
+
+/* per-film subject palettes */
+[data-subject="rm"] { --acc:#A83F63; --acc2:#6B2D5C; --acc-soft:#F5D6DF; }
+[data-subject="aca"]{ --acc:#C0433A; --acc2:#2F6F95; --acc-soft:#D8E9F3; }
+[data-subject="mba"]{ --acc:#A87A12; --acc2:#5E6B3A; --acc-soft:#F4E6BC; }
+[data-subject="bi"] { --acc:#23857C; --acc2:#C8703F; --acc-soft:#D2EEEA; }
+[data-subject="llm"]{ --acc:#BD5A22; --acc2:#6E4A2F; --acc-soft:#F7DDC8; }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+  :root:not([data-theme="light"]) [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+  :root:not([data-theme="light"]) [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+  :root:not([data-theme="light"]) [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+  :root:not([data-theme="light"]) [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+}
+:root[data-theme="dark"] [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+:root[data-theme="dark"] [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+:root[data-theme="dark"] [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+:root[data-theme="dark"] [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+:root[data-theme="dark"] [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+
+/* ============ base ============ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.68;
+  padding-inline:16px; padding-block:0 64px;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 46px, color-mix(in srgb, var(--rule) 22%, transparent) 46px 48px);
+}
+a{color:var(--acc)}
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible{outline:3px solid var(--acc2); outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--display); font-weight:500; text-wrap:balance; line-height:1.2}
+p{margin:0 0 1em}
+.wrap{max-width:1040px; margin-inline:auto}
+
+/* ============ proscenium header ============ */
+.marquee{max-width:1040px; margin:28px auto 0; text-align:center; background:var(--paper);
+  border:1px solid var(--rule-strong); outline:6px double var(--rule); outline-offset:-14px;
+  padding:44px 28px 30px; box-shadow:var(--shadow); position:relative}
+.marquee .eyebrow{font-family:var(--display); letter-spacing:.42em; text-transform:uppercase; font-size:12px; color:var(--muted)}
+.marquee h1{font-size:clamp(34px,6vw,64px); letter-spacing:.14em; text-transform:uppercase; margin:.28em 0 .1em; color:var(--stamp); font-weight:500}
+.marquee .sub{font-family:var(--body); font-style:italic; color:var(--muted); font-size:18px}
+.marquee .fleuron{font-family:var(--display); color:var(--rule-strong); letter-spacing:.8em; margin:14px 0 0}
+.theme-toggle{position:absolute; top:18px; right:22px; font-family:var(--display); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; background:transparent; border:1px solid var(--rule-strong); color:var(--muted); padding:6px 10px; cursor:pointer}
+
+/* ============ ticket-stub tabs ============ */
+.tickets{max-width:1040px; margin:22px auto 0; display:grid; grid-template-columns:repeat(6,1fr); gap:10px;
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20; padding-block:10px; background:var(--ground)}
+.ticket{font:inherit; cursor:pointer; text-align:left; background:var(--paper); color:var(--ink);
+  border:1px solid var(--rule-strong); padding:10px 12px 9px; position:relative; min-width:0;
+  -webkit-mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+          mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+  transition:transform .18s ease, background .18s}
+.ticket:hover{transform:translateY(-2px)}
+.ticket .t-date{display:block; font-family:var(--mono); font-size:12px; color:var(--acc); letter-spacing:.06em}
+.ticket .t-name{display:block; font-family:var(--display); font-size:13.5px; letter-spacing:.08em; text-transform:uppercase; line-height:1.25; overflow-wrap:anywhere}
+.ticket .t-code{display:block; font-family:var(--mono); font-size:11px; color:var(--muted)}
+.ticket[aria-selected="true"]{background:var(--acc); color:var(--acc-ink)}
+.ticket[aria-selected="true"] .t-date,.ticket[aria-selected="true"] .t-code{color:var(--acc-ink); opacity:.85}
+@media (max-width:820px){ .tickets{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:460px){ .tickets{grid-template-columns:repeat(2,1fr); position:static} }
+
+/* ============ panels & paper ============ */
+.panel{max-width:1040px; margin:18px auto 0}
+.panel[hidden]{display:none!important}
+.sheet{background:var(--paper); border:1px solid var(--rule); box-shadow:var(--shadow); padding:clamp(20px,4vw,56px); margin-top:22px}
+.prose{max-width:70ch; margin-inline:auto}
+.subject-title{text-align:center; padding-block:10px 4px}
+.subject-title .code{font-family:var(--mono); color:var(--acc); letter-spacing:.12em}
+.subject-title h2{font-size:clamp(28px,4.4vw,46px); letter-spacing:.12em; text-transform:uppercase; margin:.2em 0; color:var(--acc2)}
+.subject-title .meta{font-style:italic; color:var(--muted)}
+.unit-nav{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:18px 0 0; padding:0; list-style:none}
+.unit-nav a{font-family:var(--display); font-size:12px; letter-spacing:.18em; text-transform:uppercase; text-decoration:none;
+  color:var(--acc2); border:1px solid var(--acc2); padding:6px 12px; background:var(--paper)}
+.unit-nav a:hover{background:var(--acc-soft)}
+
+/* intertitle chapter card */
+.chapter-card{background:var(--acc-soft); border:1px solid var(--acc); outline:4px double var(--acc); outline-offset:-12px;
+  text-align:center; padding:46px 24px 40px; margin-top:34px; scroll-margin-top:110px}
+.chapter-card .ch-no{font-family:var(--display); letter-spacing:.5em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.chapter-card h2{font-size:clamp(26px,4vw,40px); letter-spacing:.1em; text-transform:uppercase; margin:.3em 0 .25em; color:var(--ink)}
+.chapter-card .in-which{font-style:italic; color:var(--muted); max-width:52ch; margin:0 auto}
+.chapter-card .syll{font-family:var(--mono); font-size:13px; color:var(--muted); margin-top:14px; max-width:70ch; margin-inline:auto}
+
+/* topic */
+.topic{scroll-margin-top:110px}
+.topic > h3{font-size:clamp(22px,3vw,30px); letter-spacing:.06em; text-transform:uppercase; color:var(--acc2);
+  border-bottom:2px solid var(--acc); padding-bottom:.35em; margin:1.6em 0 .8em}
+.topic > h3 .tno{font-family:var(--mono); font-size:.6em; color:var(--acc); letter-spacing:.05em; display:block; text-transform:none}
+.facet{font-family:var(--display); font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:var(--acc);
+  margin:1.8em 0 .6em; display:flex; align-items:center; gap:12px}
+.facet::after{content:""; flex:1; height:1px; background:var(--rule)}
+.prose h5{font-family:var(--display); font-size:16px; letter-spacing:.06em; margin:1.3em 0 .4em; color:var(--ink); font-weight:600}
+.prose ul,.prose ol{padding-left:1.3em; margin:0 0 1em}
+.prose li{margin-bottom:.35em}
+.prose strong{color:var(--acc2); font-weight:700}
+.defn{border-left:4px solid var(--acc); background:var(--paper-2); padding:14px 18px; margin:0 0 1em; font-style:italic}
+.defn b{font-style:normal; font-family:var(--display); letter-spacing:.06em; text-transform:uppercase; font-size:13px; color:var(--acc); display:block; margin-bottom:4px}
+.plain{background:var(--acc-soft); padding:12px 16px; margin:0 0 1em; border-radius:2px}
+.plain::before{content:"In plain words — "; font-family:var(--display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acc)}
+.formula{font-family:var(--mono); background:var(--paper-2); border:1px dashed var(--rule-strong); padding:12px 16px; margin:0 0 1em; overflow-x:auto; white-space:pre; font-size:15px; line-height:1.55}
+.checklist{border:2px solid var(--acc2); padding:16px 20px 8px; margin:1em 0 1.6em; background:var(--paper); position:relative}
+.checklist::before{content:"Evaluator's Scoring Checklist"; position:absolute; top:-12px; left:16px; background:var(--paper); padding:0 8px;
+  font-family:var(--display); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--acc2)}
+.checklist ul{list-style:none; padding-left:0}
+.checklist li{padding-left:1.6em; position:relative}
+.checklist li::before{content:"✓"; position:absolute; left:0; color:var(--good); font-weight:700}
+.tip{font-size:15px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:10px 0; margin:0 0 1em; color:var(--muted)}
+.tip b{font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+
+/* tables */
+.tbl{overflow-x:auto; margin:0 0 1.2em}
+.tbl table{border-collapse:collapse; width:100%; font-size:15px; min-width:520px}
+.tbl th{font-family:var(--display); font-weight:500; letter-spacing:.06em; text-align:left; background:var(--acc-soft); color:var(--ink); border-bottom:2px solid var(--acc)}
+.tbl th,.tbl td{padding:8px 10px; border-bottom:1px solid var(--rule); vertical-align:top}
+.tbl td{font-variant-numeric:tabular-nums}
+
+/* figures */
+.plate{margin:1.4em auto 1.8em; max-width:760px; text-align:center}
+.plate .frame{background:var(--fig-ground); border:1px solid var(--rule-strong); outline:5px solid var(--paper-2); padding:14px; overflow-x:auto}
+.plate img{display:block; margin:0 auto; max-height:520px; width:auto; max-width:100%}
+.plate svg{display:block; margin:0 auto; max-width:100%; height:auto}
+.plate.svgplate .frame{background:var(--paper)}
+.plate figcaption{text-align:left; font-size:14.5px; color:var(--muted); margin-top:10px; line-height:1.55}
+.plate figcaption .pl{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+.plate figcaption .sketch{display:block; margin-top:6px; font-family:var(--mono); font-size:13px; color:var(--ink)}
+.plate figcaption .credit{display:block; font-size:12px; margin-top:4px}
+.plate.missing .frame{padding:30px; font-style:italic; color:var(--muted)}
+/* svg tokens */
+.dg text{font-family:var(--display); fill:var(--ink); font-size:13px}
+.dg .box{fill:var(--paper-2); stroke:var(--acc2); stroke-width:1.6}
+.dg .box2{fill:var(--acc-soft); stroke:var(--acc); stroke-width:1.6}
+.dg .box3{fill:var(--paper); stroke:var(--rule-strong); stroke-width:1.2; stroke-dasharray:4 3}
+.dg .ln{stroke:var(--ink); stroke-width:1.6; fill:none}
+.dg .ln2{stroke:var(--acc); stroke-width:1.8; fill:none}
+.dg .lnd{stroke:var(--muted); stroke-width:1.4; fill:none; stroke-dasharray:5 4}
+.dg .small{font-size:11px; fill:var(--muted)}
+.dg .hd{font-size:14px; letter-spacing:.08em; font-weight:600}
+.dg .ac{fill:var(--acc)}
+.dg .mk{fill:var(--ink)} .dg .mk2{fill:var(--acc)}
+
+/* exam blueprint + model answers */
+.paper-head{text-align:center; border:1px solid var(--ink); padding:18px; font-family:var(--display); margin-bottom:18px; background:var(--paper)}
+.paper-head .ph1{letter-spacing:.3em; text-transform:uppercase; font-size:13px}
+.paper-head .ph2{font-size:22px; letter-spacing:.1em; text-transform:uppercase; margin:6px 0}
+.paper-head .ph3{font-family:var(--mono); font-size:13px; color:var(--muted)}
+.qblock{border-top:1px solid var(--rule-strong); padding-top:10px; margin-top:22px}
+.qblock > .qno{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.pyq-tag{display:inline-block; font-family:var(--mono); font-size:11.5px; border:1px solid var(--acc); color:var(--acc); padding:0 6px; margin-left:6px; vertical-align:middle}
+details.model{border:1px solid var(--rule-strong); background:var(--paper); margin:10px 0}
+details.model > summary{cursor:pointer; list-style:none; padding:12px 16px 12px 46px; position:relative; font-weight:600}
+details.model > summary::-webkit-details-marker{display:none}
+details.model > summary::before{content:"+"; position:absolute; left:14px; top:9px; width:22px; height:22px; border:1px solid var(--acc); color:var(--acc);
+  display:grid; place-items:center; font-family:var(--display)}
+details.model[open] > summary::before{content:"–"}
+details.model[open] > summary{border-bottom:1px dashed var(--rule)}
+details.model .ans{padding:14px 18px 6px}
+details.model .ans .marks{font-family:var(--mono); font-size:12.5px; color:var(--acc)}
+.or{text-align:center; font-family:var(--display); letter-spacing:.4em; color:var(--muted); font-size:12px; margin:4px 0}
+
+/* ============ flashcards ============ */
+.deck{margin:2em 0 1em; border:1px solid var(--acc2); background:var(--acc-soft); padding:22px clamp(12px,3vw,28px) 18px}
+.deck > .deck-title{font-family:var(--display); letter-spacing:.24em; text-transform:uppercase; text-align:center; font-size:14px; color:var(--acc2); margin:0 0 4px}
+.deck > .deck-sub{text-align:center; font-style:italic; color:var(--muted); font-size:14.5px; margin:0 0 14px}
+.fc{margin:10px 0}
+.fc-inner{display:grid; perspective:1400px}
+.fc-face{grid-area:1/1; background:var(--paper); border:1px solid var(--rule-strong); padding:22px 24px; min-height:210px;
+  backface-visibility:hidden; -webkit-backface-visibility:hidden; transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.fc-q{display:flex; flex-direction:column; justify-content:center; text-align:center; font-family:var(--display); font-size:19px; letter-spacing:.02em}
+.fc-a{transform:rotateY(180deg); font-size:15.5px}
+.fc.flipped .fc-q{transform:rotateY(-180deg)}
+.fc.flipped .fc-a{transform:rotateY(0deg)}
+.fc-face .side{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:10px}
+.fc .from{display:inline-block; font-family:var(--mono); font-size:11px; background:var(--acc2); color:var(--paper); padding:1px 7px; margin-bottom:10px; align-self:center}
+.deck.js .fc{display:none; cursor:pointer}
+.deck.js .fc.current{display:block}
+.deck-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; margin-top:12px}
+.deck-controls button, .btn{font-family:var(--display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; cursor:pointer;
+  background:var(--paper); color:var(--ink); border:1px solid var(--rule-strong); padding:8px 12px}
+.deck-controls button.again{border-color:var(--bad); color:var(--bad)}
+.deck-controls button.got{border-color:var(--good); color:var(--good)}
+.deck-controls .count{font-family:var(--mono); font-size:13px; color:var(--muted); min-width:9ch; text-align:center}
+.deck-controls .boxes{font-family:var(--mono); font-size:12px; color:var(--muted); width:100%; text-align:center}
+
+/* ============ MCQ ============ */
+.mcq{background:var(--paper); border:1px solid var(--rule); padding:16px 18px 10px; margin:14px 0}
+.mcq .stem{font-weight:600; margin-bottom:10px}
+.mcq .stem .qn{font-family:var(--mono); color:var(--acc); margin-right:6px}
+.mcq ol.opts{list-style:none; padding:0; margin:0 0 8px; display:grid; gap:6px}
+.mcq ol.opts li{border:1px solid var(--rule); padding:8px 12px 8px 40px; position:relative; cursor:pointer; background:var(--paper-2)}
+.mcq ol.opts li::before{content:attr(data-k); position:absolute; left:10px; top:7px; font-family:var(--mono); color:var(--acc); text-transform:uppercase}
+.mcq ol.opts li:hover{border-color:var(--acc)}
+.mcq.answered ol.opts li{cursor:default}
+.mcq ol.opts li.right{background:var(--good-soft); border-color:var(--good)}
+.mcq ol.opts li.wrong{background:var(--bad-soft); border-color:var(--bad); text-decoration:line-through; text-decoration-color:var(--bad)}
+.mcq .why{display:none; font-size:15px; border-top:1px dashed var(--rule); padding-top:10px; margin-top:6px}
+.mcq.answered .why{display:block}
+.mcq .why b.key{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:12px; color:var(--good)}
+.scoreboard{position:sticky; top:84px; z-index:5; display:flex; justify-content:center; gap:14px; align-items:center; background:var(--acc2); color:var(--paper);
+  font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; padding:8px 12px; margin:12px 0}
+.scoreboard button{background:transparent; color:var(--paper); border:1px solid var(--paper); font:inherit; padding:3px 8px; cursor:pointer}
+@media (max-width:460px){ .scoreboard{position:static} }
+
+/* lobby */
+.grid-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:16px 0}
+.lobby-card{background:var(--acc-soft); border:1px solid var(--acc); padding:18px; text-align:center}
+.lobby-card .ld{font-family:var(--mono); color:var(--acc)}
+.lobby-card h4{margin:.3em 0; letter-spacing:.1em; text-transform:uppercase; font-size:17px}
+.lobby-card p{font-size:14.5px; color:var(--muted); margin:.4em 0 .8em}
+.note-box{border:1px solid var(--stamp); padding:14px 18px; background:var(--paper-2); margin:1em 0}
+.note-box b.h{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:12px; color:var(--stamp); display:block}
+.footer{text-align:center; font-family:var(--display); letter-spacing:.3em; text-transform:uppercase; font-size:11px; color:var(--muted); margin-top:40px}
+
+/* ============ print ============ */
+@media print{
+  body{background:#fff; color:#000; padding:0; font-size:11pt}
+  .tickets,.theme-toggle,.deck-controls,.scoreboard,.unit-nav{display:none!important}
+  .panel[hidden]{display:block!important}
+  .panel{page-break-before:always}
+  .sheet,.marquee{box-shadow:none; border:none; outline:none}
+  .chapter-card{page-break-before:always; outline:none}
+  .deck.js .fc{display:block!important; page-break-inside:avoid}
+  .fc-inner{display:block}
+  .fc-face{transform:none!important; min-height:0; border:none; border-bottom:1px solid #999; padding:6px 0}
+  .fc-q{font-size:12pt; text-align:left; font-weight:600}
+  .mcq .why{display:block!important}
+  .plate{page-break-inside:avoid}
+  details.model > summary::before{display:none}
+  details.model > summary{padding-left:12px}
+}
+@media print{ .mcq ol.opts li.is-key{border:2px solid #000; font-weight:700} .mcq ol.opts li.is-key::after{content:"  ✓ correct"} }
+.prose code{font-family:var(--mono); font-size:.92em; background:var(--paper-2); padding:0 4px; overflow-wrap:anywhere; word-break:break-word}
+.formula code{background:none; padding:0}
+/* "Starting from zero" beginner boxes */
+.zero{background:var(--paper-2); border:2px dashed var(--acc); padding:18px 20px 8px; margin:0 0 1.6em; position:relative; font-size:16.5px}
+.zero-h{font-family:var(--display); letter-spacing:.22em; text-transform:uppercase; font-size:12.5px; color:var(--acc-ink); background:var(--acc); display:inline-block; padding:3px 10px; margin:-4px 0 12px}
+.zero p, .zero li{line-height:1.72}
+.zero-f{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:11.5px; color:var(--muted); text-align:right; margin:.4em 0 .6em}
+/* ============ multi-page navigation ============ */
+a.ticket{display:block; text-decoration:none}
+a.ticket[aria-current="page"]{background:var(--acc); color:var(--acc-ink)}
+a.ticket[aria-current="page"] .t-date, a.ticket[aria-current="page"] .t-code{color:var(--acc-ink); opacity:.85}
+.marquee a{color:inherit; text-decoration:none}
+.marquee h1 a:hover{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px}
+.marquee-slim{padding:26px 24px 18px}
+.marquee-slim h1{font-size:clamp(24px,3.6vw,38px)}
+.marquee-slim .fleuron{margin-top:8px}
+.pager{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:stretch; margin:36px 0 0}
+.pager a{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:13px; text-decoration:none;
+  color:var(--ink); background:var(--paper); border:1px solid var(--rule-strong); padding:14px 16px; display:flex; align-items:center}
+.pager a:hover{background:var(--acc-soft)}
+.pager .pg-next{justify-content:flex-end; text-align:right}
+.pager .pg-home{color:var(--acc)}
+@media (max-width:560px){ .pager{grid-template-columns:1fr} .pager .pg-next{justify-content:flex-start; text-align:left} }
+.resume{display:block; margin:10px auto 0; font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px;
+  background:var(--acc2); color:var(--paper); border:0; padding:9px 16px; cursor:pointer}
+@media print{ .pager,.resume{display:none!important} .panel{page-break-before:auto} }
+.marquee .eyebrow{padding-inline:130px}
+@media (max-width:980px){
+  .marquee .eyebrow{padding-inline:0}
+  .theme-toggle{position:static; display:block; margin:0 auto 14px}
+}
+.marquee .credit-line{font-family:var(--display); letter-spacing:.34em; text-transform:uppercase; font-size:11.5px; color:var(--acc); margin-top:10px}
+
+</style>
+</head>
+<body>
+<header class="marquee marquee-slim">
+  <button class="theme-toggle" id="themeToggle" type="button">Night edition</button>
+  <div class="eyebrow"><a href="index.html">B.Tech CSE · Semester VII · Graphic Era (Deemed to be University)</a></div>
+  <h1><a href="index.html">The Mid-Semester Almanac</a></h1>
+  <div class="sub">Research Methodology &amp; IPR · exam on 26 Sept · TRM-701</div>
+  <div class="credit-line">Created by Harshit</div>
+  <div class="fleuron">◆ ◆ ◆</div>
+</header>
+<nav class="tickets" aria-label="Subjects"><a class="ticket" href="index.html"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="rm.html" aria-current="page"><span class="t-date">26 Sept</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="aca.html"><span class="t-date">28 Sept</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="mba.html"><span class="t-date">29 Sept</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a><a class="ticket" href="bi.html"><span class="t-date">30 Sept</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="llm.html"><span class="t-date">03 Oct</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a></nav>
+<main>
+<section class="panel" id="rm" data-subject="rm">
+<div class="sheet">
+  <div class="subject-title">
+    <div class="code">TRM-701 · EXAM ON SATURDAY 26 SEPTEMBER</div>
+    <h2>Research Methodology &amp; IPR</h2>
+    <div class="meta">Units 1–3 · from the research problem to the review committee</div>
+    <ul class="unit-nav"></ul>
+  </div>
+  <div class="prose">
+    <p class="tip"><b>How this paper will be set.</b> No RM &amp; IPR paper was supplied, so this guide uses the department's standard mid-semester format: 5 questions × (a) OR (b), 10 marks each. Expect Q1–Q2 from Unit 1 (CO1: problem formulation), Q3–Q4 from Unit 2 (CO2, CO3: literature analysis, plagiarism and ethics), and Q5 from Unit 3 (technical writing and proposals). The full expected paper is at the end of this guide.</p>
+  </div>
+</div>
+
+<!-- ======================= UNIT 1 ======================= -->
+<div class="chapter-card" id="rm-u1" data-short="Unit 1 · The Research Problem">
+  <div class="ch-no">Unit One</div>
+  <h2>The Research Problem</h2>
+  <p class="in-which">From noticing a problem to setting up the tools to solve it.</p>
+  <p class="syll">Syllabus: meaning of research problem · sources · criteria/characteristics of a good problem · errors in selection · scope &amp; objectives · approaches of investigation · data collection · analysis · interpretation · necessary instrumentation</p>
+</div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="rm-problem">
+<h3><span class="tno">§ 1.1</span>Meaning of a Research Problem</h3>
+
+<div class="facet">I · Definition &amp; Core Premise</div>
+<div class="defn"><b>Professor's definition</b>A research problem is a question, issue, or difficulty that needs to be studied and solved through systematic research. It is the <em>gap between what we know and what we want to know</em>.</div>
+<p class="plain">Research starts when you notice something is missing. You know some things (current knowledge), you want to know or achieve something more (desired knowledge), and the space between them is the research problem.</p>
+<p>At its core, research is a <strong>systematic search for knowledge</strong>, a disciplined way of exploring the unknown. A research problem appears when a person or organisation faces a challenge, theoretical or practical, and does not know the best solution. Without a clear problem there is nothing to organise the research around: no objectives, no data to collect, no way to judge whether you succeeded. The research problem is the reason every later step exists.</p>
+
+<figure class="plate svgplate">
+  <div class="frame">
+  <svg class="dg" viewBox="0 0 640 170" role="img" aria-label="Current knowledge, identified gap, desired knowledge">
+    <defs><marker id="rmA1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+    <rect x="10" y="45" width="170" height="80" rx="4" class="box"/>
+    <text x="95" y="80" text-anchor="middle" class="hd">CURRENT</text><text x="95" y="98" text-anchor="middle" class="hd">KNOWLEDGE</text>
+    <text x="95" y="145" text-anchor="middle" class="small">(what we know)</text>
+    <rect x="235" y="30" width="170" height="110" rx="4" class="box2"/>
+    <text x="320" y="78" text-anchor="middle" class="hd">IDENTIFIED GAP</text>
+    <text x="320" y="98" text-anchor="middle" class="small">= THE RESEARCH PROBLEM</text>
+    <text x="320" y="160" text-anchor="middle" class="small">(what is missing)</text>
+    <rect x="460" y="45" width="170" height="80" rx="4" class="box"/>
+    <text x="545" y="80" text-anchor="middle" class="hd">DESIRED</text><text x="545" y="98" text-anchor="middle" class="hd">KNOWLEDGE</text>
+    <text x="545" y="145" text-anchor="middle" class="small">(what we want to know)</text>
+    <line x1="182" y1="85" x2="231" y2="85" class="ln" marker-end="url(#rmA1)"/>
+    <line x1="407" y1="85" x2="456" y2="85" class="ln" marker-end="url(#rmA1)"/>
+  </svg>
+  </div>
+  <figcaption><span class="pl">Plate 1.1 · The knowledge gap</span> The professor's own model of a research problem: three boxes joined by arrows, with the middle box highlighted as the problem.
+  <span class="sketch">How to sketch: three rectangles left to right, labelled Current Knowledge → Identified Gap → Desired Knowledge. Shade the middle one and write "research problem" under it.</span></figcaption>
+</figure>
+
+<div class="facet">II · First-Principles Breakdown</div>
+<p>Ask where problems come from and you find a simple structure. There must be <em>someone</em> who is troubled, a <em>setting</em> the trouble happens in, a <em>goal</em> they want, <em>several ways</em> they could act, and real <em>doubt</em> about which way is best. If any of these is missing you do not have a research problem. With no goal there is nothing to solve. With only one possible solution it is a task, not research. With no doubt about the answer you would just apply it. The professor lists this as six key features.</p>
+
+<div class="facet">III · The Six Key Features (the theoretical core)</div>
+<ol>
+  <li><strong>An individual, group or organisation faces a difficulty.</strong> Example: a software company struggles with slow app performance.</li>
+  <li><strong>The problem exists in a specific environment.</strong> The slowdown happens only when many users are active on the cloud system. The environment sets the conditions under which the problem must be studied.</li>
+  <li><strong>Clear objectives are present.</strong> The company wants faster response time and lower server usage. Objectives turn a vague complaint into something you can measure.</li>
+  <li><strong>Multiple possible solutions exist.</strong> Improve database queries, add caching, or refactor the code.</li>
+  <li><strong>The solutions have unequal effectiveness.</strong> Caching may give better performance but is harder to implement, so the options really are different.</li>
+  <li><strong>There is uncertainty about the best solution.</strong> The company does not know which method gives the best result. Research exists to remove this uncertainty with evidence.</li>
+</ol>
+
+<div class="facet">IV · Real-World Case</div>
+<p>Suppose a food-delivery platform notices that its average checkout time goes from 1.2 s to 4.8 s every evening between 8 and 10 pm. All six features apply. The <em>party</em> is the engineering team. The <em>environment</em> is peak-hour traffic on a microservice cloud stack. The <em>objective</em> is checkout under 2 s at the 95th percentile. The <em>alternatives</em> are horizontal autoscaling, a read-replica database, or a Redis cache for the menu service. They have <em>unequal effectiveness</em>: autoscaling costs money, caching risks showing stale prices. There is real <em>uncertainty</em>. Written as a research problem: <em>"Which combination of caching and autoscaling minimises peak-hour checkout latency for a microservice food-delivery platform within a fixed cloud budget?"</em></p>
+
+<div class="facet">V · Critical Evaluation</div>
+<p>This framework is useful because it tests whether a topic is really a research problem. The same test also shows its limits. Pure <em>exploratory</em> research, for example "what are the experiences of gig workers?", often starts without clearly listed alternative solutions. There the "multiple solutions" feature is replaced by "multiple possible explanations". Formulating the problem is also iterative: the literature review (Unit 2) often reshapes the first statement, so the problem should be treated as a working hypothesis that you refine, not something fixed on day one.</p>
+
+<div class="checklist"><ul>
+  <li>Professor's exact definition: a <em>gap between what we know and what we want to know</em>, studied through <em>systematic research</em>.</li>
+  <li>The Current Knowledge → Gap → Desired Knowledge diagram.</li>
+  <li>All six features in order, each with a one-line example.</li>
+  <li>A well-framed sample problem statement written as a question.</li>
+  <li>Link to the next step: the problem leads to objectives, which lead to methodology.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-sources">
+<h3><span class="tno">§ 1.2</span>Sources of Research Problems</h3>
+<div class="facet">I · Definition &amp; Core Premise</div>
+<div class="defn"><b>Core premise</b>Research problems do not appear randomly. They are <em>discovered</em> by looking carefully at the world. A problem usually arises when we see a <em>gap, a difficulty, or a need for improvement</em>.</div>
+<p class="plain">You find good research questions in a few places: what others have written, what experts complain about, what the data shows, what small trials reveal, what fascinates you, what industry struggles with, and what famous successes and failures teach.</p>
+
+<div class="facet">II–III · The Seven Sources, Explained</div>
+<h5>1. Literature review (books, papers, past research)</h5>
+<p>Published work shows three kinds of openings: <strong>gaps in existing theories</strong>, <strong>conflicting findings</strong> (two studies disagree, so the truth is unsettled), and <strong>new applications of old ideas</strong>. Example: papers on Reinforcement Learning show that RL algorithms struggle with sample efficiency in robotics, which gives the problem <em>"How can RL be made faster for robotic control?"</em></p>
+<h5>2. Discussions with experts and colleagues</h5>
+<p>Practitioners know about problems that have not reached the journals yet. An AI engineer mentions <em>model drift</em> in deployed ML systems, which gives the problem <em>"How can models be retrained effectively under real-time data drift?"</em></p>
+<h5>3. Examination of data and records</h5>
+<p>Logs, datasets and historical records contain anomalies that need explaining. Network traffic logs show spikes at odd hours, which gives <em>"How can anomalies in enterprise network traffic be detected?"</em></p>
+<h5>4. Pilot studies and exploratory investigations</h5>
+<p>A small survey or trial before the main study shows where the real difficulties are. Testing a new mobile app reveals usability issues, which gives <em>"How can UI design be improved using early user feedback?"</em></p>
+<h5>5. Personal interest and curiosity</h5>
+<p>Motivation keeps a researcher going through months of work, so a problem you care about is worth something. Interest in quantum computing gives <em>"How can quantum-circuit simulation be optimised on classical computers?"</em></p>
+<h5>6. Real-life situations and industry needs</h5>
+<p>Practical pain points from daily life or business. Manual code reviews take too long, which gives <em>"Can AI-powered tools reduce code-review time while maintaining quality?"</em></p>
+<h5>7. Case studies and insight-stimulating examples</h5>
+<p>Studying a notable success or failure brings hidden issues to light. Large cybersecurity breaches expose weaknesses, which gives <em>"How can we defend against zero-day exploits in containerised environments?"</em></p>
+
+<div class="facet">IV · Real-World Case</div>
+<p>The Transformer paper <em>"Attention Is All You Need"</em> (2017) came from source 1 and source 6 together. The literature showed that recurrent networks were slow to train because they process tokens one after another, and Google's translation business needed faster training on huge corpora. A gap in the literature matched an industrial need, and that combination tends to produce the most significant problems.</p>
+
+<div class="facet">V · Critical Evaluation</div>
+<p>No single source is enough. Problems that come only from personal curiosity may lack significance. Problems taken only from industry may lack novelty. Problems taken only from the literature may lack real-world relevance. A strong researcher <strong>triangulates</strong>: find the gap in the literature, confirm with experts or data that it matters, and check with a pilot study that it can be tackled.</p>
+<div class="checklist"><ul>
+  <li>Name all seven sources in the professor's order.</li>
+  <li>For each source, give an example that <em>ends in a problem written as a question</em> (the professor's pattern).</li>
+  <li>Mention the three openings in the literature: gaps, conflicting findings, new applications of old ideas.</li>
+  <li>Finish with the idea of triangulating across sources.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-criteria">
+<h3><span class="tno">§ 1.3</span>Criteria &amp; Characteristics of a Good Research Problem</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Professor's six criteria</b>A good research problem should be (1) <em>Clear &amp; well-defined</em>, (2) <em>Feasible</em> (time and resources available), (3) <em>Researchable</em> (data available), (4) <em>Significant</em> (solves real issues), (5) <em>Novel</em> (adds value), and (6) <em>Ethical</em>.</div>
+<p class="plain">Before committing months to a topic, check it against six tests. Can you state it exactly? Can you finish it? Can you get data for it? Does it matter? Is it new? Is it right to do?</p>
+
+<div class="facet">II–III · Each Criterion From First Principles</div>
+<p><strong>1. Clear &amp; well-defined.</strong> The problem must be stated precisely with no ambiguity. A vague or broad problem leads to confusion, wasted effort and irrelevant results. <em>"Study climate change"</em> is not a research problem. <em>"Assess the impact of rising average summer temperatures on rice production in Uttar Pradesh, India, 2000–2020"</em> is, because it fixes the variable, the outcome, the place and the period. Clarity means the researcher, the guide and the readers all understand exactly what is being studied.</p>
+<p><strong>2. Feasible.</strong> The problem must be realistic for the available time, funding, manpower and technology. A single student cannot map "global poverty trends over the past 100 years" but can study "poverty trends in rural districts of Uttar Pradesh in the past 20 years". Feasibility is what makes completion possible.</p>
+<p><strong>3. Researchable.</strong> It must be possible to collect, access and analyse data, either primary (surveys, experiments) or secondary (published reports). "The effect of social media on mental health" is researchable because survey instruments, datasets and clinical studies exist. The problem must be framed so the answer can be based on evidence.</p>
+<p><strong>4. Significant.</strong> It should contribute to society, academia, industry or policy, not be research for its own sake. "Causes of water scarcity in rural areas" is significant because it can inform policy and help communities.</p>
+<p><strong>5. Novel.</strong> It should add something new: a fresh perspective, a better method, a new application or an unexplored area. Novelty does <em>not</em> have to mean a completely new discovery. Filling a gap, challenging an assumption, or applying a known idea in a new context all count. Instead of repeating "customer satisfaction in online shopping", study "customer satisfaction in online grocery apps after COVID".</p>
+<p><strong>6. Ethical.</strong> No harm to participants, animals or the environment. Protect privacy, obtain informed consent, and avoid manipulation or misuse of findings. Medical trials need ethics-committee approval.</p>
+
+<div class="tbl"><table>
+<thead><tr><th>Criterion</th><th>Question to ask</th><th>Fails when…</th></tr></thead>
+<tbody>
+<tr><td>Clear</td><td>Can I state it in one exact sentence?</td><td>"Study education"</td></tr>
+<tr><td>Feasible</td><td>Can I finish it with my time and resources?</td><td>"Invent a COVID vaccine this semester"</td></tr>
+<tr><td>Researchable</td><td>Is there data I can collect or access?</td><td>"Psychology of 5th-century meditators"</td></tr>
+<tr><td>Significant</td><td>Who benefits if I solve it?</td><td>Trivial puzzle with no users</td></tr>
+<tr><td>Novel</td><td>What does it add beyond existing studies?</td><td>Yet another generic social-media survey</td></tr>
+<tr><td>Ethical</td><td>Could anyone be harmed or exposed?</td><td>Scraping private health data without consent</td></tr>
+</tbody></table></div>
+
+<div class="facet">IV · Real-World Case</div>
+<p>A final-year student suggests "Build an AI that detects all diseases from X-rays". It fails <em>feasibility</em> (it is enormous) and <em>clarity</em> ("all diseases"). The refined version, "Evaluate a lightweight CNN for detecting pneumonia on chest X-rays from the public NIH ChestX-ray14 dataset, deployable on mobile hardware", passes all six tests. It is specific, it fits a semester, the data is public, it matters in low-resource clinics, the mobile constraint makes it novel, and it uses de-identified public data, which keeps it ethical.</p>
+
+<div class="facet">V · Critical Evaluation</div>
+<p>The criteria pull against each other. Pushing for <em>novelty</em> often costs <em>feasibility</em>, and pushing for <em>significance</em> can lead to topics that are too broad and so no longer <em>clear</em>. Good problem formulation is a balance. The usual way out is to <strong>narrow the scope</strong> (§ 1.5) so the problem stays significant and novel inside feasible limits.</p>
+<div class="checklist"><ul>
+  <li>All six criteria in the professor's exact order and wording.</li>
+  <li>A before-and-after example for "clear" (climate change → rice yields in UP).</li>
+  <li>Say explicitly that novelty ≠ entirely new discovery.</li>
+  <li>Discuss the trade-off between criteria, since that earns the analysis marks.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-errors">
+<h3><span class="tno">§ 1.4</span>Common Errors in Selecting a Research Problem</h3>
+<div class="facet">I · Core Premise</div>
+<p>Choosing the problem is where many researchers, especially new ones, go wrong, and a mistake here makes everything after it harder. The professor lists five errors. Notice that each one is a <em>failed criterion</em> from § 1.3: the errors are what the criteria look like when they are broken.</p>
+<div class="facet">II–III · The Five Errors</div>
+<p><strong>1. Too broad or too narrow.</strong> <em>Too broad</em>: "Impact of globalisation on world economies" is too large for one project. <em>Too narrow</em>: "Impact of social media on the academic performance of 10 students in Class 8B" has too small a sample to draw meaningful conclusions. Broad topics lack focus and narrow topics lack depth. <em>(Breaks: clarity and significance.)</em></p>
+<p><strong>2. No data availability.</strong> Without reliable primary or secondary data the problem cannot be studied. Example: "psychological effects of ancient meditation techniques in 5th-century India". Findings become speculation instead of evidence. <em>(Breaks: researchability.)</em></p>
+<p><strong>3. Beyond personal expertise.</strong> A beginner in computer science tackling an advanced ML optimisation problem without the background. Quality suffers when the researcher cannot handle the complexity. <em>(Breaks: feasibility, human side.)</em></p>
+<p><strong>4. Ignoring time and resources.</strong> Some problems need years, advanced labs or large budgets. "Developing a new COVID-19 vaccine independently within a semester project." This leads to frustration and unfinished, poor-quality work. <em>(Breaks: feasibility, material side.)</em></p>
+<p><strong>5. Copying problems without originality.</strong> Repeating someone else's study without adding anything, such as another survey on "impact of social media on students" with no new variables, context or method. <em>(Breaks: novelty and significance.)</em></p>
+<div class="facet">IV · Real-World Case</div>
+<p>University project committees commonly reject proposals at the first review for errors 1 and 4: a title such as "Blockchain for Healthcare" (too broad) with a timeline that assumes access to hospital records that has not been negotiated (resources ignored). The usual fix is to narrow to one hospital process (for example consent logging), use a synthetic or public dataset, and prototype on a test network.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>These errors are easy to prevent at the start and expensive to fix later. Three habits prevent most of them: a quick <em>literature scan</em> (prevents copying and shows whether data exists), a <em>pilot study</em> (tests feasibility), and a <em>discussion with the guide</em> (checks expertise). Replicating a study is not always an error, though: <strong>replication studies</strong> are valuable in science if they are declared openly and justified, for example testing whether a Western finding holds in the Indian context.</p>
+<div class="checklist"><ul>
+  <li>All five errors, each with the professor's example and the reason it is a problem.</li>
+  <li>Map each error to the criterion it breaks (this shows analytical understanding).</li>
+  <li>Give at least one preventive habit.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-scope">
+<h3><span class="tno">§ 1.5</span>Scope and Objectives of a Research Problem</h3>
+<div class="facet">I · Definitions</div>
+<div class="defn"><b>Scope</b>The <em>boundaries or limits</em> within which the study will be conducted. It says what the research will cover and, just as importantly, what it will <em>not</em> cover. Scope = boundary of research.</div>
+<div class="defn"><b>Objectives</b>The <em>specific goals</em> the study aims to achieve: what you intend to discover or accomplish. They should be clear, concise and measurable. Objectives = goals to be achieved.</div>
+<p class="plain">Scope draws the fence around the study. Objectives are what you intend to achieve inside that fence.</p>
+<div class="facet">II–III · How They Work</div>
+<p>Scope is set along several dimensions: <strong>population</strong> (who), <strong>geography</strong> (where), <strong>time period</strong> (when), <strong>variables</strong> (what) and <strong>methods</strong> (how). Setting the scope keeps the research manageable and focused, and keeps it within the time and resource limits. It is the tool that fixes the "too broad" error of § 1.4.</p>
+<p>Objectives are usually written in two layers (developed further in Unit 3). The <strong>general objective</strong> is the overall aim. <strong>Specific objectives</strong> are smaller, measurable steps that together achieve it. Good objectives begin with action verbs (<em>to measure, to compare, to design, to evaluate</em>) and each one should be answerable by a particular analysis. Research objectives generally fall into four broad categories: <strong>exploratory</strong> (gain familiarity with a phenomenon), <strong>descriptive</strong> (describe characteristics accurately), <strong>diagnostic</strong> (find how often something occurs or what it is associated with) and <strong>hypothesis-testing / causal</strong> (test a cause-and-effect relationship).</p>
+<div class="facet">IV · Professor's Example, Extended</div>
+<div class="tbl"><table><thead><tr><th>Element</th><th>Cybersecurity in IoT devices</th></tr></thead><tbody>
+<tr><td>Problem</td><td>IoT devices lack strong security because their processors are too weak for standard encryption.</td></tr>
+<tr><td>Scope (in)</td><td>Smart-home devices (cameras, plugs, locks); ARM Cortex-M class hardware; data-in-transit.</td></tr>
+<tr><td>Scope (out)</td><td>Industrial IoT, cloud-side security, physical tampering.</td></tr>
+<tr><td>General objective</td><td>Design a lightweight encryption method for smart-home devices.</td></tr>
+<tr><td>Specific objectives</td><td>(i) Benchmark AES-128 energy cost on target hardware; (ii) design a lightweight cipher variant; (iii) compare latency, energy and security margin against AES.</td></tr>
+</tbody></table></div>
+<div class="facet">V · Critical Evaluation</div>
+<p>A scope that is too narrow makes the results hard to generalise. A scope that is too wide makes the study impossible to finish. Stating what is <em>out of scope</em> openly also protects the researcher when examiners ask "why didn't you study X?". Objectives that cannot be measured ("to understand IoT security") cannot be judged as met or not met, which weakens the conclusions.</p>
+<div class="checklist"><ul>
+  <li>Both definitions, including the "what it will <em>not</em> cover" part of scope.</li>
+  <li>General vs specific objectives, with action verbs.</li>
+  <li>The four categories of objectives.</li>
+  <li>The professor's IoT example (scope: smart home; objective: lightweight encryption).</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-approaches">
+<h3><span class="tno">§ 1.6</span>Approaches to Investigating Solutions &amp; the General Research Process</h3>
+<div class="facet">I · Definition</div>
+<p>Once the problem is identified and scoped, the next decision is <em>how</em> to investigate possible solutions. This depends on the <strong>type of data needed</strong> and the <strong>kind of results expected</strong>. There are two main approaches.</p>
+<div class="tbl"><table><thead><tr><th></th><th>Quantitative approach</th><th>Qualitative approach</th></tr></thead><tbody>
+<tr><td>Focus</td><td>Numbers and measurement: collect numerical data and use statistics to test hypotheses</td><td>Opinions and insights: attitudes, behaviours and experiences that are hard to measure</td></tr>
+<tr><td>Answers</td><td>"How much?", "How many?", "What is the relationship between X and Y?"</td><td>"Why?", "How do people feel?", "What are the challenges?"</td></tr>
+<tr><td>Sub-types / methods</td><td><strong>Inferential</strong> (use a sample to generalise about a population) · <strong>Experimental</strong> (manipulate variables in a controlled environment) · <strong>Simulation</strong> (build an artificial environment to model and test systems)</td><td>Interviews · focus groups · open-ended surveys</td></tr>
+<tr><td>Example</td><td>Measure latency of 3 caching strategies over 10,000 requests</td><td>Interview 15 developers on why they avoid caching</td></tr>
+</tbody></table></div>
+<p>In practice many studies use <strong>mixed methods</strong>: quantitative results show <em>what</em> happens and qualitative results explain <em>why</em>.</p>
+
+<div class="facet">II–III · The Eleven Steps of the Research Process</div>
+<p>The professor gives both a short six-step flowchart (Identify problem → Define objective → Collect data → Analyse data → Interpret results → Apply findings) and a detailed eleven-step process. The long version is what a 10-mark answer needs:</p>
+<figure class="plate svgplate">
+<div class="frame">
+<svg class="dg" viewBox="0 0 700 330" role="img" aria-label="Eleven-step research process flowchart">
+  <defs><marker id="rmA2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+  <g>
+    <rect x="10" y="20" width="150" height="46" class="box2"/><text x="85" y="40" text-anchor="middle">1 Define the</text><text x="85" y="56" text-anchor="middle">problem</text>
+    <rect x="185" y="20" width="150" height="46" class="box"/><text x="260" y="40" text-anchor="middle">2 Review related</text><text x="260" y="56" text-anchor="middle">literature</text>
+    <rect x="360" y="20" width="150" height="46" class="box3"/><text x="435" y="40" text-anchor="middle">3 Formulate</text><text x="435" y="56" text-anchor="middle">hypothesis (if needed)</text>
+    <rect x="535" y="20" width="150" height="46" class="box"/><text x="610" y="40" text-anchor="middle">4 Research design</text><text x="610" y="56" text-anchor="middle">(blueprint)</text>
+    <rect x="535" y="130" width="150" height="46" class="box"/><text x="610" y="150" text-anchor="middle">5 Decide sampling</text><text x="610" y="166" text-anchor="middle">method</text>
+    <rect x="360" y="130" width="150" height="46" class="box"/><text x="435" y="158" text-anchor="middle">6 Collect data</text>
+    <rect x="185" y="130" width="150" height="46" class="box"/><text x="260" y="150" text-anchor="middle">7 Execute the</text><text x="260" y="166" text-anchor="middle">plan</text>
+    <rect x="10" y="130" width="150" height="46" class="box"/><text x="85" y="158" text-anchor="middle">8 Analyse data</text>
+    <rect x="10" y="245" width="150" height="46" class="box3"/><text x="85" y="265" text-anchor="middle">9 Test hypothesis</text><text x="85" y="281" text-anchor="middle">(if any)</text>
+    <rect x="185" y="245" width="170" height="46" class="box"/><text x="270" y="265" text-anchor="middle">10 Interpret results,</text><text x="270" y="281" text-anchor="middle">draw conclusions</text>
+    <rect x="380" y="245" width="170" height="46" class="box2"/><text x="465" y="265" text-anchor="middle">11 Prepare &amp; present</text><text x="465" y="281" text-anchor="middle">the report</text>
+  </g>
+  <g>
+    <line x1="160" y1="43" x2="182" y2="43" class="ln" marker-end="url(#rmA2)"/>
+    <line x1="335" y1="43" x2="357" y2="43" class="ln" marker-end="url(#rmA2)"/>
+    <line x1="510" y1="43" x2="532" y2="43" class="ln" marker-end="url(#rmA2)"/>
+    <line x1="610" y1="66" x2="610" y2="127" class="ln" marker-end="url(#rmA2)"/>
+    <line x1="535" y1="153" x2="513" y2="153" class="ln" marker-end="url(#rmA2)"/>
+    <line x1="360" y1="153" x2="338" y2="153" class="ln" marker-end="url(#rmA2)"/>
+    <line x1="185" y1="153" x2="163" y2="153" class="ln" marker-end="url(#rmA2)"/>
+    <line x1="85" y1="176" x2="85" y2="242" class="ln" marker-end="url(#rmA2)"/>
+    <line x1="160" y1="268" x2="182" y2="268" class="ln" marker-end="url(#rmA2)"/>
+    <line x1="355" y1="268" x2="377" y2="268" class="ln" marker-end="url(#rmA2)"/>
+    <path d="M550,268 C640,268 660,230 660,190 L660,120 C660,100 700,96 690,80" class="lnd"/>
+    <text x="600" y="310" class="small" text-anchor="middle">feedback: findings refine new problems</text>
+  </g>
+</svg>
+</div>
+<figcaption><span class="pl">Plate 1.2 · The research process</span> Drawn as a serpentine flow. Dashed boxes are conditional steps (hypothesis formulation and testing may be skipped in exploratory research).
+<span class="sketch">How to sketch: 11 boxes in three rows, snaking left-right-left. Dash boxes 3 and 9. Add a dashed feedback arrow from 11 back to the start.</span></figcaption>
+</figure>
+<ol>
+  <li><strong>Define the problem clearly.</strong> Not "study education" but "effect of online classes on high-school students' mathematics performance". A clear problem gives direction.</li>
+  <li><strong>Review related literature.</strong> Past research, journals, books and reports give background, prevent repetition and show gaps.</li>
+  <li><strong>Formulate hypothesis (if needed).</strong> A testable prediction: "Students who attend online classes regularly score higher in mathematics than those who do not." Exploratory research may skip this.</li>
+  <li><strong>Prepare the research design.</strong> The <em>blueprint</em>: type of research (survey, experimental, case study), tools (questionnaires, tests, interviews) and how data will be collected and analysed.</li>
+  <li><strong>Decide the sampling method.</strong> You cannot study everyone. Methods include random, stratified and purposive sampling. Example: 200 students from 5 schools. Good sampling makes results reliable and generalisable.</li>
+  <li><strong>Collect data.</strong> Primary (first-hand) or secondary (existing sources). Data must be accurate and unbiased.</li>
+  <li><strong>Execute the plan.</strong> Run the surveys, interviews or experiments systematically, monitor progress, maintain ethics and solve problems as they come up.</li>
+  <li><strong>Analyse data.</strong> Quantitative data → statistics (percentages, averages, correlations). Qualitative data → thematic or content analysis.</li>
+  <li><strong>Test hypothesis (if any).</strong> Compare the results with the prediction and accept or reject it on evidence.</li>
+  <li><strong>Interpret results and draw conclusions.</strong> Go beyond the numbers, link back to the objectives, and state limitations and future work. Example: online classes improve scores <em>only when supported by parental involvement</em>.</li>
+  <li><strong>Prepare and present the report.</strong> Introduction, objectives and hypothesis, methodology, analysis and findings, conclusions and recommendations, as a thesis, paper or presentation.</li>
+</ol>
+<div class="facet">IV · Real-World Case</div>
+<p>The UK's RECOVERY trial during COVID-19 followed this sequence at national scale. The problem was which existing drugs reduce COVID mortality. It reviewed the evidence, set the hypothesis that dexamethasone reduces 28-day mortality, used a randomised controlled design, sampled patients across 170+ hospitals, collected and analysed data, tested the hypothesis, and interpreted the result (dexamethasone cut deaths by about a third in ventilated patients). It reported within months. A clear design and a large, well-drawn sample produced evidence that changed practice worldwide.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>The eleven steps are presented as a line, but real research <strong>loops</strong>. Analysis can show the design was flawed, and interpretation can open new problems. Quantitative work gives generalisable, statistically defensible results but can miss context. Qualitative work captures depth and meaning but is harder to generalise and more open to researcher bias. The approach should be chosen to fit the <em>question</em>, not the researcher's comfort zone.</p>
+<div class="checklist"><ul>
+  <li>Quantitative vs qualitative, with the three quantitative sub-types (inferential, experimental, simulation).</li>
+  <li>All 11 steps in order, each with its purpose. Note that hypothesis steps are optional.</li>
+  <li>A flowchart, which is almost always expected.</li>
+  <li>Mention that research is iterative (critical point).</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-data">
+<h3><span class="tno">§ 1.7</span>Data Collection, Analysis &amp; Interpretation</h3>
+<div class="facet">I · Definitions</div>
+<p>Data is the foundation of research: without it no meaningful analysis or conclusion is possible. Researchers need data (facts, figures, information) to study a problem, test hypotheses and draw conclusions.</p>
+<div class="defn"><b>Primary data</b>Data collected first-hand by the researcher for the specific study, through surveys/questionnaires, experiments (lab or field) and observations.</div>
+<div class="defn"><b>Secondary data</b>Data already collected and published by others: books, research papers and journals, government or organisation reports, online datasets (Kaggle, IMDB, World Bank).</div>
+<div class="facet">II–III · Comparison &amp; Choice</div>
+<div class="tbl"><table><thead><tr><th>Aspect</th><th>Primary</th><th>Secondary</th></tr></thead><tbody>
+<tr><td>Collected by</td><td>The researcher, for this study</td><td>Others, for other purposes</td></tr>
+<tr><td>Advantages</td><td>Original, specific to the problem, up to date</td><td>Easily available, cheaper, saves time</td></tr>
+<tr><td>Disadvantages</td><td>Time-consuming, costly, needs effort</td><td>May be outdated, may not fit the problem, possible bias</td></tr>
+<tr><td>Sentiment-analysis example</td><td>Collecting tweets through the Twitter/X API</td><td>Using the IMDB movie-review dataset</td></tr>
+</tbody></table></div>
+<p><strong>Choosing:</strong> if the problem needs new insight, collect primary data. If reliable data already exists, use secondary data. Researchers often <strong>combine both</strong>.</p>
+<p><strong>Data analysis</strong> means breaking raw data into smaller, understandable parts to find <em>patterns, trends and relationships</em>. Methods: <em>statistical analysis</em> (mean, median, standard deviation, correlation, e.g. whether exam scores relate to study hours), <em>machine-learning algorithms</em> (classification, clustering, regression, e.g. spam vs not-spam), and <em>data visualisation</em> (graphs, charts, dashboards, e.g. website activity heatmaps).</p>
+<p><strong>Data interpretation</strong> means giving meaning to the results: answering "what do these results tell us?". The process is to compare results with the research objectives, relate the findings to theories or past studies, and explain the implications in real-world terms.</p>
+<div class="tbl"><table><thead><tr><th>Aspect</th><th>Data analysis</th><th>Data interpretation</th></tr></thead><tbody>
+<tr><td>Focus</td><td>Processing and organising data</td><td>Explaining the meaning of results</td></tr>
+<tr><td>Nature</td><td>Technical, statistical, algorithmic</td><td>Conceptual, logical</td></tr>
+<tr><td>Spam-detection example</td><td>Running the ML model to classify emails</td><td>Concluding the model is effective at 92% accuracy</td></tr>
+</tbody></table></div>
+<div class="facet">IV · Real-World Case</div>
+<p>India's National Family Health Survey (NFHS-5) is <em>primary</em> data for the Ministry of Health, since it was collected by surveying about 6.4 lakh households. For a student who downloads it to study anaemia and diet it is <em>secondary</em> data. Whether data is primary or secondary depends on <strong>who collected it and why</strong>, not on the data itself. This point is often asked in exams.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>Analysis without interpretation gives numbers with no meaning. Interpretation without rigorous analysis gives opinion without evidence. A 92% accuracy figure is meaningless until it is compared with a baseline (what if 90% of emails are not spam?). Good interpretation always asks <em>compared with what?</em> and states the limitations.</p>
+<div class="checklist"><ul>
+  <li>Definitions, methods, pros and cons of primary vs secondary data, with the sentiment-analysis example.</li>
+  <li>Three analysis methods: statistical, ML, visualisation.</li>
+  <li>Three steps of interpretation.</li>
+  <li>The analysis vs interpretation comparison table.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-instr">
+<h3><span class="tno">§ 1.8</span>Necessary Instrumentation</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Research instrumentation</b>The tools, equipment and resources needed to carry out research successfully. It depends on the nature of the problem and can include <em>hardware, software and datasets</em>.</div>
+<div class="facet">II–III · The Three Families</div>
+<p><strong>1. Hardware:</strong> computers and servers (high-performance machines, often with GPUs for AI/ML); sensors (temperature, cameras, GPS for IoT or robotics); networking devices (routers, switches); specialised devices (Arduino, Raspberry Pi, drones, wearables).</p>
+<p><strong>2. Software:</strong> programming languages (Python, C++, Java, R, MATLAB); frameworks and libraries (TensorFlow, PyTorch, Scikit-learn for ML; NS2/NS3 for networking; MATLAB/Simulink for simulation); visualisation tools (Tableau, Power BI, Matplotlib, Seaborn); version control (Git/GitHub for collaborative coding and experiment tracking).</p>
+<p><strong>3. Databases and datasets:</strong> public datasets (Kaggle, UCI ML Repository, ImageNet, CIFAR-10, MNIST); government and industry data (cybersecurity threat databases, health statistics); self-collected data (sensors, APIs such as the Twitter or weather APIs, surveys).</p>
+<p><strong>Professor's example:</strong> AI image classification needs a GPU laptop (hardware) + TensorFlow (software) + the ImageNet dataset (data).</p>
+<p>In social-science research, "instrument" also means the <strong>data-collection instrument</strong>: a questionnaire, interview schedule or observation checklist. It must be <em>valid</em> (measures what it claims to) and <em>reliable</em> (gives consistent results).</p>
+<div class="facet">IV–V · Case &amp; Evaluation</div>
+<p>An IoT air-quality study might use ESP32 boards with MQ-135 and PM2.5 sensors (hardware), MQTT, Python and Grafana (software), and a self-collected dataset calibrated against government CPCB readings (data). Instrumentation choices directly affect validity: an uncalibrated sensor puts systematic error into every data point, and no statistics can remove it afterwards. Budget instrumentation early, since it is often the hidden cost that makes a problem infeasible.</p>
+<div class="checklist"><ul>
+  <li>Definition and the three families (hardware, software, datasets), each with 3–4 examples.</li>
+  <li>The GPU + TensorFlow + ImageNet example.</li>
+  <li>For extra marks: validity and reliability of instruments, and calibration.</li>
+</ul></div>
+</section>
+
+<div class="deck" id="deck-rm-u1">
+  <p class="deck-title">Flashcards · Unit One</p>
+  <p class="deck-sub">Tap a card to turn it over. Grade yourself honestly.</p>
+  <div class="fc"><div class="fc-q">Define a research problem in the professor's words.</div><div class="fc-a">A question, issue or difficulty that needs to be studied and solved through systematic research. In simple words, <strong>the gap between what we know and what we want to know</strong>. Draw it as Current Knowledge → Identified Gap → Desired Knowledge.</div></div>
+  <div class="fc"><div class="fc-q">List the six key features of a research problem.</div><div class="fc-a">(1) An individual, group or organisation faces a difficulty; (2) the problem exists in a specific environment; (3) clear objectives are present; (4) multiple possible solutions exist; (5) the solutions have unequal effectiveness; (6) there is uncertainty about the best solution. Example: a slow app under cloud load, with caching, query optimisation and refactoring as options.</div></div>
+  <div class="fc"><div class="fc-q">Name the seven sources of research problems.</div><div class="fc-a">Literature review · discussions with experts/colleagues · examination of data and records · pilot/exploratory studies · personal interest and curiosity · real-life situations/industry needs · case studies/insight-stimulating examples.</div></div>
+  <div class="fc"><div class="fc-q">Six criteria of a good research problem?</div><div class="fc-a">Clear &amp; well-defined · Feasible (time and resources) · Researchable (data available) · Significant (solves real issues) · Novel (adds value) · Ethical.</div></div>
+  <div class="fc"><div class="fc-q">Give the five common errors in selecting a research problem.</div><div class="fc-a">Too broad or too narrow · no data availability · beyond personal expertise · ignoring time and resources · copying problems without originality.</div></div>
+  <div class="fc"><div class="fc-q">Scope vs objectives: one line each.</div><div class="fc-a"><strong>Scope</strong> = the boundary of the research (what will and will <em>not</em> be studied). <strong>Objectives</strong> = the specific, measurable goals to be achieved. IoT example: scope = smart-home devices; objective = design a lightweight encryption method.</div></div>
+  <div class="fc"><div class="fc-q">Three sub-types of the quantitative approach?</div><div class="fc-a"><strong>Inferential</strong> (sample → generalise to a population), <strong>Experimental</strong> (manipulate variables under control), <strong>Simulation</strong> (artificial environment to model and test systems). Qualitative uses interviews, focus groups and open-ended surveys to answer "why?".</div></div>
+  <div class="fc"><div class="fc-q">Recite the 11 steps of the research process.</div><div class="fc-a">Define problem → review literature → formulate hypothesis (if needed) → research design → sampling method → collect data → execute plan → analyse data → test hypothesis (if any) → interpret results &amp; draw conclusions → prepare &amp; present report.</div></div>
+  <div class="fc"><div class="fc-q">Primary vs secondary data in sentiment analysis?</div><div class="fc-a">Primary: tweets collected directly via the Twitter API for your study. Secondary: the existing IMDB movie-review dataset. Primary is original and specific but costly. Secondary is cheap and fast but may be outdated or not fit the problem.</div></div>
+  <div class="fc"><div class="fc-q">Analysis vs interpretation in spam detection?</div><div class="fc-a">Analysis = running the ML model to classify emails (technical, algorithmic). Interpretation = concluding the model is effective at 92% accuracy and explaining what that means (conceptual, logical).</div></div>
+  <div class="fc"><div class="fc-q">What are the three families of research instrumentation?</div><div class="fc-a">Hardware (GPUs, sensors, networking gear, Arduino or Raspberry Pi), software (Python or R, TensorFlow or PyTorch, NS3, Tableau, Git) and datasets (Kaggle, UCI, ImageNet, government data, self-collected via APIs). Example: GPU laptop + TensorFlow + ImageNet.</div></div>
+</div>
+
+</div></div>
+
+<!-- ======================= UNIT 2 ======================= -->
+<div class="chapter-card" id="rm-u2" data-short="Unit 2 · Literature, Plagiarism, Ethics">
+  <div class="ch-no">Unit Two</div>
+  <h2>Literature, Plagiarism &amp; Ethics</h2>
+  <p class="in-which">Reading what others have done, giving them credit, and doing research honestly.</p>
+  <p class="syll">Syllabus: effective literature studies · approaches · analysis · plagiarism · research ethics</p>
+</div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="rm-litreview">
+<h3><span class="tno">§ 2.1</span>Effective Literature Studies</h3>
+<div class="facet">I · Definition &amp; Core Premise</div>
+<div class="defn"><b>Literature review</b>The process of looking at what has already been done by other researchers in your area, before starting your own project. It is not just collecting papers: it means <em>carefully reading, comparing and understanding their strengths and weaknesses</em>.</div>
+<p class="plain">Before building a new house you survey the land, the neighbouring houses and the map of the area. Before doing research you survey the "map of knowledge": what other researchers have already built.</p>
+
+<div class="facet">II · Why Do We Need It? (four purposes)</div>
+<ol>
+  <li><strong>Provides a comprehensive understanding of existing knowledge:</strong> an overview of prior research that gives a clear picture of the current state of the topic.</li>
+  <li><strong>Prevents duplication of research:</strong> you do not unknowingly repeat work that has already been done.</li>
+  <li><strong>Identifies research gaps:</strong> a systematic review shows areas that are under-explored, so you can focus on unresolved questions.</li>
+  <li><strong>Strengthens the research foundation:</strong> building on established knowledge makes new work more credible, grounded rather than directionless.</li>
+</ol>
+
+<div class="facet">III · Five Steps to an Effective Literature Review</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 700 150" role="img" aria-label="Five steps of literature review">
+<defs><marker id="rmA3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="5" y="40" width="122" height="64" class="box2"/><text x="66" y="68" text-anchor="middle">1 Identify</text><text x="66" y="86" text-anchor="middle">keywords</text>
+<rect x="147" y="40" width="122" height="64" class="box"/><text x="208" y="68" text-anchor="middle">2 Search reliable</text><text x="208" y="86" text-anchor="middle">databases</text>
+<rect x="289" y="40" width="122" height="64" class="box"/><text x="350" y="68" text-anchor="middle">3 Organise</text><text x="350" y="86" text-anchor="middle">the papers</text>
+<rect x="431" y="40" width="122" height="64" class="box"/><text x="492" y="68" text-anchor="middle">4 Critically</text><text x="492" y="86" text-anchor="middle">analyse</text>
+<rect x="573" y="40" width="122" height="64" class="box2"/><text x="634" y="68" text-anchor="middle">5 Summarise &amp;</text><text x="634" y="86" text-anchor="middle">highlight gaps</text>
+<line x1="127" y1="72" x2="144" y2="72" class="ln" marker-end="url(#rmA3)"/><line x1="269" y1="72" x2="286" y2="72" class="ln" marker-end="url(#rmA3)"/><line x1="411" y1="72" x2="428" y2="72" class="ln" marker-end="url(#rmA3)"/><line x1="553" y1="72" x2="570" y2="72" class="ln" marker-end="url(#rmA3)"/>
+<text x="208" y="126" text-anchor="middle" class="small">Scholar · IEEE · Scopus</text><text x="350" y="126" text-anchor="middle" class="small">thematic / method / year</text><text x="492" y="126" text-anchor="middle" class="small">problem·method·result·gap</text>
+</svg></div>
+<figcaption><span class="pl">Plate 2.1 · The five-step review pipeline</span> <span class="sketch">How to sketch: five boxes in a row with arrows. Write the key sub-idea under steps 2–4.</span></figcaption></figure>
+
+<p><strong>Step 1 · Identify keywords.</strong> Write down the main words and phrases of the topic. For "Brain Tumour Detection using AI": <em>Brain Tumour, MRI, Machine Learning, Deep Learning, Tumour Detection</em>. Keywords decide what the database searches return, and poor keywords mean relevant work is missed. Boolean combinations help: <code>("brain tumour" OR glioma) AND MRI AND "deep learning"</code>.</p>
+<p><strong>Step 2 · Search reliable databases.</strong> <em>Google Scholar</em> (free, broad), <em>IEEE Xplore</em> (engineering and technology), <em>Springer &amp; Elsevier</em> (scientific papers), <em>Scopus / Web of Science</em> (high-quality, peer-reviewed, indexed).</p>
+<p><strong>Step 3 · Organise the papers.</strong> Do not just dump hundreds of PDFs in a folder. Sort them <em>thematically</em> (by topic), <em>methodologically</em> (by technique) or <em>chronologically</em> (by year, to see how the field developed). Reference managers such as Zotero or Mendeley make this practical.</p>
+<p><strong>Step 4 · Critically analyse the sources.</strong> For each paper ask: <em>What problem? What method? What results? What limitations or gaps?</em> The professor's contrast: do not write <em>"This paper used CNN for tumour detection."</em> Write <em>"This paper used CNN, achieved 92% accuracy, but failed to test on a large dataset, which reduces reliability."</em> The first sentence describes. The second evaluates.</p>
+<p><strong>Step 5 · Summarise and highlight gaps.</strong> Combine across papers: what is known and where the gap lies. <em>"Most studies used CNN for tumour detection but ignored lightweight models for mobile devices, which leaves scope for mobile-compatible AI models."</em> This sentence becomes the justification for your research problem, which connects back to Unit 1.</p>
+
+<div class="facet">IV · Benefits of Literature Review</div>
+<ul>
+  <li><strong>Improves understanding:</strong> the topic seen from several perspectives.</li>
+  <li><strong>Helps build strong research questions:</strong> from "How to detect tumours?" to "How can lightweight deep-learning models detect tumours efficiently on mobile devices?"</li>
+  <li><strong>Avoids duplication:</strong> no time wasted repeating existing work.</li>
+  <li><strong>Strengthens research:</strong> credibility and validity come from building on prior studies.</li>
+</ul>
+
+<div class="facet">V · Critical Evaluation</div>
+<p>The main risk in a literature review is <strong>confirmation bias</strong>: finding only the papers that support what you already believe. Keyword searches also miss work that uses different terms (for example "neoplasm" vs "tumour"). Two habits reduce this: <em>snowballing</em> (following the references of key papers backwards and their citations forwards) and deliberately searching for <em>contradicting</em> evidence. With AI-assisted search tools now common, every claim still has to be checked against the original paper, because summaries can misrepresent findings.</p>
+<div class="checklist"><ul>
+  <li>Definition with the house/map analogy.</li>
+  <li>Four purposes (understanding, no duplication, gaps, foundation).</li>
+  <li>Five steps with the brain-tumour example running through them.</li>
+  <li>The "describe vs critically analyse" sentence contrast, which shows analytical understanding.</li>
+  <li>The benefits, and a gap statement as the output.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-approaches-lit">
+<h3><span class="tno">§ 2.2</span>Approaches to Literature Study</h3>
+<div class="facet">I · Core Premise</div>
+<p>There are several ways to conduct and organise a review. The professor lists seven, A to G. Some describe <em>how rigorously</em> papers are found and selected (narrative, systematic, scoping, meta-analysis). Others describe <em>how</em> the review is <em>organised</em> (thematic, chronological, methodological). A single review can be, for example, systematic in how it searches and thematic in how it is organised.</p>
+
+<div class="facet">II–III · The Seven Approaches</div>
+<p><strong>A. Traditional / Narrative review.</strong> A general description and discussion of existing research. It is <em>flexible</em>, papers are chosen for relevance, findings are discussed descriptively, and it is useful for understanding how a field developed. <em>Example:</em> reviewing ML techniques for hate-speech detection and discussing their pros and cons. <em>Advantages:</em> easy to do, gives a broad understanding, identifies major theories. <em>Limitation:</em> the choice of papers may reflect <strong>researcher bias</strong>.</p>
+<p><strong>B. Systematic Literature Review (SLR).</strong> Follows a <em>predefined, structured</em> process for identifying, selecting, analysing and reporting studies:</p>
+<div class="formula">Research Question → Search Strategy → Study Selection → Quality Assessment
+                  → Data Extraction → Analysis → Reporting</div>
+<p><em>Advantages:</em> systematic and transparent, reduces selection bias, reproducible, suitable for PhD-level research. <em>Example:</em> studying 100 papers from 2018–2026 to find which deep-learning techniques perform best for hate-speech classification.</p>
+
+<figure class="plate">
+  <div class="frame"><img src="img/prisma.svg" alt="PRISMA flow diagram showing records identified, screened, eligible and included in a systematic review" loading="lazy"></div>
+  <figcaption><span class="pl">Plate 2.2 · PRISMA flow diagram</span> The standard way SLRs report the <em>study-selection</em> stage: records identified → duplicates removed → screened by title/abstract → full texts assessed → studies included. Each stage records how many papers were excluded and why, which is what makes an SLR reproducible.
+  <span class="sketch">How to sketch: four stacked boxes (Identification, Screening, Eligibility, Included) with side boxes showing "n excluded, reasons".</span>
+  <span class="credit">Source: Wikimedia Commons, "PRISMA flow diagram.svg" (openly licensed; see file page).</span></figcaption>
+</figure>
+
+<p><strong>C. Scoping review.</strong> <em>Maps</em> the existing literature on a broad area: major concepts, research methods, types of study, trends and gaps. It is useful when the area is <em>large or relatively new</em>, for example "LLMs in education", where you first need a map before asking narrow questions.</p>
+<p><strong>D. Meta-analysis.</strong> A <em>quantitative</em> approach that <strong>statistically combines</strong> results from several studies, for example pooling the accuracies reported for different ML algorithms to estimate an overall effect. <em>Advantages:</em> quantitative evidence, greater statistical power, allows comparison across studies. <em>Limitation:</em> needs enough <strong>comparable</strong> studies with statistical data.</p>
+<p><strong>E. Thematic review.</strong> Papers are grouped by <em>common themes</em>. NLP research, for instance, can be divided into traditional ML · deep learning · transformer models · multilingual models · explainable AI · dataset issues, with findings compared within each theme.</p>
+<p><strong>F. Chronological approach.</strong> Organised by <em>time or historical development</em>, showing how thinking changed (e.g. n-grams → RNNs → Transformers).</p>
+<p><strong>G. Methodological approach.</strong> Organised by the <em>research methods used</em>:</p>
+<div class="tbl"><table><thead><tr><th>Method</th><th>Purpose</th></tr></thead><tbody>
+<tr><td>Survey</td><td>Collect opinions/data</td></tr><tr><td>Experiment</td><td>Test a hypothesis</td></tr><tr><td>Case study</td><td>Study a specific situation</td></tr><tr><td>Machine learning</td><td>Prediction/classification</td></tr><tr><td>Qualitative analysis</td><td>Understand experiences/themes</td></tr><tr><td>Quantitative analysis</td><td>Analyse numerical data</td></tr>
+</tbody></table></div>
+
+<div class="facet">IV · Comparison Table (useful for "compare" questions)</div>
+<div class="tbl"><table><thead><tr><th>Approach</th><th>Rigour</th><th>Output</th><th>Best when</th><th>Main weakness</th></tr></thead><tbody>
+<tr><td>Narrative</td><td>Low–medium</td><td>Descriptive discussion</td><td>Understanding a field</td><td>Selection bias</td></tr>
+<tr><td>Systematic (SLR)</td><td>High</td><td>Answer to a focused question</td><td>PhD work, evidence synthesis</td><td>Time-consuming</td></tr>
+<tr><td>Scoping</td><td>Medium–high</td><td>Map of concepts, methods, gaps</td><td>Broad or new area</td><td>No quality appraisal of depth</td></tr>
+<tr><td>Meta-analysis</td><td>Highest (quantitative)</td><td>Pooled statistical effect</td><td>Many comparable numeric studies</td><td>Needs comparable data</td></tr>
+<tr><td>Thematic / Chronological / Methodological</td><td>Organising structures</td><td>Grouped discussion</td><td>Writing up any review</td><td>Depends on the underlying search</td></tr>
+</tbody></table></div>
+
+<div class="facet">V · Critical Evaluation</div>
+<p>Rigour costs time. An SLR can take months, while a narrative review suits an early-stage project report. Meta-analysis is the strongest evidence in medicine (Cochrane reviews) but is often impossible in computer science, where studies use different datasets and metrics, so the "comparable studies" condition fails. In practice, a B.Tech or M.Tech project usually does a <em>narrative review with a structured search</em>, organised thematically.</p>
+<div class="checklist"><ul>
+  <li>All seven approaches, A–G, with a one-line definition and an example each.</li>
+  <li>The SLR pipeline written in sequence, with a PRISMA-style diagram.</li>
+  <li>Advantages and limitations for narrative, SLR and meta-analysis (the professor lists these specifically).</li>
+  <li>A comparison table, which examiners appreciate.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-plag">
+<h3><span class="tno">§ 2.3</span>Plagiarism</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Plagiarism</b>Using someone else's work, ideas or words <em>without giving proper acknowledgement</em>. It is not only about copying content. It is about <em>failing to give credit where it is due</em>.</div>
+<p class="plain">If a classmate copies your hard-won project and submits it as their own, you feel cheated. That is what plagiarism is. Honesty is a fundamental requirement of research.</p>
+<div class="facet">II · When Does Plagiarism Occur?</div>
+<ul>
+  <li>Text is copied directly from books, websites or papers without citing the author.</li>
+  <li>Ideas are borrowed but their source is not mentioned.</li>
+  <li>A person reuses their own previously submitted or published work and presents it as "new".</li>
+</ul>
+<div class="facet">III · Four Types</div>
+<div class="tbl"><table><thead><tr><th>Type</th><th>What it is</th><th>Professor's example</th><th>Intent?</th></tr></thead><tbody>
+<tr><td><strong>Direct</strong></td><td>Copying a whole paragraph or section without quotation marks or citation</td><td>Copy-pasting an article and presenting it as original</td><td>Deliberate</td></tr>
+<tr><td><strong>Self-plagiarism</strong></td><td>Reusing your own earlier published or submitted work without referencing it</td><td>Submitting the same project report in two courses</td><td>Usually deliberate</td></tr>
+<tr><td><strong>Mosaic (patchwork)</strong></td><td>Combining sentences from several sources, slightly modified and merged, without citation</td><td>Taking material from 4–5 papers, paraphrasing minimally, citing none</td><td>Often deliberate</td></tr>
+<tr><td><strong>Accidental</strong></td><td>Unintentionally forgetting a citation or making citation errors</td><td>Rewording an author's idea but not naming them</td><td>Unintentional, still plagiarism</td></tr>
+</tbody></table></div>
+<p><strong>Why is it wrong?</strong> It is <em>unethical</em> because it takes credit that belongs to someone else. It <em>damages reputation</em>. It is <em>detectable</em>: universities use tools such as <strong>Turnitin, Grammarly and Urkund</strong>, and being caught can mean failing or disciplinary action. Most importantly, it <em>prevents genuine learning and independent thinking</em>.</p>
+<p><strong>How to avoid it:</strong> always cite the source of any borrowed idea, quote or data. Run plagiarism-detection tools to check originality. <em>Paraphrase properly</em>, restructuring the idea in your own words <em>while still citing</em> the original author. Paraphrasing without a citation is still plagiarism.</p>
+<p><strong>Consequences:</strong> academic penalties (failing grades, thesis rejection), loss of credibility and reputation, and in severe cases legal consequences (copyright infringement).</p>
+<div class="facet">IV · Real-World Case &amp; Indian Regulation</div>
+<p>India's <strong>UGC (Promotion of Academic Integrity and Prevention of Plagiarism in Higher Educational Institutions) Regulations, 2018</strong> set graded penalties for theses based on similarity in the core work: up to 10% — minor, no penalty; 10–40% — revise and resubmit; 40–60% — debarred from resubmission for a period; above 60% — registration cancelled. Similarity reports exclude quoted material, references and common phrases. Internationally, retractions for plagiarism are recorded publicly (e.g. by Retraction Watch), and they follow a researcher for their whole career.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>Detection software measures <em>textual similarity</em>, not plagiarism. A high score may just reflect correctly quoted passages or standard technical phrases, and a low score can hide idea plagiarism or translation plagiarism. Generative AI adds a new grey area. Many journals now require disclosure of AI assistance, and text generated from uncited sources can amount to plagiarism. Judgement by a human evaluator is still essential.</p>
+<div class="checklist"><ul>
+  <li>Definition stressing "credit where it is due".</li>
+  <li>The three situations in which plagiarism occurs.</li>
+  <li>Four types, each with an example; note that accidental plagiarism still counts.</li>
+  <li>Why it is wrong, how to avoid it, and consequences (three separate sub-headings).</li>
+  <li>Name the tools (Turnitin, Urkund) and, for extra marks, the UGC 2018 levels.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-ethics">
+<h3><span class="tno">§ 2.4</span>Research Ethics</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Research ethics</b>The moral compass that ensures <em>fairness, honesty and responsibility</em> in scholarly work. Research is not only about experiments, coding or writing papers; it is also about <em>how</em> the research is conducted.</div>
+<p class="plain">If a doctor lies about a medicine's effect, lives are at risk. If a researcher fabricates data, society is misled, resources are wasted and people can be harmed. Ethics is the backbone of responsible research.</p>
+<div class="facet">II–III · Five Key Principles</div>
+<ol>
+  <li><strong>Honesty:</strong> report data, methods and results truthfully. <em>Fabrication</em> (making up data) and <em>manipulation</em> (changing results) are strictly unethical. If an algorithm gets 75%, do not report 90%.</li>
+  <li><strong>Integrity:</strong> follow approved methods consistently, without shortcuts or skipped steps. If 100 samples are required, using 50 and still claiming valid results is unethical.</li>
+  <li><strong>Respect:</strong> acknowledge other researchers' contributions through citation. A dataset built by another scholar must be credited.</li>
+  <li><strong>Confidentiality:</strong> keep participants' personal information private. Revealing a participant's identity in published health data is a violation.</li>
+  <li><strong>Avoiding bias:</strong> present findings fairly, without personal, social or cultural prejudice. If Method A beats Method B, report it even if you prefer B.</li>
+</ol>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 640 250" role="img" aria-label="Five principles of research ethics around a central pillar">
+  <rect x="245" y="95" width="150" height="60" class="box2"/><text x="320" y="122" text-anchor="middle" class="hd">RESEARCH</text><text x="320" y="140" text-anchor="middle" class="hd">ETHICS</text>
+  <rect x="20" y="20" width="150" height="44" class="box"/><text x="95" y="47" text-anchor="middle">Honesty</text>
+  <rect x="470" y="20" width="150" height="44" class="box"/><text x="545" y="47" text-anchor="middle">Integrity</text>
+  <rect x="20" y="186" width="150" height="44" class="box"/><text x="95" y="213" text-anchor="middle">Confidentiality</text>
+  <rect x="470" y="186" width="150" height="44" class="box"/><text x="545" y="213" text-anchor="middle">Avoiding bias</text>
+  <rect x="245" y="196" width="150" height="44" class="box"/><text x="320" y="223" text-anchor="middle">Respect (citation)</text>
+  <line x1="170" y1="50" x2="245" y2="105" class="ln"/><line x1="470" y1="50" x2="395" y2="105" class="ln"/>
+  <line x1="170" y1="200" x2="245" y2="150" class="ln"/><line x1="470" y1="200" x2="395" y2="150" class="ln"/><line x1="320" y1="155" x2="320" y2="196" class="ln"/>
+  <text x="95" y="82" text-anchor="middle" class="small">no fabrication / manipulation</text>
+  <text x="545" y="82" text-anchor="middle" class="small">no skipped steps</text>
+</svg></div>
+<figcaption><span class="pl">Plate 2.3 · The five principles</span> <span class="sketch">How to sketch: a central box with five satellite boxes. Write a three-word example under each.</span></figcaption></figure>
+<div class="facet">Why Research Ethics Matter</div>
+<ul>
+  <li><strong>Builds trust</strong> in universities, scientists and institutions.</li>
+  <li><strong>Ensures validity and reliability</strong>: honest results can be verified, tested and reused.</li>
+  <li><strong>Protects participants' rights and well-being</strong>: dignity, safety and respect, especially in medical, psychological and social studies.</li>
+  <li><strong>Prevents misuse of knowledge</strong>: science applied for society's benefit, not harm.</li>
+</ul>
+<p><strong>Professor's integrated example, a brain-tumour detection project:</strong> faked accuracy means doctors trust the system wrongly and patients suffer; revealed patient identities mean privacy is violated; honest reporting, even of modest accuracy, means future researchers can build on the work and make real progress.</p>
+<div class="facet">IV · Real-World Cases</div>
+<p><strong>The Hwang Woo-suk scandal (2005):</strong> a South Korean scientist fabricated stem-cell cloning data published in <em>Science</em>. It was retracted, and national research funding and public trust suffered. This is a breach of <em>honesty</em>. <strong>The Facebook emotional-contagion experiment (2014):</strong> the feeds of about 689,000 users were manipulated without explicit informed consent, which caused worldwide criticism. This is a breach of <em>respect for participants</em>. Formal safeguards include <strong>Institutional Ethics Committees / IRBs</strong>, <em>informed consent</em> forms, and in India the <strong>ICMR National Ethical Guidelines (2017)</strong> for biomedical research and the <strong>DPDP Act 2023</strong> for personal data.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>Ethics sometimes conflicts with research convenience. Anonymisation reduces the usefulness of data, and consent requirements slow recruitment. AI research raises newer questions: scraping public web data (is "public" the same as "consented"?), dataset bias harming minorities, and dual-use risks. The five principles remain the test to apply: would I be comfortable if every step of my method were published?</p>
+<div class="checklist"><ul>
+  <li>Definition as a "moral compass", with the doctor analogy.</li>
+  <li>Five principles, each with the professor's example (75% vs 90%, 50 vs 100 samples, and so on).</li>
+  <li>Four reasons ethics matter.</li>
+  <li>The brain-tumour integrated example; a real scandal adds extra marks.</li>
+  <li>Mention of ethics committees and informed consent.</li>
+</ul></div>
+</section>
+
+<div class="deck" id="deck-rm-u2">
+  <p class="deck-title">Flashcards · Unit Two</p>
+  <p class="deck-sub">Includes cumulative cards from Unit One (↺).</p>
+  <div class="fc"><div class="fc-q">Four reasons we need a literature review?</div><div class="fc-a">Comprehensive understanding of existing knowledge · prevents duplication · identifies research gaps · strengthens the research foundation.</div></div>
+  <div class="fc"><div class="fc-q">Five steps of an effective literature review?</div><div class="fc-a">(1) Identify keywords, (2) search reliable databases (Scholar, IEEE Xplore, Springer/Elsevier, Scopus/WoS), (3) organise papers (thematic, methodological, chronological), (4) critically analyse (problem, method, results, limitations), (5) summarise and highlight gaps.</div></div>
+  <div class="fc"><div class="fc-q">Describe vs critically analyse: give the professor's contrast.</div><div class="fc-a">Descriptive: "This paper used CNN for tumour detection." Critical: "This paper used CNN, achieved 92% accuracy, but failed to test on a large dataset, which reduces reliability."</div></div>
+  <div class="fc"><div class="fc-q">List the SLR pipeline.</div><div class="fc-a">Research Question → Search Strategy → Study Selection → Quality Assessment → Data Extraction → Analysis → Reporting. Systematic, transparent, reduces selection bias, reproducible.</div></div>
+  <div class="fc"><div class="fc-q">Scoping review vs meta-analysis?</div><div class="fc-a">Scoping: <em>maps</em> a broad or new area (concepts, methods, trends, gaps). Meta-analysis: <em>statistically combines</em> numerical results of comparable studies into an overall effect, with more statistical power but a need for comparable data.</div></div>
+  <div class="fc"><div class="fc-q">Name the seven approaches to literature study.</div><div class="fc-a">A Narrative/traditional · B Systematic (SLR) · C Scoping · D Meta-analysis · E Thematic · F Chronological · G Methodological.</div></div>
+  <div class="fc"><div class="fc-q">Four types of plagiarism, with examples.</div><div class="fc-a">Direct (copy-paste without quotes), Self (same report in two courses), Mosaic/patchwork (stitching 4–5 papers with light paraphrase, no citation), Accidental (forgetting to cite a paraphrased idea).</div></div>
+  <div class="fc"><div class="fc-q">How do you avoid plagiarism?</div><div class="fc-a">Always cite borrowed ideas, quotes and data; use detection tools (Turnitin, Urkund, Grammarly); paraphrase properly <em>and still cite</em>.</div></div>
+  <div class="fc"><div class="fc-q">Five principles of research ethics?</div><div class="fc-a">Honesty (no fabrication or manipulation), Integrity (follow approved methods), Respect (cite contributions), Confidentiality (protect participant identity), Avoiding bias (report fairly).</div></div>
+  <div class="fc"><div class="fc-q">Why do research ethics matter? (4)</div><div class="fc-a">Builds trust · ensures validity and reliability · protects participants' rights and well-being · prevents misuse of knowledge.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">Which Unit 1 criterion does "copying problems without originality" violate, and how does a literature review prevent it?</div><div class="fc-a">It violates <strong>Novelty</strong> (and Significance). A literature review shows what has already been done, so you can find a real gap instead of duplicating work.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">Where does "Review related literature" sit in the 11-step research process?</div><div class="fc-a">Step 2, right after defining the problem and before formulating the hypothesis. It refines the problem and justifies it through identified gaps.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">Name the seven sources of research problems.</div><div class="fc-a">Literature review · experts/colleagues · data and records · pilot studies · personal interest · real-life/industry needs · case studies.</div></div>
+</div>
+
+</div></div>
+
+<!-- ======================= UNIT 3 ======================= -->
+<div class="chapter-card" id="rm-u3" data-short="Unit 3 · Writing &amp; Proposals">
+  <div class="ch-no">Unit Three</div>
+  <h2>Technical Writing &amp; the Proposal</h2>
+  <p class="in-which">Writing up the research and getting a proposal approved by a committee.</p>
+  <p class="syll">Syllabus: effective technical writing · how to write a report/paper · developing a research proposal · format of research proposal · presentation and assessment by a review committee</p>
+</div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="rm-techwriting">
+<h3><span class="tno">§ 3.1</span>Effective Technical Writing</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Technical writing</b>A specialised form of communication in which complex, technical or research-based information is presented in a <em>clear, precise and structured</em> way. The goal is not to impress with difficult vocabulary but to make complicated concepts <em>understandable and usable</em> by the intended audience.</div>
+<p class="plain">Good technical writing reads easily. The reader should understand the idea without noticing the writing.</p>
+<div class="facet">II · First Principles: the Audience</div>
+<p>The main objective is to communicate research findings, processes and results in a way that <strong>reduces confusion and improves understanding</strong>. Everything follows from the audience: experts need detailed insight, while general readers need simplified explanation. The same result, "the model reduced false positives by 15%", might be written with confusion matrices for a journal and as "one in seven false alarms eliminated" for a hospital administrator.</p>
+<div class="facet">III · The Four Pillars</div>
+<div class="formula">clarity  →  coherence  →  accuracy  →  objectivity</div>
+<ol>
+  <li><strong>Clarity</strong> (the foremost requirement): simple, direct language with no ambiguity; concise sentences with no unnecessary words; ideas logically connected.</li>
+  <li><strong>Coherence</strong>: the document <em>flows</em>, linking introduction, methods, results and conclusion in a meaningful order.</li>
+  <li><strong>Accuracy</strong>: verified facts, figures and interpretations, with no exaggeration or assumptions.</li>
+  <li><strong>Objectivity</strong>: no personal opinion or emotional language; evidence, data and logic instead. Not <em>"The results are amazing"</em> but <em>"The results indicate a 15% increase in efficiency compared to previous methods."</em></li>
+</ol>
+<p>Effectiveness is judged by how well the writing <strong>turns raw data into meaningful insight</strong>. Detailed experimental results are of little value unless others can <em>understand, replicate or use</em> them in decisions. Good technical writing carries knowledge between academia, industry and organisations.</p>
+<div class="facet">IV · Real-World Case</div>
+<p>Google's engineering <em>design docs</em> and Amazon's <em>six-page narrative memos</em> make technical writing central to decisions: meetings start with silent reading, and proposals written in clear prose (not bullet slides) are debated on evidence. RFCs (Request for Comments) that define internet protocols such as TCP and HTTP are technical writing that has to be unambiguous enough for engineers worldwide to build systems that work together.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>Clarity and completeness can pull against each other. Over-simplification can drop important caveats, while full precision can make text unreadable. Practical tools that help: active voice, one idea per paragraph, figures with self-contained captions, consistent terminology (do not switch between "latency" and "delay"), and readability checks. Technical writing is revised, not written in one attempt, which links to the report-writing steps in § 3.2.</p>
+<div class="checklist"><ul>
+  <li>Definition: clear, precise, structured; audience-centred; not about impressive vocabulary.</li>
+  <li>The four pillars clarity → coherence → accuracy → objectivity, each explained.</li>
+  <li>The "amazing" vs "15% increase" contrast.</li>
+  <li>Why it matters: turning raw data into usable, replicable insight.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-report">
+<h3><span class="tno">§ 3.2</span>How to Write a Research Report</h3>
+<div class="facet">I · Core Premise</div>
+<p>Writing a research report is not simply putting words on paper. It is the result of <strong>slow, careful and accurate work based on logical reasoning and systematic effort</strong>. A well-written report presents the findings in a clear, organised and convincing way. The professor describes six steps.</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 700 120" role="img" aria-label="Six steps of report writing">
+<defs><marker id="rmA4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<g>
+<rect x="4" y="30" width="100" height="60" class="box2"/><text x="54" y="56" text-anchor="middle">Logical</text><text x="54" y="72" text-anchor="middle">analysis</text>
+<rect x="120" y="30" width="100" height="60" class="box"/><text x="170" y="56" text-anchor="middle">Final</text><text x="170" y="72" text-anchor="middle">outline</text>
+<rect x="236" y="30" width="100" height="60" class="box"/><text x="286" y="56" text-anchor="middle">Rough</text><text x="286" y="72" text-anchor="middle">draft</text>
+<rect x="352" y="30" width="112" height="60" class="box"/><text x="408" y="56" text-anchor="middle">Rewrite &amp;</text><text x="408" y="72" text-anchor="middle">polish</text>
+<rect x="480" y="30" width="100" height="60" class="box"/><text x="530" y="56" text-anchor="middle">Final</text><text x="530" y="72" text-anchor="middle">bibliography</text>
+<rect x="596" y="30" width="100" height="60" class="box2"/><text x="646" y="56" text-anchor="middle">Final</text><text x="646" y="72" text-anchor="middle">draft</text>
+<line x1="104" y1="60" x2="117" y2="60" class="ln" marker-end="url(#rmA4)"/><line x1="220" y1="60" x2="233" y2="60" class="ln" marker-end="url(#rmA4)"/><line x1="336" y1="60" x2="349" y2="60" class="ln" marker-end="url(#rmA4)"/><line x1="464" y1="60" x2="477" y2="60" class="ln" marker-end="url(#rmA4)"/><line x1="580" y1="60" x2="593" y2="60" class="ln" marker-end="url(#rmA4)"/>
+<text x="408" y="108" text-anchor="middle" class="small">the hardest, longest stage</text>
+</g></svg></div>
+<figcaption><span class="pl">Plate 3.1 · Six steps of report writing</span> <span class="sketch">How to sketch: six boxes in a row. Put a star on "Rewrite &amp; polish" as the hardest stage.</span></figcaption></figure>
+<div class="facet">II–III · The Six Steps</div>
+<p><strong>1. Logical analysis of the subject matter.</strong> Analyse the material thoroughly to decide how it will be presented. There are two ways to develop a subject: <em>logical development</em>, organised by mental connections and associations and usually moving from simple to complex; and <em>chronological development</em>, where events are arranged in the order they happened (instruction manuals, historical accounts). This step gives the report its flow and clarity.</p>
+<p><strong>2. Preparation of the final outline.</strong> The outline is the <em>framework</em> of the report. It arranges ideas logically, reminds the writer of key points, avoids repetition and keeps the report focused. It is the roadmap for the draft.</p>
+<p><strong>3. Preparation of the rough draft.</strong> The findings are turned into written form. The rough draft covers the <em>procedure adopted for data collection</em>, the <em>limitations of the study</em>, the <em>technique of analysis used</em>, the <em>broad findings and generalisations</em>, and <em>suggestions</em> on the problem. It does not have to be perfect; it captures the essence.</p>
+<p><strong>4. Rewriting and polishing the rough draft.</strong> The most challenging and important stage, which usually takes <em>longer than writing the draft</em>. Check unity and cohesion, logical development and connection of ideas, grammar, spelling and sentence construction, and consistency of style. Polishing turns an average report into an excellent one.</p>
+<p><strong>5. Preparation of the final bibliography.</strong> It acknowledges every source used, usually in two parts:</p>
+<ul>
+<li><em>Books and pamphlets</em>: alphabetical by author's surname, then title, place, publisher, year, volumes.<br><span class="formula" style="display:block;white-space:normal">Kothari, C.R., <em>Quantitative Techniques</em>, New Delhi, Vikas Publishing House Pvt. Ltd., 1978.</span></li>
+<li><em>Articles from magazines and newspapers</em>: author, "article title" in quotation marks, journal name in italics, volume, issue, date, page.<br><span class="formula" style="display:block;white-space:normal">Robert V. Roosa, "Coping with Short-term International Money Flows", <em>The Banker</em>, London, September 1971, p. 995.</span></li>
+</ul>
+<p>Using one referencing method consistently is essential.</p>
+<p><strong>6. Writing the final draft.</strong> Concise, objective, in simple language. Avoid vague expressions such as <em>"it seems"</em> or <em>"there may be"</em>. Avoid unnecessary jargon, include illustrations and examples, keep it original and engaging, and make sure the report <em>helps solve a problem and adds to knowledge</em>.</p>
+<div class="facet">IV · Layout of the Finished Report (the product)</div>
+<div class="tbl"><table><thead><tr><th>Part</th><th>Contents</th></tr></thead><tbody>
+<tr><td>Preliminary pages</td><td>Title page, certificate/declaration, acknowledgements, abstract, table of contents, list of figures and tables</td></tr>
+<tr><td>Main text</td><td>Introduction (background, problem, objectives, hypothesis) → Literature review → Methodology → Results/analysis → Discussion/interpretation → Conclusions, recommendations, limitations, future scope</td></tr>
+<tr><td>End matter</td><td>Bibliography/references, appendices (questionnaires, code, raw tables), index (for long works)</td></tr>
+</tbody></table></div>
+<p><strong>Writing a research <em>paper</em></strong> (journal or conference) compresses this into the <strong>IMRaD</strong> structure: <em>Introduction, Methods, Results, and Discussion</em>, preceded by title, abstract (about 150–250 words) and keywords, and followed by references. Venues set page limits and templates (IEEE, Springer LNCS, ACM), and papers go through <em>peer review</em>.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>Students most often skip Step 4, submitting the rough draft as the final one, and Step 5, where they list references inconsistently. Reviewers read that as carelessness in the research itself. Modern reference managers (Zotero, Mendeley, BibTeX) automate formatting, but the writer still decides <em>what</em> to cite and must check every citation.</p>
+<div class="checklist"><ul>
+  <li>All six steps in order, with the details of each.</li>
+  <li>Logical vs chronological development.</li>
+  <li>The five contents of a rough draft (procedure, limitations, analysis technique, findings, suggestions).</li>
+  <li>Bibliography formats for books and articles, with the Kothari example.</li>
+  <li>Final-draft rules (avoid "it seems"). For extra marks: report layout and IMRaD.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-proposal">
+<h3><span class="tno">§ 3.3</span>Developing a Research Proposal</h3>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Research proposal</b>A comprehensive plan explaining <em>what</em> a researcher intends to study, <em>why</em> it is important, and <em>how</em> it will be carried out. Its purpose is to convince an academic committee, funding body or supervisor that the research is <em>worthwhile, feasible and methodologically sound</em>.</div>
+<p class="plain">A proposal is a persuasive document you write before you are allowed to start: it shows you have thought the study through and can do it.</p>
+<div class="facet">II–III · Six Development Steps</div>
+<div class="formula">Problem → Objectives → Literature Review → Methodology → Expected Outcomes → Timeline &amp; Budget</div>
+<p><strong>1. Identifying the problem.</strong> Specific, researchable and significant. Understand the current state of knowledge, identify gaps, and frame a focused question. Not "social media affects students" but <em>"How does daily social media usage influence the academic performance of undergraduate students in India?"</em></p>
+<p><strong>2. Objectives.</strong> Clear, measurable, achievable. <em>General objective:</em> investigate the impact of social media on academic performance. <em>Specific objectives:</em> measure average daily social-media time; assess the correlation between usage and GPA.</p>
+<p><strong>3. Review of literature.</strong> Summarise and analyse relevant past studies to understand existing knowledge, find gaps and contradictions, and <em>justify the need</em> for your research. It positions your work as a meaningful contribution and helps refine the question and method.</p>
+<p><strong>4. Methodology.</strong> <em>Research design</em> (experimental, descriptive, survey, qualitative, quantitative); <em>sampling techniques</em> (random, purposive); <em>data-collection tools</em> (surveys, interviews, observation, experiments); <em>methods of analysis</em> (statistical, thematic). It must be detailed enough for reviewers to judge feasibility and reliability.</p>
+<p><strong>5. Expected outcomes.</strong> Anticipated results and their significance, tied directly to the objectives. <em>Academic insight</em> (new evidence on social-media habits and performance) and <em>practical application</em> (interventions for students or institutions).</p>
+<p><strong>6. Timeline and budget.</strong> <em>Timeline:</em> phases with completion estimates (literature review, data collection, analysis, writing), often as a <strong>Gantt chart</strong>. <em>Budget:</em> materials, software, travel, participant incentives, showing that the work is feasible within the available means.</p>
+<figure class="plate">
+  <div class="frame"><img src="img/gantt.svg" alt="Anatomy of a Gantt chart showing tasks as horizontal bars across a timeline with dependencies and milestones" loading="lazy"></div>
+  <figcaption><span class="pl">Plate 3.2 · Anatomy of a Gantt chart</span> Tasks are listed down the left, time runs across the top, bars show duration, arrows show dependencies, and diamonds mark milestones. This is how the "Work Plan and Time Schedule" section of a proposal is usually shown.
+  <span class="sketch">How to sketch: a table with months as columns (M1–M6) and phases as rows (Literature, Tool design, Data collection, Analysis, Writing), with shaded bars that overlap slightly.</span>
+  <span class="credit">Source: Wikimedia Commons, "GanttChartAnatomy.svg" (openly licensed; see file page).</span></figcaption>
+</figure>
+<div class="facet">IV · Real-World Case</div>
+<p>Indian funding agencies such as <strong>DST-SERB / ANRF</strong> (Core Research Grant) and <strong>AICTE</strong> schemes require exactly these parts: a problem statement with a review of the status of research, objectives, methodology, expected outcomes, a year-wise work plan and a head-wise budget (equipment, consumables, manpower, travel, contingency). A proposal with an excellent idea but an unrealistic budget or vague methodology is usually rejected at the first screening.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>A proposal is a <em>promise</em>. Promising too much ("will solve cancer detection") hurts credibility, while promising too little fails the significance test. The best proposals match ambitious objectives with a conservative, clearly feasible method, and include a <em>risk and contingency</em> line (for example, "if hospital data is delayed, the public BraTS dataset will be used").</p>
+<div class="checklist"><ul>
+  <li>Definition: what, why, how, written to <em>convince</em> a committee or funder.</li>
+  <li>The six steps in the professor's flow, each with its sub-points.</li>
+  <li>General vs specific objectives, with the social-media example.</li>
+  <li>The four components of methodology.</li>
+  <li>Gantt chart mentioned or drawn; budget heads listed.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-format">
+<h3><span class="tno">§ 3.4</span>Format of a Research Proposal</h3>
+<div class="facet">I · Core Premise</div>
+<p>§ 3.3 describes the <em>thinking process</em>. The format is the <em>document</em> you submit. The professor gives an eight-part format.</p>
+<div class="facet">II–III · The Eight Sections</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 420 390" role="img" aria-label="Eight stacked sections of a research proposal">
+<g>
+<rect x="60" y="10" width="300" height="38" class="box2"/><text x="210" y="34" text-anchor="middle">1 · Title page</text>
+<rect x="60" y="56" width="300" height="38" class="box"/><text x="210" y="80" text-anchor="middle">2 · Introduction &amp; problem statement</text>
+<rect x="60" y="102" width="300" height="38" class="box"/><text x="210" y="126" text-anchor="middle">3 · Objectives &amp; hypotheses</text>
+<rect x="60" y="148" width="300" height="38" class="box"/><text x="210" y="172" text-anchor="middle">4 · Review of literature</text>
+<rect x="60" y="194" width="300" height="46" class="box2"/><text x="210" y="214" text-anchor="middle">5 · Methodology</text><text x="210" y="231" text-anchor="middle" class="small">design · sampling · tools · statistics</text>
+<rect x="60" y="248" width="300" height="38" class="box"/><text x="210" y="272" text-anchor="middle">6 · Work plan &amp; time schedule</text>
+<rect x="60" y="294" width="300" height="38" class="box3"/><text x="210" y="318" text-anchor="middle">7 · Budget (if applicable)</text>
+<rect x="60" y="340" width="300" height="38" class="box"/><text x="210" y="364" text-anchor="middle">8 · References &amp; bibliography</text>
+</g></svg></div>
+<figcaption><span class="pl">Plate 3.3 · The proposal as a document</span> <span class="sketch">How to sketch: eight stacked bars like a book spine. Emphasise Methodology ("most critical") and dash Budget ("if applicable").</span></figcaption></figure>
+<ol>
+  <li><strong>Title page:</strong> the first impression. Title, researcher's name, institution/department, and possibly supervisor and date. The title must be clear, precise and reflect the core idea: not "Study on Education" but "Impact of Digital Learning Tools on Academic Performance of Undergraduate Students".</li>
+  <li><strong>Introduction and problem statement:</strong> background, <em>why</em> the research is necessary, and the exact problem. A good problem statement narrows the focus and gives the rationale in the current context.</li>
+  <li><strong>Objectives and hypotheses:</strong> measurable aims ("to identify factors influencing consumer preference for eco-friendly products") and, where applicable, hypotheses stating the expected relationship between variables ("There is a significant relationship between students' study habits and their academic performance"). These guide the design and analysis.</li>
+  <li><strong>Review of literature:</strong> establishes what has been done and what gaps remain, gives the theoretical foundation, prevents duplication, and shows the study is new and relevant.</li>
+  <li><strong>Methodology</strong> (one of the most critical parts): research design (experimental, descriptive, exploratory); sampling (population, sample size, selection technique); data-collection tools (questionnaires, interviews, observation, experiments); statistical techniques (regression, correlation, thematic analysis). It must be practical, reliable and suited to the objectives.</li>
+  <li><strong>Work plan and time schedule:</strong> a timeline of stages (literature review, data collection, analysis, writing) in tabular or Gantt form, which shows a realistic, time-bound approach.</li>
+  <li><strong>Budget (if applicable):</strong> for funded research, the estimated cost of data collection, equipment, software, field visits and manpower. A clear, justified budget lets funders judge financial feasibility.</li>
+  <li><strong>References and bibliography:</strong> <em>references</em> are works cited in the text; a <em>bibliography</em> may also include works consulted but not cited. Use a consistent style (<strong>APA, MLA, Harvard</strong>, IEEE). This adds credibility and shows academic honesty.</li>
+</ol>
+<div class="facet">IV–V · Case &amp; Evaluation</div>
+<p>Compare § 3.3 and § 3.4. The development steps include <em>Expected Outcomes</em>, and the format includes <em>Title page</em> and <em>References</em>. A complete proposal usually has all of them, so in the exam mention expected outcomes/significance as a sub-part of section 2 or 5. Committees often treat the proposal's references as a proxy for the quality of the literature review: old, unindexed or non-peer-reviewed sources are a warning sign.</p>
+<div class="checklist"><ul>
+  <li>All eight sections in order, each with its purpose.</li>
+  <li>Title example (bad vs good) and a hypothesis example.</li>
+  <li>Methodology described as "most critical", with its four sub-parts.</li>
+  <li>References vs bibliography distinction; name the citation styles.</li>
+</ul></div>
+</section>
+
+<section class="topic" id="rm-committee">
+<h3><span class="tno">§ 3.5</span>Presentation &amp; Assessment by a Review Committee</h3>
+<div class="facet">I · Core Premise</div>
+<p>Once a proposal or report is ready, it is usually <strong>presented before a review committee for approval</strong>. The committee evaluates its <em>feasibility, originality and significance</em>, the same qualities as the "good research problem" criteria in Unit 1.</p>
+<div class="facet">II–III · The Presentation and the Five Assessment Criteria</div>
+<p>During the presentation the researcher should <strong>confidently highlight the problem statement, objectives, methodology and expected outcomes</strong>, using visual aids such as slides, graphs and charts to make the points clear. A common structure for a 10–15 minute slot: title (1 slide) → motivation and problem (2) → literature gap (2) → objectives (1) → methodology with a diagram (3) → expected outcomes (1) → timeline and budget (1) → references (1), then Q&amp;A.</p>
+<div class="tbl"><table><thead><tr><th>The committee assesses…</th><th>What they are really asking</th><th>How to prepare</th></tr></thead><tbody>
+<tr><td>Clarity in defining the research problem</td><td>Can you state it in one sentence?</td><td>Rehearse a one-line problem statement</td></tr>
+<tr><td>Originality and relevance</td><td>What is new, and who cares?</td><td>A literature-gap slide with citations</td></tr>
+<tr><td>Appropriateness of methodology</td><td>Will this method actually answer the question?</td><td>Justify each method choice against alternatives</td></tr>
+<tr><td>Practicality of timeline and budget</td><td>Can you finish with these resources?</td><td>A Gantt chart and head-wise budget</td></tr>
+<tr><td>Researcher's ability to justify and defend</td><td>Do you understand your own proposal?</td><td>Prepare for likely questions; admit limitations honestly</td></tr>
+</tbody></table></div>
+<p>The outcome is not only <em>approval or rejection</em>. The assessment also gives <strong>constructive feedback</strong> to improve the proposal or report. Common outcomes are: accepted, accepted with minor revisions, major revision and re-presentation, or rejected.</p>
+<div class="facet">IV · Real-World Case</div>
+<p>In Indian universities, PhD candidates present to a <strong>Research Advisory Committee (RAC)</strong> or Departmental Research Committee for approval of the synopsis, followed by periodic progress seminars. B.Tech major projects are similarly reviewed by a panel in stages (zeroth, mid-term and final evaluation). Funding agencies use expert committees who score proposals on scientific merit, novelty, feasibility and the investigator's track record.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>Committee review is a form of <em>peer review</em>. It catches weak designs early, but it can be conservative and favour safe, incremental topics over risky, novel ones. A presenter can offset this by showing a clear <em>de-risking plan</em>. Treat questions as useful input, not attacks: defensiveness is itself assessed under "ability to justify".</p>
+<div class="checklist"><ul>
+  <li>Purpose: the committee evaluates feasibility, originality and significance.</li>
+  <li>What to highlight in the presentation (problem, objectives, methodology, outcomes) and the use of visual aids.</li>
+  <li>All five assessment criteria.</li>
+  <li>The outcome includes constructive feedback, not only approve or reject.</li>
+</ul></div>
+</section>
+
+<div class="deck" id="deck-rm-u3">
+  <p class="deck-title">Flashcards · Unit Three</p>
+  <p class="deck-sub">Includes cumulative cards from Units One and Two (↺).</p>
+  <div class="fc"><div class="fc-q">Four pillars of effective technical writing?</div><div class="fc-a">Clarity → Coherence → Accuracy → Objectivity. Example of objectivity: not "the results are amazing" but "the results indicate a 15% increase in efficiency".</div></div>
+  <div class="fc"><div class="fc-q">Six steps of writing a research report?</div><div class="fc-a">Logical analysis of subject matter → final outline → rough draft → rewriting &amp; polishing (hardest) → final bibliography → final draft.</div></div>
+  <div class="fc"><div class="fc-q">Logical vs chronological development?</div><div class="fc-a">Logical: content organised by mental connections, simple → complex. Chronological: in order of occurrence over time (manuals, histories).</div></div>
+  <div class="fc"><div class="fc-q">What goes into the rough draft?</div><div class="fc-a">Procedure adopted for data collection · limitations of the study · technique of analysis · broad findings and generalisations · suggestions on the problem.</div></div>
+  <div class="fc"><div class="fc-q">Bibliography format for a book?</div><div class="fc-a">Author (surname first), title, place, publisher, year, volumes. <em>Kothari, C.R., Quantitative Techniques, New Delhi, Vikas Publishing House Pvt. Ltd., 1978.</em></div></div>
+  <div class="fc"><div class="fc-q">Six steps of developing a research proposal?</div><div class="fc-a">Problem → Objectives → Literature review → Methodology → Expected outcomes → Timeline &amp; budget.</div></div>
+  <div class="fc"><div class="fc-q">Eight sections of the proposal format?</div><div class="fc-a">Title page · Introduction &amp; problem statement · Objectives &amp; hypotheses · Review of literature · Methodology · Work plan &amp; time schedule · Budget (if applicable) · References &amp; bibliography.</div></div>
+  <div class="fc"><div class="fc-q">What does a review committee assess?</div><div class="fc-a">Clarity of the research problem · originality and relevance · appropriateness of methodology · practicality of timeline and budget · researcher's ability to justify and defend. The output includes constructive feedback.</div></div>
+  <div class="fc" data-from="Unit 2"><div class="fc-q">Which Unit 2 principle is violated if a report reports 90% accuracy when the model got 75%?</div><div class="fc-a"><strong>Honesty</strong>: this is fabrication or manipulation of results. It also breaks the <em>accuracy</em> pillar of technical writing.</div></div>
+  <div class="fc" data-from="Unit 2"><div class="fc-q">Why does the bibliography step matter ethically?</div><div class="fc-a">It fulfils the ethical principle of <strong>Respect</strong> (acknowledging contributions) and prevents <strong>plagiarism</strong>, including accidental plagiarism from missing citations.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">How do the Unit 1 criteria of a good problem reappear in committee assessment?</div><div class="fc-a">Clear → "clarity in defining the problem"; Novel and Significant → "originality and relevance"; Feasible → "practicality of timeline and budget"; Researchable → "appropriateness of methodology".</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">General vs specific objectives, with an example.</div><div class="fc-a">General: overall aim ("investigate the impact of social media on academic performance"). Specific: measurable sub-goals ("measure daily usage time"; "assess the correlation between usage and GPA").</div></div>
+</div>
+
+</div></div>
+
+<div class="chapter-card" id="rm-exam" data-short="Expected Paper">
+  <div class="ch-no">The Examination Hall</div>
+  <h2>Expected Question Paper</h2>
+  <p class="in-which">A full paper in the department's format, with a model answer blueprint under each question.</p>
+</div>
+<div class="sheet"><div class="prose">
+<div class="paper-head">
+  <div class="ph1">TRM-701 · B. Tech. (CSE) (Seventh Semester) · Mid Semester Examination</div>
+  <div class="ph2">Research Methodology &amp; IPR</div>
+  <div class="ph3">Time: 1½ Hours · Maximum Marks: 50 · Answer all questions choosing any one sub-question · each carries 10 marks</div>
+</div>
+<p class="tip"><b>Rationale.</b> No RM paper was supplied, so these questions follow the department's pattern: one Unit 1 topic per (a)/(b) pair for Q1–Q2, Unit 2 in Q3–Q4, Unit 3 in Q5, with <em>case-style</em> wording like the BI paper's "your university" questions. Each blueprint is a plan for about 3–4 answer-sheet pages.</p>
+
+<div class="qblock"><div class="qno">Question 1 · CO1</div>
+<p><strong>(a)</strong> What is a research problem? Explain its key features and the sources from which research problems arise, with examples from computer science.</p>
+<details class="model"><summary>Model answer blueprint · 1(a)</summary><div class="ans">
+<p class="marks">[Definition 2] + [Diagram 1] + [Six features 3] + [Seven sources 3] + [Conclusion 1]</p>
+<ol>
+<li><strong>Opening (½ page):</strong> the professor's definition: a question, issue or difficulty studied and solved through systematic research; <em>the gap between what we know and what we want to know</em>. Add one line on research as a systematic search for knowledge.</li>
+<li><strong>Diagram:</strong> Current Knowledge → Identified Gap → Desired Knowledge (Plate 1.1).</li>
+<li><strong>Key features (1 page):</strong> number all six and carry <em>one running example</em> through them (slow cloud app: company, cloud peak load, faster response, caching/queries/refactoring, unequal effectiveness, uncertainty).</li>
+<li><strong>Sources (1–1½ pages):</strong> seven sub-headings. For each, one sentence of explanation plus an example problem <em>written as a question</em> (RL for robotics; model drift; network-log anomalies; UI from pilot tests; quantum simulation; AI code review; zero-day container exploits).</li>
+<li><strong>Close:</strong> the best problems come from triangulating sources (literature gap + industry need), e.g. the Transformer.</li>
+</ol>
+<p>Full content: <a href="#rm-problem">§ 1.1</a>, <a href="#rm-sources">§ 1.2</a>.</p>
+</div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> "A poorly chosen research problem dooms a project before it begins." Discuss the criteria of a good research problem and the common errors in selecting one. How do scope and objectives help avoid these errors?</p>
+<details class="model"><summary>Model answer blueprint · 1(b)</summary><div class="ans">
+<p class="marks">[Criteria 4] + [Errors 3] + [Scope &amp; objectives 2] + [Evaluation 1]</p>
+<ol>
+<li><strong>Introduction:</strong> selecting the problem is the first and most critical decision, and every later step depends on it.</li>
+<li><strong>Six criteria</strong> (clear, feasible, researchable, significant, novel, ethical), each with a bad → good example. Use the climate change → UP rice yields 2000–2020 example for clarity.</li>
+<li><strong>Five errors</strong> (too broad or narrow, no data, beyond expertise, ignoring time and resources, copying). Draw a <em>two-column table</em> mapping each error to the criterion it breaks. This is where the analysis marks are.</li>
+<li><strong>Scope and objectives:</strong> definitions. Scope fixes "too broad" and "ignoring resources"; measurable objectives fix vagueness. Use the IoT example (scope: smart-home devices; objective: lightweight encryption).</li>
+<li><strong>Conclusion:</strong> the criteria pull against each other (novelty vs feasibility), and narrowing the scope resolves most of the tension.</li>
+</ol></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 2 · CO1</div>
+<p><strong>(a)</strong> Explain the general steps of the research process with a neat flowchart. Distinguish between the quantitative and qualitative approaches to investigating solutions.</p>
+<details class="model"><summary>Model answer blueprint · 2(a)</summary><div class="ans">
+<p class="marks">[Flowchart 2] + [11 steps 5] + [Quant vs qual 3]</p>
+<ol>
+<li>One-line introduction: research is systematic, and the process gives it order.</li>
+<li><strong>Flowchart first</strong> (Plate 1.2), 11 boxes. Write "if needed" on hypothesis steps 3 and 9.</li>
+<li><strong>Explain each step in 2–3 lines</strong> with the online-classes/mathematics example running through all of them (hypothesis: regular attendees score higher; sample: 200 students from 5 schools; conclusion: improvement only with parental involvement).</li>
+<li><strong>Approaches table:</strong> focus, questions answered, sub-types (inferential, experimental, simulation) vs methods (interviews, focus groups, open-ended surveys), plus an example each. Mention mixed methods.</li>
+<li>Close with the point that research is iterative, not strictly linear.</li>
+</ol></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Differentiate between primary and secondary data. Explain data analysis and interpretation, and the instrumentation needed for a computer-science research project.</p>
+<details class="model"><summary>Model answer blueprint · 2(b)</summary><div class="ans">
+<p class="marks">[Primary vs secondary 3] + [Analysis vs interpretation 3] + [Instrumentation 3] + [Integration 1]</p>
+<ol>
+<li>Data is the foundation of research. Give definitions of primary and secondary data, then a comparison table (collected by, methods/sources, advantages, disadvantages, sentiment-analysis example). State when to choose which, and that researchers often combine both.</li>
+<li>Analysis: meaning plus three methods (statistics, ML, visualisation) with examples. Interpretation: meaning plus three steps (compare with objectives, relate to theory, explain implications). Add the comparison table (focus, nature, spam example: run the model vs conclude 92% effective).</li>
+<li>Instrumentation: hardware, software, datasets with examples. Finish with the GPU + TensorFlow + ImageNet example.</li>
+<li><strong>Integration:</strong> one worked pipeline, e.g. an IoT air-quality study (sensors → Python → visualisation → interpretation against CPCB standards).</li>
+</ol></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 3 · CO2</div>
+<p><strong>(a)</strong> What is a literature review? Why is it needed? Describe the steps for conducting an effective literature review, taking "Brain Tumour Detection using AI" as your topic.</p>
+<details class="model"><summary>Model answer blueprint · 3(a)</summary><div class="ans">
+<p class="marks">[Definition + analogy 1½] + [Need 2] + [5 steps 5] + [Benefits 1½]</p>
+<ol>
+<li>Definition, plus the house-building "map of knowledge" analogy. Stress that it means reading, comparing and critiquing, not collecting.</li>
+<li>Four needs: understanding, no duplication, gaps, foundation.</li>
+<li>Five-step pipeline diagram (Plate 2.1), then each step applied to the brain-tumour topic: the keywords list; the databases (Scholar, IEEE Xplore, Springer/Elsevier, Scopus/WoS); organising (thematic/methodological/chronological); critical analysis with the <em>descriptive vs critical sentence</em>; the gap statement (lightweight mobile models).</li>
+<li>Benefits, including the refined research question ("How to detect tumours?" → "lightweight DL models on mobile devices").</li>
+</ol></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Compare the narrative review, systematic literature review, scoping review and meta-analysis. Also explain thematic, chronological and methodological ways of organising a review.</p>
+<details class="model"><summary>Model answer blueprint · 3(b)</summary><div class="ans">
+<p class="marks">[4 approaches × 1½ = 6] + [3 organisers 2] + [Comparison table 2]</p>
+<ol>
+<li>For A–D give a definition, characteristics, advantages, limitations and an example (hate-speech detection works well as a running example). Write the SLR pipeline in full and sketch a PRISMA box diagram.</li>
+<li>E, F, G: define each and give an example (NLP themes; n-gram → RNN → Transformer timeline; the methods/purpose table).</li>
+<li>End with the comparison table (rigour, output, best when, weakness) and the point that rigour trades off against time.</li>
+</ol></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 4 · CO3</div>
+<p><strong>(a)</strong> What is plagiarism? Explain its types with examples. Why is plagiarism considered wrong, and how can a researcher avoid it?</p>
+<details class="model"><summary>Model answer blueprint · 4(a)</summary><div class="ans">
+<p class="marks">[Definition + occurrences 2] + [4 types 4] + [Why wrong 1½] + [Avoidance 1½] + [Consequences 1]</p>
+<ol>
+<li>Definition emphasising credit, plus the classmate-copying analogy. List the three situations in which it occurs (copying text, borrowing ideas, reusing your own work).</li>
+<li>Types table: direct, self, mosaic, accidental, with the professor's examples. State clearly that <em>accidental plagiarism is still plagiarism</em>.</li>
+<li>Why wrong: unethical, reputation, detection tools (Turnitin, Grammarly, Urkund), blocks learning.</li>
+<li>Avoid: cite, use tools, paraphrase <em>and</em> cite. Consequences: grades or thesis rejection, credibility, legal action.</li>
+<li>For extra marks: the UGC 2018 similarity levels (≤10% none; 10–40% revise; 40–60% debar; &gt;60% cancel).</li>
+</ol></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> "Research ethics form the backbone of responsible research." Explain the key principles of research ethics with examples, and discuss why ethics matter, using a brain-tumour detection project as a case.</p>
+<details class="model"><summary>Model answer blueprint · 4(b)</summary><div class="ans">
+<p class="marks">[Definition 1] + [5 principles 5] + [Why matter 2] + [Case 2]</p>
+<ol>
+<li>Define ethics as a moral compass (fairness, honesty, responsibility), with the doctor-lying analogy.</li>
+<li>Principles diagram (Plate 2.3). Each principle with the professor's example: 75% vs 90%; 50 of 100 samples; crediting datasets; revealing patient identity; Method A vs B.</li>
+<li>Four reasons: trust, validity and reliability, participants' rights, preventing misuse.</li>
+<li>Brain-tumour case with three outcomes (faked accuracy, revealed identities, honest reporting). Add a real scandal (Hwang 2005) and safeguards (ethics committee, informed consent, ICMR 2017, DPDP Act 2023).</li>
+</ol></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 5 · CO3 / CO4</div>
+<p><strong>(a)</strong> What is effective technical writing? Describe the steps involved in writing a research report.</p>
+<details class="model"><summary>Model answer blueprint · 5(a)</summary><div class="ans">
+<p class="marks">[Technical writing 3] + [6 steps 6] + [Close 1]</p>
+<ol>
+<li>Definition (clear, precise, structured, audience-centred) and the four pillars as a chain: clarity → coherence → accuracy → objectivity, with the "amazing" vs "15%" example.</li>
+<li>Six-step diagram (Plate 3.1), then each step. Include logical vs chronological development; the rough-draft contents (5 items); rewriting as the hardest step; both bibliography formats with the Kothari and Roosa examples; final-draft rules ("avoid it seems").</li>
+<li>Close with IMRaD for research papers.</li>
+</ol></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> What is a research proposal? Explain the steps in developing it and its standard format. How is a proposal assessed by a review committee?</p>
+<details class="model"><summary>Model answer blueprint · 5(b)</summary><div class="ans">
+<p class="marks">[Definition 1] + [Development 3] + [Format 3] + [Committee 3]</p>
+<ol>
+<li>Definition: what, why, how, written to convince.</li>
+<li>Development flow: problem → objectives → literature review → methodology → expected outcomes → timeline and budget (one or two lines each, with the social-media example).</li>
+<li>Format: the eight-section stack (Plate 3.3), with title and hypothesis examples; mark methodology as most critical; mention a Gantt chart.</li>
+<li>Committee: the presentation content plus visual aids; the five assessment criteria (use a table); outcomes including constructive feedback.</li>
+</ol></div></details>
+</div>
+</div></div>
+
+<nav class="pager" aria-label="Subjects"><a class="pg-prev" href="index.html">← The Lobby</a><span></span><a class="pg-next" href="aca.html">Advanced Computer Architecture →</a></nav>
+</section>
+</main>
+<p class="footer">Created by Harshit · Printed on hotel stationery · Good luck in the examination hall</p>
+<script>
+(function(){
+  var store = {
+    get: function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+    set: function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  };
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement;
+  var savedTheme = store.get('almanac-theme');
+  if (savedTheme) root.setAttribute('data-theme', savedTheme);
+  var tt = document.getElementById('themeToggle');
+  function paintToggle(){
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    tt.textContent = dark ? 'Day edition' : 'Night edition';
+  }
+  if (tt){
+    paintToggle();
+    tt.addEventListener('click', function(){
+      var dark = tt.textContent === 'Day edition';
+      var next = dark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next); store.set('almanac-theme', next); paintToggle();
+    });
+  }
+
+  /* ---------- pages: remember where you were reading on each page ---------- */
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var pageKey = 'almanac-scroll-' + (panels[0] ? panels[0].id : 'page');
+  var saveTimer = null;
+  window.addEventListener('scroll', function(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ store.set(pageKey, Math.round(window.scrollY)); }, 250);
+  }, {passive:true});
+  if (!location.hash){
+    var y = store.get(pageKey);
+    if (y && y > 400){
+      var tip = document.createElement('button');
+      tip.type = 'button'; tip.className = 'resume';
+      tip.textContent = 'Continue where you left off ↓';
+      tip.addEventListener('click', function(){ window.scrollTo({top:y}); tip.remove(); });
+      var nav = document.querySelector('.tickets');
+      if (nav) nav.insertAdjacentElement('afterend', tip);
+      setTimeout(function(){ if (tip.isConnected) tip.remove(); }, 12000);
+    }
+  }
+
+  /* ---------- unit nav (auto) ---------- */
+  panels.forEach(function(p){
+    var nav = p.querySelector('.unit-nav');
+    if (!nav) return;
+    p.querySelectorAll('.chapter-card[id]').forEach(function(c){
+      var li = document.createElement('li'); var a = document.createElement('a');
+      a.href = '#'+c.id; a.textContent = c.dataset.short || c.querySelector('h2').textContent;
+      a.addEventListener('click', function(e){ e.preventDefault(); c.scrollIntoView({behavior:'smooth'}); });
+      li.appendChild(a); nav.appendChild(li);
+    });
+  });
+
+  /* ---------- images: graceful fallback ---------- */
+  document.querySelectorAll('.plate img').forEach(function(img){
+    function fail(){
+      var fig = img.closest('.plate'); fig.classList.add('missing');
+      var f = img.closest('.frame'); f.textContent = 'Image could not load here. Read the caption below and draw it from the sketch guide. (' + img.alt + ')';
+    }
+    if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) { fail(); }
+    else img.addEventListener('error', fail);
+  });
+
+  /* ---------- flashcards with Leitner spaced repetition ---------- */
+  document.querySelectorAll('.deck').forEach(function(deck, di){
+    var cards = Array.prototype.slice.call(deck.querySelectorAll('.fc'));
+    if (!cards.length) return;
+    var key = 'almanac-deck-' + (deck.id || di);
+    cards.forEach(function(c){
+      var q = c.querySelector('.fc-q'), a = c.querySelector('.fc-a');
+      var inner = document.createElement('div'); inner.className = 'fc-inner';
+      q.classList.add('fc-face'); a.classList.add('fc-face');
+      if (c.dataset.from){
+        var tag = document.createElement('span'); tag.className = 'from'; tag.textContent = '↺ Cumulative · ' + c.dataset.from;
+        q.insertBefore(tag, q.firstChild);
+      }
+      var s1 = document.createElement('span'); s1.className='side'; s1.textContent='Question — tap to turn';
+      var s2 = document.createElement('span'); s2.className='side'; s2.textContent='Model answer';
+      q.insertBefore(s1, q.firstChild); a.insertBefore(s2, a.firstChild);
+      inner.appendChild(q); inner.appendChild(a); c.appendChild(inner);
+      c.setAttribute('tabindex','0'); c.setAttribute('role','button'); c.setAttribute('aria-label','Flashcard. Press to flip.');
+      c.addEventListener('click', function(e){ if (e.target.closest('a')) return; c.classList.toggle('flipped'); });
+      c.addEventListener('keydown', function(e){ if (e.key===' '||e.key==='Enter'){ e.preventDefault(); c.classList.toggle('flipped'); } });
+    });
+    deck.classList.add('js');
+    var boxes = store.get(key) || {}; // card index -> box 1..3
+    var order = cards.map(function(_,i){return i;});
+    var pos = 0;
+    var ctr = document.createElement('div'); ctr.className = 'deck-controls';
+    ctr.innerHTML = '<button type="button" class="prev">← Previous</button>'+
+      '<span class="count"></span>'+
+      '<button type="button" class="flip">Turn card</button>'+
+      '<button type="button" class="next">Next →</button>'+
+      '<button type="button" class="again">Again</button>'+
+      '<button type="button" class="got">Got it</button>'+
+      '<button type="button" class="shuffle">Review weakest first</button>'+
+      '<span class="boxes"></span>';
+    deck.appendChild(ctr);
+    var count = ctr.querySelector('.count'), bx = ctr.querySelector('.boxes');
+    function render(){
+      cards.forEach(function(c){ c.classList.remove('current','flipped'); });
+      cards[order[pos]].classList.add('current');
+      count.textContent = (pos+1) + ' / ' + cards.length;
+      var b = [0,0,0,0]; cards.forEach(function(_,i){ b[boxes[i]||1]++; });
+      bx.textContent = 'Box 1 (learning): ' + b[1] + ' · Box 2 (review): ' + b[2] + ' · Box 3 (mastered): ' + b[3];
+    }
+    function go(d){ pos = (pos + d + cards.length) % cards.length; render(); }
+    ctr.querySelector('.prev').onclick = function(){ go(-1); };
+    ctr.querySelector('.next').onclick = function(){ go(1); };
+    ctr.querySelector('.flip').onclick = function(){ cards[order[pos]].classList.toggle('flipped'); };
+    ctr.querySelector('.again').onclick = function(){ boxes[order[pos]] = 1; store.set(key, boxes); go(1); };
+    ctr.querySelector('.got').onclick = function(){ var i = order[pos]; boxes[i] = Math.min(3,(boxes[i]||1)+1); store.set(key, boxes); go(1); };
+    ctr.querySelector('.shuffle').onclick = function(){
+      order = cards.map(function(_,i){return i;}).sort(function(a,b){ return ((boxes[a]||1)-(boxes[b]||1)) || (Math.random()-.5); });
+      pos = 0; render();
+    };
+    render();
+  });
+
+  /* ---------- MCQ engine ---------- */
+  document.querySelectorAll('.mcq-bank').forEach(function(bank){
+    var qs = Array.prototype.slice.call(bank.querySelectorAll('.mcq'));
+    var sb = bank.querySelector('.scoreboard');
+    var right = 0, done = 0;
+    function paint(){ if (sb) sb.querySelector('.sc').textContent = 'Score ' + right + ' / ' + done + ' answered · ' + qs.length + ' questions'; }
+    qs.forEach(function(q, i){
+      var ans = q.dataset.answer;
+      var num = q.querySelector('.qn'); if (num) num.textContent = 'Q' + (i+1) + '.';
+      q.querySelectorAll('ol.opts li').forEach(function(li){
+        if (li.dataset.k === ans) li.classList.add('is-key');
+        li.setAttribute('tabindex','0');
+        function pick(){
+          if (q.classList.contains('answered')) return;
+          q.classList.add('answered'); done++;
+          if (li.dataset.k === ans){ right++; li.classList.add('right'); }
+          else { li.classList.add('wrong'); q.querySelector('li[data-k="'+ans+'"]').classList.add('right'); }
+          paint();
+        }
+        li.addEventListener('click', pick);
+        li.addEventListener('keydown', function(e){ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+      });
+    });
+    if (sb) sb.querySelector('button').onclick = function(){
+      right = 0; done = 0;
+      qs.forEach(function(q){ q.classList.remove('answered'); q.querySelectorAll('li').forEach(function(li){ li.classList.remove('right','wrong'); }); });
+      paint();
+    };
+    paint();
+  });
+
+  /* ---------- print: open every model answer ---------- */
+  window.addEventListener('beforeprint', function(){ document.querySelectorAll('details').forEach(function(d){ d.setAttribute('open',''); }); });
+})();
+
+</script>
+</body>
+</html>

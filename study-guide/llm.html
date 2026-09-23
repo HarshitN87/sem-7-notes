@@ -1,0 +1,1667 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Almanac · Large Language Models</title>
+<meta name="description" content="Mid-semester study guide, B.Tech CSE Semester VII: Large Language Models">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Courier+Prime&display=swap">
+<style>
+/* ============ The Mid-Semester Almanac — tokens ============ */
+:root{
+  color-scheme: light;
+  --ground:#F4DEDC;          /* blush wallpaper */
+  --paper:#FFF9F2;           /* hotel stationery */
+  --paper-2:#FBEFE6;
+  --ink:#2C1D28;             /* aubergine ink */
+  --muted:#6B5462;
+  --rule:#D2AFAA;
+  --rule-strong:#9C6F72;
+  --stamp:#8E2F45;
+  --good:#3E7D5A; --good-soft:#DDEFE3;
+  --bad:#A8392E;  --bad-soft:#F6DCD7;
+  --fig-ground:#FFFFFF;
+  --shadow: 0 1px 0 rgba(44,29,40,.06), 0 10px 24px -14px rgba(44,29,40,.35);
+  /* default accent (lobby) */
+  --acc:#8E2F45; --acc2:#5B3A6E; --acc-soft:#F2D2D8; --acc-ink:#FFF9F2;
+  --display:"Jost","Futura","Century Gothic","Trebuchet MS",sans-serif;
+  --body:"Libre Caslon Text","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --mono:"Courier Prime","Courier New",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+    --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+    --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+    --fig-ground:#F7F1EA;
+    --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+    --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+  --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+  --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+  --fig-ground:#F7F1EA;
+  --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+  --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+}
+
+/* per-film subject palettes */
+[data-subject="rm"] { --acc:#A83F63; --acc2:#6B2D5C; --acc-soft:#F5D6DF; }
+[data-subject="aca"]{ --acc:#C0433A; --acc2:#2F6F95; --acc-soft:#D8E9F3; }
+[data-subject="mba"]{ --acc:#A87A12; --acc2:#5E6B3A; --acc-soft:#F4E6BC; }
+[data-subject="bi"] { --acc:#23857C; --acc2:#C8703F; --acc-soft:#D2EEEA; }
+[data-subject="llm"]{ --acc:#BD5A22; --acc2:#6E4A2F; --acc-soft:#F7DDC8; }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+  :root:not([data-theme="light"]) [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+  :root:not([data-theme="light"]) [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+  :root:not([data-theme="light"]) [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+  :root:not([data-theme="light"]) [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+}
+:root[data-theme="dark"] [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+:root[data-theme="dark"] [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+:root[data-theme="dark"] [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+:root[data-theme="dark"] [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+:root[data-theme="dark"] [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+
+/* ============ base ============ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.68;
+  padding-inline:16px; padding-block:0 64px;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 46px, color-mix(in srgb, var(--rule) 22%, transparent) 46px 48px);
+}
+a{color:var(--acc)}
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible{outline:3px solid var(--acc2); outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--display); font-weight:500; text-wrap:balance; line-height:1.2}
+p{margin:0 0 1em}
+.wrap{max-width:1040px; margin-inline:auto}
+
+/* ============ proscenium header ============ */
+.marquee{max-width:1040px; margin:28px auto 0; text-align:center; background:var(--paper);
+  border:1px solid var(--rule-strong); outline:6px double var(--rule); outline-offset:-14px;
+  padding:44px 28px 30px; box-shadow:var(--shadow); position:relative}
+.marquee .eyebrow{font-family:var(--display); letter-spacing:.42em; text-transform:uppercase; font-size:12px; color:var(--muted)}
+.marquee h1{font-size:clamp(34px,6vw,64px); letter-spacing:.14em; text-transform:uppercase; margin:.28em 0 .1em; color:var(--stamp); font-weight:500}
+.marquee .sub{font-family:var(--body); font-style:italic; color:var(--muted); font-size:18px}
+.marquee .fleuron{font-family:var(--display); color:var(--rule-strong); letter-spacing:.8em; margin:14px 0 0}
+.theme-toggle{position:absolute; top:18px; right:22px; font-family:var(--display); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; background:transparent; border:1px solid var(--rule-strong); color:var(--muted); padding:6px 10px; cursor:pointer}
+
+/* ============ ticket-stub tabs ============ */
+.tickets{max-width:1040px; margin:22px auto 0; display:grid; grid-template-columns:repeat(6,1fr); gap:10px;
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20; padding-block:10px; background:var(--ground)}
+.ticket{font:inherit; cursor:pointer; text-align:left; background:var(--paper); color:var(--ink);
+  border:1px solid var(--rule-strong); padding:10px 12px 9px; position:relative; min-width:0;
+  -webkit-mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+          mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+  transition:transform .18s ease, background .18s}
+.ticket:hover{transform:translateY(-2px)}
+.ticket .t-date{display:block; font-family:var(--mono); font-size:12px; color:var(--acc); letter-spacing:.06em}
+.ticket .t-name{display:block; font-family:var(--display); font-size:13.5px; letter-spacing:.08em; text-transform:uppercase; line-height:1.25; overflow-wrap:anywhere}
+.ticket .t-code{display:block; font-family:var(--mono); font-size:11px; color:var(--muted)}
+.ticket[aria-selected="true"]{background:var(--acc); color:var(--acc-ink)}
+.ticket[aria-selected="true"] .t-date,.ticket[aria-selected="true"] .t-code{color:var(--acc-ink); opacity:.85}
+@media (max-width:820px){ .tickets{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:460px){ .tickets{grid-template-columns:repeat(2,1fr); position:static} }
+
+/* ============ panels & paper ============ */
+.panel{max-width:1040px; margin:18px auto 0}
+.panel[hidden]{display:none!important}
+.sheet{background:var(--paper); border:1px solid var(--rule); box-shadow:var(--shadow); padding:clamp(20px,4vw,56px); margin-top:22px}
+.prose{max-width:70ch; margin-inline:auto}
+.subject-title{text-align:center; padding-block:10px 4px}
+.subject-title .code{font-family:var(--mono); color:var(--acc); letter-spacing:.12em}
+.subject-title h2{font-size:clamp(28px,4.4vw,46px); letter-spacing:.12em; text-transform:uppercase; margin:.2em 0; color:var(--acc2)}
+.subject-title .meta{font-style:italic; color:var(--muted)}
+.unit-nav{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:18px 0 0; padding:0; list-style:none}
+.unit-nav a{font-family:var(--display); font-size:12px; letter-spacing:.18em; text-transform:uppercase; text-decoration:none;
+  color:var(--acc2); border:1px solid var(--acc2); padding:6px 12px; background:var(--paper)}
+.unit-nav a:hover{background:var(--acc-soft)}
+
+/* intertitle chapter card */
+.chapter-card{background:var(--acc-soft); border:1px solid var(--acc); outline:4px double var(--acc); outline-offset:-12px;
+  text-align:center; padding:46px 24px 40px; margin-top:34px; scroll-margin-top:110px}
+.chapter-card .ch-no{font-family:var(--display); letter-spacing:.5em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.chapter-card h2{font-size:clamp(26px,4vw,40px); letter-spacing:.1em; text-transform:uppercase; margin:.3em 0 .25em; color:var(--ink)}
+.chapter-card .in-which{font-style:italic; color:var(--muted); max-width:52ch; margin:0 auto}
+.chapter-card .syll{font-family:var(--mono); font-size:13px; color:var(--muted); margin-top:14px; max-width:70ch; margin-inline:auto}
+
+/* topic */
+.topic{scroll-margin-top:110px}
+.topic > h3{font-size:clamp(22px,3vw,30px); letter-spacing:.06em; text-transform:uppercase; color:var(--acc2);
+  border-bottom:2px solid var(--acc); padding-bottom:.35em; margin:1.6em 0 .8em}
+.topic > h3 .tno{font-family:var(--mono); font-size:.6em; color:var(--acc); letter-spacing:.05em; display:block; text-transform:none}
+.facet{font-family:var(--display); font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:var(--acc);
+  margin:1.8em 0 .6em; display:flex; align-items:center; gap:12px}
+.facet::after{content:""; flex:1; height:1px; background:var(--rule)}
+.prose h5{font-family:var(--display); font-size:16px; letter-spacing:.06em; margin:1.3em 0 .4em; color:var(--ink); font-weight:600}
+.prose ul,.prose ol{padding-left:1.3em; margin:0 0 1em}
+.prose li{margin-bottom:.35em}
+.prose strong{color:var(--acc2); font-weight:700}
+.defn{border-left:4px solid var(--acc); background:var(--paper-2); padding:14px 18px; margin:0 0 1em; font-style:italic}
+.defn b{font-style:normal; font-family:var(--display); letter-spacing:.06em; text-transform:uppercase; font-size:13px; color:var(--acc); display:block; margin-bottom:4px}
+.plain{background:var(--acc-soft); padding:12px 16px; margin:0 0 1em; border-radius:2px}
+.plain::before{content:"In plain words — "; font-family:var(--display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acc)}
+.formula{font-family:var(--mono); background:var(--paper-2); border:1px dashed var(--rule-strong); padding:12px 16px; margin:0 0 1em; overflow-x:auto; white-space:pre; font-size:15px; line-height:1.55}
+.checklist{border:2px solid var(--acc2); padding:16px 20px 8px; margin:1em 0 1.6em; background:var(--paper); position:relative}
+.checklist::before{content:"Evaluator's Scoring Checklist"; position:absolute; top:-12px; left:16px; background:var(--paper); padding:0 8px;
+  font-family:var(--display); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--acc2)}
+.checklist ul{list-style:none; padding-left:0}
+.checklist li{padding-left:1.6em; position:relative}
+.checklist li::before{content:"✓"; position:absolute; left:0; color:var(--good); font-weight:700}
+.tip{font-size:15px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:10px 0; margin:0 0 1em; color:var(--muted)}
+.tip b{font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+
+/* tables */
+.tbl{overflow-x:auto; margin:0 0 1.2em}
+.tbl table{border-collapse:collapse; width:100%; font-size:15px; min-width:520px}
+.tbl th{font-family:var(--display); font-weight:500; letter-spacing:.06em; text-align:left; background:var(--acc-soft); color:var(--ink); border-bottom:2px solid var(--acc)}
+.tbl th,.tbl td{padding:8px 10px; border-bottom:1px solid var(--rule); vertical-align:top}
+.tbl td{font-variant-numeric:tabular-nums}
+
+/* figures */
+.plate{margin:1.4em auto 1.8em; max-width:760px; text-align:center}
+.plate .frame{background:var(--fig-ground); border:1px solid var(--rule-strong); outline:5px solid var(--paper-2); padding:14px; overflow-x:auto}
+.plate img{display:block; margin:0 auto; max-height:520px; width:auto; max-width:100%}
+.plate svg{display:block; margin:0 auto; max-width:100%; height:auto}
+.plate.svgplate .frame{background:var(--paper)}
+.plate figcaption{text-align:left; font-size:14.5px; color:var(--muted); margin-top:10px; line-height:1.55}
+.plate figcaption .pl{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+.plate figcaption .sketch{display:block; margin-top:6px; font-family:var(--mono); font-size:13px; color:var(--ink)}
+.plate figcaption .credit{display:block; font-size:12px; margin-top:4px}
+.plate.missing .frame{padding:30px; font-style:italic; color:var(--muted)}
+/* svg tokens */
+.dg text{font-family:var(--display); fill:var(--ink); font-size:13px}
+.dg .box{fill:var(--paper-2); stroke:var(--acc2); stroke-width:1.6}
+.dg .box2{fill:var(--acc-soft); stroke:var(--acc); stroke-width:1.6}
+.dg .box3{fill:var(--paper); stroke:var(--rule-strong); stroke-width:1.2; stroke-dasharray:4 3}
+.dg .ln{stroke:var(--ink); stroke-width:1.6; fill:none}
+.dg .ln2{stroke:var(--acc); stroke-width:1.8; fill:none}
+.dg .lnd{stroke:var(--muted); stroke-width:1.4; fill:none; stroke-dasharray:5 4}
+.dg .small{font-size:11px; fill:var(--muted)}
+.dg .hd{font-size:14px; letter-spacing:.08em; font-weight:600}
+.dg .ac{fill:var(--acc)}
+.dg .mk{fill:var(--ink)} .dg .mk2{fill:var(--acc)}
+
+/* exam blueprint + model answers */
+.paper-head{text-align:center; border:1px solid var(--ink); padding:18px; font-family:var(--display); margin-bottom:18px; background:var(--paper)}
+.paper-head .ph1{letter-spacing:.3em; text-transform:uppercase; font-size:13px}
+.paper-head .ph2{font-size:22px; letter-spacing:.1em; text-transform:uppercase; margin:6px 0}
+.paper-head .ph3{font-family:var(--mono); font-size:13px; color:var(--muted)}
+.qblock{border-top:1px solid var(--rule-strong); padding-top:10px; margin-top:22px}
+.qblock > .qno{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.pyq-tag{display:inline-block; font-family:var(--mono); font-size:11.5px; border:1px solid var(--acc); color:var(--acc); padding:0 6px; margin-left:6px; vertical-align:middle}
+details.model{border:1px solid var(--rule-strong); background:var(--paper); margin:10px 0}
+details.model > summary{cursor:pointer; list-style:none; padding:12px 16px 12px 46px; position:relative; font-weight:600}
+details.model > summary::-webkit-details-marker{display:none}
+details.model > summary::before{content:"+"; position:absolute; left:14px; top:9px; width:22px; height:22px; border:1px solid var(--acc); color:var(--acc);
+  display:grid; place-items:center; font-family:var(--display)}
+details.model[open] > summary::before{content:"–"}
+details.model[open] > summary{border-bottom:1px dashed var(--rule)}
+details.model .ans{padding:14px 18px 6px}
+details.model .ans .marks{font-family:var(--mono); font-size:12.5px; color:var(--acc)}
+.or{text-align:center; font-family:var(--display); letter-spacing:.4em; color:var(--muted); font-size:12px; margin:4px 0}
+
+/* ============ flashcards ============ */
+.deck{margin:2em 0 1em; border:1px solid var(--acc2); background:var(--acc-soft); padding:22px clamp(12px,3vw,28px) 18px}
+.deck > .deck-title{font-family:var(--display); letter-spacing:.24em; text-transform:uppercase; text-align:center; font-size:14px; color:var(--acc2); margin:0 0 4px}
+.deck > .deck-sub{text-align:center; font-style:italic; color:var(--muted); font-size:14.5px; margin:0 0 14px}
+.fc{margin:10px 0}
+.fc-inner{display:grid; perspective:1400px}
+.fc-face{grid-area:1/1; background:var(--paper); border:1px solid var(--rule-strong); padding:22px 24px; min-height:210px;
+  backface-visibility:hidden; -webkit-backface-visibility:hidden; transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.fc-q{display:flex; flex-direction:column; justify-content:center; text-align:center; font-family:var(--display); font-size:19px; letter-spacing:.02em}
+.fc-a{transform:rotateY(180deg); font-size:15.5px}
+.fc.flipped .fc-q{transform:rotateY(-180deg)}
+.fc.flipped .fc-a{transform:rotateY(0deg)}
+.fc-face .side{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:10px}
+.fc .from{display:inline-block; font-family:var(--mono); font-size:11px; background:var(--acc2); color:var(--paper); padding:1px 7px; margin-bottom:10px; align-self:center}
+.deck.js .fc{display:none; cursor:pointer}
+.deck.js .fc.current{display:block}
+.deck-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; margin-top:12px}
+.deck-controls button, .btn{font-family:var(--display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; cursor:pointer;
+  background:var(--paper); color:var(--ink); border:1px solid var(--rule-strong); padding:8px 12px}
+.deck-controls button.again{border-color:var(--bad); color:var(--bad)}
+.deck-controls button.got{border-color:var(--good); color:var(--good)}
+.deck-controls .count{font-family:var(--mono); font-size:13px; color:var(--muted); min-width:9ch; text-align:center}
+.deck-controls .boxes{font-family:var(--mono); font-size:12px; color:var(--muted); width:100%; text-align:center}
+
+/* ============ MCQ ============ */
+.mcq{background:var(--paper); border:1px solid var(--rule); padding:16px 18px 10px; margin:14px 0}
+.mcq .stem{font-weight:600; margin-bottom:10px}
+.mcq .stem .qn{font-family:var(--mono); color:var(--acc); margin-right:6px}
+.mcq ol.opts{list-style:none; padding:0; margin:0 0 8px; display:grid; gap:6px}
+.mcq ol.opts li{border:1px solid var(--rule); padding:8px 12px 8px 40px; position:relative; cursor:pointer; background:var(--paper-2)}
+.mcq ol.opts li::before{content:attr(data-k); position:absolute; left:10px; top:7px; font-family:var(--mono); color:var(--acc); text-transform:uppercase}
+.mcq ol.opts li:hover{border-color:var(--acc)}
+.mcq.answered ol.opts li{cursor:default}
+.mcq ol.opts li.right{background:var(--good-soft); border-color:var(--good)}
+.mcq ol.opts li.wrong{background:var(--bad-soft); border-color:var(--bad); text-decoration:line-through; text-decoration-color:var(--bad)}
+.mcq .why{display:none; font-size:15px; border-top:1px dashed var(--rule); padding-top:10px; margin-top:6px}
+.mcq.answered .why{display:block}
+.mcq .why b.key{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:12px; color:var(--good)}
+.scoreboard{position:sticky; top:84px; z-index:5; display:flex; justify-content:center; gap:14px; align-items:center; background:var(--acc2); color:var(--paper);
+  font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; padding:8px 12px; margin:12px 0}
+.scoreboard button{background:transparent; color:var(--paper); border:1px solid var(--paper); font:inherit; padding:3px 8px; cursor:pointer}
+@media (max-width:460px){ .scoreboard{position:static} }
+
+/* lobby */
+.grid-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:16px 0}
+.lobby-card{background:var(--acc-soft); border:1px solid var(--acc); padding:18px; text-align:center}
+.lobby-card .ld{font-family:var(--mono); color:var(--acc)}
+.lobby-card h4{margin:.3em 0; letter-spacing:.1em; text-transform:uppercase; font-size:17px}
+.lobby-card p{font-size:14.5px; color:var(--muted); margin:.4em 0 .8em}
+.note-box{border:1px solid var(--stamp); padding:14px 18px; background:var(--paper-2); margin:1em 0}
+.note-box b.h{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:12px; color:var(--stamp); display:block}
+.footer{text-align:center; font-family:var(--display); letter-spacing:.3em; text-transform:uppercase; font-size:11px; color:var(--muted); margin-top:40px}
+
+/* ============ print ============ */
+@media print{
+  body{background:#fff; color:#000; padding:0; font-size:11pt}
+  .tickets,.theme-toggle,.deck-controls,.scoreboard,.unit-nav{display:none!important}
+  .panel[hidden]{display:block!important}
+  .panel{page-break-before:always}
+  .sheet,.marquee{box-shadow:none; border:none; outline:none}
+  .chapter-card{page-break-before:always; outline:none}
+  .deck.js .fc{display:block!important; page-break-inside:avoid}
+  .fc-inner{display:block}
+  .fc-face{transform:none!important; min-height:0; border:none; border-bottom:1px solid #999; padding:6px 0}
+  .fc-q{font-size:12pt; text-align:left; font-weight:600}
+  .mcq .why{display:block!important}
+  .plate{page-break-inside:avoid}
+  details.model > summary::before{display:none}
+  details.model > summary{padding-left:12px}
+}
+@media print{ .mcq ol.opts li.is-key{border:2px solid #000; font-weight:700} .mcq ol.opts li.is-key::after{content:"  ✓ correct"} }
+.prose code{font-family:var(--mono); font-size:.92em; background:var(--paper-2); padding:0 4px; overflow-wrap:anywhere; word-break:break-word}
+.formula code{background:none; padding:0}
+/* "Starting from zero" beginner boxes */
+.zero{background:var(--paper-2); border:2px dashed var(--acc); padding:18px 20px 8px; margin:0 0 1.6em; position:relative; font-size:16.5px}
+.zero-h{font-family:var(--display); letter-spacing:.22em; text-transform:uppercase; font-size:12.5px; color:var(--acc-ink); background:var(--acc); display:inline-block; padding:3px 10px; margin:-4px 0 12px}
+.zero p, .zero li{line-height:1.72}
+.zero-f{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:11.5px; color:var(--muted); text-align:right; margin:.4em 0 .6em}
+/* ============ multi-page navigation ============ */
+a.ticket{display:block; text-decoration:none}
+a.ticket[aria-current="page"]{background:var(--acc); color:var(--acc-ink)}
+a.ticket[aria-current="page"] .t-date, a.ticket[aria-current="page"] .t-code{color:var(--acc-ink); opacity:.85}
+.marquee a{color:inherit; text-decoration:none}
+.marquee h1 a:hover{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px}
+.marquee-slim{padding:26px 24px 18px}
+.marquee-slim h1{font-size:clamp(24px,3.6vw,38px)}
+.marquee-slim .fleuron{margin-top:8px}
+.pager{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:stretch; margin:36px 0 0}
+.pager a{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:13px; text-decoration:none;
+  color:var(--ink); background:var(--paper); border:1px solid var(--rule-strong); padding:14px 16px; display:flex; align-items:center}
+.pager a:hover{background:var(--acc-soft)}
+.pager .pg-next{justify-content:flex-end; text-align:right}
+.pager .pg-home{color:var(--acc)}
+@media (max-width:560px){ .pager{grid-template-columns:1fr} .pager .pg-next{justify-content:flex-start; text-align:left} }
+.resume{display:block; margin:10px auto 0; font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px;
+  background:var(--acc2); color:var(--paper); border:0; padding:9px 16px; cursor:pointer}
+@media print{ .pager,.resume{display:none!important} .panel{page-break-before:auto} }
+.marquee .eyebrow{padding-inline:130px}
+@media (max-width:980px){
+  .marquee .eyebrow{padding-inline:0}
+  .theme-toggle{position:static; display:block; margin:0 auto 14px}
+}
+.marquee .credit-line{font-family:var(--display); letter-spacing:.34em; text-transform:uppercase; font-size:11.5px; color:var(--acc); margin-top:10px}
+
+</style>
+</head>
+<body>
+<header class="marquee marquee-slim">
+  <button class="theme-toggle" id="themeToggle" type="button">Night edition</button>
+  <div class="eyebrow"><a href="index.html">B.Tech CSE · Semester VII · Graphic Era (Deemed to be University)</a></div>
+  <h1><a href="index.html">The Mid-Semester Almanac</a></h1>
+  <div class="sub">Large Language Models · exam on 03 Oct · TCS-765</div>
+  <div class="credit-line">Created by Harshit</div>
+  <div class="fleuron">◆ ◆ ◆</div>
+</header>
+<nav class="tickets" aria-label="Subjects"><a class="ticket" href="index.html"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="rm.html"><span class="t-date">26 Sept</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="aca.html"><span class="t-date">28 Sept</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="mba.html"><span class="t-date">29 Sept</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a><a class="ticket" href="bi.html"><span class="t-date">30 Sept</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="llm.html" aria-current="page"><span class="t-date">03 Oct</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a></nav>
+<main>
+<section class="panel" id="llm" data-subject="llm">
+<div class="sheet">
+  <div class="subject-title">
+    <div class="code">TCS-765 · EXAM ON SATURDAY 3 OCTOBER</div>
+    <h2>Large Language Models</h2>
+    <div class="meta">Units 1–2 · foundations and training · applications</div>
+    <ul class="unit-nav"></ul>
+  </div>
+  <div class="prose">
+    <p class="tip"><b>How this paper will be set.</b> No LLM paper exists yet (it is a new elective), so the expected paper uses the department's 5 × (a/b) format. Q1–Q3 come from Unit 1 (CO1: transformer and attention; CO2: data, optimisation, compute) and Q4–Q5 from Unit 2 (CO3: NLU/NLG, chatbots, translation, summarisation). The professor's slides end each unit with <em>self-check questions</em>. These are the most reliable guide to what will be asked, and every one is answered below.</p>
+    <p class="tip"><b>New to machine learning?</b> Start with <strong>Unit 0: Machine Learning from Zero</strong> just below. It assumes you know nothing about AI and builds every idea from scratch using everyday examples. Then, in every topic, read the <em>Starting from zero</em> box first. It explains the topic in plain words before the exam-level material begins.</p>
+  </div>
+</div>
+
+
+<!-- ======================= UNIT 0 : FROM ZERO ======================= -->
+<div class="chapter-card" id="llm-u0" data-short="Unit 0 · ML from Zero">
+  <div class="ch-no">Unit Zero · Before We Begin</div>
+  <h2>Machine Learning from Zero</h2>
+  <p class="in-which">No maths or coding background needed. Everything the LLM units rely on, built up one small step at a time.</p>
+  <p class="syll">Not a syllabus unit by itself, but every idea here (parameters, training, loss, neurons, probabilities, vectors, GPUs) appears in Units 1 and 2 and in exam answers. Read it once slowly. It takes about 40 minutes.</p>
+</div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="llm-z1">
+<h3><span class="tno">Step 0.1</span>What does it mean for a computer to "learn"?</h3>
+<p>A computer is very fast and very obedient, but it has no common sense. On its own it does exactly what it is told, nothing more.</p>
+<p><strong>The old way: rules written by a person.</strong> Suppose you want a program that says whether an email is spam. The old way is to sit down and write rules: <em>"if the email contains the word 'lottery', call it spam"</em>, <em>"if it says 'you have won ₹10 lakh', call it spam"</em>. This works a little, but spammers change their wording, you need thousands of rules, and you will always miss some.</p>
+<p><strong>The new way: learning from examples.</strong> Instead of writing rules, you collect examples: 10,000 emails that people have already marked "spam" or "not spam". You give these to the computer and let it work out the rules by itself: which words, patterns and senders usually mean spam. That is <strong>machine learning (ML)</strong>: <em>the computer finds the rules from examples instead of a person writing them.</em></p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 660 220" role="img" aria-label="Traditional programming versus machine learning">
+<defs><marker id="z0a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<text x="10" y="22" class="hd">OLD WAY: TRADITIONAL PROGRAMMING</text>
+<rect x="10" y="35" width="130" height="50" class="box"/><text x="75" y="58" text-anchor="middle">Rules</text><text x="75" y="75" text-anchor="middle" class="small">(written by a person)</text>
+<rect x="10" y="95" width="130" height="30" class="box"/><text x="75" y="115" text-anchor="middle">Data (an email)</text>
+<rect x="190" y="55" width="120" height="50" class="box2"/><text x="250" y="85" text-anchor="middle">Computer</text>
+<rect x="360" y="60" width="110" height="40" class="box"/><text x="415" y="85" text-anchor="middle">Answer: spam?</text>
+<line x1="140" y1="60" x2="187" y2="72" class="ln" marker-end="url(#z0a)"/><line x1="140" y1="110" x2="187" y2="92" class="ln" marker-end="url(#z0a)"/><line x1="310" y1="80" x2="357" y2="80" class="ln" marker-end="url(#z0a)"/>
+<text x="10" y="150" class="hd">NEW WAY: MACHINE LEARNING</text>
+<rect x="10" y="160" width="130" height="24" class="box"/><text x="75" y="177" text-anchor="middle" class="small">Examples (emails)</text>
+<rect x="10" y="190" width="130" height="24" class="box"/><text x="75" y="207" text-anchor="middle" class="small">Correct answers</text>
+<rect x="190" y="165" width="120" height="44" class="box2"/><text x="250" y="192" text-anchor="middle">Computer</text>
+<rect x="360" y="165" width="110" height="44" class="box2"/><text x="415" y="185" text-anchor="middle">The RULES</text><text x="415" y="201" text-anchor="middle" class="small">(= the model)</text>
+<line x1="140" y1="172" x2="187" y2="180" class="ln" marker-end="url(#z0a)"/><line x1="140" y1="202" x2="187" y2="194" class="ln" marker-end="url(#z0a)"/><line x1="310" y1="187" x2="357" y2="187" class="ln" marker-end="url(#z0a)"/>
+<text x="490" y="190" class="small">then use the rules</text><text x="490" y="205" class="small">on new emails</text>
+</svg></div>
+<figcaption><span class="pl">Plate Z1 · The big switch</span> In normal programming, people write the rules. In machine learning, the computer produces the rules from examples. The learned rules are called the <strong>model</strong>.</figcaption></figure>
+<p class="plain">A child learns what a "dog" is by seeing many dogs, not by being given a definition. Machine learning works the same way: show enough examples and the computer picks up the pattern.</p>
+<p>A <strong>Large Language Model (LLM)</strong> like ChatGPT is a machine-learning model that learned the patterns of human language by reading an enormous amount of text.</p>
+</section>
+
+<section class="topic" id="llm-z2">
+<h3><span class="tno">Step 0.2</span>Computers only understand numbers</h3>
+<p>Deep inside, a computer can only store and calculate with <strong>numbers</strong>. It has no idea what the word "cat" means. So anything we want a computer to learn from (words, pictures, sounds) must first be turned into numbers.</p>
+<ul>
+<li>A <strong>photo</strong> is already numbers: each tiny dot (pixel) is stored as how red, green and blue it is, e.g. (255, 200, 0).</li>
+<li>A <strong>letter</strong> has a code number: in the ASCII code, "A" = 65, "B" = 66.</li>
+<li>A <strong>word</strong> can be given an ID number from a dictionary: "cat" = 3797, "sat" = 3332. LLMs do exactly this. The pieces of text they number are called <strong>tokens</strong> (Unit 1 explains them).</li>
+</ul>
+<p>An ID number alone doesn't carry meaning (3797 is not "closer" to "kitten" than to "car"). Step 0.7 shows the smarter trick LLMs use: turning each word into a <em>list</em> of numbers that does carry meaning.</p>
+</section>
+
+<section class="topic" id="llm-z3">
+<h3><span class="tno">Step 0.3</span>A model is a machine with knobs</h3>
+<p>Think of a model as a box. Numbers go in, the box does some arithmetic, and a number (the prediction) comes out. Inside the box are <strong>knobs</strong> that control the arithmetic. Turning the knobs changes the answers.</p>
+<p><strong>The simplest possible model.</strong> A fruit seller charges by weight. We want to predict the price from the weight:</p>
+<div class="formula">price = w × weight
+
+   w is the KNOB (the price per kg). If w = 100, then 2 kg → ₹200.</div>
+<p>This model has <strong>one knob</strong>. Knobs are officially called <strong>parameters</strong> or <strong>weights</strong>, and those words appear everywhere in the LLM units. A slightly bigger model might be <code>price = w × weight + b</code>. The extra knob <em>b</em> (called the <strong>bias</strong>) is a fixed amount added every time, like a ₹10 carry-bag charge.</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 600 170" role="img" aria-label="Model as a box with knobs">
+<defs><marker id="z0b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="20" y="60" width="120" height="50" class="box"/><text x="80" y="82" text-anchor="middle">Input</text><text x="80" y="99" text-anchor="middle" class="small">weight = 2 kg</text>
+<rect x="200" y="30" width="200" height="110" rx="8" class="box2"/><text x="300" y="55" text-anchor="middle" class="hd">MODEL</text>
+<circle cx="260" cy="95" r="20" class="box"/><line x1="260" y1="95" x2="272" y2="80" class="ln"/><text x="260" y="132" text-anchor="middle" class="small">knob w</text>
+<circle cx="340" cy="95" r="20" class="box"/><line x1="340" y1="95" x2="328" y2="80" class="ln"/><text x="340" y="132" text-anchor="middle" class="small">knob b</text>
+<rect x="460" y="60" width="120" height="50" class="box"/><text x="520" y="82" text-anchor="middle">Output</text><text x="520" y="99" text-anchor="middle" class="small">price = ₹210</text>
+<line x1="140" y1="85" x2="197" y2="85" class="ln" marker-end="url(#z0b)"/><line x1="400" y1="85" x2="457" y2="85" class="ln" marker-end="url(#z0b)"/>
+</svg></div>
+<figcaption><span class="pl">Plate Z2 · A model with two knobs</span> With w = 100 and b = 10, an input of 2 kg gives 100 × 2 + 10 = ₹210. GPT-3 is the same idea with <strong>175 billion knobs</strong>.</figcaption></figure>
+<p><strong>The key point:</strong> a model <em>is</em> its knob settings. "Training a model" just means <em>finding good knob settings</em>. When people say "GPT-3 has 175 billion parameters", they mean it has 175 billion knobs, all of which were set automatically by learning.</p>
+</section>
+
+<section class="topic" id="llm-z4">
+<h3><span class="tno">Step 0.4</span>How the knobs get set: guess, check, adjust</h3>
+<p>No person turns 175 billion knobs by hand. The computer sets them with a simple loop, repeated many times:</p>
+<ol>
+<li><strong>Guess:</strong> use the current knob settings to make a prediction.</li>
+<li><strong>Check:</strong> compare it with the correct answer. How wrong was it? This "wrongness score" is called the <strong>loss</strong> (or error). A bigger loss means a worse guess.</li>
+<li><strong>Adjust:</strong> nudge each knob a little in the direction that would have made the guess less wrong.</li>
+</ol>
+<p><strong>Worked example.</strong> We know 2 kg of mangoes costs ₹200. We don't know the knob w, so we start with a bad guess, w = 50. Rule for adjusting: <em>w goes up by 0.1 × error × weight</em>.</p>
+<div class="tbl"><table><thead><tr><th>Round</th><th>Knob w</th><th>Guess for 2 kg</th><th>Error (200 − guess)</th><th>Loss (error²)</th></tr></thead><tbody>
+<tr><td>1</td><td>50.0</td><td>₹100</td><td>100</td><td>10,000</td></tr>
+<tr><td>2</td><td>70.0</td><td>₹140</td><td>60</td><td>3,600</td></tr>
+<tr><td>3</td><td>82.0</td><td>₹164</td><td>36</td><td>1,296</td></tr>
+<tr><td>4</td><td>89.2</td><td>₹178</td><td>21.6</td><td>467</td></tr>
+<tr><td>5</td><td>93.5</td><td>₹187</td><td>13.0</td><td>168</td></tr>
+<tr><td>6</td><td>96.1</td><td>₹192</td><td>7.8</td><td>61</td></tr>
+<tr><td>…</td><td>→ 100</td><td>→ ₹200</td><td>→ 0</td><td>→ 0</td></tr>
+</tbody></table></div>
+<p>Nobody told the computer "the answer is 100". It <em>found</em> it by guessing, checking and adjusting. The loss shrinks every round. <strong>This loop is all that "training" means</strong>, whether the model has 1 knob or 175 billion.</p>
+<h5>The hill-in-the-fog picture (gradient descent)</h5>
+<p>Imagine you are standing on a hilly field in thick fog and you want to reach the lowest point. You can't see far, but you can feel which way the ground slopes under your feet. So you take a step downhill, feel again, and take another step. Eventually you reach the bottom.</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 560 220" role="img" aria-label="Walking down a loss curve">
+<defs><marker id="z0c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk2"/></marker></defs>
+<line x1="40" y1="190" x2="540" y2="190" class="ln"/><line x1="40" y1="190" x2="40" y2="20" class="ln"/>
+<text x="290" y="212" text-anchor="middle" class="small">knob setting w →</text><text x="14" y="110" class="small" transform="rotate(-90 14 110)">loss (how wrong)</text>
+<path d="M60,30 C150,40 220,175 300,178 C380,180 450,80 530,40" class="ln"/>
+<circle cx="90" cy="46" r="7" class="ac"/><circle cx="160" cy="90" r="7" class="ac"/><circle cx="215" cy="145" r="7" class="ac"/><circle cx="262" cy="172" r="7" class="ac"/><circle cx="296" cy="178" r="7" class="ac"/>
+<path d="M98,52 L150,84" class="ln2" marker-end="url(#z0c)"/><path d="M168,97 L207,138" class="ln2" marker-end="url(#z0c)"/><path d="M223,152 L254,168" class="ln2" marker-end="url(#z0c)"/>
+<text x="90" y="30" class="small">start: bad guess</text><text x="300" y="165" class="small">bottom = best knob</text>
+</svg></div>
+<figcaption><span class="pl">Plate Z3 · Gradient descent</span> The curve shows how wrong the model is for each knob setting. Training walks downhill step by step. The steps get smaller near the bottom, just as in the mango table.</figcaption></figure>
+<ul>
+<li><strong>Gradient</strong> = the slope under your feet: which direction is downhill for each knob, and how steep.</li>
+<li><strong>Gradient descent</strong> = repeatedly stepping downhill. This is how every LLM is trained.</li>
+<li><strong>Learning rate</strong> = the size of each step (0.1 in our mango rule). Too big and you jump over the valley; too small and you take forever.</li>
+<li><strong>Backpropagation</strong> = the bookkeeping trick that works out the slope for all the knobs at once, working backwards from the error.</li>
+</ul>
+</section>
+
+<section class="topic" id="llm-z5">
+<h3><span class="tno">Step 0.5</span>Neurons and neural networks</h3>
+<p>The price formula was too simple for language. We need a model that can learn very complicated patterns. The building block is a <strong>neuron</strong>. It is loosely inspired by brain cells, but really it is just a tiny calculator that <em>weighs up evidence and decides</em>.</p>
+<p><strong>Example: should I go to the cricket match?</strong> Three pieces of evidence, each 1 (yes) or 0 (no), each with a weight showing how much it matters:</p>
+<div class="formula">Weather is good?        1  × weight +2  = +2
+Friend is going?        1  × weight +3  = +3
+Exam tomorrow?          1  × weight −6  = −6
+                                  total = −1   → below 0 → switch OFF → "Don't go"
+
+If there's no exam:  2 + 3 + 0 = +5 → above 0 → switch ON → "Go!"</div>
+<p>That is all a neuron does: <strong>multiply each input by its weight, add them up, and pass the total through a switch</strong> (called the <strong>activation function</strong>) that decides how strongly to "fire". The weights are knobs, learned by the guess-check-adjust loop.</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 660 230" role="img" aria-label="A single neuron and a small network of layers">
+<defs><marker id="z0d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<text x="130" y="18" text-anchor="middle" class="hd">ONE NEURON</text>
+<circle cx="30" cy="60" r="16" class="box"/><circle cx="30" cy="110" r="16" class="box"/><circle cx="30" cy="160" r="16" class="box"/>
+<text x="30" y="64" text-anchor="middle" class="small">x₁</text><text x="30" y="114" text-anchor="middle" class="small">x₂</text><text x="30" y="164" text-anchor="middle" class="small">x₃</text>
+<circle cx="170" cy="110" r="32" class="box2"/><text x="170" y="106" text-anchor="middle">Σ then</text><text x="170" y="122" text-anchor="middle">switch</text>
+<line x1="46" y1="62" x2="140" y2="100" class="ln" marker-end="url(#z0d)"/><line x1="46" y1="110" x2="136" y2="110" class="ln" marker-end="url(#z0d)"/><line x1="46" y1="158" x2="140" y2="120" class="ln" marker-end="url(#z0d)"/>
+<text x="92" y="70" class="small">w₁</text><text x="92" y="104" class="small">w₂</text><text x="92" y="152" class="small">w₃</text>
+<line x1="202" y1="110" x2="245" y2="110" class="ln" marker-end="url(#z0d)"/><text x="250" y="114" class="small">output</text>
+<text x="480" y="18" text-anchor="middle" class="hd">A NETWORK (LAYERS OF NEURONS)</text>
+<g>
+<circle cx="340" cy="70" r="13" class="box"/><circle cx="340" cy="115" r="13" class="box"/><circle cx="340" cy="160" r="13" class="box"/>
+<circle cx="430" cy="55" r="13" class="box2"/><circle cx="430" cy="95" r="13" class="box2"/><circle cx="430" cy="135" r="13" class="box2"/><circle cx="430" cy="175" r="13" class="box2"/>
+<circle cx="520" cy="75" r="13" class="box2"/><circle cx="520" cy="115" r="13" class="box2"/><circle cx="520" cy="155" r="13" class="box2"/>
+<circle cx="610" cy="115" r="13" class="box"/>
+</g>
+<g class="lnd">
+<line x1="353" y1="70" x2="417" y2="55" class="lnd"/><line x1="353" y1="70" x2="417" y2="135" class="lnd"/><line x1="353" y1="115" x2="417" y2="95" class="lnd"/><line x1="353" y1="115" x2="417" y2="175" class="lnd"/><line x1="353" y1="160" x2="417" y2="135" class="lnd"/><line x1="353" y1="160" x2="417" y2="55" class="lnd"/>
+<line x1="443" y1="55" x2="507" y2="75" class="lnd"/><line x1="443" y1="95" x2="507" y2="115" class="lnd"/><line x1="443" y1="135" x2="507" y2="155" class="lnd"/><line x1="443" y1="175" x2="507" y2="115" class="lnd"/><line x1="443" y1="95" x2="507" y2="155" class="lnd"/>
+<line x1="533" y1="75" x2="597" y2="115" class="lnd"/><line x1="533" y1="115" x2="597" y2="115" class="lnd"/><line x1="533" y1="155" x2="597" y2="115" class="lnd"/>
+</g>
+<text x="340" y="205" text-anchor="middle" class="small">input</text><text x="475" y="205" text-anchor="middle" class="small">hidden layers</text><text x="610" y="205" text-anchor="middle" class="small">output</text>
+</svg></div>
+<figcaption><span class="pl">Plate Z4 · From one neuron to a network</span> Each line carries a weight (a knob). Stack many neurons side by side (a <strong>layer</strong>), then many layers one after another, and you get a <strong>neural network</strong>. "<strong>Deep</strong> learning" just means many layers.</figcaption></figure>
+<p>Why stack them? One neuron can only make a simple yes/no judgement. The first layer spots simple things, the next layer combines those into more complex things, and so on. In an image model: edges → shapes → eyes and ears → "cat". An LLM is a very deep neural network (GPT-3 has 96 big layers) of a special design called the <strong>Transformer</strong> (Unit 1, § 1.3).</p>
+</section>
+
+<section class="topic" id="llm-z6">
+<h3><span class="tno">Step 0.6</span>Scores into percentages: probability and softmax</h3>
+<p>An LLM never "knows" the next word for sure. It gives every possible next word a <strong>score</strong>, and then turns the scores into <strong>probabilities</strong>: percentages that add up to 100%.</p>
+<p>The turning-into-percentages step is called <strong>softmax</strong>. It does two things: (1) makes every score positive, using the special number e ≈ 2.718 raised to the power of the score; (2) divides each by the total so they add up to 100%.</p>
+<div class="formula">Sentence so far: "I have a pet ___"      Raw scores: cat 2, dog 1, car 0
+
+e^2 = 7.39      e^1 = 2.72      e^0 = 1.00        total = 11.11
+cat = 7.39/11.11 = 66.5%   dog = 2.72/11.11 = 24.5%   car = 1.00/11.11 = 9.0%     (adds to 100%)</div>
+<p>Notice that softmax <em>exaggerates</em> the gaps: a score just 1 point higher becomes almost 3× more likely. The model then picks the next word from these percentages (Unit 1 calls this <strong>decoding</strong>).</p>
+</section>
+
+<section class="topic" id="llm-z7">
+<h3><span class="tno">Step 0.7</span>Words as points on a map: vectors and embeddings</h3>
+<p>Back to the problem from Step 0.2: an ID number such as "cat = 3797" carries no meaning. The fix is to describe each word with a <strong>list of numbers</strong>, like coordinates on a map.</p>
+<p>Imagine a map with two directions: <em>"how much is it an animal?"</em> (up) and <em>"how big is it?"</em> (right). Every word gets a location:</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 520 290" role="img" aria-label="Toy two-dimensional word map">
+<line x1="50" y1="250" x2="500" y2="250" class="ln"/><line x1="50" y1="250" x2="50" y2="20" class="ln"/>
+<text x="275" y="280" text-anchor="middle" class="small">how big is it? →</text><text x="20" y="140" class="small" transform="rotate(-90 20 140)">how much of an animal? →</text>
+<circle cx="95" cy="50" r="6" class="ac"/><text x="105" y="46">kitten</text>
+<circle cx="120" cy="65" r="6" class="ac"/><text x="130" y="72">cat</text>
+<circle cx="170" cy="75" r="6" class="ac"/><text x="180" y="80">dog</text>
+<circle cx="380" cy="60" r="6" class="ac"/><text x="390" y="64">elephant</text>
+<circle cx="330" cy="210" r="6" class="ac"/><text x="340" y="214">car</text>
+<circle cx="440" cy="225" r="6" class="ac"/><text x="450" y="229">bus</text>
+<ellipse cx="135" cy="65" rx="70" ry="30" class="lnd"/><ellipse cx="385" cy="218" rx="80" ry="26" class="lnd"/>
+<text x="135" y="118" text-anchor="middle" class="small">pets cluster together</text><text x="385" y="185" text-anchor="middle" class="small">vehicles cluster together</text>
+</svg></div>
+<figcaption><span class="pl">Plate Z5 · A toy word map</span> Words with similar meanings sit close together. "cat" might be (1.5, 8.5) and "bus" (9, 1). Real LLMs use hundreds or thousands of directions instead of 2, but the idea is the same.</figcaption></figure>
+<ul>
+<li>A list of numbers like (1.5, 8.5) is called a <strong>vector</strong>. It is simply an arrow pointing to a spot on the map.</li>
+<li>The vector that represents a word is called its <strong>embedding</strong>. Nobody chooses these coordinates by hand: they are knobs, learned during training.</li>
+<li>Because similar words sit close together, the computer can now measure meaning: "cat" is near "kitten" and far from "bus".</li>
+<li>The <strong>dot product</strong> of two vectors measures how much two arrows point the same way: multiply matching numbers and add. (1, 2) · (3, 1) = 1×3 + 2×1 = 5. A big positive number means "similar direction", near zero means "unrelated". Attention in the Transformer (§ 1.3) is built on dot products.</li>
+</ul>
+</section>
+
+<section class="topic" id="llm-z8">
+<h3><span class="tno">Step 0.8</span>Matrices and GPUs: doing millions of sums at once</h3>
+<p>Look back at the neuron: <em>multiply inputs by weights and add them up</em>. A layer has thousands of neurons all doing this to the same inputs at the same time. Writing all their weights in a table (rows × columns) gives a <strong>matrix</strong>, and doing all those weighted sums in one go is called <strong>matrix multiplication</strong>. That is the main operation inside an LLM, repeated billions of times.</p>
+<div class="formula">3 neurons, each looking at the same 2 inputs (x₁ = 2, x₂ = 3):
+
+ weights table (matrix)      inputs        outputs
+ neuron A:  [ 1   0 ]                     1×2 + 0×3 = 2
+ neuron B:  [ 2   1 ]   ×   [2, 3]   =    2×2 + 1×3 = 7
+ neuron C:  [ 0  −1 ]                     0×2 − 1×3 = −3</div>
+<p><strong>Why GPUs?</strong> A normal processor (CPU) is like a few brilliant professors: they can do anything, but only a few things at a time. A <strong>GPU</strong> (graphics card, originally built for video games) is like thousands of school students who can each only do simple multiplication, all working at the same moment. Matrix multiplication is millions of simple multiply-and-add jobs that don't depend on each other, which is exactly the work thousands of students can split up. That is why AI runs on GPUs (and Google's similar chips called TPUs).</p>
+</section>
+
+<section class="topic" id="llm-z9">
+<h3><span class="tno">Step 0.9</span>A few more ideas you'll meet</h3>
+<ul>
+<li><strong>Training vs inference.</strong> <em>Training</em> is the long, expensive learning phase (setting the knobs: weeks of GPU time). <em>Inference</em> is using the finished model (you typing a question and getting an answer). The knobs no longer change during inference.</li>
+<li><strong>Supervised learning.</strong> Learning from examples that come with correct answers attached by people (emails labelled spam or not spam).</li>
+<li><strong>Self-supervised learning.</strong> The data provides its own answers. Take any sentence, hide the last word, and ask the model to guess it. The real text <em>is</em> the answer key. This is why LLMs can learn from the whole internet without anyone labelling anything.</li>
+<li><strong>Overfitting.</strong> A student who memorises last year's answers word for word, then fails when the questions change slightly. A model can do the same: perfect on its training examples, poor on new ones. We want <em>understanding of patterns</em>, not memorisation.</li>
+<li><strong>Dataset, epoch, batch.</strong> The <em>dataset</em> is all the examples. A <em>batch</em> is a small handful processed together in one guess-check-adjust round. An <em>epoch</em> is one full pass through the whole dataset.</li>
+</ul>
+</section>
+
+<section class="topic" id="llm-z10">
+<h3><span class="tno">Step 0.10</span>Putting it together: what an LLM is</h3>
+<p>You now have every piece. Here is a whole LLM in plain words:</p>
+<ol>
+<li>Take a huge amount of text from the internet, books and code. Chop it into small pieces called <strong>tokens</strong> and give each an ID number (Step 0.2).</li>
+<li>Turn each token into a list of numbers, its <strong>embedding</strong>, a location on a meaning map (Step 0.7).</li>
+<li>Pass these through a very deep <strong>neural network</strong> (Step 0.5) of a special design called the <strong>Transformer</strong>, which lets every word look at every other word to work out the context.</li>
+<li>At the end, give every possible next token a score, and turn the scores into percentages with <strong>softmax</strong> (Step 0.6).</li>
+<li><strong>Training:</strong> hide the next word in real text, let the model guess, measure how wrong it was (<strong>loss</strong>), and nudge all the billions of <strong>knobs</strong> a little downhill (<strong>gradient descent</strong>, Step 0.4). Repeat trillions of times on thousands of <strong>GPUs</strong> (Step 0.8).</li>
+<li><strong>Using it:</strong> give it your question; it predicts one word, adds it on, predicts the next, and so on until the answer is complete.</li>
+</ol>
+<p class="plain">An LLM is the world's most thoroughly trained "guess the next word" player. It has practised on so much text that, to predict the next word well, it had to absorb grammar, facts, reasoning patterns and writing styles along the way.</p>
+
+<h5>Word bank: every term in plain English</h5>
+<div class="tbl"><table><thead><tr><th>Term</th><th>Plain meaning</th></tr></thead><tbody>
+<tr><td>Model</td><td>The learned "rule machine": a formula plus its knob settings</td></tr>
+<tr><td>Parameter / weight</td><td>One knob inside the model; learned, not hand-set</td></tr>
+<tr><td>Bias</td><td>A knob that adds a fixed amount (like a flat carry-bag charge)</td></tr>
+<tr><td>Training</td><td>Setting the knobs by repeated guess → check → adjust</td></tr>
+<tr><td>Inference</td><td>Using the finished model to get answers</td></tr>
+<tr><td>Loss</td><td>A score of how wrong the model's guess was (lower is better)</td></tr>
+<tr><td>Gradient</td><td>Which direction to turn each knob to reduce the loss (the downhill slope)</td></tr>
+<tr><td>Gradient descent</td><td>Walking downhill step by step to the lowest loss</td></tr>
+<tr><td>Learning rate</td><td>How big each step is</td></tr>
+<tr><td>Backpropagation</td><td>The method for computing every knob's slope, working backwards from the error</td></tr>
+<tr><td>Neuron</td><td>A tiny calculator: weighted sum of inputs, then an on/off-ish switch</td></tr>
+<tr><td>Activation function</td><td>That switch (e.g. ReLU: "if negative, output 0")</td></tr>
+<tr><td>Layer</td><td>A row of neurons working side by side</td></tr>
+<tr><td>Neural network / deep learning</td><td>Many layers stacked; "deep" = many layers</td></tr>
+<tr><td>Vector</td><td>A list of numbers; an arrow to a point on a map</td></tr>
+<tr><td>Embedding</td><td>The learned vector that represents a word's meaning</td></tr>
+<tr><td>Dot product</td><td>Multiply matching numbers of two vectors and add: measures similarity</td></tr>
+<tr><td>Matrix</td><td>A table of numbers (e.g. all of a layer's weights)</td></tr>
+<tr><td>Softmax</td><td>Turns raw scores into percentages that add up to 100%</td></tr>
+<tr><td>Probability</td><td>How likely something is, from 0 (never) to 1 (certain)</td></tr>
+<tr><td>Token</td><td>A small piece of text (a word or part of a word) with an ID number</td></tr>
+<tr><td>Dataset / batch / epoch</td><td>All examples / a small handful at a time / one full pass through all of them</td></tr>
+<tr><td>Supervised / self-supervised</td><td>Answers labelled by people / answers hidden inside the data itself</td></tr>
+<tr><td>Overfitting</td><td>Memorising the training examples instead of learning the pattern</td></tr>
+<tr><td>GPU / TPU</td><td>Chips with thousands of simple calculators that work at once</td></tr>
+</tbody></table></div>
+</section>
+
+<div class="deck" id="deck-llm-u0">
+  <p class="deck-title">Flashcards · Unit Zero</p>
+  <p class="deck-sub">If you can answer these in your own words, you're ready for Unit 1.</p>
+  <div class="fc"><div class="fc-q">What is machine learning, in one sentence?</div><div class="fc-a">Instead of a person writing the rules, the computer works out the rules by itself from lots of examples.</div></div>
+  <div class="fc"><div class="fc-q">What is a parameter (weight)?</div><div class="fc-a">A knob inside the model that controls its arithmetic. Training sets the knobs automatically. GPT-3 has 175 billion of them.</div></div>
+  <div class="fc"><div class="fc-q">Describe the training loop.</div><div class="fc-a">Guess (predict with the current knobs) → check (measure the loss, i.e. how wrong it was) → adjust (nudge each knob in the direction that reduces the loss). Repeat many times.</div></div>
+  <div class="fc"><div class="fc-q">What is gradient descent? Use the hill picture.</div><div class="fc-a">In fog on a hill you feel which way is downhill and take a small step, again and again, until you reach the bottom. The height is the loss; the step size is the learning rate.</div></div>
+  <div class="fc"><div class="fc-q">What does one neuron do?</div><div class="fc-a">Multiplies each input by its weight, adds them up, and passes the total through a switch (the activation). Cricket example: +2 +3 −6 = −1, so "don't go".</div></div>
+  <div class="fc"><div class="fc-q">What does softmax do? Scores 2, 1, 0?</div><div class="fc-a">Turns scores into percentages that add up to 100%: e², e¹, e⁰ divided by the total give 66.5%, 24.5% and 9%.</div></div>
+  <div class="fc"><div class="fc-q">What is an embedding?</div><div class="fc-a">A learned list of numbers (a vector) that places a word on a meaning map, so similar words sit close together (cat near kitten, far from bus).</div></div>
+  <div class="fc"><div class="fc-q">Why do LLMs need GPUs?</div><div class="fc-a">The main work is matrix multiplication: millions of independent multiply-and-add jobs. A GPU has thousands of simple calculators that work at once (many students) instead of a few powerful ones (a CPU).</div></div>
+  <div class="fc"><div class="fc-q">Self-supervised learning: why does it matter for LLMs?</div><div class="fc-a">Hide the next word of real text and ask the model to guess it; the text itself is the answer key. No human labelling is needed, so models can learn from the whole internet.</div></div>
+  <div class="fc"><div class="fc-q">Training vs inference?</div><div class="fc-a">Training: the long, expensive learning phase that sets the knobs. Inference: using the finished model to answer questions, with the knobs frozen.</div></div>
+</div>
+
+</div></div>
+
+<!-- ======================= UNIT 1 ======================= -->
+<div class="chapter-card" id="llm-u1" data-short="Unit 1 · Foundations &amp; Training">
+  <div class="ch-no">Unit One</div>
+  <h2>Foundations &amp; Training of LLMs</h2>
+  <p class="in-which">From counting words to the Transformer, and the data, optimisation and hardware needed to train one.</p>
+  <p class="syll">Syllabus: overview of LLMs · evolution from early models · transformer architecture · attention mechanisms · data requirements &amp; preprocessing · optimisation techniques &amp; training challenges · hardware &amp; computation resources</p>
+</div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="llm-overview">
+<h3><span class="tno">§ 1.1</span>Overview: What Is a (Large) Language Model?</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>You already use a tiny language model every day: the <strong>word suggestions above your phone keyboard</strong>. Type "Happy" and it suggests "birthday". It has seen that pattern many times, so it guesses the most likely next word.</p>
+<p>A <strong>language model</strong> is exactly that: a program that, given some words, guesses <em>what comes next</em> and how likely each option is. For "The cat sat on the ___" it might say: mat 62%, floor 18%, roof 9%, idea 1%.</p>
+<p>A <strong>Large</strong> Language Model is the same idea made enormous in three ways:</p>
+<ul>
+<li><strong>More knobs:</strong> billions of adjustable numbers (Unit 0, Step 0.3) instead of a handful.</li>
+<li><strong>More reading:</strong> it has practised on a large share of the text on the internet.</li>
+<li><strong>More computing power:</strong> thousands of GPUs running for weeks.</li>
+</ul>
+<p><strong>How does "guess the next word" become a chatbot that writes essays?</strong> Repeat it. Guess one word, stick it on the end, guess the next, and keep going. A whole answer is just many next-word guesses in a row. To be very good at guessing the next word in <em>any</em> text (recipes, legal documents, Python code, poems), the model has to pick up grammar, facts and reasoning along the way.</p>
+<p><strong>Tokens:</strong> the model doesn't really read whole words. It reads <em>pieces</em> of words, like Lego bricks. "Unbelievable" becomes "Un" + "believ" + "able". Any word, even one it has never seen, can be built from familiar pieces.</p>
+<p><strong>Choosing the next word (decoding):</strong> should it always pick the top suggestion? If it does, the writing becomes boring and repetitive. So there is a <strong>temperature</strong> dial. Low temperature means "play it safe, pick the most likely word". High temperature means "be adventurous, sometimes pick less likely words", which is more creative but also more likely to go wrong.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>Language model</b>A model that assigns probabilities to sequences of words. It learns the probability of the <em>next</em> word given the words before it, and factorises the probability of a whole sentence by the chain rule:<br><code style="font-style:normal">P(w₁ … wₙ) = ∏ P(wᵢ | w₁ … wᵢ₋₁)</code></div>
+<p class="plain">Given "The cat sat on the ___", the model scores every possible next word (mat 0.62, floor 0.18, roof 0.09, idea 0.01) and the most probable is "mat". Everything an LLM does is built from this one skill, repeated.</p>
+<div class="facet">II · What Makes It "Large"</div>
+<div class="tbl"><table><thead><tr><th>Dimension</th><th>Scale</th><th>Example</th></tr></thead><tbody>
+<tr><td><strong>Parameters</strong></td><td>Billions of learnable weights (~10⁵× early neural LMs)</td><td>GPT-3: 175 billion</td></tr>
+<tr><td><strong>Training data</strong></td><td>Hundreds of billions to trillions of tokens</td><td>GPT-3: 300B+ tokens (web, books, code, papers)</td></tr>
+<tr><td><strong>Compute</strong></td><td>Thousands of GPU-years</td><td>GPT-3: ~3,640 petaflop/s-days ≈ 3.15 × 10²³ FLOPs</td></tr>
+</tbody></table></div>
+<p>Scale unlocks new behaviour, but also drives cost, energy and complexity (Units 4–5).</p>
+<div class="facet">III · Tokens, Next-Token Prediction &amp; Decoding</div>
+<p><strong>Tokens:</strong> models read tokens (whole words, sub-words or characters) mapped to integer IDs, not words. "Unbelievable!" → <code>Un | believ | able | !</code>. Rare words split into familiar pieces, so the vocabulary stays finite. Rule of thumb: <strong>1 token ≈ 0.75 English words</strong> (1,000 tokens ≈ 750 words). The <strong>context window</strong> is the maximum number of tokens processed at once (4K–128K and beyond).</p>
+<p><strong>The autoregressive loop:</strong> read the tokens so far → predict a probability for every token in the vocabulary → pick one → append it → repeat. Translation, summarisation, QA and code generation are all framed as "predict the next token". Train one simple objective at enormous scale and a general-purpose text engine emerges.</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 660 170" role="img" aria-label="Autoregressive next token loop">
+<defs><marker id="lmA1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="10" y="40" width="140" height="56" class="box"/><text x="80" y="64" text-anchor="middle">Read tokens</text><text x="80" y="82" text-anchor="middle" class="small">"The cat sat on the"</text>
+<rect x="180" y="40" width="140" height="56" class="box2"/><text x="250" y="64" text-anchor="middle">Transformer</text><text x="250" y="82" text-anchor="middle" class="small">→ softmax over vocab</text>
+<rect x="350" y="40" width="140" height="56" class="box"/><text x="420" y="64" text-anchor="middle">Pick one token</text><text x="420" y="82" text-anchor="middle" class="small">decoding: "mat"</text>
+<rect x="520" y="40" width="130" height="56" class="box"/><text x="585" y="64" text-anchor="middle">Append</text><text x="585" y="82" text-anchor="middle" class="small">"…on the mat"</text>
+<line x1="150" y1="68" x2="177" y2="68" class="ln" marker-end="url(#lmA1)"/><line x1="320" y1="68" x2="347" y2="68" class="ln" marker-end="url(#lmA1)"/><line x1="490" y1="68" x2="517" y2="68" class="ln" marker-end="url(#lmA1)"/>
+<path d="M585,96 C585,150 80,150 80,100" class="ln2" marker-end="url(#lmA1)"/><text x="330" y="160" text-anchor="middle" class="small">repeat until an end token or the length limit</text>
+</svg></div><figcaption><span class="pl">Plate D1 · The autoregressive loop</span></figcaption></figure>
+<div class="tbl"><table><thead><tr><th>Decoding strategy</th><th>How it picks the next token</th><th>Character</th></tr></thead><tbody>
+<tr><td>Greedy</td><td>Always the single most likely token</td><td>Fast but repetitive and dull</td></tr>
+<tr><td>Beam search</td><td>Tracks several (k) high-probability sequences</td><td>Good for translation; less creative</td></tr>
+<tr><td>Top-k sampling</td><td>Sample from the k most likely tokens</td><td>Controlled randomness</td></tr>
+<tr><td>Top-p (nucleus)</td><td>Sample from the smallest set whose probabilities sum to p</td><td>Most common for open-ended text</td></tr>
+</tbody></table></div>
+<p><strong>Temperature</strong> T rescales logits before softmax (pᵢ ∝ e^{zᵢ/T}). Low T (→0) gives safe, focused output close to greedy. High T (&gt;1) gives diverse, surprising and riskier output.</p>
+<div class="facet">IV · Capabilities, Emergence &amp; the Landscape</div>
+<p>One model, many tasks: <strong>generate, summarise, translate, answer, reason, converse</strong>. <strong>Emergent abilities</strong> such as arithmetic, multi-step reasoning and instruction-following appear only after models pass a certain size, and cannot be predicted from small models. Landscape (it changes quickly): GPT-4/4o (OpenAI, closed), Claude (Anthropic, closed, long context and safety focus), Gemini (Google DeepMind, multimodal), LLaMA (Meta, open weights), Mistral/Mixtral (open weights, mixture-of-experts), Falcon and community models. <em>The leaders change; the Transformer underneath does not.</em></p>
+<div class="facet">V · Critical Evaluation</div>
+<p>"Predict the next token" is powerful but has consequences: the model optimises <em>plausibility</em>, not truth (hallucination, Unit 2); it inherits training-data biases (Unit 4); and its knowledge is frozen at the training cutoff (which motivates RAG, Unit 2).</p>
+<div class="checklist"><ul><li>Chain-rule definition and the "mat" example.</li><li>Three scale dimensions with GPT-3 figures.</li><li>Tokens (≈0.75 words), context window, the autoregressive loop diagram.</li><li>Decoding table plus temperature; emergent abilities.</li></ul></div>
+</section>
+
+<section class="topic" id="llm-evolution">
+<h3><span class="tno">§ 1.2</span>Evolution: From n-grams to Frontier LLMs</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>This topic is the story of how computers got better at the "guess the next word" game. Each new method fixed the biggest weakness of the one before.</p>
+<p><strong>1 · The tally notebook (n-grams, 1990s).</strong> Read lots of text and keep a tally: after "the cat", how often does each word come next? "sat" 40 times, "ran" 25 times… Then predict the most frequent one. <em>Weakness:</em> it only looks at the last 2–3 words, it has never seen most combinations, and it has no idea that "cat" and "kitten" mean nearly the same thing. To it they are just different spellings.</p>
+<p><strong>2 · The meaning map (word embeddings, 2013).</strong> Give every word a location on a map where similar words sit close together (Unit 0, Step 0.7). Now "cat" and "kitten" are neighbours. The map even captures relationships: the step from "man" to "woman" is the same as the step from "king" to "queen". <em>Weakness:</em> each word has one fixed spot, so "bank" (river) and "bank" (money) get the same location.</p>
+<p><strong>3 · Reading with a sticky note (RNNs and LSTMs).</strong> Read the sentence one word at a time, keeping a running summary on a "sticky note" (the <em>hidden state</em>) that updates after each word. Now context matters. <em>Weakness:</em> it is slow, because you can't read word 50 until you've finished word 49, and on long passages the sticky note forgets the beginning.</p>
+<p><strong>4 · The highlighter (attention, 2014).</strong> Instead of relying on the sticky note alone, let the model <em>look back at the whole page</em> and highlight the words that matter for the current step.</p>
+<p><strong>5 · Everyone reads at once (the Transformer, 2017).</strong> The big idea: <em>throw away the sticky note completely and use only the highlighting.</em> Every word looks at every other word at the same time. That is much faster on GPUs (all words are processed in parallel) and nothing is forgotten. <strong>Every modern LLM is built on this.</strong></p>
+<p><strong>6 · Reading lots, then specialising (BERT and GPT, 2018 onwards).</strong> Train one big Transformer on huge amounts of text first ("pretraining"), then use it for many tasks. GPT's family grew bigger and bigger until, around GPT-3 (2020), models could do new tasks just from a few examples in the question. With extra training on human feedback, this led to ChatGPT (2022).</p><p class="zero-f">Now the exam version ↓</p></div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 690 130" role="img" aria-label="Timeline of language models from 1990s to 2022">
+<line x1="20" y1="60" x2="670" y2="60" class="ln2"/>
+<g><circle cx="40" cy="60" r="7" class="ac"/><text x="40" y="40" text-anchor="middle" class="hd">1990s</text><text x="40" y="85" text-anchor="middle" class="small">n-gram</text>
+<circle cx="140" cy="60" r="7" class="ac"/><text x="140" y="40" text-anchor="middle" class="hd">2013</text><text x="140" y="85" text-anchor="middle" class="small">word2vec</text>
+<circle cx="240" cy="60" r="7" class="ac"/><text x="240" y="40" text-anchor="middle" class="hd">2014</text><text x="240" y="85" text-anchor="middle" class="small">seq2seq</text><text x="240" y="100" text-anchor="middle" class="small">+ attention</text>
+<circle cx="350" cy="60" r="10" class="ac"/><text x="350" y="40" text-anchor="middle" class="hd">2017</text><text x="350" y="85" text-anchor="middle" class="small">TRANSFORMER</text><text x="350" y="100" text-anchor="middle" class="small">"Attention Is All You Need"</text>
+<circle cx="460" cy="60" r="7" class="ac"/><text x="460" y="40" text-anchor="middle" class="hd">2018</text><text x="460" y="85" text-anchor="middle" class="small">BERT &amp; GPT</text>
+<circle cx="560" cy="60" r="7" class="ac"/><text x="560" y="40" text-anchor="middle" class="hd">2020</text><text x="560" y="85" text-anchor="middle" class="small">GPT-3</text><text x="560" y="100" text-anchor="middle" class="small">few-shot</text>
+<circle cx="650" cy="60" r="7" class="ac"/><text x="650" y="40" text-anchor="middle" class="hd">2022+</text><text x="650" y="85" text-anchor="middle" class="small">ChatGPT,</text><text x="650" y="100" text-anchor="middle" class="small">assistants</text></g>
+</svg></div><figcaption><span class="pl">Plate D2 · Six decades of language modelling</span> The turning point is 2017, when parallel attention replaced sequential recurrence. <span class="sketch">How to sketch: a horizontal line with 7 dots and year labels; circle 2017.</span></figcaption></figure>
+<div class="facet">1 · The Statistical Era: n-gram Models (1990s)</div>
+<p>Predict the next word from only the previous (n−1) words, e.g. a trigram P(wᵢ | wᵢ₋₂, wᵢ₋₁), estimated from <em>frequency counts</em> in a corpus: P(sat | the cat) = count(the cat sat) / count(the cat). Simple and fast. <strong>Why it fell short:</strong> no long-range memory; <em>sparsity</em> (most word combinations are never seen, so probability is zero without smoothing); no notion of meaning ("cat" and "kitten" are unrelated symbols); vocabulary and table sizes explode as n grows.</p>
+<div class="facet">2 · The Neural Era: Word Embeddings (2013)</div>
+<p><strong>word2vec</strong> (Mikolov et al., 2013; CBOW and skip-gram) and <strong>GloVe</strong> give each word a <em>dense vector</em>. Words used in similar contexts land close together, so meaning becomes measurable. Vector arithmetic captures analogies: <strong>king − man + woman ≈ queen</strong>, so relationships become directions in space, and animals cluster apart from vehicles. <strong>Limitation:</strong> still one fixed vector per word, with no sense of word order or context ("bank" of a river = "bank" for money).</p>
+<div class="facet">3 · Sequence Models: RNN, LSTM, GRU (2010s)</div>
+<figure class="plate">
+  <div class="frame"><img src="img/rnn.svg" alt="A recurrent neural network cell with a loop, unfolded over time steps into a chain of cells passing a hidden state" loading="lazy"></div>
+  <figcaption><span class="pl">Plate D3 · An RNN unrolled through time</span> The same cell is applied at each time step, passing a <em>hidden state h</em> forward as a running memory.
+  <span class="sketch">How to sketch: boxes for "The → cat → sat → on", each emitting h₁…h₄, with arrows carrying h to the next box.</span>
+  <span class="credit">Source: Wikimedia Commons, "Recurrent neural network unfold.svg" (openly licensed; see file page).</span></figcaption>
+</figure>
+<p><strong>Strengths:</strong> handle variable-length sequences; the hidden state is a running memory; <strong>LSTM/GRU gates</strong> (input, forget, output) ease the <em>vanishing-gradient</em> problem. <strong>Limitations:</strong> strictly sequential, so hard to parallelise on GPUs; long-range dependencies still fade; slow to train on huge corpora.</p>
+<div class="facet">4 · The Breakthrough: Attention (2014 → 2017)</div>
+<p><strong>The old bottleneck:</strong> seq2seq encoder–decoder models (Sutskever et al., 2014) squeezed a whole sentence into <em>one fixed vector</em>, which lost detail on long inputs. <strong>Attention</strong> (Bahdanau et al., 2014) let the decoder <em>look back at every input word</em>, weighting the relevant ones. The <strong>2017 Transformer</strong> (Vaswani et al., "Attention Is All You Need") went further and used <em>attention alone, with no recurrence at all</em>: every word attends to every other word directly; the whole sequence is processed in parallel; it scales to enormous data and model sizes; and one architecture serves translation, generation and more. <em>This single design is the foundation of every modern LLM.</em></p>
+<div class="facet">5 · Two Pretraining Families (2018)</div>
+<div class="tbl"><table><thead><tr><th></th><th>BERT (Google)</th><th>GPT (OpenAI)</th></tr></thead><tbody>
+<tr><td>Architecture</td><td>Encoder-only</td><td>Decoder-only</td></tr>
+<tr><td>Reads</td><td>Both directions at once (bidirectional)</td><td>Left to right (causal)</td></tr>
+<tr><td>Pretraining objective</td><td>Fill in masked words (Masked LM) + next-sentence prediction</td><td>Next-token prediction</td></tr>
+<tr><td>Best at</td><td>Understanding: classification, search, tagging (NER)</td><td>Generation: writing, chat, code</td></tr>
+<tr><td>Limitation</td><td>Not built to generate long text</td><td>Sees only the left context</td></tr>
+<tr><td>Legacy</td><td>Embeddings and search rankers</td><td>The template for today's LLMs</td></tr>
+</tbody></table></div>
+<div class="facet">6 · The Scaling Race (2020+)</div>
+<p>GPT-1 (117M, 2018) → GPT-2 (1.5B, 2019) → GPT-3 (175B, 2020) → GPT-4 (undisclosed; unofficial estimates much larger). GPT-3 showed <strong>few-shot in-context learning</strong>: learning tasks from a few examples in the prompt. <strong>Instruction tuning + RLHF</strong> (reinforcement learning from human feedback) aligned models to human intent, which produced the <strong>ChatGPT moment (November 2022)</strong>.</p>
+<div class="checklist"><ul><li>The timeline with years; the failings of n-grams (sparsity, no meaning, no long range).</li><li>word2vec analogy; a fixed vector per word has no context.</li><li>RNN/LSTM strengths and limits; the fixed-vector bottleneck of seq2seq.</li><li>Attention → Transformer (2017, Vaswani); BERT vs GPT table; scaling, few-shot, RLHF.</li></ul></div>
+</section>
+
+<section class="topic" id="llm-transformer">
+<h3><span class="tno">§ 1.3</span>The Transformer Architecture &amp; Attention Mechanisms</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>The Transformer is the design inside every LLM. Here is a way to picture it that needs no maths.</p>
+<p><strong>Picture a classroom discussion.</strong> Each word in the sentence is a <em>student</em>. Take the sentence <em>"The animal didn't cross the street because it was too tired."</em> The student holding the word "it" is confused: <em>what does "it" refer to?</em> So "it" raises a question to the class.</p>
+<ul>
+<li><strong>Query (Q)</strong> = the question a student asks: "I'm a pronoun. Who am I talking about? Something that can be tired?"</li>
+<li><strong>Key (K)</strong> = the name tag each student wears, advertising what they are: "animal: a living thing", "street: a place".</li>
+<li><strong>Value (V)</strong> = what each student actually says when listened to: the information they pass on.</li>
+</ul>
+<p>"It" compares its question with every name tag. "Animal" matches well, "street" not much. So "it" <strong>listens mostly to "animal"</strong> (say 71%) and only a little to the others, then updates its own understanding: <em>"it = the animal"</em>. That process of comparing questions with name tags, then listening in proportion, is <strong>self-attention</strong>. Every word does this at the same time.</p>
+<p><strong>The formula, in plain words.</strong> <code>softmax(Q·K / √d) · V</code> means: (1) compare the question with every name tag, which gives a match score (the dot product, Unit 0, Step 0.7); (2) shrink the scores a bit so none of them becomes extreme (the <code>/√d</code> part keeps learning stable); (3) turn the scores into percentages (softmax, Unit 0, Step 0.6); (4) listen to each student's information in those proportions.</p>
+<p><strong>Multi-head attention</strong> = several discussions at once, each about something different: one "head" asks about grammar ("who is the subject?"), another about meaning, another about which earlier words refer to the same thing. The results are then combined.</p>
+<p><strong>Positional encoding</strong> = seat numbers. In a discussion where everyone talks at once, you lose track of word order, and "dog bites man" would look the same as "man bites dog". So each word gets its seat number mixed into its numbers.</p>
+<p><strong>Feed-forward network</strong> = after the discussion, each student <em>thinks quietly on their own</em> about what they heard (a small neural network, Unit 0, Step 0.5). <strong>Residual connection</strong> = each student keeps their original notes and adds the new insights on top, rather than throwing the notes away. <strong>Layer normalisation</strong> = keeping everyone's numbers in a sensible range so nothing blows up.</p>
+<p><strong>Layers</strong> = repeat the whole discussion many rounds (GPT-3 does 96). Each round builds a deeper understanding. After the last round, the model scores every possible next word.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I · Big Picture</div>
+<p>Tokens flow up through N identical blocks to a next-token prediction: <strong>input tokens → token embedding + positional encoding → Transformer block × N → output layer (linear + softmax) → next-token probabilities</strong>. Inside one block: <em>multi-head self-attention → add &amp; normalise → feed-forward network → add &amp; normalise</em>.</p>
+<figure class="plate">
+  <div class="frame"><img src="img/transformer.png" alt="The original Transformer: encoder stack with multi-head attention and feed-forward layers, decoder stack with masked multi-head attention, cross-attention and feed-forward, positional encodings, and a final linear and softmax" loading="lazy"></div>
+  <figcaption><span class="pl">Plate D4 · The Transformer (Vaswani et al., 2017)</span> Left: the <em>encoder</em> (N× [multi-head attention → add &amp; norm → feed-forward → add &amp; norm]). Right: the <em>decoder</em>, which adds <em>masked</em> self-attention (it cannot peek at future tokens) and <em>cross-attention</em> to the encoder output. GPT-style LLMs keep only the decoder stack (without cross-attention).
+  <span class="sketch">How to sketch in 2 minutes: two tall rectangles side by side marked "N×"; inside each, stacked boxes MHA / Add&amp;Norm / FFN / Add&amp;Norm (the decoder has an extra masked MHA); "Input embedding + ⊕ positional encoding" underneath; Linear → Softmax on top of the decoder; an arrow from the encoder top into the decoder's middle attention.</span>
+  <span class="credit">Source: Wikimedia Commons, "The-Transformer-model-architecture.png" (openly licensed; see file page).</span></figcaption>
+</figure>
+<div class="facet">II · Input: Embeddings + Positional Encoding</div>
+<p><strong>Token embeddings:</strong> each token ID is looked up in a learned table (vocabulary × d_model) and becomes a dense vector. <strong>Positional encoding:</strong> attention has <em>no built-in sense of order</em> (it treats the input as a set), so a position signal is <em>added</em>: "dog bites man" ≠ "man bites dog".</p>
+<div class="formula">input = token embedding + positional encoding
+e.g.  "cat" [0.21, −0.40, 0.80, 0.05] + pos [0.00, 1.00, 0.00, 1.00] = [0.21, 0.60, 0.80, 1.05]
+
+Sinusoidal encoding (original paper):
+PE(pos, 2i)   = sin( pos / 10000^(2i/d_model) )
+PE(pos, 2i+1) = cos( pos / 10000^(2i/d_model) )
+(modern LLMs often use learned or rotary (RoPE) position encodings)</div>
+<div class="facet">III · Self-Attention: Query, Key, Value</div>
+<p>Each token is projected into three vectors by learned matrices W<sub>Q</sub>, W<sub>K</sub>, W<sub>V</sub>:</p>
+<ul>
+<li><strong>Query (Q):</strong> what this word is looking for.</li>
+<li><strong>Key (K):</strong> what each other word offers.</li>
+<li><strong>Value (V):</strong> the information each word carries.</li>
+</ul>
+<p>Match a word's query against every key → attention weights → blend the values accordingly. <strong>Resolving "it":</strong> in "The animal didn't cross the street because <em>it</em> was too tired", attention from "it" points strongly to <em>animal</em> (0.71), much less to street (0.12), tired (0.10) and cross (0.04). The model has learned coreference.</p>
+<div class="formula">                              Q Kᵀ
+Attention(Q, K, V) = softmax( ────── ) V
+                              √d_k
+
+Q Kᵀ    : score every query against every key (dot products; n × n matrix)
+÷ √d_k  : scale down so large dot products don't push softmax into tiny gradients
+softmax : turn each row of scores into weights that sum to 1
+× V     : blend the value vectors using those weights</div>
+<figure class="plate">
+  <div class="frame"><img src="img/sdpa.png" alt="Scaled dot-product attention block: MatMul of Q and K, Scale, optional Mask, Softmax, then MatMul with V" loading="lazy" style="max-height:420px"></div>
+  <figcaption><span class="pl">Plate D5 · Scaled dot-product attention</span> Bottom to top: MatMul(Q, Kᵀ) → Scale (÷√d_k) → optional Mask (causal: set future positions to −∞) → Softmax → MatMul with V → output Z.
+  <span class="sketch">How to sketch: five stacked boxes MatMul / Scale / Mask / Softmax / MatMul, with Q and K entering the bottom and V joining at the top MatMul.</span>
+  <span class="credit">Source: Wikimedia Commons, "Self-Attention (Scaled dot-product Attention).png" (openly licensed; see file page).</span></figcaption>
+</figure>
+<h5>Worked example: how much should "sat" attend to each word? (d_k = 4, so √d_k = 2)</h5>
+<div class="formula">Step 1  Score:   q_sat · k_The = 2.0   q_sat · k_cat = 6.0   q_sat · k_sat = 3.0
+Step 2  Scale:   ÷2 →  1.0, 3.0, 1.5
+        Softmax: e^1.0 = 2.72, e^3.0 = 20.09, e^1.5 = 4.48 ; sum = 27.29
+                 weights → The 0.10 · cat 0.74 · sat 0.16
+Step 3  Blend:   z_sat = 0.10·v_The + 0.74·v_cat + 0.16·v_sat   ("mostly cat, a little sat, a touch of The")</div>
+<p><strong>Why scale by √d_k?</strong> If Q and K entries have unit variance, their dot product has variance d_k. With d_k = 64 the scores reach about ±8 or more, the softmax becomes nearly one-hot, and its gradients vanish. Dividing by √d_k keeps the variance near 1, so training stays stable.</p>
+<div class="facet">Multi-Head Attention</div>
+<p>One attention pattern can capture only <em>one type of relationship</em>. <strong>Multi-head attention</strong> runs h attention operations in parallel, each with its own W<sub>Q</sub>, W<sub>K</sub>, W<sub>V</sub> projections into a smaller subspace (d_k = d_model/h). Heads learn different patterns (syntax, long-range links, coreference, topic). Their outputs are <strong>concatenated and projected</strong> by W<sub>O</sub>:</p>
+<div class="formula">MultiHead(Q,K,V) = Concat(head₁, …, head_h) W_O ,  headᵢ = Attention(Q W_Qᵢ, K W_Kᵢ, V W_Vᵢ)
+Original Transformer: d_model = 512, h = 8 heads → d_k = 64 each</div>
+<figure class="plate">
+  <div class="frame"><img src="img/mha.png" alt="Multi-head attention: Q, K, V each pass through several linear projections, feed parallel scaled dot-product attention heads, which are concatenated and linearly projected" loading="lazy" style="max-height:420px"></div>
+  <figcaption><span class="pl">Plate D6 · Multi-head attention</span> Q, K, V → per-head Linear projections → N parallel scaled dot-product attentions → Concat → Linear.
+  <span class="credit">Source: Wikimedia Commons, "Multi-head attention.png" (openly licensed; see file page).</span></figcaption>
+</figure>
+<div class="facet">The Rest of the Block</div>
+<ol>
+<li><strong>Feed-forward network (FFN):</strong> a small 2-layer MLP applied to <em>every position independently</em>, FFN(x) = W₂·ReLU/GELU(W₁x + b₁) + b₂, usually 4× wider (512 → 2048). Attention <em>mixes</em> information between tokens; the FFN <em>transforms</em> each token and adds nonlinear processing power. It holds much of the model's stored knowledge.</li>
+<li><strong>Residual connections:</strong> add the input back to the output (x + Sublayer(x)), so gradients flow through deep stacks and training stays possible.</li>
+<li><strong>Layer normalisation:</strong> rescale activations to zero mean and unit variance per token, which keeps numbers stable and speeds up training (modern LLMs use pre-norm and RMSNorm).</li>
+</ol>
+<p>Stack dozens of these blocks (GPT-3: 96 layers, d_model = 12,288, 96 heads) and you have a full LLM.</p>
+<div class="facet">IV · Three Architecture Families</div>
+<div class="tbl"><table><thead><tr><th>Family</th><th>Reads</th><th>Best at</th><th>Examples</th></tr></thead><tbody>
+<tr><td>Encoder-only</td><td>Both directions</td><td>Understanding and classification</td><td>BERT, RoBERTa</td></tr>
+<tr><td>Decoder-only</td><td>Left to right (causal mask)</td><td>Text generation (today's LLMs)</td><td>GPT, LLaMA, Claude</td></tr>
+<tr><td>Encoder–decoder</td><td>Input in full, then output causally</td><td>Translation and summarisation</td><td>T5, BART, the original Transformer</td></tr>
+</tbody></table></div>
+<p>Trend: most general-purpose chat LLMs are decoder-only, because one simple next-token objective scales best.</p>
+<div class="facet">V · Why Transformers Won, and Their Limits</div>
+<div class="tbl"><table><thead><tr><th></th><th>RNN / LSTM</th><th>Transformer</th></tr></thead><tbody>
+<tr><td>Processing</td><td>One step at a time</td><td>Whole sequence in parallel</td></tr>
+<tr><td>Long-range links</td><td>Fade over distance (O(n) path)</td><td>Direct, any distance (O(1) path)</td></tr>
+<tr><td>Training speed</td><td>Slow on big data</td><td>Fast on GPUs/TPUs (matrix multiplications)</td></tr>
+<tr><td>Scales to billions?</td><td>Poorly</td><td>Yes, the basis of LLMs</td></tr>
+</tbody></table></div>
+<p><strong>Limitation:</strong> self-attention costs <strong>O(n²)</strong> time and memory in sequence length n, which is why long context is expensive. Remedies include FlashAttention, sparse or sliding-window attention, and the KV-cache at inference.</p>
+<div class="checklist"><ul>
+<li>Block diagram (embeddings + PE → N × [MHA, Add&amp;Norm, FFN, Add&amp;Norm] → linear/softmax).</li>
+<li>Why positional encoding is needed, and the sinusoidal formula.</li>
+<li>The roles of Q, K and V; <strong>Attention = softmax(QKᵀ/√d_k)V</strong> with each step explained; the numerical toy example.</li>
+<li>Why √d_k; why multiple heads (with the formula); FFN, residual, LayerNorm.</li>
+<li>Three families table; the RNN vs Transformer table; O(n²) limitation.</li>
+</ul></div>
+</section>
+
+</div></div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="llm-data">
+<h3><span class="tno">§ 1.4</span>Data Requirements &amp; Preprocessing</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>An LLM learns language the way you might learn English by reading an entire library, except the library is billions of web pages, books, Wikipedia articles and computer programs.</p>
+<p><strong>Why so much?</strong> Remember that the model has billions of knobs (Unit 0, Step 0.3). To set that many knobs well it needs an enormous number of examples; with too few, it just memorises them (overfitting, Unit 0, Step 0.9).</p>
+<p><strong>But quality matters as much as quantity.</strong> Much of the internet is junk: adverts, spam, broken pages, the same text copied thousands of times. If the model reads junk, it learns junk ("garbage in, garbage out"). So the text is prepared first:</p>
+<ol>
+<li><strong>Collect:</strong> gather the text.</li>
+<li><strong>Clean:</strong> strip out website code, menus, adverts: like removing the wrapping paper.</li>
+<li><strong>Filter:</strong> throw away low-quality, harmful or private text.</li>
+<li><strong>Deduplicate:</strong> remove copies. Reading the same page 1,000 times wastes effort and makes the model parrot it word for word.</li>
+<li><strong>Tokenize:</strong> chop the text into Lego-brick pieces with ID numbers.</li>
+</ol>
+<p><strong>How the "Lego bricks" are chosen (BPE).</strong> Start with single letters. Look through all the text for the pair of symbols that appears next to each other most often (say "e"+"s") and glue them into one brick "es". Repeat: "es"+"t" becomes "est", and so on, thousands of times. Common words end up as one brick ("the"); rare words are built from a few ("un+believ+able"). It's like building your own set of SMS abbreviations from what you type most.</p>
+<p><strong>The Chinchilla lesson:</strong> a bigger brain needs more books. Researchers found that many big models were "under-read": too many knobs for the amount of text they had seen. A smaller model that reads more can beat a bigger model that reads less. Rough rule: about <strong>20 tokens of reading per knob</strong>.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I · Data Is the Fuel</div>
+<p>LLMs learn language by reading staggering amounts of text: <strong>~500B+ tokens</strong> in a modern training run (frontier models use 10T+), terabytes of raw text, from the web, books, code, papers and more. A person reading 8 hours a day would take thousands of years to read what a large LLM sees once. The model does not memorise the text. It learns <em>statistical patterns</em> of how language works. Because it reads almost everything, it also <strong>absorbs the biases and errors</strong> in that text (Unit 4). <strong>Quality matters as much as quantity.</strong></p>
+<div class="tbl"><table><thead><tr><th>Source</th><th>What it adds</th><th>Examples</th></tr></thead><tbody>
+<tr><td>Web pages</td><td>Breadth and variety of everyday language</td><td>Common Crawl (filtered: C4, RefinedWeb)</td></tr>
+<tr><td>Books</td><td>Long-form, coherent prose; long-range structure</td><td>BookCorpus, public-domain books</td></tr>
+<tr><td>Code</td><td>Logic, structure and reasoning</td><td>GitHub (The Stack)</td></tr>
+<tr><td>Reference works</td><td>Factual grounding</td><td>Wikipedia</td></tr>
+<tr><td>News and scientific papers</td><td>Formal, up-to-date knowledge</td><td>arXiv, PubMed, news archives</td></tr>
+</tbody></table></div>
+<div class="facet">II · The Preprocessing Pipeline</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 690 140" role="img" aria-label="Five-step data preprocessing pipeline">
+<defs><marker id="lmA2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="5" y="30" width="118" height="60" class="box"/><text x="64" y="56" text-anchor="middle" class="hd">1 COLLECT</text><text x="64" y="76" text-anchor="middle" class="small">crawl, license</text>
+<rect x="146" y="30" width="118" height="60" class="box"/><text x="205" y="56" text-anchor="middle" class="hd">2 CLEAN</text><text x="205" y="76" text-anchor="middle" class="small">strip HTML, boilerplate</text>
+<rect x="287" y="30" width="118" height="60" class="box2"/><text x="346" y="56" text-anchor="middle" class="hd">3 FILTER</text><text x="346" y="76" text-anchor="middle" class="small">quality, lang, toxicity, PII</text>
+<rect x="428" y="30" width="118" height="60" class="box2"/><text x="487" y="56" text-anchor="middle" class="hd">4 DEDUPLICATE</text><text x="487" y="76" text-anchor="middle" class="small">exact + near (MinHash)</text>
+<rect x="569" y="30" width="118" height="60" class="box"/><text x="628" y="56" text-anchor="middle" class="hd">5 TOKENIZE</text><text x="628" y="76" text-anchor="middle" class="small">BPE → IDs</text>
+<line x1="123" y1="60" x2="143" y2="60" class="ln" marker-end="url(#lmA2)"/><line x1="264" y1="60" x2="284" y2="60" class="ln" marker-end="url(#lmA2)"/><line x1="405" y1="60" x2="425" y2="60" class="ln" marker-end="url(#lmA2)"/><line x1="546" y1="60" x2="566" y2="60" class="ln" marker-end="url(#lmA2)"/>
+<text x="345" y="122" text-anchor="middle" class="small">"Garbage in, garbage out": filtering and dedup often help more than extra raw data</text>
+</svg></div><figcaption><span class="pl">Plate D7 · The preprocessing pipeline</span> <span class="sketch">How to sketch: five boxes in a row with one note under each.</span></figcaption></figure>
+<ol>
+<li><strong>Collect:</strong> gather raw text from many sources, respecting licences and robots.txt.</li>
+<li><strong>Clean:</strong> strip HTML markup, navigation boilerplate, ads, encoding errors; normalise Unicode and whitespace.</li>
+<li><strong>Filter:</strong> drop low-quality text (heuristics such as length, symbol ratio, perplexity under a reference model, quality classifiers), wrong-language text, unsafe or toxic content, and personal information (PII).</li>
+<li><strong>Deduplicate:</strong> remove repeated documents, both exact (hashing) and near-duplicate (MinHash/LSH). Duplication wastes compute, causes <em>memorisation</em>, and can leak test data into training.</li>
+<li><strong>Tokenize:</strong> split into tokens and map them to IDs. Then shuffle, and mix sources in chosen proportions.</li>
+</ol>
+<div class="facet">III · Sub-word Tokenization</div>
+<p>Word-level vocabularies explode and fail on unseen words; character-level sequences are too long. <strong>Sub-word</strong> tokenization balances <em>coverage</em> against <em>vocabulary size</em>: frequent words stay whole and rare words split into pieces, so any word can be represented.</p>
+<div class="tbl"><table><thead><tr><th>Method</th><th>How</th><th>Used by</th></tr></thead><tbody>
+<tr><td><strong>BPE</strong> (Byte-Pair Encoding)</td><td>Start from characters; <em>repeatedly merge the most frequent adjacent pair</em> until the vocabulary reaches its target size</td><td>GPT models (byte-level BPE)</td></tr>
+<tr><td><strong>WordPiece</strong> (Google)</td><td>Similar merges, chosen to <em>maximise the likelihood</em> of the training data; marks continuation pieces with "##"</td><td>BERT</td></tr>
+<tr><td><strong>SentencePiece</strong></td><td>Works directly on <em>raw text</em> (spaces become a symbol "▁"), with no pre-splitting; language-agnostic (BPE or Unigram)</td><td>T5, LLaMA; good for many languages</td></tr>
+</tbody></table></div>
+<h5>Worked BPE example</h5>
+<div class="formula">Corpus (word: frequency):  low:5  lower:2  newest:6  widest:3     (&lt;/w&gt; = end of word)
+Initial symbols: l o w &lt;/w&gt; | l o w e r &lt;/w&gt; | n e w e s t &lt;/w&gt; | w i d e s t &lt;/w&gt;
+
+Merge 1: most frequent pair  (e, s)  = 6 + 3 = 9   → "es"   ((s,t) and (t,&lt;/w&gt;) also = 9; tie broken by order)
+Merge 2: (es, t)             = 9                   → "est"
+Merge 3: (est, &lt;/w&gt;)        = 9                   → "est&lt;/w&gt;"
+Merge 4: (l, o)              = 5 + 2 = 7           → "lo"
+Merge 5: (lo, w)             = 7                   → "low"
+…
+New word "lowest" → low + est&lt;/w&gt;: represented with no unknown token</div>
+<div class="facet">IV · How Much Data? The Chinchilla Insight</div>
+<p>Hoffmann et al. (2022, "Training Compute-Optimal LLMs"): <strong>for a fixed compute budget, model size and training tokens should grow together</strong>, roughly <strong>~20 tokens per parameter</strong>. Early giant models were <em>under-trained</em>, too big for the data they saw. <strong>Chinchilla (70B params, 1.4T tokens)</strong> beat <strong>Gopher (280B, 300B tokens)</strong> using the same compute. A smaller model trained on more data can beat a larger, data-starved one, and it is also cheaper to run at inference. (Modern models such as LLaMA-3 train far beyond 20:1, e.g. 8B on 15T tokens, deliberately "over-training" to get cheap, strong small models.)</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>Data is now the bottleneck: high-quality public text is finite (the "data wall"), copyright and consent disputes are growing, and web text over-represents English and certain demographics, which disadvantages Indian languages. Responses include synthetic data, multilingual curation (e.g. AI4Bharat corpora), and licensed data deals.</p>
+<div class="checklist"><ul><li>Data scale, sources and the value of each; quality over quantity; bias absorption.</li><li>The five pipeline steps with purposes; why deduplication matters.</li><li>BPE, WordPiece, SentencePiece table plus a BPE merge example.</li><li>Chinchilla (~20 tokens/param; 70B vs 280B).</li></ul></div>
+</section>
+
+<section class="topic" id="llm-training">
+<h3><span class="tno">§ 1.5</span>Optimisation Techniques &amp; Challenges in Training</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>Training an LLM is the guess → check → adjust loop from Unit 0 (Step 0.4), played as a <strong>fill-in-the-next-word game</strong>, trillions of times.</p>
+<p><strong>The game:</strong> take a real sentence, "The Taj Mahal is in ___". Hide the next word. The model gives every possible word a percentage. The real answer is "Agra".</p>
+<p><strong>The score (loss):</strong> if the model gave "Agra" 90%, it was barely surprised, so the loss is small. If it gave "Agra" only 1%, it was very surprised, so the loss is big. This "surprise score" is called <strong>cross-entropy loss</strong>. (Technically it is −log of the probability given to the right answer: −log(0.9) ≈ 0.1 is small, −log(0.01) ≈ 4.6 is big.) <strong>Perplexity</strong> expresses the same idea as "how many options the model is torn between". A perplexity of 4 means it is as unsure as if choosing randomly among 4 words.</p>
+<p><strong>Adjusting the knobs (the optimiser, AdamW):</strong> the hill-in-the-fog walker from Unit 0, with two extra habits. It remembers which way it has been heading (momentum, so it doesn't zig-zag), and it takes smaller steps for knobs that jump around a lot and bigger steps for knobs that barely move. The "W" part (weight decay) gently pulls every knob towards zero, which discourages memorising.</p>
+<p><strong>Learning-rate schedule:</strong> like a runner. Start slowly to warm up (early on the model knows nothing, and big steps would throw it off), run at full pace in the middle, then slow down at the end to settle carefully into the best spot.</p>
+<p><strong>What goes wrong at huge scale, and the fixes:</strong></p>
+<ul>
+<li><em>Training suddenly goes haywire</em> (loss spikes): use <strong>gradient clipping</strong>, a speed limiter that caps how big any single adjustment can be.</li>
+<li><em>The model doesn't fit in one GPU's memory</em>: store numbers in shorter form (<strong>mixed precision</strong>, 16-bit instead of 32-bit, like writing 3.14 instead of 3.14159265), and recompute some things instead of storing them (<strong>checkpointing</strong>).</li>
+<li><em>It takes forever</em>: share the work across thousands of GPUs (<strong>parallelism</strong>): like many cooks in a kitchen, each doing different orders (data parallel), splitting one giant dish (model parallel), or working an assembly line (pipeline parallel).</li>
+<li><em>It memorises instead of learning</em>: <strong>weight decay</strong> and <strong>dropout</strong> (randomly switching off some neurons during practice, so no single neuron can be relied on to memorise).</li>
+</ul><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I · The Training Objective</div>
+<p>Show the model text with the next token hidden; it predicts a probability for every possible token; the <strong>loss</strong> is high if the true token got low probability; <strong>backpropagation</strong> adjusts the weights to reduce the loss; repeat billions of times, and language is learned. This is <em>self-supervised</em>: the text supplies its own labels.</p>
+<div class="formula">Cross-entropy loss (per sequence):   L = − (1/N) Σᵢ log P(correct tokenᵢ | previous tokens)
+Perplexity:                          PPL = e^L      ("how surprised" the model is; lower = better)
+
+Example: model gives the true tokens probabilities 0.5, 0.25, 0.125
+L = (0.693 + 1.386 + 2.079) / 3 = 1.386  →  PPL = e^1.386 = 4
+(as uncertain as choosing uniformly among 4 options)</div>
+<div class="facet">II · Optimisers &amp; Learning-Rate Schedules</div>
+<p><strong>AdamW</strong> updates the weights. Like Adam, it keeps running averages of the gradient (momentum, m) and squared gradient (v) per parameter, giving each weight an <em>adaptive step size</em>. The "W" means <em>decoupled weight decay</em>, which improves generalisation. The <strong>learning-rate schedule</strong> is <em>warmup → peak → gradual (cosine) decay</em>:</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 560 190" role="img" aria-label="Learning rate schedule with warmup peak and cosine decay">
+<line x1="50" y1="160" x2="540" y2="160" class="ln"/><line x1="50" y1="160" x2="50" y2="20" class="ln"/>
+<text x="295" y="182" text-anchor="middle" class="small">training steps →</text><text x="20" y="90" class="small" transform="rotate(-90 20 90)">learning rate</text>
+<path d="M50,158 L120,35 C220,35 330,90 400,135 C450,155 500,157 540,157" class="ln2"/>
+<text x="85" y="60" class="small">warmup</text><text x="140" y="30" class="small">peak</text><text x="380" y="110" class="small">cosine decay</text>
+</svg></div><figcaption><span class="pl">Plate D8 · Warmup, then decay</span> <span class="sketch">How to sketch: a straight ramp up, a peak, then a smooth fall.</span></figcaption></figure>
+<ul><li><strong>Warmup:</strong> start small so early, noisy steps (when Adam's statistics are not yet reliable) don't destabilise training.</li><li><strong>Peak:</strong> learn quickly once things are stable.</li><li><strong>Decay:</strong> slow down to settle into a good minimum.</li></ul>
+<div class="facet">III · Challenges at Scale, and the Techniques That Address Them</div>
+<div class="tbl"><table><thead><tr><th>Challenge</th><th>What goes wrong</th><th>Technique(s)</th></tr></thead><tbody>
+<tr><td>Instability</td><td>Loss suddenly spikes or diverges mid-run</td><td>Warmup + LR schedule, gradient clipping, careful initialisation, pre-LayerNorm, restarting from a checkpoint and skipping bad batches</td></tr>
+<tr><td>Vanishing / exploding gradients</td><td>Signals shrink or blow up through deep stacks</td><td>Residual connections, LayerNorm, <strong>gradient clipping</strong> (cap the gradient norm, e.g. 1.0)</td></tr>
+<tr><td>Memory limits</td><td>Model + activations + optimiser state exceed one GPU</td><td><strong>Mixed precision</strong> (16-bit), <strong>activation checkpointing</strong> (recompute instead of store), ZeRO/FSDP sharding, <strong>parallelism</strong></td></tr>
+<tr><td>Cost and time</td><td>Runs take weeks and cost millions</td><td>Mixed precision (speed), efficient kernels (FlashAttention), compute-optimal sizing (Chinchilla)</td></tr>
+<tr><td>Overfitting and memorisation</td><td>The model parrots training data</td><td><strong>Weight decay + dropout</strong>, deduplication, more diverse data</td></tr>
+<tr><td>Reproducibility</td><td>Hard to restart or debug huge runs</td><td>Frequent <strong>checkpointing</strong> (saving state), fixed seeds, logging</td></tr>
+</tbody></table></div>
+<p><strong>Mixed precision:</strong> weights and activations in FP16/BF16 (2 bytes) for speed and memory, a master copy in FP32 for accurate updates, and <em>loss scaling</em> (with FP16) to avoid underflow. BF16 has FP32's exponent range, so it is preferred on modern hardware.</p>
+<div class="facet">IV · Spreading Work Across GPUs</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 690 220" role="img" aria-label="Data, model/tensor and pipeline parallelism">
+<g>
+<text x="115" y="18" text-anchor="middle" class="hd">DATA PARALLEL</text>
+<rect x="20" y="30" width="60" height="100" class="box2"/><text x="50" y="84" text-anchor="middle" class="small">full model</text>
+<rect x="85" y="30" width="60" height="100" class="box2"/><text x="115" y="84" text-anchor="middle" class="small">full model</text>
+<rect x="150" y="30" width="60" height="100" class="box2"/><text x="180" y="84" text-anchor="middle" class="small">full model</text>
+<text x="50" y="148" text-anchor="middle" class="small">batch A</text><text x="115" y="148" text-anchor="middle" class="small">batch B</text><text x="180" y="148" text-anchor="middle" class="small">batch C</text>
+<text x="115" y="175" text-anchor="middle" class="small">average gradients (all-reduce)</text>
+<text x="345" y="18" text-anchor="middle" class="hd">MODEL (TENSOR) PARALLEL</text>
+<rect x="265" y="30" width="160" height="30" class="box"/><rect x="265" y="30" width="80" height="30" class="box2"/><text x="305" y="50" text-anchor="middle" class="small">GPU1 half</text><text x="385" y="50" text-anchor="middle" class="small">GPU2 half</text>
+<rect x="265" y="65" width="160" height="30" class="box"/><rect x="265" y="65" width="80" height="30" class="box2"/>
+<rect x="265" y="100" width="160" height="30" class="box"/><rect x="265" y="100" width="80" height="30" class="box2"/>
+<text x="345" y="148" text-anchor="middle" class="small">each layer's matrices split</text><text x="345" y="175" text-anchor="middle" class="small">fits models too big for 1 GPU</text>
+<text x="575" y="18" text-anchor="middle" class="hd">PIPELINE PARALLEL</text>
+<rect x="505" y="30" width="140" height="30" class="box2"/><text x="575" y="50" text-anchor="middle" class="small">GPU1: layers 1–24</text>
+<rect x="505" y="65" width="140" height="30" class="box"/><text x="575" y="85" text-anchor="middle" class="small">GPU2: layers 25–48</text>
+<rect x="505" y="100" width="140" height="30" class="box2"/><text x="575" y="120" text-anchor="middle" class="small">GPU3: layers 49–72</text>
+<text x="575" y="148" text-anchor="middle" class="small">micro-batches flow like</text><text x="575" y="175" text-anchor="middle" class="small">an assembly line</text>
+</g>
+<text x="345" y="208" text-anchor="middle" class="small">Large runs combine all three ("3D parallelism"), often with ZeRO/FSDP sharding of optimiser state</text>
+</svg></div><figcaption><span class="pl">Plate D9 · Three kinds of parallelism</span></figcaption></figure>
+<ul>
+<li><strong>Data parallel:</strong> copy the model onto each GPU, give each different data, and average the gradients. This <em>speeds up</em> training.</li>
+<li><strong>Model (tensor) parallel:</strong> split one layer's weights across GPUs. This <em>fits models too big for one GPU</em>.</li>
+<li><strong>Pipeline parallel:</strong> different GPUs handle different layers, like an assembly line with micro-batches. This <em>keeps all GPUs busy</em>.</li>
+</ul>
+<div class="facet">V · Critical Evaluation</div>
+<p>Most of the work in training large models is engineering, not only machine learning: one faulty GPU in 10,000 can stall a run, and communication bandwidth (NVLink, InfiniBand) often limits throughput more than raw FLOPs. Pretraining is only step one: <em>instruction tuning and RLHF/DPO</em> (Unit 3) turn a next-token predictor into a helpful assistant.</p>
+<div class="checklist"><ul><li>Cross-entropy formula and perplexity with a numerical example.</li><li>AdamW (adaptive steps + decoupled weight decay) and warmup/decay with a sketch.</li><li>Six challenges mapped to six techniques (the professor's table).</li><li>Data, model and pipeline parallelism with a diagram.</li></ul></div>
+</section>
+
+<section class="topic" id="llm-hardware">
+<h3><span class="tno">§ 1.6</span>Hardware &amp; Computation Resources</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p><strong>Why special chips?</strong> Almost all of an LLM's work is matrix multiplication: millions of simple multiply-and-add jobs (Unit 0, Step 0.8). A normal computer chip (CPU) is like a few brilliant professors: great at anything, but only a few things at once. A <strong>GPU</strong> is like thousands of students who can only do simple sums but all work at the same moment, which is perfect for this job. Google built its own version, the <strong>TPU</strong>.</p>
+<p><strong>Memory is desk space.</strong> Every knob is a number that must sit in the GPU's memory while it works. One number in 16-bit form takes 2 bytes. So:</p>
+<ul>
+<li>A 7-billion-knob model needs 7 × 2 = 14 GB just to hold its knobs, which fits on one good GPU.</li>
+<li>A 175-billion-knob model (GPT-3) needs 350 GB, more than four top GPUs' worth of memory, just to hold it.</li>
+<li>Training needs roughly 8× more memory again, because it also stores the slopes and the optimiser's running notes for every knob.</li>
+</ul>
+<p><strong>Compute is the amount of arithmetic.</strong> A handy rule is <em>total calculations ≈ 6 × number of knobs × number of tokens read</em>. For GPT-3: 6 × 175 billion × 300 billion ≈ 3 × 10²³ calculations. That is why training takes thousands of GPUs, weeks of time, millions of dollars, and about as much electricity as more than a hundred homes use in a year.</p>
+<p><strong>Training vs everyday use.</strong> Training happens once. But millions of people then use the model every day (inference), and that cost never stops, so companies work hard to make models smaller and faster to run.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I–II · Why Specialised Hardware</div>
+<p>Transformers are mostly <strong>matrix multiplications</strong>, which is exactly what <strong>GPUs</strong> (NVIDIA A100/H100, thousands of parallel cores plus Tensor Cores) and <strong>TPUs</strong> (Google's custom tensor accelerators with systolic matrix units) do best, thousands of operations at once. <strong>Thousands of chips</strong> are connected for a single run, for <strong>weeks</strong> of continuous training. Fast interconnects (NVLink within a node, InfiniBand between nodes) let many chips behave like one giant machine sharing weights and gradients. <strong>Memory, not raw speed, is often the real limit</strong>: the model and its activations must fit.</p>
+<div class="facet">III · Back-of-the-Envelope Numbers</div>
+<div class="formula">Inference weights:    params × bytes/param   → 175B × 2 B (FP16) = 350 GB  (≈ 5 × 80 GB GPUs just to hold it)
+                                             → 7B × 2 B = 14 GB (fits one GPU); 4-bit quantised ≈ 3.5 GB
+Training state:       ≈ 16 bytes/param with mixed-precision Adam (weights, grads, FP32 master, m, v)
+                      → 175B × 16 B ≈ 2.8 TB, before activations
+Training compute:     FLOPs ≈ 6 × N (params) × D (tokens)
+                      GPT-3: 6 × 175×10⁹ × 300×10⁹ = 3.15×10²³ FLOPs ≈ 3,640 petaflop/s-days</div>
+<div class="tbl"><table><thead><tr><th>Resource</th><th>Rough scale for a large model</th><th>Why it matters</th></tr></thead><tbody>
+<tr><td>Model memory</td><td>Hundreds of GB just for the weights</td><td>Needs many GPUs to hold</td></tr>
+<tr><td>Training compute</td><td>Millions of GPU-hours</td><td>Drives the dollar cost</td></tr>
+<tr><td>Training cost</td><td>Millions of dollars per frontier run</td><td>Limits who can train them</td></tr>
+<tr><td>Energy</td><td>Large, comparable to many homes for a year (GPT-3 estimated at ~1,300 MWh)</td><td>Environmental impact (Unit 5)</td></tr>
+</tbody></table></div>
+<p><strong>Inference matters too:</strong> training happens once, but serving millions of users runs continuously, so inference efficiency is a major research focus: quantisation (8/4-bit), distillation into smaller models, KV-caching, batching, speculative decoding, and mixture-of-experts (only some parameters active per token).</p>
+<div class="facet">IV · What It Takes to Train an LLM: Five Ingredients</div>
+<ol><li><strong>Architecture:</strong> a deep stack of Transformer blocks.</li><li><strong>Data:</strong> trillions of clean, tokenized words.</li><li><strong>Objective:</strong> next-token prediction + cross-entropy loss.</li><li><strong>Optimisation:</strong> AdamW, schedules and stabilisation techniques.</li><li><strong>Compute:</strong> thousands of GPUs/TPUs for weeks.</li></ol>
+<div class="facet">V · Critical Evaluation</div>
+<p>Compute concentration means only a handful of organisations can train frontier models, which raises questions of access, competition and sovereignty (India's IndiaAI Mission is funding shared GPU capacity for this reason). Efficiency gains (better data, MoE, quantisation) and open-weight models partly offset this, which is one reason small, capable models such as LLaMA-8B and Mistral-7B matter.</p>
+<div class="checklist"><ul><li>Why GPUs/TPUs (matrix multiplies, parallelism); interconnects; memory as the limit.</li><li>Memory and compute estimates (2 B/param inference; 16 B/param training; 6ND).</li><li>Cost, energy and the importance of inference.</li><li>The five ingredients.</li></ul></div>
+</section>
+
+<div class="deck" id="deck-llm-u1">
+  <p class="deck-title">Flashcards · Unit One</p>
+  <p class="deck-sub">Includes the professor's six self-check questions.</p>
+  <div class="fc"><div class="fc-q">Self-check Q1: in one sentence, what does a language model predict?</div><div class="fc-a">The probability distribution of the next token given all previous tokens; the sentence probability is ∏ P(wᵢ | w₁…wᵢ₋₁).</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q2: why did attention replace recurrence?</div><div class="fc-a">Recurrence is sequential (cannot be parallelised), long-range links fade, and seq2seq squeezed everything into one fixed vector. Attention connects every token to every other directly, in parallel, so it scales on GPUs to huge data and models.</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q3: roles of Query, Key and Value?</div><div class="fc-a">Query = what this token is looking for; Key = what each token offers (matched against queries to get weights); Value = the information carried, blended by those weights.</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q4: why scale by √d_k, and why multiple heads?</div><div class="fc-a">Dot products grow with dimension; unscaled, softmax saturates (almost one-hot) and gradients vanish, so √d_k keeps the variance near 1. Multiple heads capture different relationships (syntax, coreference, long-range) in parallel, then concatenate.</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q5: why can data quality matter more than quantity?</div><div class="fc-a">Noisy, duplicated or toxic text wastes compute, causes memorisation, and teaches errors and biases. Filtering and deduplication often improve a model more than adding raw data (garbage in, garbage out).</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q6: name two techniques that keep large-scale training stable.</div><div class="fc-a">Learning-rate warmup + decay, gradient clipping (also pre-LayerNorm, residuals, checkpoint restarts).</div></div>
+  <div class="fc"><div class="fc-q">Write the attention formula.</div><div class="fc-a">Attention(Q,K,V) = softmax(QKᵀ / √d_k) · V. Toy: scores 2, 6, 3 ÷ 2 → softmax → 0.10, 0.74, 0.16.</div></div>
+  <div class="fc"><div class="fc-q">What is inside one Transformer block?</div><div class="fc-a">Multi-head self-attention → Add &amp; Norm (residual + LayerNorm) → position-wise feed-forward network → Add &amp; Norm.</div></div>
+  <div class="fc"><div class="fc-q">Why positional encoding?</div><div class="fc-a">Attention is order-blind (treats input as a set). PE(pos,2i) = sin(pos/10000^(2i/d)), PE(pos,2i+1) = cos(…) is added to the embeddings, so "dog bites man" ≠ "man bites dog".</div></div>
+  <div class="fc"><div class="fc-q">BERT vs GPT?</div><div class="fc-a">BERT: encoder-only, bidirectional, masked-LM, good at understanding. GPT: decoder-only, left-to-right, next-token, good at generation and the template for LLMs.</div></div>
+  <div class="fc"><div class="fc-q">Decoding strategies?</div><div class="fc-a">Greedy (dull), beam (translation), top-k, top-p/nucleus (open text). Temperature: low = focused, high = diverse.</div></div>
+  <div class="fc"><div class="fc-q">BPE in one line?</div><div class="fc-a">Start with characters and repeatedly merge the most frequent adjacent pair until the vocabulary is the target size (GPT). WordPiece (likelihood, BERT); SentencePiece (raw text, T5/LLaMA).</div></div>
+  <div class="fc"><div class="fc-q">Chinchilla insight?</div><div class="fc-a">For a fixed compute budget, scale parameters and tokens together (~20 tokens/param). 70B on 1.4T tokens beat 280B Gopher on 300B tokens.</div></div>
+  <div class="fc"><div class="fc-q">Cross-entropy and perplexity?</div><div class="fc-a">L = −mean log P(correct token); PPL = e^L. Probabilities 0.5, 0.25, 0.125 give L = 1.386, PPL = 4.</div></div>
+  <div class="fc"><div class="fc-q">Data vs model vs pipeline parallelism?</div><div class="fc-a">Data: model copies, different batches, average gradients (speed). Model/tensor: split a layer's weights (fit). Pipeline: split layers across GPUs as an assembly line (utilisation).</div></div>
+  <div class="fc"><div class="fc-q">GPT-3 compute and memory, back of the envelope?</div><div class="fc-a">6ND = 6 × 175B × 300B ≈ 3.15×10²³ FLOPs ≈ 3,640 PF-days. FP16 weights ≈ 350 GB; training state ≈ 16 B/param ≈ 2.8 TB.</div></div>
+</div>
+
+</div></div>
+
+<!-- ======================= UNIT 2 ======================= -->
+<div class="chapter-card" id="llm-u2" data-short="Unit 2 · Applications">
+  <div class="ch-no">Unit Two</div>
+  <h2>Applications of LLMs</h2>
+  <p class="in-which">Understanding and generating language, steering a model with prompts, building assistants, and the main use cases: translation, summarisation and content creation.</p>
+  <p class="syll">Syllabus: natural language understanding and generation · implementation in chatbots and virtual assistants · use cases in translation, summarisation and content creation</p>
+</div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="llm-nlu">
+<h3><span class="tno">§ 2.1</span>Two Families: Understanding (NLU) vs Generation (NLG)</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>Everything a language app does is either <strong>reading</strong> or <strong>writing</strong>, or both.</p>
+<ul>
+<li><strong>NLU (Natural Language Understanding) = reading.</strong> The model reads some text and gives back a <em>decision</em> about it, not new writing. Is this review happy or angry? Which words are names of people or cities? What does the user want to do? Like a teacher marking an answer sheet: the output is a mark or label, not a new essay.</li>
+<li><strong>NLG (Natural Language Generation) = writing.</strong> The model produces <em>new text</em>: a reply, a translation, a summary, an email. Like a student writing the essay.</li>
+</ul>
+<p>A chatbot does both: first it <em>understands</em> your message (NLU), then it <em>writes</em> a reply (NLG).</p>
+<p><strong>The main reading jobs, in plain words:</strong></p>
+<ul>
+<li><strong>Classification:</strong> put the text in a box. Spam or not spam? Sports or politics?</li>
+<li><strong>Sentiment:</strong> what is the mood? "Food was cold and late" is negative.</li>
+<li><strong>Named entity recognition (NER):</strong> highlight the names. "Sundar Pichai" (person), "California" (place), "Monday" (time).</li>
+<li><strong>Intent + slots:</strong> what does the user want, and with what details? "Book a flight to Delhi on Friday" gives intent: book a flight; details (slots): Delhi, Friday. This is how Alexa and Siri work.</li>
+<li><strong>Semantic similarity:</strong> do two sentences mean the same thing, even with different words? "I forgot my password" ≈ "How do I reset my login?" The model turns each sentence into a point on the meaning map (Unit 0, Step 0.7) and checks how close the points are.</li>
+<li><strong>Question answering:</strong> read a passage, answer a question from it.</li>
+</ul><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I · Definitions</div>
+<div class="defn"><b>Natural Language Understanding (NLU)</b>The LLM reads text and maps it to something <em>structured</em>: a label, an entity, a score or an answer. <em>Input: text → Output: meaning or label.</em> The output is a decision about the input, not new prose.</div>
+<div class="defn"><b>Natural Language Generation (NLG)</b>Producing fluent, purposeful <em>new</em> text from a prompt or data, one token at a time. It uses the same next-token engine as Unit 1, now steered towards a useful goal. <em>Input: prompt → Output: new text.</em></div>
+<p class="plain">NLU: "The delivery was late and cold." gives <em>Sentiment: Negative · Topic: Delivery</em>. NLG: "Write a one-line apology to a customer whose order was delayed" gives "We're truly sorry your order arrived late; we're making it right and a small credit is on its way." Modern assistants chain both: they <em>understand</em> the request, then <em>generate</em> the reply.</p>
+<p>Unit 1 built the engine: a transformer that predicts the next token, trained on huge corpora, with emergent skills. Unit 2 is about what we build with it, <em>mostly without changing its weights</em>: one trained model supports many downstream applications. The landscape: <strong>Understand</strong> (classification, sentiment, entity extraction, semantic search, QA) · <strong>Generate</strong> (completion, translation, summarisation, paraphrase, content writing) · <strong>Interact</strong> (chatbots, virtual assistants, tool/API use, retrieval (RAG), dialogue memory).</p>
+
+<div class="facet">II–III · Core NLU Tasks</div>
+<div class="tbl"><table><thead><tr><th>Task</th><th>What it does</th><th>Example output</th></tr></thead><tbody>
+<tr><td>Text classification</td><td>Assign a document to a category</td><td>spam / not-spam</td></tr>
+<tr><td>Sentiment analysis</td><td>Detect opinion or emotion</td><td>positive / negative</td></tr>
+<tr><td>Named entity recognition (NER)</td><td>Find people, places, organisations, dates</td><td>"Delhi" → Location</td></tr>
+<tr><td>Intent detection</td><td>Identify what the user wants</td><td>BookFlight</td></tr>
+<tr><td>Semantic similarity</td><td>Measure overlap in meaning</td><td>score = 0.87</td></tr>
+<tr><td>Question answering</td><td>Answer from a passage</td><td>"1947"</td></tr>
+<tr><td>Textual entailment (NLI)</td><td>Does A imply B?</td><td>entails / contradicts / neutral</td></tr>
+</tbody></table></div>
+<p>Most of these can be done by <em>prompting a general LLM</em>, with no task-specific training.</p>
+<h5>Classification and sentiment</h5>
+<p>"Honestly the best value phone I have bought in years." → Positive 92%, Neutral 6%, Negative 2%. How: encode the text into a meaning vector → score each candidate class → softmax → a probability per class → return the top label.</p>
+<h5>Named entity recognition</h5>
+<p>"<u>Sundar Pichai</u><sub>PERSON</sub> visited <u>Google</u><sub>ORG</sub> in <u>California</u><sub>LOC</sub> on <u>Monday</u><sub>TIME</sub>." NER powers search, knowledge graphs, résumé parsing, medical record mining and redaction of sensitive data. It turns a sentence into structured fields a database can store (linking to BI's unstructured → structured theme).</p>
+<h5>Intent detection and slot filling</h5>
+<p>"Book me a flight to Delhi next Friday morning." → <strong>Intent:</strong> BookFlight (the single action). <strong>Slots:</strong> destination = Delhi · date = next Friday · time of day = morning. This is the understanding step behind every voice assistant.</p>
+<h5>Semantic similarity and embeddings</h5>
+<div class="formula">cos(θ) = (A · B) / (‖A‖ ‖B‖)          1.0 = identical meaning · 0 = unrelated
+Example: A = (1, 2, 2), B = (2, 1, 2): A·B = 8, ‖A‖ = ‖B‖ = 3 → cos = 8/9 = 0.89
+
+Query: "How do I reset my password?"
+  "I forgot my login credentials"   0.88
+  "Change account password steps"   0.82
+  "What time do you close?"         0.19
+  "The weather is nice today"       0.05</div>
+<p>Meaning becomes geometry: close vectors mean close meaning. This powers <strong>semantic search</strong> and <strong>RAG</strong>, which match meaning, not keywords (note that "forgot my login credentials" shares no words with the query).</p>
+<h5>Question answering: three kinds</h5>
+<p>Passage: "The Taj Mahal was commissioned in 1632 by the Mughal emperor Shah Jahan…" Q: Who commissioned it? A: Shah Jahan. <strong>Extractive</strong> (the answer is a span copied from the passage), <strong>open-book / RAG</strong> (retrieve documents, then answer from them), <strong>closed-book</strong> (answer from what the model memorised, which carries the most hallucination risk).</p>
+<div class="checklist"><ul><li>NLU vs NLG definitions with input → output and examples; assistants chain both.</li><li>The seven NLU tasks table.</li><li>NER example, intent + slots, the cosine formula with a numerical example, three QA types.</li></ul></div>
+</section>
+
+<section class="topic" id="llm-nlg">
+<h3><span class="tno">§ 2.2</span>Natural Language Generation: Tasks, Control, Evaluation, Hallucination</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>Writing is what LLMs are famous for: completing text, translating, summarising, rephrasing, chatting and drafting. You can <strong>steer</strong> the writing just by asking: "make it formal", "make it friendly", "keep it under 50 words", "give it as a table".</p>
+<p><strong>How do we know the writing is good?</strong> It is harder than marking a maths answer, because there are many correct ways to say the same thing. The options:</p>
+<ul>
+<li><strong>BLEU / ROUGE:</strong> count how many words and short phrases match a human-written "answer key". Fast, but a perfectly good answer that uses different words scores badly.</li>
+<li><strong>Human judges:</strong> people read and rate it. The most trustworthy, but slow and expensive.</li>
+</ul>
+<p><strong>Hallucination, the big danger.</strong> Remember that the model was trained to produce <em>likely-sounding</em> text, not <em>checked-true</em> text. It has no built-in fact-checker. When it doesn't know something, it doesn't stay silent: it produces something that <em>sounds</em> right, confidently. It is like a student who didn't study but writes a fluent, confident answer full of made-up facts. Asked "Who won the 1998 Nobel Prize in Physics?", it might say "Albert Einstein", which sounds plausible but is completely false.</p>
+<p><strong>Fixes:</strong> give it the real documents to read first (RAG, § 2.4), ask it to cite sources, tell it that "I don't know" is allowed, and have a human check anything important.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I · Core NLG Tasks</div>
+<p><strong>Completion</strong> (continue text) · <strong>Translation</strong> · <strong>Summarisation</strong> · <strong>Paraphrase</strong> · <strong>Dialogue</strong> · <strong>Content creation</strong> (emails, articles, code). The last three (translation, summarisation, content creation) are the headline use cases in this unit. Quality depends on the <em>prompt</em>, and <em>decoding</em> controls creativity vs safety. Generated text must be <em>evaluated</em>, because fluent ≠ correct.</p>
+<div class="facet">II · Controllable Generation</div>
+<p>The same content can be steered by instructions for tone, length and format. Base request: "Tell a customer their subscription renews tomorrow."</p>
+<ul><li><strong>Formal:</strong> "This is a reminder that your subscription will renew tomorrow. No action is required."</li><li><strong>Friendly:</strong> "Quick heads-up: your plan renews tomorrow. Nothing to do, we've got you!"</li><li><strong>As JSON:</strong> <code>{"event":"renewal","when":"tomorrow","action":"none"}</code></li></ul>
+<p>Control knobs: role and tone · length · audience · output format · worked examples in the prompt · decoding parameters (temperature, top-p).</p>
+<div class="facet">III · Evaluating Generated Text</div>
+<div class="tbl"><table><thead><tr><th>Metric</th><th>Measures</th><th>Used for</th><th>Watch out</th></tr></thead><tbody>
+<tr><td><strong>BLEU</strong></td><td>n-gram overlap (precision) with a reference</td><td>Translation</td><td>Ignores meaning; paraphrases score low</td></tr>
+<tr><td><strong>ROUGE</strong></td><td>Overlap of recalled content (ROUGE-1/2/L)</td><td>Summarisation</td><td>Rewards copying</td></tr>
+<tr><td><strong>Perplexity</strong></td><td>How surprised the model is</td><td>Language modelling</td><td>Not task quality</td></tr>
+<tr><td><strong>BERTScore</strong></td><td>Semantic (embedding) similarity</td><td>Generation</td><td>Depends on the model used</td></tr>
+<tr><td><strong>Human evaluation</strong></td><td>People rate fluency, accuracy, helpfulness</td><td>Everything</td><td>Slow and costly</td></tr>
+</tbody></table></div>
+<p>Rule of thumb: automatic metrics are fast proxies; <strong>human judgement remains the gold standard</strong> for real applications. (Also used today: LLM-as-a-judge, and task success rates.)</p>
+<div class="facet">IV · The Hallucination Problem</div>
+<div class="defn"><b>Hallucination</b>Fluent, confident model output that is false or unsupported. Q: "Who won the 1998 Nobel Prize in Physics?" A: "Albert Einstein, for his work on lasers." Confident, fluent, and completely wrong. (It went to Laughlin, Störmer and Tsui.)</div>
+<p><strong>Why it happens:</strong> the model is trained to be <em>plausible, not to verify</em>; it has no built-in source of truth; gaps are filled with likely-sounding text; knowledge is frozen at the training cutoff; decoding randomness adds more.</p>
+<p><strong>How applications reduce it:</strong> <em>retrieval (RAG)</em> grounds answers in real documents; <em>cite sources</em> so users can verify; ask the model to say <em>"I don't know"</em>; constrain output with <em>tools and schemas</em>; lower the temperature; keep a <em>human in the loop</em> for high-stakes uses.</p>
+<div class="facet">V · Critical Evaluation</div>
+<p>Hallucination cannot be fully removed from next-token predictors, only managed, which makes grounding and verification design requirements, not extras. A real case: in 2023 a US lawyer submitted a court brief containing <em>fabricated case citations</em> generated by ChatGPT and was sanctioned, which shows why high-stakes content needs human verification.</p>
+<div class="checklist"><ul><li>Six NLG tasks; control knobs with the three-style example.</li><li>Metrics table (BLEU, ROUGE, perplexity, BERTScore, human).</li><li>Hallucination: definition, example, 3 causes, 5 mitigations.</li></ul></div>
+</section>
+
+<section class="topic" id="llm-prompting">
+<h3><span class="tno">§ 2.3</span>Prompting &amp; Interaction: Steering LLMs at Run Time</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p><strong>A prompt is simply the message you type to the model.</strong> Think of the LLM as a very well-read new intern who is eager to help but takes you literally. How well you explain the task decides how good the work is. And importantly, <em>you are not changing the intern's brain</em> (the knobs stay the same); you are just giving better instructions.</p>
+<ul>
+<li><strong>Zero-shot:</strong> just ask. "Translate 'Good morning' into French."</li>
+<li><strong>Few-shot:</strong> show a few examples first, then ask. "cat → chat, dog → chien, bird → ?" The intern spots the pattern and continues it. The fact that a model can pick up a new task just from examples in the message is called <strong>in-context learning</strong>.</li>
+<li><strong>Instruction prompting:</strong> give a role, the task, the format and the limits. "You are a maths tutor. Explain in 2 lines, for a 10-year-old."</li>
+<li><strong>Chain-of-thought:</strong> ask it to "think step by step", exactly like a teacher saying "show your working". Because the model writes one word at a time, writing out the steps gives it room to work the problem out, instead of blurting a guess. "3 boxes of 12 pens, 20 sold" becomes "3 × 12 = 36; 36 − 20 = 16", so the answer is correct.</li>
+</ul>
+<p><strong>Chat roles:</strong> apps separate the conversation into a <em>system</em> message (standing orders from the app maker: "be polite, never share private data"), <em>user</em> messages (you), and <em>assistant</em> messages (the model). The model has no memory of its own. The app <strong>re-sends the whole conversation every time</strong>, which is how it "remembers" what you said earlier.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I · Prompting as the New Interface</div>
+<p>We program LLMs with <strong>instructions and examples, not code</strong>. <em>No weights change</em>: the same model adapts to a new task purely from the words in its context window.</p>
+<div class="tbl"><table><thead><tr><th>Style</th><th>What you do</th><th>Example</th></tr></thead><tbody>
+<tr><td><strong>Zero-shot</strong></td><td>Just describe the task</td><td>"Translate to French: Good morning"</td></tr>
+<tr><td><strong>Few-shot</strong></td><td>Give a few worked examples first</td><td>cat → chat · dog → chien · bird → ?</td></tr>
+<tr><td><strong>Instruction</strong></td><td>State role, task, format and constraints</td><td>"You are a tutor. Explain in 2 lines."</td></tr>
+</tbody></table></div>
+<div class="facet">II · In-Context Learning (ICL)</div>
+<div class="formula">Review: "Loved it!"                       → Positive
+Review: "Total waste of money."            → Negative
+Review: "It was fine, nothing special."    → Neutral
+Review: "Best purchase this year."         → ?          Model output: Positive</div>
+<p>The model reads the labelled examples, infers the task (label the sentiment) and applies the pattern to the new input. This was first shown at scale by GPT-3 (Brown et al., 2020, "Language Models are Few-Shot Learners"). <strong>Few-shot prompting vs fine-tuning:</strong> few-shot puts examples <em>in the prompt</em> at inference time, needs no training and is temporary. Fine-tuning <em>updates the weights</em> on many examples, is permanent and costs compute (Unit 3).</p>
+<div class="facet">III · Chain-of-Thought (CoT) Prompting</div>
+<p>Asking the model to reason step by step improves hard answers (Wei et al., 2022). "A shop has 3 boxes of 12 pens and sells 20. How many are left?" <em>Direct</em>: often a wrong answer such as "30". <em>"Let's think step by step"</em>: 3 × 12 = 36; 36 − 20 = 16; <strong>Answer: 16</strong>. Showing the reasoning is more reliable on maths and logic, because each generated step becomes context for the next token, giving the model "space to think".</p>
+<div class="facet">IV · The Chat Format &amp; Prompt Patterns</div>
+<p>Modern assistants structure the conversation into three roles: <strong>SYSTEM</strong> (sets behaviour and rules: "You are a polite support agent. Never share internal data.") · <strong>USER</strong> (the person's message: "My order hasn't arrived. Order #4821.") · <strong>ASSISTANT</strong> (the model's reply). <em>The full history is re-sent every turn, and that shared context is how the assistant "remembers".</em></p>
+<div class="tbl"><table><thead><tr><th>Pattern</th><th>What to do</th><th>Good for</th></tr></thead><tbody>
+<tr><td>Assign a role</td><td>"You are an expert editor…"</td><td>Tone and expertise</td></tr>
+<tr><td>Give examples</td><td>Show 2–5 input → output pairs</td><td>Consistent format</td></tr>
+<tr><td>Specify format</td><td>"Return a table / JSON"</td><td>Machine-readable output</td></tr>
+<tr><td>Step by step</td><td>"Reason before answering"</td><td>Maths and logic</td></tr>
+<tr><td>Set constraints</td><td>"In under 50 words"</td><td>Length and style control</td></tr>
+<tr><td>Ground it</td><td>"Use only the text below"</td><td>Reducing hallucination</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="topic" id="llm-rag">
+<h3><span class="tno">§ 2.4</span>Retrieval-Augmented Generation (RAG)</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p><strong>Closed-book vs open-book exam.</strong> A plain LLM answers from memory, like a closed-book exam. Its memory can be wrong, out of date (it only knows what it read before training ended), or missing things it never saw, such as your company's private documents.</p>
+<p><strong>RAG (Retrieval-Augmented Generation) turns it into an open-book exam.</strong> Before answering, the app goes and <em>finds the relevant pages</em>, hands them to the model with your question, and says "answer using these".</p>
+<ol>
+<li><strong>Prepare the library (done once):</strong> cut your documents into small passages and put each on the meaning map (turn it into an embedding, Unit 0, Step 0.7). Store them in a special search database.</li>
+<li><strong>You ask a question:</strong> "What is our leave policy for interns?"</li>
+<li><strong>Search:</strong> put the question on the same meaning map and find the passages sitting closest to it. This matches <em>meaning</em>, not exact words.</li>
+<li><strong>Answer:</strong> the model reads your question plus those passages and writes an answer based on them, ideally quoting which document it used.</li>
+</ol>
+<p><strong>Why it helps:</strong> answers come from real, current documents (less made-up content), you can check the sources, and updating the knowledge just means adding new documents, with no expensive retraining. <strong>The catch:</strong> if the search finds the wrong pages, the answer will still be wrong.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I · Definition</div>
+<div class="defn"><b>RAG</b>(Lewis et al., 2020) An application pattern that <em>retrieves relevant documents from a knowledge base and gives them to the LLM in its prompt before it answers</em>, so the answer is grounded in real, current sources rather than only the model's memory.</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 690 250" role="img" aria-label="RAG pipeline: indexing offline and retrieval plus generation online">
+<defs><marker id="lmA3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<text x="20" y="22" class="small">OFFLINE: INDEXING</text>
+<rect x="20" y="30" width="110" height="44" class="box3"/><text x="75" y="56" text-anchor="middle" class="small">Documents (PDF, wiki)</text>
+<rect x="155" y="30" width="100" height="44" class="box"/><text x="205" y="56" text-anchor="middle" class="small">Chunk</text>
+<rect x="280" y="30" width="110" height="44" class="box"/><text x="335" y="56" text-anchor="middle" class="small">Embed (vectors)</text>
+<rect x="415" y="30" width="120" height="44" class="box2"/><text x="475" y="56" text-anchor="middle" class="small">Vector database</text>
+<line x1="130" y1="52" x2="152" y2="52" class="ln" marker-end="url(#lmA3)"/><line x1="255" y1="52" x2="277" y2="52" class="ln" marker-end="url(#lmA3)"/><line x1="390" y1="52" x2="412" y2="52" class="ln" marker-end="url(#lmA3)"/>
+<text x="20" y="122" class="small">ONLINE: QUERY TIME</text>
+<rect x="20" y="130" width="100" height="50" class="box"/><text x="70" y="160" text-anchor="middle" class="small">User question</text>
+<rect x="145" y="130" width="110" height="50" class="box"/><text x="200" y="152" text-anchor="middle" class="small">Embed query +</text><text x="200" y="168" text-anchor="middle" class="small">search (cosine)</text>
+<rect x="280" y="130" width="110" height="50" class="box"/><text x="335" y="152" text-anchor="middle" class="small">Top-k passages</text><text x="335" y="168" text-anchor="middle" class="small">(retrieve)</text>
+<rect x="415" y="130" width="120" height="50" class="box2"/><text x="475" y="152" text-anchor="middle" class="small">LLM reads prompt</text><text x="475" y="168" text-anchor="middle" class="small">+ passages</text>
+<rect x="560" y="130" width="120" height="50" class="box2"/><text x="620" y="152" text-anchor="middle" class="small">Grounded reply</text><text x="620" y="168" text-anchor="middle" class="small">with citations</text>
+<line x1="120" y1="155" x2="142" y2="155" class="ln" marker-end="url(#lmA3)"/><line x1="255" y1="155" x2="277" y2="155" class="ln" marker-end="url(#lmA3)"/><line x1="390" y1="155" x2="412" y2="155" class="ln" marker-end="url(#lmA3)"/><line x1="535" y1="155" x2="557" y2="155" class="ln" marker-end="url(#lmA3)"/>
+<line x1="475" y1="74" x2="220" y2="128" class="lnd" marker-end="url(#lmA3)"/>
+<text x="345" y="220" text-anchor="middle" class="small">Knowledge can be updated by re-indexing documents; no retraining is needed</text>
+</svg></div><figcaption><span class="pl">Plate D10 · The RAG pipeline</span> <span class="sketch">How to sketch: the professor's five boxes (question → search knowledge base → retrieve top passages → LLM reads and answers → grounded reply), with an offline "chunk → embed → vector DB" row above.</span></figcaption></figure>
+<p><strong>Why RAG matters:</strong> answers come from <em>your</em> data, not just training data; it <strong>cuts hallucination</strong> because answers are grounded in sources (and can cite them); knowledge can be updated <strong>without retraining</strong>. <strong>Used everywhere:</strong> customer-support assistants, "chat with your documents" tools, enterprise and internal knowledge search. <strong>Limits:</strong> if retrieval returns the wrong passage the answer is still wrong; chunking and embedding quality matter; the context window caps how much can be included.</p>
+</section>
+
+</div></div>
+
+<div class="sheet"><div class="prose">
+
+<section class="topic" id="llm-chatbots">
+<h3><span class="tno">§ 2.5</span>Implementation in Chatbots &amp; Virtual Assistants</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>An LLM on its own is just a very good next-word guesser. To turn it into a useful assistant, you surround it with helpers. Picture a <strong>hotel receptionist</strong>:</p>
+<ul>
+<li><strong>The receptionist's brain = the LLM:</strong> understands what you say and speaks fluently.</li>
+<li><strong>A notebook = memory.</strong> <em>Short-term:</em> the conversation so far (so when you say "Does <u>it</u> need servicing?", it knows "it" is the car you mentioned). <em>Long-term:</em> facts saved from past visits ("this guest prefers a ground-floor room").</li>
+<li><strong>A filing cabinet = knowledge (RAG):</strong> it looks things up in official documents instead of guessing.</li>
+<li><strong>A telephone and computer = tools:</strong> for things a language model is bad at or can't do alone, like exact arithmetic, checking a live booking, or searching the web, it asks a tool. The model writes a request ("call calculator with 2450 × 0.18"), the app runs it, and the answer (₹441) goes back into the reply.</li>
+<li><strong>A rulebook and a manager = guardrails:</strong> refuse unsafe requests, don't reveal private data, stay on topic, and hand difficult cases to a human.</li>
+</ul>
+<p><strong>How chatbots evolved:</strong> the earliest (ELIZA, 1966) just matched patterns ("I feel X" → "Why do you feel X?"). Later bots followed fixed menus and decision trees ("Press 1 for balance"), which broke as soon as you said something unexpected. LLM assistants understand free-form language, but they can make things up, so real products combine all three: rules for safety, look-ups for facts, and the LLM for the conversation.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I · From ELIZA to LLM Assistants</div>
+<div class="tbl"><table><thead><tr><th>Year</th><th>System</th><th>Approach</th></tr></thead><tbody>
+<tr><td>1966</td><td>ELIZA (Weizenbaum, MIT)</td><td>Pattern matching; a scripted "therapist"</td></tr>
+<tr><td>1995</td><td>A.L.I.C.E.</td><td>Rule scripts in AIML</td></tr>
+<tr><td>2011</td><td>Siri</td><td>Intent + slots, cloud NLU</td></tr>
+<tr><td>2016</td><td>Chatbot boom</td><td>FAQ bots, dialogue trees (Dialogflow, Rasa)</td></tr>
+<tr><td>2018</td><td>Neural dialogue</td><td>Seq2seq responses</td></tr>
+<tr><td>2022+</td><td>LLM assistants (ChatGPT, Claude, Gemini)</td><td>Open-ended, tool-using</td></tr>
+</tbody></table></div>
+<p>The shift: older bots followed hand-written rules, while LLM assistants understand and generate freely. They are far more capable but harder to control.</p>
+<div class="facet">II · Anatomy of an LLM Assistant</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 690 260" role="img" aria-label="Assistant pipeline with memory, knowledge and tools">
+<defs><marker id="lmA4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="10" y="30" width="110" height="54" class="box"/><text x="65" y="55" text-anchor="middle">User</text><text x="65" y="72" text-anchor="middle" class="small">message</text>
+<rect x="145" y="30" width="120" height="54" class="box2"/><text x="205" y="55" text-anchor="middle">Understand</text><text x="205" y="72" text-anchor="middle" class="small">intent + context</text>
+<rect x="290" y="30" width="120" height="54" class="box2"/><text x="350" y="55" text-anchor="middle">Plan</text><text x="350" y="72" text-anchor="middle" class="small">retrieve / call tools</text>
+<rect x="435" y="30" width="110" height="54" class="box2"/><text x="490" y="55" text-anchor="middle">Generate</text><text x="490" y="72" text-anchor="middle" class="small">reply</text>
+<rect x="570" y="30" width="110" height="54" class="box"/><text x="625" y="55" text-anchor="middle">Response</text><text x="625" y="72" text-anchor="middle" class="small">to user</text>
+<line x1="120" y1="57" x2="142" y2="57" class="ln" marker-end="url(#lmA4)"/><line x1="265" y1="57" x2="287" y2="57" class="ln" marker-end="url(#lmA4)"/><line x1="410" y1="57" x2="432" y2="57" class="ln" marker-end="url(#lmA4)"/><line x1="545" y1="57" x2="567" y2="57" class="ln" marker-end="url(#lmA4)"/>
+<rect x="120" y="150" width="140" height="60" class="box3"/><text x="190" y="176" text-anchor="middle">Memory</text><text x="190" y="194" text-anchor="middle" class="small">history + user facts</text>
+<rect x="280" y="150" width="140" height="60" class="box3"/><text x="350" y="176" text-anchor="middle">Knowledge (RAG)</text><text x="350" y="194" text-anchor="middle" class="small">documents, FAQs</text>
+<rect x="440" y="150" width="140" height="60" class="box3"/><text x="510" y="176" text-anchor="middle">Tools / APIs</text><text x="510" y="194" text-anchor="middle" class="small">calculator, DB, search</text>
+<line x1="205" y1="84" x2="195" y2="148" class="lnd" marker-start="url(#lmA4)" marker-end="url(#lmA4)"/><line x1="350" y1="84" x2="350" y2="148" class="lnd" marker-start="url(#lmA4)" marker-end="url(#lmA4)"/><line x1="370" y1="84" x2="500" y2="148" class="lnd" marker-start="url(#lmA4)" marker-end="url(#lmA4)"/>
+<rect x="10" y="225" width="670" height="28" class="box3"/><text x="345" y="244" text-anchor="middle" class="small">GUARDRAILS: input filter · system rules · output checks · grounding · human hand-off · logging</text>
+</svg></div><figcaption><span class="pl">Plate D11 · Anatomy of an assistant</span> <span class="sketch">How to sketch: five boxes in a row (the professor's pipeline) with three support boxes underneath (memory, knowledge, tools), and a guardrail bar along the bottom.</span></figcaption></figure>
+<ul>
+<li><strong>Memory:</strong> keeps the conversation history and user context so replies stay coherent.</li>
+<li><strong>Knowledge (RAG):</strong> retrieves facts from documents to ground answers and cut hallucination.</li>
+<li><strong>Tools / APIs:</strong> call calculators, search or databases for actions the model cannot do alone.</li>
+</ul>
+<div class="facet">III · Dialogue Context, Memory &amp; Tool Use</div>
+<p><strong>Example:</strong> USER: "I bought a Nexon last year." ASSISTANT: "Nice. How has the Nexon been so far?" USER: "Good. Does it need a service now?" ASSISTANT: "Since you bought it a year ago, yes, the first service is due." What memory does here: "it" is resolved to <em>the Nexon</em> (coreference); "a year ago" is carried across turns; earlier facts shape the later answer. There are <strong>two kinds of memory</strong>: <em>short-term</em> (the chat history in the context window) and <em>long-term</em> (stored user facts recalled later, e.g. from a database).</p>
+<p><strong>Tool use / function calling:</strong> when the model should not guess, it calls a tool. "What's an 18% tip on ₹2,450, and is my table booked for 8 pm?" The model calls <code>calculator(2450 × 0.18)</code> → ₹441 and <code>bookings.lookup()</code> → table #12 confirmed for 8:00 pm, then replies: "That's a ₹441 tip, and yes, your table is confirmed for 8:00 pm." The LLM outputs a structured call (JSON with function name and arguments), the application executes it, and the result is fed back for the final answer.</p>
+<div class="facet">IV · Guardrails &amp; Safety</div>
+<div class="tbl"><table><thead><tr><th>Layer</th><th>What it does</th></tr></thead><tbody>
+<tr><td>Input filtering</td><td>Blocks unsafe or off-topic requests (and prompt-injection attempts) before they reach the model</td></tr>
+<tr><td>System rules</td><td>A system prompt fixes tone, scope and hard boundaries</td></tr>
+<tr><td>Output checks</td><td>Screens replies for policy, privacy (PII) and toxicity</td></tr>
+<tr><td>Grounding</td><td>Restricts answers to approved sources (RAG)</td></tr>
+<tr><td>Human hand-off</td><td>Escalates high-stakes cases to a person</td></tr>
+<tr><td>Logging and review</td><td>Monitors conversations to catch failures</td></tr>
+</tbody></table></div>
+<div class="facet">V · Three Generations of Chatbots (Critical Comparison)</div>
+<div class="tbl"><table><thead><tr><th></th><th>Rule-based</th><th>Retrieval</th><th>LLM assistant</th></tr></thead><tbody>
+<tr><td>Handles new phrasing</td><td>Poorly</td><td>Somewhat</td><td>Very well</td></tr>
+<tr><td>Flexibility</td><td>Rigid trees</td><td>FAQ-bound</td><td>Open-ended</td></tr>
+<tr><td>Setup effort</td><td>High (scripts)</td><td>Medium</td><td>Low (prompt)</td></tr>
+<tr><td>Risk</td><td>Breaks off-script</td><td>Stale answers</td><td>Hallucination</td></tr>
+<tr><td>Best for</td><td>Simple menus</td><td>FAQ support</td><td>Rich assistants</td></tr>
+</tbody></table></div>
+<p>In practice, production assistants <strong>combine all three</strong>: rules for safety, retrieval for facts, and an LLM for language. Indian examples: banks' WhatsApp assistants (HDFC's EVA, SBI's SIA), IRCTC's AskDISHA, and the government's <strong>Bhashini</strong>-powered multilingual assistants.</p>
+<div class="checklist"><ul><li>The ELIZA → LLM timeline; the rule-based → free generation shift.</li><li>The 5-stage pipeline plus memory, knowledge and tools (diagram).</li><li>The Nexon memory example; two memory types; tool-calling flow.</li><li>Six guardrails; the three-generations table; "combine all three".</li></ul></div>
+</section>
+
+<section class="topic" id="llm-translation">
+<h3><span class="tno">§ 2.6</span>Use Case: Machine Translation</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p><strong>Three generations of machine translation:</strong></p>
+<ul>
+<li><strong>Phrasebook (statistical, 2000s):</strong> translate chunk by chunk using statistics from millions of translated sentence pairs. It produced stiff, literal results that often got idioms wrong.</li>
+<li><strong>Whole-sentence (neural, around 2016):</strong> a neural network reads the whole sentence, then writes the translation. Much smoother.</li>
+<li><strong>Fluent friend (LLMs):</strong> one model that knows many languages and understands context and tone. "Could you give me a hand?" is translated as "Can you help me?", not word for word as "Can you give me your hand?"</li>
+</ul>
+<p><strong>Weak spots:</strong> languages with little text on the internet (many Indian languages) get worse translations, and the model can produce a confident mistranslation.</p>
+<p><strong>Marking translations with BLEU:</strong> compare the machine's sentence with a human "answer key" and count matching words, matching pairs of words, and so on up to groups of four, then combine them into a score from 0 (nothing matches) to 1 (identical). Weakness: a perfect translation that uses different words from the answer key still gets a low score, so humans still check.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I–II · Three Eras</div>
+<div class="tbl"><table><thead><tr><th>Era</th><th>How</th><th>Quality</th></tr></thead><tbody>
+<tr><td><strong>Statistical MT (SMT)</strong>, ~2000s</td><td>Phrase-by-phrase translation from bilingual statistics (phrase tables + language model)</td><td>Clunky, literal</td></tr>
+<tr><td><strong>Neural MT (NMT)</strong>, ~2016</td><td>Seq2seq + attention (then Transformers) translate whole sentences; Google Translate switched in 2016</td><td>Far smoother</td></tr>
+<tr><td><strong>LLM translation</strong>, 2022+</td><td>One multilingual model translates <em>zero-shot</em>, keeping tone and context</td><td>Context-aware, idiomatic</td></tr>
+</tbody></table></div>
+<p>Each era moved from <em>words → sentences → whole-context understanding</em>.</p>
+<div class="facet">III · How LLMs Translate</div>
+<p>One model handles many languages, often with no parallel training pair for that language pair. "Could you give me a hand?" → Hindi "क्या आप मेरी मदद कर सकते हैं?". The idiom is handled by <em>meaning</em>, not by a word-for-word swap ("hand" does not appear). <strong>Strengths:</strong> keeps tone, formality and context; handles idioms and rare phrasings; document-level consistency. <strong>Challenges:</strong> low-resource languages lag (less training data, e.g. many Indian languages; efforts such as AI4Bharat's IndicTrans2 and Bhashini address this); confident mistranslations are possible; named entities and domain terms need glossaries.</p>
+<div class="facet">IV · Evaluating Translation with BLEU</div>
+<div class="formula">Reference (human): "The cat sat on the mat."      Candidate (model): "The cat sat on a mat."
+
+1-gram precision: 5/6  (the, cat, sat, on, mat ✓; "a" ✗)
+2-gram precision: 3/5  (the cat, cat sat, sat on ✓; on a, a mat ✗)
+3-gram precision: 2/4  (the cat sat, cat sat on ✓)
+4-gram precision: 1/3  (the cat sat on ✓)
+Brevity penalty BP = 1 (same length)
+BLEU = BP × (p1·p2·p3·p4)^(1/4) = (0.833 × 0.6 × 0.5 × 0.333)^0.25 ≈ 0.54</div>
+<p>BLEU counts matching word n-grams: 0 = no overlap, 1 = identical. <strong>Its blind spots:</strong> a perfect paraphrase ("The feline rested on the rug") can score very low; it has no sense of grammar, fluency or meaning. So pair it with human ratings (or semantic metrics such as COMET or BERTScore). <em>This answers self-check Q5: a good translation can get a low BLEU score because it uses different but equally valid words.</em></p>
+</section>
+
+<section class="topic" id="llm-summarization">
+<h3><span class="tno">§ 2.7</span>Use Case: Summarisation</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>Two ways to shorten a text, exactly as a student would:</p>
+<ul>
+<li><strong>Extractive = highlighter.</strong> Pick the most important sentences and copy them out exactly. Safe (nothing is made up), but it can read choppily.</li>
+<li><strong>Abstractive = your own notes.</strong> Read it, understand it, and write a short summary in new words. Reads nicely, and it is what LLMs do, but the model may slip in something that wasn't in the original, so check it.</li>
+</ul>
+<p><strong>What if the document is too long for the model to read at once?</strong> Every model has a limit on how much text it can take in (its "context window"). The trick is <strong>map-reduce</strong>, like splitting a thick book among friends: cut it into chunks, summarise each chunk separately (map), then combine those mini-summaries and summarise <em>them</em> into one final summary (reduce). Some detail can get lost along the way.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="facet">I–II · Extractive vs Abstractive</div>
+<div class="tbl"><table><thead><tr><th></th><th>Extractive</th><th>Abstractive</th></tr></thead><tbody>
+<tr><td>How</td><td>Selects and stitches key sentences straight from the source</td><td>Writes a fresh summary in new words, the way a person would</td></tr>
+<tr><td>Faithfulness</td><td>High (uses original wording); low hallucination risk</td><td>Must be checked for accuracy</td></tr>
+<tr><td>Readability</td><td>Can read choppy</td><td>Fluent and concise</td></tr>
+<tr><td>Technology</td><td>Sentence scoring (TextRank), BERT classifiers</td><td>Seq2seq / what modern LLMs do</td></tr>
+<tr><td>Choose when…</td><td>Exact wording matters (legal, compliance)</td><td>Readability matters and the reader needs a synthesis (news digests, meeting notes)</td></tr>
+</tbody></table></div>
+<div class="facet">III · Summarising Long Documents: Map-Reduce</div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 690 170" role="img" aria-label="Map-reduce summarisation">
+<defs><marker id="lmA5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<rect x="10" y="60" width="90" height="50" class="box3"/><text x="55" y="90" text-anchor="middle" class="small">Long doc</text>
+<rect x="140" y="15" width="80" height="34" class="box"/><rect x="140" y="68" width="80" height="34" class="box"/><rect x="140" y="121" width="80" height="34" class="box"/><text x="180" y="37" text-anchor="middle" class="small">chunk 1</text><text x="180" y="90" text-anchor="middle" class="small">chunk 2</text><text x="180" y="143" text-anchor="middle" class="small">chunk 3</text>
+<rect x="260" y="15" width="90" height="34" class="box2"/><rect x="260" y="68" width="90" height="34" class="box2"/><rect x="260" y="121" width="90" height="34" class="box2"/><text x="305" y="37" text-anchor="middle" class="small">summary 1</text><text x="305" y="90" text-anchor="middle" class="small">summary 2</text><text x="305" y="143" text-anchor="middle" class="small">summary 3</text>
+<rect x="400" y="60" width="110" height="50" class="box"/><text x="455" y="82" text-anchor="middle" class="small">combine</text><text x="455" y="98" text-anchor="middle" class="small">summaries</text>
+<rect x="560" y="60" width="120" height="50" class="box2"/><text x="620" y="82" text-anchor="middle" class="small">summarise the</text><text x="620" y="98" text-anchor="middle" class="small">summary → final</text>
+<line x1="100" y1="85" x2="137" y2="34" class="ln" marker-end="url(#lmA5)"/><line x1="100" y1="85" x2="137" y2="85" class="ln" marker-end="url(#lmA5)"/><line x1="100" y1="85" x2="137" y2="136" class="ln" marker-end="url(#lmA5)"/>
+<line x1="220" y1="32" x2="257" y2="32" class="ln" marker-end="url(#lmA5)"/><line x1="220" y1="85" x2="257" y2="85" class="ln" marker-end="url(#lmA5)"/><line x1="220" y1="138" x2="257" y2="138" class="ln" marker-end="url(#lmA5)"/>
+<line x1="350" y1="32" x2="397" y2="75" class="ln" marker-end="url(#lmA5)"/><line x1="350" y1="85" x2="397" y2="85" class="ln" marker-end="url(#lmA5)"/><line x1="350" y1="138" x2="397" y2="95" class="ln" marker-end="url(#lmA5)"/>
+<line x1="510" y1="85" x2="557" y2="85" class="ln" marker-end="url(#lmA5)"/>
+<text x="220" y="166" class="small" text-anchor="middle">MAP</text><text x="530" y="140" class="small" text-anchor="middle">REDUCE</text>
+</svg></div><figcaption><span class="pl">Plate D12 · Map-reduce summarisation</span> For text that won't fit the context window: split into chunks → summarise each (map) → combine → summarise the summary (reduce) → final summary.</figcaption></figure>
+<p><strong>Where it's used:</strong> meeting and call transcripts, legal contracts and reports, research literature reviews (linking to RM Unit 2). <strong>Risks to manage:</strong> losing detail across chunks; invented facts, so verify against the source; measured with <strong>ROUGE</strong> plus human review. Alternatives: the <em>refine</em> pattern (running summary updated chunk by chunk), or long-context models.</p>
+</section>
+
+<section class="topic" id="llm-content">
+<h3><span class="tno">§ 2.8</span>Use Case: Content Creation, Code &amp; Structured Output</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>LLMs can produce a first draft of almost anything in seconds: emails, essays, adverts, quizzes, tables, even computer code. The right way to think about it: <strong>the LLM is a fast first-draft writer; you are the editor who checks and takes responsibility.</strong></p>
+<p><strong>Code:</strong> describe what you want ("a Python function for factorial") and it writes the code. It can also explain code and find bugs. But code can look right and still be wrong or insecure, so always test it.</p>
+<p><strong>Structured output:</strong> you can ask for answers in a strict format (for example JSON, a labelled list that other programs can read), such as pulling a name, role and company out of a sentence. This is how LLMs are plugged into other software.</p>
+<p><strong>Risks:</strong> made-up facts and fake references, bias copied from its training text, copying others' work too closely (plagiarism, as in RM Unit 2), and convincing false information produced at scale.</p><p class="zero-f">Now the exam version ↓</p></div>
+<p>From blank page to first draft in seconds, across many formats: <strong>writing</strong> (emails, blogs, reports, stories), <strong>code</strong> (functions, tests, explanations), <strong>marketing</strong> (ad copy, product descriptions), <strong>structured data</strong> (tables, JSON, spreadsheets), <strong>learning</strong> (quizzes, flashcards, notes), <strong>rewriting</strong> (simplify, expand, change tone). It is best treated as a <em>fast first draft</em>: a human still edits, verifies and takes responsibility.</p>
+<div class="formula">Prompt: "Write a Python function that returns the factorial of n."
+
+def factorial(n):
+    if n &lt;= 1:
+        return 1
+    return n * factorial(n - 1)
+
+Prompt: "Extract name, role, company as JSON: Ada Lovelace is an analyst at Analytical Co."
+{ "name": "Ada Lovelace", "role": "Analyst", "company": "Analytical Co." }</div>
+<p>Code generation is also useful for explaining unfamiliar code, writing tests, fixing bugs and translating between languages (GitHub Copilot). <em>Always review generated code: it can be subtly wrong or insecure</em> (the factorial above recurses deeply for large n and accepts negative inputs silently).</p>
+<p><strong>Risks in content creation:</strong> hallucinated facts and fake citations · bias absorbed from training data · plagiarism and copyright concerns (see RM Unit 2) · convincing misinformation at scale · over-reliance without verification.</p>
+</section>
+
+<section class="topic" id="llm-choose">
+<h3><span class="tno">§ 2.9</span>Choosing the Right Approach &amp; Responsible Use</h3>
+<div class="zero"><div class="zero-h">Starting from zero</div><p>Three ways to get an LLM to do your job, from cheapest to most expensive. Think of hiring a smart graduate:</p>
+<ul>
+<li><strong>Prompting = giving clear instructions.</strong> Free and instant. Try this first.</li>
+<li><strong>RAG = handing them the company handbook</strong> to look things up while they work. Best when the job needs specific or up-to-date facts.</li>
+<li><strong>Fine-tuning = sending them on a training course</strong> that changes how they think (it actually adjusts the model's knobs). Costly, so use it only when you need a fixed style or deep expertise in a narrow area (Unit 3).</li>
+</ul>
+<p>And always remember the limits: it can be confidently wrong, it can be biased, it must be careful with private data, it doesn't truly "understand" like a person, it costs money and time to run, and <strong>a human is responsible for what it produces</strong>.</p><p class="zero-f">Now the exam version ↓</p></div>
+<div class="tbl"><table><thead><tr><th>Approach</th><th>What it is</th><th>Best for</th></tr></thead><tbody>
+<tr><td><strong>Prompting</strong></td><td>Steer with instructions and examples</td><td>Fast, no training; most tasks</td></tr>
+<tr><td><strong>Retrieval (RAG)</strong></td><td>Attach your documents at run time</td><td>Fresh facts, less hallucination</td></tr>
+<tr><td><strong>Fine-tuning</strong></td><td>Adjust the model's weights</td><td>Fixed style or niche domain (Unit 3)</td></tr>
+</tbody></table></div>
+<p><em>Rule: prompt first, retrieve for facts, fine-tune only when you must.</em></p>
+<p><strong>Limitations and responsible use:</strong> not always factual (states wrong things confidently) · bias and fairness (can reflect and amplify social bias) · privacy (sensitive data needs care; DPDP Act 2023 in India) · no true understanding (predicts patterns, doesn't "know") · cost and latency (large models are slow and expensive) · accountability (<strong>a human owns the final output</strong>).</p>
+<div class="checklist"><ul><li>Prompting vs RAG vs fine-tuning table and the ordering rule.</li><li>Six limitations.</li><li>For any Unit 2 essay: close with hallucination mitigation and human-in-the-loop.</li></ul></div>
+</section>
+
+<div class="deck" id="deck-llm-u2">
+  <p class="deck-title">Flashcards · Unit Two</p>
+  <p class="deck-sub">The professor's six Unit 2 self-checks, plus cumulative Unit 1 cards (↺).</p>
+  <div class="fc"><div class="fc-q">Self-check Q1: give one NLU task and one NLG task, and state the difference.</div><div class="fc-a">NLU: sentiment analysis (text → label). NLG: summarisation (prompt → new text). NLU outputs a decision about the input; NLG produces new language.</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q2: how does few-shot prompting differ from fine-tuning?</div><div class="fc-a">Few-shot: examples in the prompt, no weight change, instant and temporary (in-context learning). Fine-tuning: many examples update the weights, permanent, needs compute and data.</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q3: what is RAG, and how does it reduce hallucination?</div><div class="fc-a">Retrieval-Augmented Generation: embed and search a knowledge base, put the top passages in the prompt, and the LLM answers from them. Answers are grounded in real sources (and citable), and knowledge updates without retraining.</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q4: which components turn an LLM into a chatbot?</div><div class="fc-a">A pipeline (understand → plan → generate) plus memory (short- and long-term), knowledge (RAG), tools/APIs (function calling), a chat format with system/user/assistant roles, and guardrails.</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q5: why can a good translation get a low BLEU score?</div><div class="fc-a">BLEU only counts n-gram overlap with one reference. A valid paraphrase with different words scores low, and BLEU ignores meaning and fluency.</div></div>
+  <div class="fc"><div class="fc-q">Self-check Q6: when would you choose abstractive over extractive summarisation?</div><div class="fc-a">When readability and synthesis matter (news digests, meeting notes, executive briefs). Choose extractive when exact wording and faithfulness matter (legal, compliance).</div></div>
+  <div class="fc"><div class="fc-q">Seven NLU tasks?</div><div class="fc-a">Classification, sentiment, NER, intent detection (+ slots), semantic similarity, question answering, textual entailment.</div></div>
+  <div class="fc"><div class="fc-q">Three kinds of question answering?</div><div class="fc-a">Extractive (span from a passage), open-book/RAG (retrieve then answer), closed-book (from memorised knowledge, with the highest hallucination risk).</div></div>
+  <div class="fc"><div class="fc-q">What is chain-of-thought prompting?</div><div class="fc-a">Asking the model to reason step by step before answering; it improves maths and logic (3 × 12 = 36; 36 − 20 = 16). Wei et al., 2022.</div></div>
+  <div class="fc"><div class="fc-q">Hallucination: causes and mitigations?</div><div class="fc-a">Causes: trained for plausibility, no source of truth, gap-filling, stale knowledge. Mitigations: RAG, citations, "say I don't know", tools and schemas, low temperature, human in the loop.</div></div>
+  <div class="fc"><div class="fc-q">BLEU for "The cat sat on a mat" vs "The cat sat on the mat"?</div><div class="fc-a">p1 = 5/6, p2 = 3/5, p3 = 2/4, p4 = 1/3, BP = 1, so BLEU = (0.0833)^0.25 ≈ 0.54.</div></div>
+  <div class="fc"><div class="fc-q">SMT vs NMT vs LLM translation?</div><div class="fc-a">SMT (~2000s): phrase statistics, literal. NMT (~2016): seq2seq + attention, whole sentences. LLM (2022+): zero-shot multilingual, context and tone aware.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">Which architecture family suits NLU, and which suits NLG?</div><div class="fc-a">Encoder-only (BERT) for understanding and classification; decoder-only (GPT) for generation; encoder–decoder (T5) for translation and summarisation.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">How does temperature relate to content creation vs factual QA?</div><div class="fc-a">Higher temperature or top-p gives creative, diverse content; low temperature or greedy gives focused, repeatable answers (better for facts and JSON).</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">Why do embeddings (Unit 1) power semantic search (Unit 2)?</div><div class="fc-a">Embeddings put similar meanings close together; cosine similarity between query and document vectors finds matches without shared keywords, which is the retrieval step of RAG.</div></div>
+  <div class="fc" data-from="Unit 1"><div class="fc-q">Why do chat assistants "forget" long conversations?</div><div class="fc-a">Memory is the re-sent history in the context window; once it exceeds the window (and given the O(n²) attention cost), older turns must be dropped or summarised, or stored in long-term memory.</div></div>
+</div>
+
+</div></div>
+
+<div class="chapter-card" id="llm-exam" data-short="Expected Paper">
+  <div class="ch-no">The Examination Hall</div>
+  <h2>Expected Question Paper</h2>
+  <p class="in-which">Built from the course outcomes and the professor's self-check questions, in the department's format.</p>
+</div>
+<div class="sheet"><div class="prose">
+<div class="paper-head">
+  <div class="ph1">TCS-765 · B. Tech. (CSE) (Seventh Semester) · Mid Semester Examination</div>
+  <div class="ph2">Large Language Models</div>
+  <div class="ph3">Time: 1½ Hours · Maximum Marks: 50 · Answer all questions choosing any one sub-question · each carries 10 marks</div>
+</div>
+
+<div class="qblock"><div class="qno">Question 1 · CO1</div>
+<p><strong>(a)</strong> What is a large language model? Trace the evolution of language models from n-gram models to modern LLMs, explaining the limitation that motivated each step.</p>
+<details class="model"><summary>Model answer blueprint · 1(a)</summary><div class="ans">
+<p class="marks">[Definition + scale 2] + [Timeline diagram 1] + [5 eras × 1.2 = 6] + [Conclusion 1]</p>
+<ol><li>The chain-rule definition; the "large" dimensions with GPT-3 numbers; tokens and next-token prediction.</li>
+<li>Timeline sketch 1990s → 2022+.</li>
+<li>For each era, the mechanism, then its limitation, then what the next era fixed: n-gram (sparsity, no meaning) → word2vec (meaning, but no context) → RNN/LSTM (context, but sequential and fading) → seq2seq + attention (fixed-vector bottleneck removed) → Transformer (parallel, direct links) → BERT/GPT pretraining → scaling (few-shot, RLHF, ChatGPT).</li>
+<li>Close: emergent abilities, and "the leaders change; the Transformer doesn't".</li></ol>
+<p>Content: <a href="#llm-overview">§ 1.1</a>, <a href="#llm-evolution">§ 1.2</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> With a neat diagram, explain the architecture of the Transformer. Why did Transformers replace RNNs? Distinguish encoder-only, decoder-only and encoder–decoder models.</p>
+<details class="model"><summary>Model answer blueprint · 1(b)</summary><div class="ans">
+<p class="marks">[Diagram 3] + [Components 4] + [RNN vs Transformer 1½] + [Families 1½]</p>
+<ol><li>Draw the encoder–decoder figure (Plate D4) or the decoder-only stack.</li>
+<li>Explain embeddings + positional encoding (formula), multi-head self-attention (the formula in one line), FFN, residual + LayerNorm, masked attention, cross-attention, linear + softmax.</li>
+<li>Four-row comparison table (parallelism, long-range links, speed, scale); note the O(n²) limitation.</li>
+<li>Families table with examples; why chat LLMs are decoder-only.</li></ol>
+<p>Content: <a href="#llm-transformer">§ 1.3</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 2 · CO1</div>
+<p><strong>(a)</strong> Explain the self-attention mechanism. Describe the roles of Query, Key and Value, derive the scaled dot-product attention formula, and explain why scores are scaled by √d<sub>k</sub> and why multi-head attention is used. Illustrate with a numerical example.</p>
+<details class="model"><summary>Model answer blueprint · 2(a)</summary><div class="ans">
+<p class="marks">[Intuition 2] + [Formula + steps 3] + [Numerical 2] + [√d_k 1] + [Multi-head 2]</p>
+<ol><li>Intuition: each word looks at the others; the "it → animal" example.</li>
+<li>Q = XW_Q, K = XW_K, V = XW_V; score QKᵀ; scale; softmax; × V. Draw Plate D5.</li>
+<li>Toy numbers: 2, 6, 3 → ÷2 → softmax 0.10 / 0.74 / 0.16 → blended output.</li>
+<li>√d_k: the variance argument (softmax saturation, vanishing gradients).</li>
+<li>Multi-head formula; heads capture syntax, coreference and long-range links; concat + W_O; the 512/8/64 numbers; causal masking for GPT.</li></ol>
+<p>Content: <a href="#llm-transformer">§ 1.3 (III)</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Discuss the data requirements and preprocessing pipeline for training LLMs. Explain sub-word tokenization with a BPE example, and the Chinchilla insight on data vs model size.</p>
+<details class="model"><summary>Model answer blueprint · 2(b)</summary><div class="ans">
+<ol><li>Scale and sources table (what each adds); quality &gt; quantity; bias absorption.</li>
+<li>Five-step pipeline diagram and the purpose of each step; why deduplication matters (compute, memorisation, test leakage).</li>
+<li>Why sub-words; BPE / WordPiece / SentencePiece table; the worked BPE merges.</li>
+<li>Chinchilla: ~20 tokens/param; 70B/1.4T beat 280B/300B; implications (the data wall, Indian-language coverage).</li></ol>
+<p>Content: <a href="#llm-data">§ 1.4</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 3 · CO2</div>
+<p><strong>(a)</strong> Describe the training objective of LLMs and the optimisation techniques used to train them at scale. What challenges arise, and how is each addressed?</p>
+<details class="model"><summary>Model answer blueprint · 3(a)</summary><div class="ans">
+<ol><li>Self-supervised next-token objective; the cross-entropy formula; perplexity with the example (PPL = 4).</li>
+<li>AdamW (adaptive + decoupled weight decay); warmup → peak → cosine decay (sketch).</li>
+<li>Challenges ↔ techniques table (instability, gradients, memory, cost, overfitting, reproducibility ↔ clipping, mixed precision, checkpointing, weight decay/dropout, schedules, parallelism).</li>
+<li>Close: after pretraining comes instruction tuning and RLHF.</li></ol>
+<p>Content: <a href="#llm-training">§ 1.5</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Why do LLMs need specialised hardware? Explain data, model and pipeline parallelism, and estimate the memory and compute needed to train a 175-billion-parameter model on 300 billion tokens.</p>
+<details class="model"><summary>Model answer blueprint · 3(b)</summary><div class="ans">
+<ol><li>Matrix multiplications → GPUs/TPUs; interconnects; memory as the true limit.</li>
+<li>Parallelism diagram (Plate D9) with the purpose of each; combined 3D parallelism plus ZeRO.</li>
+<li>Estimates: FP16 weights 350 GB; training state ~16 B/param ≈ 2.8 TB; compute 6ND = 3.15×10²³ FLOPs ≈ 3,640 PF-days; cost and energy.</li>
+<li>Inference efficiency (quantisation, distillation, KV-cache, MoE) and concentration concerns.</li></ol>
+<p>Content: <a href="#llm-hardware">§ 1.6</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 4 · CO3</div>
+<p><strong>(a)</strong> Differentiate between natural language understanding and natural language generation. Explain the major NLU tasks performed by LLMs with examples, and how generated text is evaluated.</p>
+<details class="model"><summary>Model answer blueprint · 4(a)</summary><div class="ans">
+<ol><li>Definitions (input → output) and the delivery example; assistants chain both.</li>
+<li>NLU tasks table plus detail on sentiment, NER, intent/slots, cosine similarity (with the formula and numbers), QA types.</li>
+<li>NLG tasks, controllable generation, the metrics table, hallucination (one paragraph).</li></ol>
+<p>Content: <a href="#llm-nlu">§ 2.1</a>, <a href="#llm-nlg">§ 2.2</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> "Prompting is the new programming interface." Explain zero-shot, few-shot and instruction prompting, in-context learning and chain-of-thought prompting. How does retrieval-augmented generation reduce hallucination?</p>
+<details class="model"><summary>Model answer blueprint · 4(b)</summary><div class="ans">
+<ol><li>No weight change; the three styles table; the chat roles format.</li>
+<li>ICL sentiment example; few-shot vs fine-tuning.</li>
+<li>CoT pens example; why it works.</li>
+<li>RAG pipeline diagram; why it cuts hallucination; limits; prompt patterns cheat-sheet.</li></ol>
+<p>Content: <a href="#llm-prompting">§ 2.3</a>, <a href="#llm-rag">§ 2.4</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 5 · CO3</div>
+<p><strong>(a)</strong> Explain how LLMs are implemented in chatbots and virtual assistants. Describe the anatomy of an LLM assistant, the role of memory and tools, and the guardrails needed. Compare rule-based, retrieval and LLM-based chatbots.</p>
+<details class="model"><summary>Model answer blueprint · 5(a)</summary><div class="ans">
+<ol><li>ELIZA → LLM timeline (brief).</li><li>Anatomy diagram (Plate D11): understand → plan → generate, plus memory, knowledge and tools.</li><li>Nexon memory example; short- vs long-term memory; the tool-calling tip example.</li><li>Six guardrails; the three-generations table; "combine all three"; Indian examples.</li></ol>
+<p>Content: <a href="#llm-chatbots">§ 2.5</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Discuss the use of LLMs in machine translation and text summarisation. Compare extractive and abstractive summarisation, explain how long documents are summarised, and compute the BLEU score for a given candidate translation.</p>
+<details class="model"><summary>Model answer blueprint · 5(b)</summary><div class="ans">
+<ol><li>SMT → NMT → LLM table; the idiom example; strengths and challenges (low-resource Indian languages, Bhashini).</li>
+<li>BLEU worked example (≈ 0.54) and its blind spots.</li>
+<li>Extractive vs abstractive table; map-reduce diagram; ROUGE plus human review; risks.</li>
+<li>Close with content-creation risks and human accountability.</li></ol>
+<p>Content: <a href="#llm-translation">§ 2.6</a>, <a href="#llm-summarization">§ 2.7</a>.</p></div></details>
+</div>
+</div></div>
+
+<nav class="pager" aria-label="Subjects"><a class="pg-prev" href="bi.html">← Business Intelligence</a><span></span><a class="pg-next" href="index.html">Back to the Lobby →</a></nav>
+</section>
+</main>
+<p class="footer">Created by Harshit · Printed on hotel stationery · Good luck in the examination hall</p>
+<script>
+(function(){
+  var store = {
+    get: function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+    set: function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  };
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement;
+  var savedTheme = store.get('almanac-theme');
+  if (savedTheme) root.setAttribute('data-theme', savedTheme);
+  var tt = document.getElementById('themeToggle');
+  function paintToggle(){
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    tt.textContent = dark ? 'Day edition' : 'Night edition';
+  }
+  if (tt){
+    paintToggle();
+    tt.addEventListener('click', function(){
+      var dark = tt.textContent === 'Day edition';
+      var next = dark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next); store.set('almanac-theme', next); paintToggle();
+    });
+  }
+
+  /* ---------- pages: remember where you were reading on each page ---------- */
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var pageKey = 'almanac-scroll-' + (panels[0] ? panels[0].id : 'page');
+  var saveTimer = null;
+  window.addEventListener('scroll', function(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ store.set(pageKey, Math.round(window.scrollY)); }, 250);
+  }, {passive:true});
+  if (!location.hash){
+    var y = store.get(pageKey);
+    if (y && y > 400){
+      var tip = document.createElement('button');
+      tip.type = 'button'; tip.className = 'resume';
+      tip.textContent = 'Continue where you left off ↓';
+      tip.addEventListener('click', function(){ window.scrollTo({top:y}); tip.remove(); });
+      var nav = document.querySelector('.tickets');
+      if (nav) nav.insertAdjacentElement('afterend', tip);
+      setTimeout(function(){ if (tip.isConnected) tip.remove(); }, 12000);
+    }
+  }
+
+  /* ---------- unit nav (auto) ---------- */
+  panels.forEach(function(p){
+    var nav = p.querySelector('.unit-nav');
+    if (!nav) return;
+    p.querySelectorAll('.chapter-card[id]').forEach(function(c){
+      var li = document.createElement('li'); var a = document.createElement('a');
+      a.href = '#'+c.id; a.textContent = c.dataset.short || c.querySelector('h2').textContent;
+      a.addEventListener('click', function(e){ e.preventDefault(); c.scrollIntoView({behavior:'smooth'}); });
+      li.appendChild(a); nav.appendChild(li);
+    });
+  });
+
+  /* ---------- images: graceful fallback ---------- */
+  document.querySelectorAll('.plate img').forEach(function(img){
+    function fail(){
+      var fig = img.closest('.plate'); fig.classList.add('missing');
+      var f = img.closest('.frame'); f.textContent = 'Image could not load here. Read the caption below and draw it from the sketch guide. (' + img.alt + ')';
+    }
+    if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) { fail(); }
+    else img.addEventListener('error', fail);
+  });
+
+  /* ---------- flashcards with Leitner spaced repetition ---------- */
+  document.querySelectorAll('.deck').forEach(function(deck, di){
+    var cards = Array.prototype.slice.call(deck.querySelectorAll('.fc'));
+    if (!cards.length) return;
+    var key = 'almanac-deck-' + (deck.id || di);
+    cards.forEach(function(c){
+      var q = c.querySelector('.fc-q'), a = c.querySelector('.fc-a');
+      var inner = document.createElement('div'); inner.className = 'fc-inner';
+      q.classList.add('fc-face'); a.classList.add('fc-face');
+      if (c.dataset.from){
+        var tag = document.createElement('span'); tag.className = 'from'; tag.textContent = '↺ Cumulative · ' + c.dataset.from;
+        q.insertBefore(tag, q.firstChild);
+      }
+      var s1 = document.createElement('span'); s1.className='side'; s1.textContent='Question — tap to turn';
+      var s2 = document.createElement('span'); s2.className='side'; s2.textContent='Model answer';
+      q.insertBefore(s1, q.firstChild); a.insertBefore(s2, a.firstChild);
+      inner.appendChild(q); inner.appendChild(a); c.appendChild(inner);
+      c.setAttribute('tabindex','0'); c.setAttribute('role','button'); c.setAttribute('aria-label','Flashcard. Press to flip.');
+      c.addEventListener('click', function(e){ if (e.target.closest('a')) return; c.classList.toggle('flipped'); });
+      c.addEventListener('keydown', function(e){ if (e.key===' '||e.key==='Enter'){ e.preventDefault(); c.classList.toggle('flipped'); } });
+    });
+    deck.classList.add('js');
+    var boxes = store.get(key) || {}; // card index -> box 1..3
+    var order = cards.map(function(_,i){return i;});
+    var pos = 0;
+    var ctr = document.createElement('div'); ctr.className = 'deck-controls';
+    ctr.innerHTML = '<button type="button" class="prev">← Previous</button>'+
+      '<span class="count"></span>'+
+      '<button type="button" class="flip">Turn card</button>'+
+      '<button type="button" class="next">Next →</button>'+
+      '<button type="button" class="again">Again</button>'+
+      '<button type="button" class="got">Got it</button>'+
+      '<button type="button" class="shuffle">Review weakest first</button>'+
+      '<span class="boxes"></span>';
+    deck.appendChild(ctr);
+    var count = ctr.querySelector('.count'), bx = ctr.querySelector('.boxes');
+    function render(){
+      cards.forEach(function(c){ c.classList.remove('current','flipped'); });
+      cards[order[pos]].classList.add('current');
+      count.textContent = (pos+1) + ' / ' + cards.length;
+      var b = [0,0,0,0]; cards.forEach(function(_,i){ b[boxes[i]||1]++; });
+      bx.textContent = 'Box 1 (learning): ' + b[1] + ' · Box 2 (review): ' + b[2] + ' · Box 3 (mastered): ' + b[3];
+    }
+    function go(d){ pos = (pos + d + cards.length) % cards.length; render(); }
+    ctr.querySelector('.prev').onclick = function(){ go(-1); };
+    ctr.querySelector('.next').onclick = function(){ go(1); };
+    ctr.querySelector('.flip').onclick = function(){ cards[order[pos]].classList.toggle('flipped'); };
+    ctr.querySelector('.again').onclick = function(){ boxes[order[pos]] = 1; store.set(key, boxes); go(1); };
+    ctr.querySelector('.got').onclick = function(){ var i = order[pos]; boxes[i] = Math.min(3,(boxes[i]||1)+1); store.set(key, boxes); go(1); };
+    ctr.querySelector('.shuffle').onclick = function(){
+      order = cards.map(function(_,i){return i;}).sort(function(a,b){ return ((boxes[a]||1)-(boxes[b]||1)) || (Math.random()-.5); });
+      pos = 0; render();
+    };
+    render();
+  });
+
+  /* ---------- MCQ engine ---------- */
+  document.querySelectorAll('.mcq-bank').forEach(function(bank){
+    var qs = Array.prototype.slice.call(bank.querySelectorAll('.mcq'));
+    var sb = bank.querySelector('.scoreboard');
+    var right = 0, done = 0;
+    function paint(){ if (sb) sb.querySelector('.sc').textContent = 'Score ' + right + ' / ' + done + ' answered · ' + qs.length + ' questions'; }
+    qs.forEach(function(q, i){
+      var ans = q.dataset.answer;
+      var num = q.querySelector('.qn'); if (num) num.textContent = 'Q' + (i+1) + '.';
+      q.querySelectorAll('ol.opts li').forEach(function(li){
+        if (li.dataset.k === ans) li.classList.add('is-key');
+        li.setAttribute('tabindex','0');
+        function pick(){
+          if (q.classList.contains('answered')) return;
+          q.classList.add('answered'); done++;
+          if (li.dataset.k === ans){ right++; li.classList.add('right'); }
+          else { li.classList.add('wrong'); q.querySelector('li[data-k="'+ans+'"]').classList.add('right'); }
+          paint();
+        }
+        li.addEventListener('click', pick);
+        li.addEventListener('keydown', function(e){ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+      });
+    });
+    if (sb) sb.querySelector('button').onclick = function(){
+      right = 0; done = 0;
+      qs.forEach(function(q){ q.classList.remove('answered'); q.querySelectorAll('li').forEach(function(li){ li.classList.remove('right','wrong'); }); });
+      paint();
+    };
+    paint();
+  });
+
+  /* ---------- print: open every model answer ---------- */
+  window.addEventListener('beforeprint', function(){ document.querySelectorAll('details').forEach(function(d){ d.setAttribute('open',''); }); });
+})();
+
+</script>
+</body>
+</html>

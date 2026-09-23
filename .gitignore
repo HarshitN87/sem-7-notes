@@ -1,0 +1,13 @@
+.claude/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+# keep course material and build sources local only
+*.pdf
+*.pptx
+bi/
+computer-architecture/
+llm/
+research methdology/
+src/

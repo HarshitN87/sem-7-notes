@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Mid-Semester Almanac</title>
+<meta name="description" content="Mid-semester study guide, B.Tech CSE Semester VII: The Lobby">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Courier+Prime&display=swap">
+<style>
+/* ============ The Mid-Semester Almanac — tokens ============ */
+:root{
+  color-scheme: light;
+  --ground:#F4DEDC;          /* blush wallpaper */
+  --paper:#FFF9F2;           /* hotel stationery */
+  --paper-2:#FBEFE6;
+  --ink:#2C1D28;             /* aubergine ink */
+  --muted:#6B5462;
+  --rule:#D2AFAA;
+  --rule-strong:#9C6F72;
+  --stamp:#8E2F45;
+  --good:#3E7D5A; --good-soft:#DDEFE3;
+  --bad:#A8392E;  --bad-soft:#F6DCD7;
+  --fig-ground:#FFFFFF;
+  --shadow: 0 1px 0 rgba(44,29,40,.06), 0 10px 24px -14px rgba(44,29,40,.35);
+  /* default accent (lobby) */
+  --acc:#8E2F45; --acc2:#5B3A6E; --acc-soft:#F2D2D8; --acc-ink:#FFF9F2;
+  --display:"Jost","Futura","Century Gothic","Trebuchet MS",sans-serif;
+  --body:"Libre Caslon Text","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --mono:"Courier Prime","Courier New",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+    --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+    --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+    --fig-ground:#F7F1EA;
+    --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+    --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+  --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+  --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+  --fig-ground:#F7F1EA;
+  --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+  --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+}
+
+/* per-film subject palettes */
+[data-subject="rm"] { --acc:#A83F63; --acc2:#6B2D5C; --acc-soft:#F5D6DF; }
+[data-subject="aca"]{ --acc:#C0433A; --acc2:#2F6F95; --acc-soft:#D8E9F3; }
+[data-subject="mba"]{ --acc:#A87A12; --acc2:#5E6B3A; --acc-soft:#F4E6BC; }
+[data-subject="bi"] { --acc:#23857C; --acc2:#C8703F; --acc-soft:#D2EEEA; }
+[data-subject="llm"]{ --acc:#BD5A22; --acc2:#6E4A2F; --acc-soft:#F7DDC8; }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+  :root:not([data-theme="light"]) [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+  :root:not([data-theme="light"]) [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+  :root:not([data-theme="light"]) [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+  :root:not([data-theme="light"]) [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+}
+:root[data-theme="dark"] [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+:root[data-theme="dark"] [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+:root[data-theme="dark"] [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+:root[data-theme="dark"] [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+:root[data-theme="dark"] [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+
+/* ============ base ============ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.68;
+  padding-inline:16px; padding-block:0 64px;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 46px, color-mix(in srgb, var(--rule) 22%, transparent) 46px 48px);
+}
+a{color:var(--acc)}
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible{outline:3px solid var(--acc2); outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--display); font-weight:500; text-wrap:balance; line-height:1.2}
+p{margin:0 0 1em}
+.wrap{max-width:1040px; margin-inline:auto}
+
+/* ============ proscenium header ============ */
+.marquee{max-width:1040px; margin:28px auto 0; text-align:center; background:var(--paper);
+  border:1px solid var(--rule-strong); outline:6px double var(--rule); outline-offset:-14px;
+  padding:44px 28px 30px; box-shadow:var(--shadow); position:relative}
+.marquee .eyebrow{font-family:var(--display); letter-spacing:.42em; text-transform:uppercase; font-size:12px; color:var(--muted)}
+.marquee h1{font-size:clamp(34px,6vw,64px); letter-spacing:.14em; text-transform:uppercase; margin:.28em 0 .1em; color:var(--stamp); font-weight:500}
+.marquee .sub{font-family:var(--body); font-style:italic; color:var(--muted); font-size:18px}
+.marquee .fleuron{font-family:var(--display); color:var(--rule-strong); letter-spacing:.8em; margin:14px 0 0}
+.theme-toggle{position:absolute; top:18px; right:22px; font-family:var(--display); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; background:transparent; border:1px solid var(--rule-strong); color:var(--muted); padding:6px 10px; cursor:pointer}
+
+/* ============ ticket-stub tabs ============ */
+.tickets{max-width:1040px; margin:22px auto 0; display:grid; grid-template-columns:repeat(6,1fr); gap:10px;
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20; padding-block:10px; background:var(--ground)}
+.ticket{font:inherit; cursor:pointer; text-align:left; background:var(--paper); color:var(--ink);
+  border:1px solid var(--rule-strong); padding:10px 12px 9px; position:relative; min-width:0;
+  -webkit-mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+          mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+  transition:transform .18s ease, background .18s}
+.ticket:hover{transform:translateY(-2px)}
+.ticket .t-date{display:block; font-family:var(--mono); font-size:12px; color:var(--acc); letter-spacing:.06em}
+.ticket .t-name{display:block; font-family:var(--display); font-size:13.5px; letter-spacing:.08em; text-transform:uppercase; line-height:1.25; overflow-wrap:anywhere}
+.ticket .t-code{display:block; font-family:var(--mono); font-size:11px; color:var(--muted)}
+.ticket[aria-selected="true"]{background:var(--acc); color:var(--acc-ink)}
+.ticket[aria-selected="true"] .t-date,.ticket[aria-selected="true"] .t-code{color:var(--acc-ink); opacity:.85}
+@media (max-width:820px){ .tickets{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:460px){ .tickets{grid-template-columns:repeat(2,1fr); position:static} }
+
+/* ============ panels & paper ============ */
+.panel{max-width:1040px; margin:18px auto 0}
+.panel[hidden]{display:none!important}
+.sheet{background:var(--paper); border:1px solid var(--rule); box-shadow:var(--shadow); padding:clamp(20px,4vw,56px); margin-top:22px}
+.prose{max-width:70ch; margin-inline:auto}
+.subject-title{text-align:center; padding-block:10px 4px}
+.subject-title .code{font-family:var(--mono); color:var(--acc); letter-spacing:.12em}
+.subject-title h2{font-size:clamp(28px,4.4vw,46px); letter-spacing:.12em; text-transform:uppercase; margin:.2em 0; color:var(--acc2)}
+.subject-title .meta{font-style:italic; color:var(--muted)}
+.unit-nav{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:18px 0 0; padding:0; list-style:none}
+.unit-nav a{font-family:var(--display); font-size:12px; letter-spacing:.18em; text-transform:uppercase; text-decoration:none;
+  color:var(--acc2); border:1px solid var(--acc2); padding:6px 12px; background:var(--paper)}
+.unit-nav a:hover{background:var(--acc-soft)}
+
+/* intertitle chapter card */
+.chapter-card{background:var(--acc-soft); border:1px solid var(--acc); outline:4px double var(--acc); outline-offset:-12px;
+  text-align:center; padding:46px 24px 40px; margin-top:34px; scroll-margin-top:110px}
+.chapter-card .ch-no{font-family:var(--display); letter-spacing:.5em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.chapter-card h2{font-size:clamp(26px,4vw,40px); letter-spacing:.1em; text-transform:uppercase; margin:.3em 0 .25em; color:var(--ink)}
+.chapter-card .in-which{font-style:italic; color:var(--muted); max-width:52ch; margin:0 auto}
+.chapter-card .syll{font-family:var(--mono); font-size:13px; color:var(--muted); margin-top:14px; max-width:70ch; margin-inline:auto}
+
+/* topic */
+.topic{scroll-margin-top:110px}
+.topic > h3{font-size:clamp(22px,3vw,30px); letter-spacing:.06em; text-transform:uppercase; color:var(--acc2);
+  border-bottom:2px solid var(--acc); padding-bottom:.35em; margin:1.6em 0 .8em}
+.topic > h3 .tno{font-family:var(--mono); font-size:.6em; color:var(--acc); letter-spacing:.05em; display:block; text-transform:none}
+.facet{font-family:var(--display); font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:var(--acc);
+  margin:1.8em 0 .6em; display:flex; align-items:center; gap:12px}
+.facet::after{content:""; flex:1; height:1px; background:var(--rule)}
+.prose h5{font-family:var(--display); font-size:16px; letter-spacing:.06em; margin:1.3em 0 .4em; color:var(--ink); font-weight:600}
+.prose ul,.prose ol{padding-left:1.3em; margin:0 0 1em}
+.prose li{margin-bottom:.35em}
+.prose strong{color:var(--acc2); font-weight:700}
+.defn{border-left:4px solid var(--acc); background:var(--paper-2); padding:14px 18px; margin:0 0 1em; font-style:italic}
+.defn b{font-style:normal; font-family:var(--display); letter-spacing:.06em; text-transform:uppercase; font-size:13px; color:var(--acc); display:block; margin-bottom:4px}
+.plain{background:var(--acc-soft); padding:12px 16px; margin:0 0 1em; border-radius:2px}
+.plain::before{content:"In plain words — "; font-family:var(--display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acc)}
+.formula{font-family:var(--mono); background:var(--paper-2); border:1px dashed var(--rule-strong); padding:12px 16px; margin:0 0 1em; overflow-x:auto; white-space:pre; font-size:15px; line-height:1.55}
+.checklist{border:2px solid var(--acc2); padding:16px 20px 8px; margin:1em 0 1.6em; background:var(--paper); position:relative}
+.checklist::before{content:"Evaluator's Scoring Checklist"; position:absolute; top:-12px; left:16px; background:var(--paper); padding:0 8px;
+  font-family:var(--display); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--acc2)}
+.checklist ul{list-style:none; padding-left:0}
+.checklist li{padding-left:1.6em; position:relative}
+.checklist li::before{content:"✓"; position:absolute; left:0; color:var(--good); font-weight:700}
+.tip{font-size:15px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:10px 0; margin:0 0 1em; color:var(--muted)}
+.tip b{font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+
+/* tables */
+.tbl{overflow-x:auto; margin:0 0 1.2em}
+.tbl table{border-collapse:collapse; width:100%; font-size:15px; min-width:520px}
+.tbl th{font-family:var(--display); font-weight:500; letter-spacing:.06em; text-align:left; background:var(--acc-soft); color:var(--ink); border-bottom:2px solid var(--acc)}
+.tbl th,.tbl td{padding:8px 10px; border-bottom:1px solid var(--rule); vertical-align:top}
+.tbl td{font-variant-numeric:tabular-nums}
+
+/* figures */
+.plate{margin:1.4em auto 1.8em; max-width:760px; text-align:center}
+.plate .frame{background:var(--fig-ground); border:1px solid var(--rule-strong); outline:5px solid var(--paper-2); padding:14px; overflow-x:auto}
+.plate img{display:block; margin:0 auto; max-height:520px; width:auto; max-width:100%}
+.plate svg{display:block; margin:0 auto; max-width:100%; height:auto}
+.plate.svgplate .frame{background:var(--paper)}
+.plate figcaption{text-align:left; font-size:14.5px; color:var(--muted); margin-top:10px; line-height:1.55}
+.plate figcaption .pl{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+.plate figcaption .sketch{display:block; margin-top:6px; font-family:var(--mono); font-size:13px; color:var(--ink)}
+.plate figcaption .credit{display:block; font-size:12px; margin-top:4px}
+.plate.missing .frame{padding:30px; font-style:italic; color:var(--muted)}
+/* svg tokens */
+.dg text{font-family:var(--display); fill:var(--ink); font-size:13px}
+.dg .box{fill:var(--paper-2); stroke:var(--acc2); stroke-width:1.6}
+.dg .box2{fill:var(--acc-soft); stroke:var(--acc); stroke-width:1.6}
+.dg .box3{fill:var(--paper); stroke:var(--rule-strong); stroke-width:1.2; stroke-dasharray:4 3}
+.dg .ln{stroke:var(--ink); stroke-width:1.6; fill:none}
+.dg .ln2{stroke:var(--acc); stroke-width:1.8; fill:none}
+.dg .lnd{stroke:var(--muted); stroke-width:1.4; fill:none; stroke-dasharray:5 4}
+.dg .small{font-size:11px; fill:var(--muted)}
+.dg .hd{font-size:14px; letter-spacing:.08em; font-weight:600}
+.dg .ac{fill:var(--acc)}
+.dg .mk{fill:var(--ink)} .dg .mk2{fill:var(--acc)}
+
+/* exam blueprint + model answers */
+.paper-head{text-align:center; border:1px solid var(--ink); padding:18px; font-family:var(--display); margin-bottom:18px; background:var(--paper)}
+.paper-head .ph1{letter-spacing:.3em; text-transform:uppercase; font-size:13px}
+.paper-head .ph2{font-size:22px; letter-spacing:.1em; text-transform:uppercase; margin:6px 0}
+.paper-head .ph3{font-family:var(--mono); font-size:13px; color:var(--muted)}
+.qblock{border-top:1px solid var(--rule-strong); padding-top:10px; margin-top:22px}
+.qblock > .qno{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.pyq-tag{display:inline-block; font-family:var(--mono); font-size:11.5px; border:1px solid var(--acc); color:var(--acc); padding:0 6px; margin-left:6px; vertical-align:middle}
+details.model{border:1px solid var(--rule-strong); background:var(--paper); margin:10px 0}
+details.model > summary{cursor:pointer; list-style:none; padding:12px 16px 12px 46px; position:relative; font-weight:600}
+details.model > summary::-webkit-details-marker{display:none}
+details.model > summary::before{content:"+"; position:absolute; left:14px; top:9px; width:22px; height:22px; border:1px solid var(--acc); color:var(--acc);
+  display:grid; place-items:center; font-family:var(--display)}
+details.model[open] > summary::before{content:"–"}
+details.model[open] > summary{border-bottom:1px dashed var(--rule)}
+details.model .ans{padding:14px 18px 6px}
+details.model .ans .marks{font-family:var(--mono); font-size:12.5px; color:var(--acc)}
+.or{text-align:center; font-family:var(--display); letter-spacing:.4em; color:var(--muted); font-size:12px; margin:4px 0}
+
+/* ============ flashcards ============ */
+.deck{margin:2em 0 1em; border:1px solid var(--acc2); background:var(--acc-soft); padding:22px clamp(12px,3vw,28px) 18px}
+.deck > .deck-title{font-family:var(--display); letter-spacing:.24em; text-transform:uppercase; text-align:center; font-size:14px; color:var(--acc2); margin:0 0 4px}
+.deck > .deck-sub{text-align:center; font-style:italic; color:var(--muted); font-size:14.5px; margin:0 0 14px}
+.fc{margin:10px 0}
+.fc-inner{display:grid; perspective:1400px}
+.fc-face{grid-area:1/1; background:var(--paper); border:1px solid var(--rule-strong); padding:22px 24px; min-height:210px;
+  backface-visibility:hidden; -webkit-backface-visibility:hidden; transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.fc-q{display:flex; flex-direction:column; justify-content:center; text-align:center; font-family:var(--display); font-size:19px; letter-spacing:.02em}
+.fc-a{transform:rotateY(180deg); font-size:15.5px}
+.fc.flipped .fc-q{transform:rotateY(-180deg)}
+.fc.flipped .fc-a{transform:rotateY(0deg)}
+.fc-face .side{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:10px}
+.fc .from{display:inline-block; font-family:var(--mono); font-size:11px; background:var(--acc2); color:var(--paper); padding:1px 7px; margin-bottom:10px; align-self:center}
+.deck.js .fc{display:none; cursor:pointer}
+.deck.js .fc.current{display:block}
+.deck-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; margin-top:12px}
+.deck-controls button, .btn{font-family:var(--display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; cursor:pointer;
+  background:var(--paper); color:var(--ink); border:1px solid var(--rule-strong); padding:8px 12px}
+.deck-controls button.again{border-color:var(--bad); color:var(--bad)}
+.deck-controls button.got{border-color:var(--good); color:var(--good)}
+.deck-controls .count{font-family:var(--mono); font-size:13px; color:var(--muted); min-width:9ch; text-align:center}
+.deck-controls .boxes{font-family:var(--mono); font-size:12px; color:var(--muted); width:100%; text-align:center}
+
+/* ============ MCQ ============ */
+.mcq{background:var(--paper); border:1px solid var(--rule); padding:16px 18px 10px; margin:14px 0}
+.mcq .stem{font-weight:600; margin-bottom:10px}
+.mcq .stem .qn{font-family:var(--mono); color:var(--acc); margin-right:6px}
+.mcq ol.opts{list-style:none; padding:0; margin:0 0 8px; display:grid; gap:6px}
+.mcq ol.opts li{border:1px solid var(--rule); padding:8px 12px 8px 40px; position:relative; cursor:pointer; background:var(--paper-2)}
+.mcq ol.opts li::before{content:attr(data-k); position:absolute; left:10px; top:7px; font-family:var(--mono); color:var(--acc); text-transform:uppercase}
+.mcq ol.opts li:hover{border-color:var(--acc)}
+.mcq.answered ol.opts li{cursor:default}
+.mcq ol.opts li.right{background:var(--good-soft); border-color:var(--good)}
+.mcq ol.opts li.wrong{background:var(--bad-soft); border-color:var(--bad); text-decoration:line-through; text-decoration-color:var(--bad)}
+.mcq .why{display:none; font-size:15px; border-top:1px dashed var(--rule); padding-top:10px; margin-top:6px}
+.mcq.answered .why{display:block}
+.mcq .why b.key{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:12px; color:var(--good)}
+.scoreboard{position:sticky; top:84px; z-index:5; display:flex; justify-content:center; gap:14px; align-items:center; background:var(--acc2); color:var(--paper);
+  font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; padding:8px 12px; margin:12px 0}
+.scoreboard button{background:transparent; color:var(--paper); border:1px solid var(--paper); font:inherit; padding:3px 8px; cursor:pointer}
+@media (max-width:460px){ .scoreboard{position:static} }
+
+/* lobby */
+.grid-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:16px 0}
+.lobby-card{background:var(--acc-soft); border:1px solid var(--acc); padding:18px; text-align:center}
+.lobby-card .ld{font-family:var(--mono); color:var(--acc)}
+.lobby-card h4{margin:.3em 0; letter-spacing:.1em; text-transform:uppercase; font-size:17px}
+.lobby-card p{font-size:14.5px; color:var(--muted); margin:.4em 0 .8em}
+.note-box{border:1px solid var(--stamp); padding:14px 18px; background:var(--paper-2); margin:1em 0}
+.note-box b.h{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:12px; color:var(--stamp); display:block}
+.footer{text-align:center; font-family:var(--display); letter-spacing:.3em; text-transform:uppercase; font-size:11px; color:var(--muted); margin-top:40px}
+
+/* ============ print ============ */
+@media print{
+  body{background:#fff; color:#000; padding:0; font-size:11pt}
+  .tickets,.theme-toggle,.deck-controls,.scoreboard,.unit-nav{display:none!important}
+  .panel[hidden]{display:block!important}
+  .panel{page-break-before:always}
+  .sheet,.marquee{box-shadow:none; border:none; outline:none}
+  .chapter-card{page-break-before:always; outline:none}
+  .deck.js .fc{display:block!important; page-break-inside:avoid}
+  .fc-inner{display:block}
+  .fc-face{transform:none!important; min-height:0; border:none; border-bottom:1px solid #999; padding:6px 0}
+  .fc-q{font-size:12pt; text-align:left; font-weight:600}
+  .mcq .why{display:block!important}
+  .plate{page-break-inside:avoid}
+  details.model > summary::before{display:none}
+  details.model > summary{padding-left:12px}
+}
+@media print{ .mcq ol.opts li.is-key{border:2px solid #000; font-weight:700} .mcq ol.opts li.is-key::after{content:"  ✓ correct"} }
+.prose code{font-family:var(--mono); font-size:.92em; background:var(--paper-2); padding:0 4px; overflow-wrap:anywhere; word-break:break-word}
+.formula code{background:none; padding:0}
+/* "Starting from zero" beginner boxes */
+.zero{background:var(--paper-2); border:2px dashed var(--acc); padding:18px 20px 8px; margin:0 0 1.6em; position:relative; font-size:16.5px}
+.zero-h{font-family:var(--display); letter-spacing:.22em; text-transform:uppercase; font-size:12.5px; color:var(--acc-ink); background:var(--acc); display:inline-block; padding:3px 10px; margin:-4px 0 12px}
+.zero p, .zero li{line-height:1.72}
+.zero-f{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:11.5px; color:var(--muted); text-align:right; margin:.4em 0 .6em}
+/* ============ multi-page navigation ============ */
+a.ticket{display:block; text-decoration:none}
+a.ticket[aria-current="page"]{background:var(--acc); color:var(--acc-ink)}
+a.ticket[aria-current="page"] .t-date, a.ticket[aria-current="page"] .t-code{color:var(--acc-ink); opacity:.85}
+.marquee a{color:inherit; text-decoration:none}
+.marquee h1 a:hover{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px}
+.marquee-slim{padding:26px 24px 18px}
+.marquee-slim h1{font-size:clamp(24px,3.6vw,38px)}
+.marquee-slim .fleuron{margin-top:8px}
+.pager{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:stretch; margin:36px 0 0}
+.pager a{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:13px; text-decoration:none;
+  color:var(--ink); background:var(--paper); border:1px solid var(--rule-strong); padding:14px 16px; display:flex; align-items:center}
+.pager a:hover{background:var(--acc-soft)}
+.pager .pg-next{justify-content:flex-end; text-align:right}
+.pager .pg-home{color:var(--acc)}
+@media (max-width:560px){ .pager{grid-template-columns:1fr} .pager .pg-next{justify-content:flex-start; text-align:left} }
+.resume{display:block; margin:10px auto 0; font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px;
+  background:var(--acc2); color:var(--paper); border:0; padding:9px 16px; cursor:pointer}
+@media print{ .pager,.resume{display:none!important} .panel{page-break-before:auto} }
+.marquee .eyebrow{padding-inline:130px}
+@media (max-width:980px){
+  .marquee .eyebrow{padding-inline:0}
+  .theme-toggle{position:static; display:block; margin:0 auto 14px}
+}
+.marquee .credit-line{font-family:var(--display); letter-spacing:.34em; text-transform:uppercase; font-size:11.5px; color:var(--acc); margin-top:10px}
+
+</style>
+</head>
+<body>
+<header class="marquee">
+  <button class="theme-toggle" id="themeToggle" type="button">Night edition</button>
+  <div class="eyebrow"><a href="index.html">B.Tech CSE · Semester VII · Graphic Era (Deemed to be University)</a></div>
+  <h1><a href="index.html">The Mid-Semester Almanac</a></h1>
+  <div class="sub">Five subjects, eight days, one study guide: 26 September to 3 October</div>
+  <div class="credit-line">Created by Harshit</div>
+  <div class="fleuron">◆ ◆ ◆</div>
+</header>
+<nav class="tickets" aria-label="Subjects"><a class="ticket" href="index.html" aria-current="page"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="rm.html"><span class="t-date">26 Sept</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="aca.html"><span class="t-date">28 Sept</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="mba.html"><span class="t-date">29 Sept</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a><a class="ticket" href="bi.html"><span class="t-date">30 Sept</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="llm.html"><span class="t-date">03 Oct</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a></nav>
+<main>
+<section class="panel" id="lobby" data-subject="lobby">
+<div class="sheet">
+  <div class="subject-title">
+    <div class="code">CONCIERGE'S DESK</div>
+    <h2>Welcome to the Almanac</h2>
+    <div class="meta">A study guide for each subject, with model answers, a full exam paper and flashcard decks</div>
+  </div>
+
+  <div class="grid-cards">
+    <div class="lobby-card" data-subject="rm" style="background:var(--acc-soft);border-color:var(--acc)"><div class="ld">Sat · 26 Sept</div><h4>Research Methodology &amp; IPR</h4><p>Units 1–3: the research problem, literature study &amp; ethics, technical writing &amp; proposals.</p><a href="rm.html">Open the guide</a></div>
+    <div class="lobby-card" data-subject="aca" style="background:var(--acc-soft);border-color:var(--acc)"><div class="ld">Mon · 28 Sept</div><h4>Advanced Computer Architecture</h4><p>Units 1–2: trends, cost, power, performance laws, memory hierarchy, caches, coherence, virtual memory.</p><a href="aca.html">Open the guide</a></div>
+    <div class="lobby-card" data-subject="mba" style="background:var(--acc-soft);border-color:var(--acc)"><div class="ld">Tue · 29 Sept</div><h4>Innovation &amp; Venture Development</h4><p>Units I–II as a 100% MCQ bank: innovation, ecosystem, policy, lean startup, business models.</p><a href="mba.html">Open the guide</a></div>
+    <div class="lobby-card" data-subject="bi" style="background:var(--acc-soft);border-color:var(--acc)"><div class="ld">Wed · 30 Sept</div><h4>Business Intelligence</h4><p>Units 1–3: IT in business &amp; Baldrige, types of digital data, OLTP vs OLAP, data warehousing.</p><a href="bi.html">Open the guide</a></div>
+    <div class="lobby-card" data-subject="llm" style="background:var(--acc-soft);border-color:var(--acc)"><div class="ld">Sat · 03 Oct</div><h4>Large Language Models</h4><p>Units 1–2: transformers, attention, data, training, compute; NLU/NLG, assistants, translation, summaries.</p><a href="llm.html">Open the guide</a></div>
+  </div>
+
+  <div class="prose">
+    <h3 class="facet">The shape of the examination</h3>
+    <p>Three real mid-semester papers were supplied: <strong>TCS-704 Advanced Computer Architecture (Oct 2022 and Oct 2023)</strong> and <strong>TIT-721 Business Intelligence (Oct 2023)</strong>. All three follow the same format, and every theory paper in this Almanac uses it:</p>
+    <div class="paper-head">
+      <div class="ph1">B. Tech. (CSE) (Seventh Semester) · Mid Semester Examination</div>
+      <div class="ph2">Time: 1½ Hours · Maximum Marks: 50</div>
+      <div class="ph3">Note: (i) Answer all the questions by choosing any <em>one</em> of the sub-questions. (ii) Each sub-question carries 10 marks.</div>
+    </div>
+    <p>So each paper has <strong>five questions, each with an internal choice (a) OR (b), and each worth 10 marks</strong>. There is no short-answer section. Every answer you write is a 10-mark answer, and you have about <strong>18 minutes per answer</strong>. That is why every topic here follows the same six-part structure: definition, first principles, mechanism, real-world case, critical evaluation, and the evaluator's checklist. Learn that structure and you can write a full-length answer on any of these topics.</p>
+    <p>The questions on each paper are tagged with the course outcome they test (CO1 for Unit 1, CO2 for Unit 2, and so on). In the ACA papers Q1–Q3 are mostly Unit 1 and Q3(b)–Q5 are Unit 2. The BI paper follows the same pattern: CO1 for Q1–Q3(a), CO2 for Q3(b)–Q5(a), and CO3 for Q5(b). The expected-question papers in this guide copy that split.</p>
+
+    <div class="note-box"><b class="h">A note on the sources</b>The file named <code>TCS726 2023 pyq.pdf</code> is a <strong>Business Intelligence</strong> paper (TIT-721), not Research Methodology. No Research Methodology &amp; IPR paper was supplied. The RM &amp; IPR questions in this guide are written from your professor's notes and use the same 5 × (a/b) format. The ACA and BI questions reproduce and extend the actual paper questions, marked <span class="pyq-tag">PYQ 2022</span> or <span class="pyq-tag">PYQ 2023</span>.</div>
+
+    <h3 class="facet">How to use this Almanac</h3>
+    <ul>
+      <li><strong>First read (the night before each exam):</strong> go through the guide for that subject. The <em>Evaluator's Checklist</em> box in each topic lists the terms, formulas and diagrams an examiner looks for.</li>
+      <li><strong>Active recall:</strong> each unit ends with a <em>flashcard deck</em>. Tap a card to turn it over. Use <em>Got it</em> and <em>Again</em> to move cards between three Leitner boxes, then use <em>Review weakest first</em>. Decks in Unit 2 and Unit 3 include <em>cumulative</em> cards (marked ↺) that go back over earlier units.</li>
+      <li><strong>Exam simulation:</strong> each theory subject ends with a full expected paper. Try each question with a timer (18 minutes), then open the model answer blueprint and compare it with yours.</li>
+      <li><strong>MBA-302</strong> is 100% multiple choice, so its guide is a scored question bank. Each question has four options, and each explanation says why the right answer is right and why the others are wrong.</li>
+      <li><strong>Diagrams:</strong> every plate has a <em>How to sketch</em> line, which is the version you can draw in about 90 seconds in the exam hall.</li>
+      <li><strong>Getting around:</strong> each subject has its own page. Use the ticket bar at the top to jump between subjects, the unit buttons under each subject's title to jump to a unit, and the links at the bottom of each page to go to the previous or next subject. Each page remembers where you stopped reading.</li>
+      <li><strong>Printing:</strong> open a subject's page and use your browser's print command. The print styles open every model answer and list every flashcard.</li>
+    </ul>
+  </div>
+</div>
+
+
+</section>
+</main>
+<p class="footer">Created by Harshit · Printed on hotel stationery · Good luck in the examination hall</p>
+<script>
+(function(){
+  var store = {
+    get: function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+    set: function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  };
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement;
+  var savedTheme = store.get('almanac-theme');
+  if (savedTheme) root.setAttribute('data-theme', savedTheme);
+  var tt = document.getElementById('themeToggle');
+  function paintToggle(){
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    tt.textContent = dark ? 'Day edition' : 'Night edition';
+  }
+  if (tt){
+    paintToggle();
+    tt.addEventListener('click', function(){
+      var dark = tt.textContent === 'Day edition';
+      var next = dark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next); store.set('almanac-theme', next); paintToggle();
+    });
+  }
+
+  /* ---------- pages: remember where you were reading on each page ---------- */
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var pageKey = 'almanac-scroll-' + (panels[0] ? panels[0].id : 'page');
+  var saveTimer = null;
+  window.addEventListener('scroll', function(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ store.set(pageKey, Math.round(window.scrollY)); }, 250);
+  }, {passive:true});
+  if (!location.hash){
+    var y = store.get(pageKey);
+    if (y && y > 400){
+      var tip = document.createElement('button');
+      tip.type = 'button'; tip.className = 'resume';
+      tip.textContent = 'Continue where you left off ↓';
+      tip.addEventListener('click', function(){ window.scrollTo({top:y}); tip.remove(); });
+      var nav = document.querySelector('.tickets');
+      if (nav) nav.insertAdjacentElement('afterend', tip);
+      setTimeout(function(){ if (tip.isConnected) tip.remove(); }, 12000);
+    }
+  }
+
+  /* ---------- unit nav (auto) ---------- */
+  panels.forEach(function(p){
+    var nav = p.querySelector('.unit-nav');
+    if (!nav) return;
+    p.querySelectorAll('.chapter-card[id]').forEach(function(c){
+      var li = document.createElement('li'); var a = document.createElement('a');
+      a.href = '#'+c.id; a.textContent = c.dataset.short || c.querySelector('h2').textContent;
+      a.addEventListener('click', function(e){ e.preventDefault(); c.scrollIntoView({behavior:'smooth'}); });
+      li.appendChild(a); nav.appendChild(li);
+    });
+  });
+
+  /* ---------- images: graceful fallback ---------- */
+  document.querySelectorAll('.plate img').forEach(function(img){
+    function fail(){
+      var fig = img.closest('.plate'); fig.classList.add('missing');
+      var f = img.closest('.frame'); f.textContent = 'Image could not load here. Read the caption below and draw it from the sketch guide. (' + img.alt + ')';
+    }
+    if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) { fail(); }
+    else img.addEventListener('error', fail);
+  });
+
+  /* ---------- flashcards with Leitner spaced repetition ---------- */
+  document.querySelectorAll('.deck').forEach(function(deck, di){
+    var cards = Array.prototype.slice.call(deck.querySelectorAll('.fc'));
+    if (!cards.length) return;
+    var key = 'almanac-deck-' + (deck.id || di);
+    cards.forEach(function(c){
+      var q = c.querySelector('.fc-q'), a = c.querySelector('.fc-a');
+      var inner = document.createElement('div'); inner.className = 'fc-inner';
+      q.classList.add('fc-face'); a.classList.add('fc-face');
+      if (c.dataset.from){
+        var tag = document.createElement('span'); tag.className = 'from'; tag.textContent = '↺ Cumulative · ' + c.dataset.from;
+        q.insertBefore(tag, q.firstChild);
+      }
+      var s1 = document.createElement('span'); s1.className='side'; s1.textContent='Question — tap to turn';
+      var s2 = document.createElement('span'); s2.className='side'; s2.textContent='Model answer';
+      q.insertBefore(s1, q.firstChild); a.insertBefore(s2, a.firstChild);
+      inner.appendChild(q); inner.appendChild(a); c.appendChild(inner);
+      c.setAttribute('tabindex','0'); c.setAttribute('role','button'); c.setAttribute('aria-label','Flashcard. Press to flip.');
+      c.addEventListener('click', function(e){ if (e.target.closest('a')) return; c.classList.toggle('flipped'); });
+      c.addEventListener('keydown', function(e){ if (e.key===' '||e.key==='Enter'){ e.preventDefault(); c.classList.toggle('flipped'); } });
+    });
+    deck.classList.add('js');
+    var boxes = store.get(key) || {}; // card index -> box 1..3
+    var order = cards.map(function(_,i){return i;});
+    var pos = 0;
+    var ctr = document.createElement('div'); ctr.className = 'deck-controls';
+    ctr.innerHTML = '<button type="button" class="prev">← Previous</button>'+
+      '<span class="count"></span>'+
+      '<button type="button" class="flip">Turn card</button>'+
+      '<button type="button" class="next">Next →</button>'+
+      '<button type="button" class="again">Again</button>'+
+      '<button type="button" class="got">Got it</button>'+
+      '<button type="button" class="shuffle">Review weakest first</button>'+
+      '<span class="boxes"></span>';
+    deck.appendChild(ctr);
+    var count = ctr.querySelector('.count'), bx = ctr.querySelector('.boxes');
+    function render(){
+      cards.forEach(function(c){ c.classList.remove('current','flipped'); });
+      cards[order[pos]].classList.add('current');
+      count.textContent = (pos+1) + ' / ' + cards.length;
+      var b = [0,0,0,0]; cards.forEach(function(_,i){ b[boxes[i]||1]++; });
+      bx.textContent = 'Box 1 (learning): ' + b[1] + ' · Box 2 (review): ' + b[2] + ' · Box 3 (mastered): ' + b[3];
+    }
+    function go(d){ pos = (pos + d + cards.length) % cards.length; render(); }
+    ctr.querySelector('.prev').onclick = function(){ go(-1); };
+    ctr.querySelector('.next').onclick = function(){ go(1); };
+    ctr.querySelector('.flip').onclick = function(){ cards[order[pos]].classList.toggle('flipped'); };
+    ctr.querySelector('.again').onclick = function(){ boxes[order[pos]] = 1; store.set(key, boxes); go(1); };
+    ctr.querySelector('.got').onclick = function(){ var i = order[pos]; boxes[i] = Math.min(3,(boxes[i]||1)+1); store.set(key, boxes); go(1); };
+    ctr.querySelector('.shuffle').onclick = function(){
+      order = cards.map(function(_,i){return i;}).sort(function(a,b){ return ((boxes[a]||1)-(boxes[b]||1)) || (Math.random()-.5); });
+      pos = 0; render();
+    };
+    render();
+  });
+
+  /* ---------- MCQ engine ---------- */
+  document.querySelectorAll('.mcq-bank').forEach(function(bank){
+    var qs = Array.prototype.slice.call(bank.querySelectorAll('.mcq'));
+    var sb = bank.querySelector('.scoreboard');
+    var right = 0, done = 0;
+    function paint(){ if (sb) sb.querySelector('.sc').textContent = 'Score ' + right + ' / ' + done + ' answered · ' + qs.length + ' questions'; }
+    qs.forEach(function(q, i){
+      var ans = q.dataset.answer;
+      var num = q.querySelector('.qn'); if (num) num.textContent = 'Q' + (i+1) + '.';
+      q.querySelectorAll('ol.opts li').forEach(function(li){
+        if (li.dataset.k === ans) li.classList.add('is-key');
+        li.setAttribute('tabindex','0');
+        function pick(){
+          if (q.classList.contains('answered')) return;
+          q.classList.add('answered'); done++;
+          if (li.dataset.k === ans){ right++; li.classList.add('right'); }
+          else { li.classList.add('wrong'); q.querySelector('li[data-k="'+ans+'"]').classList.add('right'); }
+          paint();
+        }
+        li.addEventListener('click', pick);
+        li.addEventListener('keydown', function(e){ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+      });
+    });
+    if (sb) sb.querySelector('button').onclick = function(){
+      right = 0; done = 0;
+      qs.forEach(function(q){ q.classList.remove('answered'); q.querySelectorAll('li').forEach(function(li){ li.classList.remove('right','wrong'); }); });
+      paint();
+    };
+    paint();
+  });
+
+  /* ---------- print: open every model answer ---------- */
+  window.addEventListener('beforeprint', function(){ document.querySelectorAll('details').forEach(function(d){ d.setAttribute('open',''); }); });
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Almanac · Innovation & Ventures</title>
+<meta name="description" content="Mid-semester study guide, B.Tech CSE Semester VII: Innovation &amp; Venture Dev.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Courier+Prime&display=swap">
+<style>
+/* ============ The Mid-Semester Almanac — tokens ============ */
+:root{
+  color-scheme: light;
+  --ground:#F4DEDC;          /* blush wallpaper */
+  --paper:#FFF9F2;           /* hotel stationery */
+  --paper-2:#FBEFE6;
+  --ink:#2C1D28;             /* aubergine ink */
+  --muted:#6B5462;
+  --rule:#D2AFAA;
+  --rule-strong:#9C6F72;
+  --stamp:#8E2F45;
+  --good:#3E7D5A; --good-soft:#DDEFE3;
+  --bad:#A8392E;  --bad-soft:#F6DCD7;
+  --fig-ground:#FFFFFF;
+  --shadow: 0 1px 0 rgba(44,29,40,.06), 0 10px 24px -14px rgba(44,29,40,.35);
+  /* default accent (lobby) */
+  --acc:#8E2F45; --acc2:#5B3A6E; --acc-soft:#F2D2D8; --acc-ink:#FFF9F2;
+  --display:"Jost","Futura","Century Gothic","Trebuchet MS",sans-serif;
+  --body:"Libre Caslon Text","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --mono:"Courier Prime","Courier New",ui-monospace,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+    --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+    --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+    --fig-ground:#F7F1EA;
+    --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+    --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#1C1420; --paper:#271D2A; --paper-2:#2F2433; --ink:#F4E7E3; --muted:#C4ADB9;
+  --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
+  --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
+  --fig-ground:#F7F1EA;
+  --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
+  --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
+}
+
+/* per-film subject palettes */
+[data-subject="rm"] { --acc:#A83F63; --acc2:#6B2D5C; --acc-soft:#F5D6DF; }
+[data-subject="aca"]{ --acc:#C0433A; --acc2:#2F6F95; --acc-soft:#D8E9F3; }
+[data-subject="mba"]{ --acc:#A87A12; --acc2:#5E6B3A; --acc-soft:#F4E6BC; }
+[data-subject="bi"] { --acc:#23857C; --acc2:#C8703F; --acc-soft:#D2EEEA; }
+[data-subject="llm"]{ --acc:#BD5A22; --acc2:#6E4A2F; --acc-soft:#F7DDC8; }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+  :root:not([data-theme="light"]) [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+  :root:not([data-theme="light"]) [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+  :root:not([data-theme="light"]) [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+  :root:not([data-theme="light"]) [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+}
+:root[data-theme="dark"] [data-subject="rm"] { --acc:#F09AB6; --acc2:#D5A3CB; --acc-soft:#3B2330; }
+:root[data-theme="dark"] [data-subject="aca"]{ --acc:#F2958C; --acc2:#9CC9E6; --acc-soft:#1F3140; }
+:root[data-theme="dark"] [data-subject="mba"]{ --acc:#E8C263; --acc2:#C3CE97; --acc-soft:#3A3219; }
+:root[data-theme="dark"] [data-subject="bi"] { --acc:#7FD3C9; --acc2:#F2B38C; --acc-soft:#173633; }
+:root[data-theme="dark"] [data-subject="llm"]{ --acc:#F2A06B; --acc2:#D9B48F; --acc-soft:#3D2819; }
+
+/* ============ base ============ */
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:var(--body); font-size:17px; line-height:1.68;
+  padding-inline:16px; padding-block:0 64px;
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 46px, color-mix(in srgb, var(--rule) 22%, transparent) 46px 48px);
+}
+a{color:var(--acc)}
+a:focus-visible, button:focus-visible, summary:focus-visible, [tabindex]:focus-visible{outline:3px solid var(--acc2); outline-offset:3px}
+h1,h2,h3,h4{font-family:var(--display); font-weight:500; text-wrap:balance; line-height:1.2}
+p{margin:0 0 1em}
+.wrap{max-width:1040px; margin-inline:auto}
+
+/* ============ proscenium header ============ */
+.marquee{max-width:1040px; margin:28px auto 0; text-align:center; background:var(--paper);
+  border:1px solid var(--rule-strong); outline:6px double var(--rule); outline-offset:-14px;
+  padding:44px 28px 30px; box-shadow:var(--shadow); position:relative}
+.marquee .eyebrow{font-family:var(--display); letter-spacing:.42em; text-transform:uppercase; font-size:12px; color:var(--muted)}
+.marquee h1{font-size:clamp(34px,6vw,64px); letter-spacing:.14em; text-transform:uppercase; margin:.28em 0 .1em; color:var(--stamp); font-weight:500}
+.marquee .sub{font-family:var(--body); font-style:italic; color:var(--muted); font-size:18px}
+.marquee .fleuron{font-family:var(--display); color:var(--rule-strong); letter-spacing:.8em; margin:14px 0 0}
+.theme-toggle{position:absolute; top:18px; right:22px; font-family:var(--display); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; background:transparent; border:1px solid var(--rule-strong); color:var(--muted); padding:6px 10px; cursor:pointer}
+
+/* ============ ticket-stub tabs ============ */
+.tickets{max-width:1040px; margin:22px auto 0; display:grid; grid-template-columns:repeat(6,1fr); gap:10px;
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:20; padding-block:10px; background:var(--ground)}
+.ticket{font:inherit; cursor:pointer; text-align:left; background:var(--paper); color:var(--ink);
+  border:1px solid var(--rule-strong); padding:10px 12px 9px; position:relative; min-width:0;
+  -webkit-mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+          mask: radial-gradient(circle 7px at 0 50%, transparent 98%, #000) left/51% 100% no-repeat,
+                radial-gradient(circle 7px at 100% 50%, transparent 98%, #000) right/51% 100% no-repeat;
+  transition:transform .18s ease, background .18s}
+.ticket:hover{transform:translateY(-2px)}
+.ticket .t-date{display:block; font-family:var(--mono); font-size:12px; color:var(--acc); letter-spacing:.06em}
+.ticket .t-name{display:block; font-family:var(--display); font-size:13.5px; letter-spacing:.08em; text-transform:uppercase; line-height:1.25; overflow-wrap:anywhere}
+.ticket .t-code{display:block; font-family:var(--mono); font-size:11px; color:var(--muted)}
+.ticket[aria-selected="true"]{background:var(--acc); color:var(--acc-ink)}
+.ticket[aria-selected="true"] .t-date,.ticket[aria-selected="true"] .t-code{color:var(--acc-ink); opacity:.85}
+@media (max-width:820px){ .tickets{grid-template-columns:repeat(3,1fr)} }
+@media (max-width:460px){ .tickets{grid-template-columns:repeat(2,1fr); position:static} }
+
+/* ============ panels & paper ============ */
+.panel{max-width:1040px; margin:18px auto 0}
+.panel[hidden]{display:none!important}
+.sheet{background:var(--paper); border:1px solid var(--rule); box-shadow:var(--shadow); padding:clamp(20px,4vw,56px); margin-top:22px}
+.prose{max-width:70ch; margin-inline:auto}
+.subject-title{text-align:center; padding-block:10px 4px}
+.subject-title .code{font-family:var(--mono); color:var(--acc); letter-spacing:.12em}
+.subject-title h2{font-size:clamp(28px,4.4vw,46px); letter-spacing:.12em; text-transform:uppercase; margin:.2em 0; color:var(--acc2)}
+.subject-title .meta{font-style:italic; color:var(--muted)}
+.unit-nav{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:18px 0 0; padding:0; list-style:none}
+.unit-nav a{font-family:var(--display); font-size:12px; letter-spacing:.18em; text-transform:uppercase; text-decoration:none;
+  color:var(--acc2); border:1px solid var(--acc2); padding:6px 12px; background:var(--paper)}
+.unit-nav a:hover{background:var(--acc-soft)}
+
+/* intertitle chapter card */
+.chapter-card{background:var(--acc-soft); border:1px solid var(--acc); outline:4px double var(--acc); outline-offset:-12px;
+  text-align:center; padding:46px 24px 40px; margin-top:34px; scroll-margin-top:110px}
+.chapter-card .ch-no{font-family:var(--display); letter-spacing:.5em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.chapter-card h2{font-size:clamp(26px,4vw,40px); letter-spacing:.1em; text-transform:uppercase; margin:.3em 0 .25em; color:var(--ink)}
+.chapter-card .in-which{font-style:italic; color:var(--muted); max-width:52ch; margin:0 auto}
+.chapter-card .syll{font-family:var(--mono); font-size:13px; color:var(--muted); margin-top:14px; max-width:70ch; margin-inline:auto}
+
+/* topic */
+.topic{scroll-margin-top:110px}
+.topic > h3{font-size:clamp(22px,3vw,30px); letter-spacing:.06em; text-transform:uppercase; color:var(--acc2);
+  border-bottom:2px solid var(--acc); padding-bottom:.35em; margin:1.6em 0 .8em}
+.topic > h3 .tno{font-family:var(--mono); font-size:.6em; color:var(--acc); letter-spacing:.05em; display:block; text-transform:none}
+.facet{font-family:var(--display); font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:var(--acc);
+  margin:1.8em 0 .6em; display:flex; align-items:center; gap:12px}
+.facet::after{content:""; flex:1; height:1px; background:var(--rule)}
+.prose h5{font-family:var(--display); font-size:16px; letter-spacing:.06em; margin:1.3em 0 .4em; color:var(--ink); font-weight:600}
+.prose ul,.prose ol{padding-left:1.3em; margin:0 0 1em}
+.prose li{margin-bottom:.35em}
+.prose strong{color:var(--acc2); font-weight:700}
+.defn{border-left:4px solid var(--acc); background:var(--paper-2); padding:14px 18px; margin:0 0 1em; font-style:italic}
+.defn b{font-style:normal; font-family:var(--display); letter-spacing:.06em; text-transform:uppercase; font-size:13px; color:var(--acc); display:block; margin-bottom:4px}
+.plain{background:var(--acc-soft); padding:12px 16px; margin:0 0 1em; border-radius:2px}
+.plain::before{content:"In plain words — "; font-family:var(--display); font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--acc)}
+.formula{font-family:var(--mono); background:var(--paper-2); border:1px dashed var(--rule-strong); padding:12px 16px; margin:0 0 1em; overflow-x:auto; white-space:pre; font-size:15px; line-height:1.55}
+.checklist{border:2px solid var(--acc2); padding:16px 20px 8px; margin:1em 0 1.6em; background:var(--paper); position:relative}
+.checklist::before{content:"Evaluator's Scoring Checklist"; position:absolute; top:-12px; left:16px; background:var(--paper); padding:0 8px;
+  font-family:var(--display); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--acc2)}
+.checklist ul{list-style:none; padding-left:0}
+.checklist li{padding-left:1.6em; position:relative}
+.checklist li::before{content:"✓"; position:absolute; left:0; color:var(--good); font-weight:700}
+.tip{font-size:15px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:10px 0; margin:0 0 1em; color:var(--muted)}
+.tip b{font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+
+/* tables */
+.tbl{overflow-x:auto; margin:0 0 1.2em}
+.tbl table{border-collapse:collapse; width:100%; font-size:15px; min-width:520px}
+.tbl th{font-family:var(--display); font-weight:500; letter-spacing:.06em; text-align:left; background:var(--acc-soft); color:var(--ink); border-bottom:2px solid var(--acc)}
+.tbl th,.tbl td{padding:8px 10px; border-bottom:1px solid var(--rule); vertical-align:top}
+.tbl td{font-variant-numeric:tabular-nums}
+
+/* figures */
+.plate{margin:1.4em auto 1.8em; max-width:760px; text-align:center}
+.plate .frame{background:var(--fig-ground); border:1px solid var(--rule-strong); outline:5px solid var(--paper-2); padding:14px; overflow-x:auto}
+.plate img{display:block; margin:0 auto; max-height:520px; width:auto; max-width:100%}
+.plate svg{display:block; margin:0 auto; max-width:100%; height:auto}
+.plate.svgplate .frame{background:var(--paper)}
+.plate figcaption{text-align:left; font-size:14.5px; color:var(--muted); margin-top:10px; line-height:1.55}
+.plate figcaption .pl{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:12px; color:var(--acc)}
+.plate figcaption .sketch{display:block; margin-top:6px; font-family:var(--mono); font-size:13px; color:var(--ink)}
+.plate figcaption .credit{display:block; font-size:12px; margin-top:4px}
+.plate.missing .frame{padding:30px; font-style:italic; color:var(--muted)}
+/* svg tokens */
+.dg text{font-family:var(--display); fill:var(--ink); font-size:13px}
+.dg .box{fill:var(--paper-2); stroke:var(--acc2); stroke-width:1.6}
+.dg .box2{fill:var(--acc-soft); stroke:var(--acc); stroke-width:1.6}
+.dg .box3{fill:var(--paper); stroke:var(--rule-strong); stroke-width:1.2; stroke-dasharray:4 3}
+.dg .ln{stroke:var(--ink); stroke-width:1.6; fill:none}
+.dg .ln2{stroke:var(--acc); stroke-width:1.8; fill:none}
+.dg .lnd{stroke:var(--muted); stroke-width:1.4; fill:none; stroke-dasharray:5 4}
+.dg .small{font-size:11px; fill:var(--muted)}
+.dg .hd{font-size:14px; letter-spacing:.08em; font-weight:600}
+.dg .ac{fill:var(--acc)}
+.dg .mk{fill:var(--ink)} .dg .mk2{fill:var(--acc)}
+
+/* exam blueprint + model answers */
+.paper-head{text-align:center; border:1px solid var(--ink); padding:18px; font-family:var(--display); margin-bottom:18px; background:var(--paper)}
+.paper-head .ph1{letter-spacing:.3em; text-transform:uppercase; font-size:13px}
+.paper-head .ph2{font-size:22px; letter-spacing:.1em; text-transform:uppercase; margin:6px 0}
+.paper-head .ph3{font-family:var(--mono); font-size:13px; color:var(--muted)}
+.qblock{border-top:1px solid var(--rule-strong); padding-top:10px; margin-top:22px}
+.qblock > .qno{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:13px; color:var(--acc)}
+.pyq-tag{display:inline-block; font-family:var(--mono); font-size:11.5px; border:1px solid var(--acc); color:var(--acc); padding:0 6px; margin-left:6px; vertical-align:middle}
+details.model{border:1px solid var(--rule-strong); background:var(--paper); margin:10px 0}
+details.model > summary{cursor:pointer; list-style:none; padding:12px 16px 12px 46px; position:relative; font-weight:600}
+details.model > summary::-webkit-details-marker{display:none}
+details.model > summary::before{content:"+"; position:absolute; left:14px; top:9px; width:22px; height:22px; border:1px solid var(--acc); color:var(--acc);
+  display:grid; place-items:center; font-family:var(--display)}
+details.model[open] > summary::before{content:"–"}
+details.model[open] > summary{border-bottom:1px dashed var(--rule)}
+details.model .ans{padding:14px 18px 6px}
+details.model .ans .marks{font-family:var(--mono); font-size:12.5px; color:var(--acc)}
+.or{text-align:center; font-family:var(--display); letter-spacing:.4em; color:var(--muted); font-size:12px; margin:4px 0}
+
+/* ============ flashcards ============ */
+.deck{margin:2em 0 1em; border:1px solid var(--acc2); background:var(--acc-soft); padding:22px clamp(12px,3vw,28px) 18px}
+.deck > .deck-title{font-family:var(--display); letter-spacing:.24em; text-transform:uppercase; text-align:center; font-size:14px; color:var(--acc2); margin:0 0 4px}
+.deck > .deck-sub{text-align:center; font-style:italic; color:var(--muted); font-size:14.5px; margin:0 0 14px}
+.fc{margin:10px 0}
+.fc-inner{display:grid; perspective:1400px}
+.fc-face{grid-area:1/1; background:var(--paper); border:1px solid var(--rule-strong); padding:22px 24px; min-height:210px;
+  backface-visibility:hidden; -webkit-backface-visibility:hidden; transition:transform .55s cubic-bezier(.3,.7,.2,1)}
+.fc-q{display:flex; flex-direction:column; justify-content:center; text-align:center; font-family:var(--display); font-size:19px; letter-spacing:.02em}
+.fc-a{transform:rotateY(180deg); font-size:15.5px}
+.fc.flipped .fc-q{transform:rotateY(-180deg)}
+.fc.flipped .fc-a{transform:rotateY(0deg)}
+.fc-face .side{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); display:block; margin-bottom:10px}
+.fc .from{display:inline-block; font-family:var(--mono); font-size:11px; background:var(--acc2); color:var(--paper); padding:1px 7px; margin-bottom:10px; align-self:center}
+.deck.js .fc{display:none; cursor:pointer}
+.deck.js .fc.current{display:block}
+.deck-controls{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center; margin-top:12px}
+.deck-controls button, .btn{font-family:var(--display); font-size:12px; letter-spacing:.16em; text-transform:uppercase; cursor:pointer;
+  background:var(--paper); color:var(--ink); border:1px solid var(--rule-strong); padding:8px 12px}
+.deck-controls button.again{border-color:var(--bad); color:var(--bad)}
+.deck-controls button.got{border-color:var(--good); color:var(--good)}
+.deck-controls .count{font-family:var(--mono); font-size:13px; color:var(--muted); min-width:9ch; text-align:center}
+.deck-controls .boxes{font-family:var(--mono); font-size:12px; color:var(--muted); width:100%; text-align:center}
+
+/* ============ MCQ ============ */
+.mcq{background:var(--paper); border:1px solid var(--rule); padding:16px 18px 10px; margin:14px 0}
+.mcq .stem{font-weight:600; margin-bottom:10px}
+.mcq .stem .qn{font-family:var(--mono); color:var(--acc); margin-right:6px}
+.mcq ol.opts{list-style:none; padding:0; margin:0 0 8px; display:grid; gap:6px}
+.mcq ol.opts li{border:1px solid var(--rule); padding:8px 12px 8px 40px; position:relative; cursor:pointer; background:var(--paper-2)}
+.mcq ol.opts li::before{content:attr(data-k); position:absolute; left:10px; top:7px; font-family:var(--mono); color:var(--acc); text-transform:uppercase}
+.mcq ol.opts li:hover{border-color:var(--acc)}
+.mcq.answered ol.opts li{cursor:default}
+.mcq ol.opts li.right{background:var(--good-soft); border-color:var(--good)}
+.mcq ol.opts li.wrong{background:var(--bad-soft); border-color:var(--bad); text-decoration:line-through; text-decoration-color:var(--bad)}
+.mcq .why{display:none; font-size:15px; border-top:1px dashed var(--rule); padding-top:10px; margin-top:6px}
+.mcq.answered .why{display:block}
+.mcq .why b.key{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:12px; color:var(--good)}
+.scoreboard{position:sticky; top:84px; z-index:5; display:flex; justify-content:center; gap:14px; align-items:center; background:var(--acc2); color:var(--paper);
+  font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px; padding:8px 12px; margin:12px 0}
+.scoreboard button{background:transparent; color:var(--paper); border:1px solid var(--paper); font:inherit; padding:3px 8px; cursor:pointer}
+@media (max-width:460px){ .scoreboard{position:static} }
+
+/* lobby */
+.grid-cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:16px 0}
+.lobby-card{background:var(--acc-soft); border:1px solid var(--acc); padding:18px; text-align:center}
+.lobby-card .ld{font-family:var(--mono); color:var(--acc)}
+.lobby-card h4{margin:.3em 0; letter-spacing:.1em; text-transform:uppercase; font-size:17px}
+.lobby-card p{font-size:14.5px; color:var(--muted); margin:.4em 0 .8em}
+.note-box{border:1px solid var(--stamp); padding:14px 18px; background:var(--paper-2); margin:1em 0}
+.note-box b.h{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:12px; color:var(--stamp); display:block}
+.footer{text-align:center; font-family:var(--display); letter-spacing:.3em; text-transform:uppercase; font-size:11px; color:var(--muted); margin-top:40px}
+
+/* ============ print ============ */
+@media print{
+  body{background:#fff; color:#000; padding:0; font-size:11pt}
+  .tickets,.theme-toggle,.deck-controls,.scoreboard,.unit-nav{display:none!important}
+  .panel[hidden]{display:block!important}
+  .panel{page-break-before:always}
+  .sheet,.marquee{box-shadow:none; border:none; outline:none}
+  .chapter-card{page-break-before:always; outline:none}
+  .deck.js .fc{display:block!important; page-break-inside:avoid}
+  .fc-inner{display:block}
+  .fc-face{transform:none!important; min-height:0; border:none; border-bottom:1px solid #999; padding:6px 0}
+  .fc-q{font-size:12pt; text-align:left; font-weight:600}
+  .mcq .why{display:block!important}
+  .plate{page-break-inside:avoid}
+  details.model > summary::before{display:none}
+  details.model > summary{padding-left:12px}
+}
+@media print{ .mcq ol.opts li.is-key{border:2px solid #000; font-weight:700} .mcq ol.opts li.is-key::after{content:"  ✓ correct"} }
+.prose code{font-family:var(--mono); font-size:.92em; background:var(--paper-2); padding:0 4px; overflow-wrap:anywhere; word-break:break-word}
+.formula code{background:none; padding:0}
+/* "Starting from zero" beginner boxes */
+.zero{background:var(--paper-2); border:2px dashed var(--acc); padding:18px 20px 8px; margin:0 0 1.6em; position:relative; font-size:16.5px}
+.zero-h{font-family:var(--display); letter-spacing:.22em; text-transform:uppercase; font-size:12.5px; color:var(--acc-ink); background:var(--acc); display:inline-block; padding:3px 10px; margin:-4px 0 12px}
+.zero p, .zero li{line-height:1.72}
+.zero-f{font-family:var(--display); letter-spacing:.16em; text-transform:uppercase; font-size:11.5px; color:var(--muted); text-align:right; margin:.4em 0 .6em}
+/* ============ multi-page navigation ============ */
+a.ticket{display:block; text-decoration:none}
+a.ticket[aria-current="page"]{background:var(--acc); color:var(--acc-ink)}
+a.ticket[aria-current="page"] .t-date, a.ticket[aria-current="page"] .t-code{color:var(--acc-ink); opacity:.85}
+.marquee a{color:inherit; text-decoration:none}
+.marquee h1 a:hover{text-decoration:underline; text-decoration-thickness:1px; text-underline-offset:6px}
+.marquee-slim{padding:26px 24px 18px}
+.marquee-slim h1{font-size:clamp(24px,3.6vw,38px)}
+.marquee-slim .fleuron{margin-top:8px}
+.pager{display:grid; grid-template-columns:1fr auto 1fr; gap:12px; align-items:stretch; margin:36px 0 0}
+.pager a{font-family:var(--display); letter-spacing:.12em; text-transform:uppercase; font-size:13px; text-decoration:none;
+  color:var(--ink); background:var(--paper); border:1px solid var(--rule-strong); padding:14px 16px; display:flex; align-items:center}
+.pager a:hover{background:var(--acc-soft)}
+.pager .pg-next{justify-content:flex-end; text-align:right}
+.pager .pg-home{color:var(--acc)}
+@media (max-width:560px){ .pager{grid-template-columns:1fr} .pager .pg-next{justify-content:flex-start; text-align:left} }
+.resume{display:block; margin:10px auto 0; font-family:var(--display); letter-spacing:.14em; text-transform:uppercase; font-size:12px;
+  background:var(--acc2); color:var(--paper); border:0; padding:9px 16px; cursor:pointer}
+@media print{ .pager,.resume{display:none!important} .panel{page-break-before:auto} }
+.marquee .eyebrow{padding-inline:130px}
+@media (max-width:980px){
+  .marquee .eyebrow{padding-inline:0}
+  .theme-toggle{position:static; display:block; margin:0 auto 14px}
+}
+.marquee .credit-line{font-family:var(--display); letter-spacing:.34em; text-transform:uppercase; font-size:11.5px; color:var(--acc); margin-top:10px}
+
+</style>
+</head>
+<body>
+<header class="marquee marquee-slim">
+  <button class="theme-toggle" id="themeToggle" type="button">Night edition</button>
+  <div class="eyebrow"><a href="index.html">B.Tech CSE · Semester VII · Graphic Era (Deemed to be University)</a></div>
+  <h1><a href="index.html">The Mid-Semester Almanac</a></h1>
+  <div class="sub">Innovation &amp; Venture Dev. · exam on 29 Sept · MBA-302</div>
+  <div class="credit-line">Created by Harshit</div>
+  <div class="fleuron">◆ ◆ ◆</div>
+</header>
+<nav class="tickets" aria-label="Subjects"><a class="ticket" href="index.html"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="rm.html"><span class="t-date">26 Sept</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="aca.html"><span class="t-date">28 Sept</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="mba.html" aria-current="page"><span class="t-date">29 Sept</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a><a class="ticket" href="bi.html"><span class="t-date">30 Sept</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="llm.html"><span class="t-date">03 Oct</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a></nav>
+<main>
+<section class="panel" id="mba" data-subject="mba">
+<div class="sheet">
+  <div class="subject-title">
+    <div class="code">MBA-302 · EXAM ON TUESDAY 29 SEPTEMBER</div>
+    <h2>Innovation &amp; Venture Development</h2>
+    <div class="meta">Units I–II · 100% multiple choice</div>
+    <ul class="unit-nav"></ul>
+  </div>
+  <div class="prose">
+    <p class="tip"><b>How to use this guide.</b> This paper is all MCQs, so you need to recognise details quickly, not write long answers. Each unit starts with a <em>primer</em>: the facts MCQ setters test, such as who coined a term, launch years, the parts of a framework, and Indian examples. Then comes a <em>scored question bank</em>. Tap an option to answer; the explanation says why the correct answer is right <em>and</em> why each distractor is wrong. The scoreboard keeps your tally, and "Reset" clears it for a second attempt.</p>
+  </div>
+</div>
+
+<!-- ======================= UNIT I ======================= -->
+<div class="chapter-card" id="mba-u1" data-short="Unit I · Foundations">
+  <div class="ch-no">Unit One</div>
+  <h2>Foundations of Innovation &amp; Entrepreneurship</h2>
+  <p class="in-which">Types of innovation, the entrepreneurial mindset, India's startup ecosystem and policies, and techniques for generating ideas.</p>
+  <p class="syll">Syllabus: understanding innovation (definitions; types: product, process, frugal, business model) · role of innovation in India's growth and startup ecosystem · entrepreneurial mindset · Indian ecosystem (incubators, accelerators, government bodies, angel networks, VC) · national policies (Startup India, Digital India, AIM, Make in India) · idea generation (brainstorming, design thinking, SCAMPER)</p>
+</div>
+
+<div class="sheet"><div class="prose">
+<h3 class="facet">Primer · Innovation</h3>
+<div class="defn"><b>Definitions to recognise</b><strong>Schumpeter</strong> (1934): innovation is "new combinations" of resources: a new product, new method of production, new market, new source of supply, or new organisation. It drives <em>creative destruction</em> (1942), where new firms and technologies displace old ones. <strong>Drucker</strong>: "Innovation is the specific tool of entrepreneurs." <strong>OECD Oslo Manual</strong>: a new or improved product or process that differs significantly from previous ones and has been made available to users. <em>Invention</em> is the creation of a new idea; <em>innovation</em> is its successful commercial or social application.</div>
+<div class="tbl"><table><thead><tr><th>Type (syllabus)</th><th>What changes</th><th>Indian example</th></tr></thead><tbody>
+<tr><td><strong>Product</strong></td><td>A new or improved good or service offered to customers</td><td>Ola Electric scooter; Paytm wallet</td></tr>
+<tr><td><strong>Process</strong></td><td>A new or improved way of producing or delivering</td><td>Aravind Eye Care's assembly-line cataract surgery; Dabbawalas' coding system; UPI rails</td></tr>
+<tr><td><strong>Frugal</strong></td><td>"Doing more with less": cutting cost and complexity while keeping core value, for resource-constrained users (related: <em>Jugaad</em>)</td><td>Jaipur Foot, Mitticool clay fridge, Godrej ChotuKool, Chandrayaan/Mangalyaan budgets, GE MAC 400 ECG</td></tr>
+<tr><td><strong>Business model</strong></td><td>How value is created, delivered and captured (revenue logic)</td><td>Jio's free-voice/cheap-data model; Zerodha's zero-brokerage discount model; Ola/Uber asset-light aggregation</td></tr>
+</tbody></table></div>
+<p><strong>Other classifications that come up:</strong> by degree: <em>incremental</em> (small improvements) vs <em>radical</em> (breakthrough); <em>disruptive</em> (Clayton Christensen, <em>The Innovator's Dilemma</em>, 1997: starts at the low end or in a new market with a "worse" but cheaper or simpler product, then moves up-market) vs <em>sustaining</em> (better products for existing customers); <em>architectural</em> (Henderson &amp; Clark: new arrangement of existing components); <em>open innovation</em> (Henry Chesbrough, 2003: using external ideas and paths to market); <em>reverse innovation</em> (Govindarajan: developed in emerging markets and then taken to rich markets).</p>
+
+<h3 class="facet">Primer · Role of Innovation in India</h3>
+<ul>
+<li>India is the world's <strong>third-largest startup ecosystem</strong> (after the USA and China), with more than a lakh DPIIT-recognised startups and 100+ unicorns. A <strong>unicorn</strong> is a privately held startup valued at ≥ US$1 billion (term coined by Aileen Lee, 2013); a <em>decacorn</em> is ≥ $10 billion; a <em>soonicorn</em> is a likely future unicorn.</li>
+<li><strong>Global Innovation Index (WIPO):</strong> India rose from 81st (2015) to around 40th (2023–24), the leading lower-middle-income economy.</li>
+<li><strong>Digital public infrastructure</strong> ("India Stack"): Aadhaar, UPI, DigiLocker, ONDC, CoWIN. The <strong>JAM trinity</strong> is Jan Dhan + Aadhaar + Mobile.</li>
+<li>Innovation drives GDP growth, jobs (startups create jobs rather than seek them), exports (IT services, pharma: "pharmacy of the world"), and inclusion (fintech, agritech, edtech in tier-2/3 "Bharat").</li>
+</ul>
+
+<h3 class="facet">Primer · The Entrepreneurial Mindset</h3>
+<div class="tbl"><table><thead><tr><th>Trait (syllabus)</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><strong>Creativity</strong></td><td>Generating novel, useful ideas and seeing opportunities others miss</td></tr>
+<tr><td><strong>Risk-taking</strong></td><td><em>Calculated</em> risk, not gambling: acting under uncertainty with limited downside</td></tr>
+<tr><td><strong>Problem-solving</strong></td><td>Treating problems as opportunities; working back to root causes</td></tr>
+<tr><td><strong>Resilience</strong></td><td>Recovering from failure; persistence; learning from setbacks ("fail fast, learn faster")</td></tr>
+</tbody></table></div>
+<p>Also tested: <strong>McClelland's need for achievement</strong> (nAch); <strong>internal locus of control</strong> (believing outcomes depend on your own actions); <strong>growth mindset</strong> (Carol Dweck); <strong>effectuation</strong> (Saras Sarasvathy): start from the means you have ("bird in hand"), <em>affordable loss</em> (not expected return), "crazy quilt" partnerships, "lemonade" (use surprises), "pilot in the plane" (control rather than predict). <em>Intrapreneurship</em> is entrepreneurial behaviour inside an existing firm (term popularised by Gifford Pinchot).</p>
+
+<h3 class="facet">Primer · Indian Startup Ecosystem</h3>
+<div class="tbl"><table><thead><tr><th>Actor</th><th>Role</th><th>Examples</th></tr></thead><tbody>
+<tr><td><strong>Incubator</strong></td><td>Nurtures <em>early-stage / idea-stage</em> ventures over a longer period (1–3 years): workspace, mentoring, labs, networks; often little or no equity</td><td>SINE (IIT Bombay), IIT Madras Incubation Cell, CIIE.CO (IIM Ahmedabad), T-Hub (Hyderabad), NSRCEL (IIM Bangalore), Atal Incubation Centres</td></tr>
+<tr><td><strong>Accelerator</strong></td><td>Speeds up <em>existing</em> startups in a fixed-term <em>cohort</em> (3–6 months) with seed investment in exchange for equity, intense mentorship, and a <strong>Demo Day</strong></td><td>Y Combinator (global model), Techstars, Google for Startups Accelerator India, Axilor, Surge (Peak XV)</td></tr>
+<tr><td><strong>Government bodies</strong></td><td>Policy, recognition, funding, infrastructure</td><td>DPIIT (startup recognition), SIDBI (Fund of Funds), NITI Aayog/AIM, MeitY, DST (NIDHI), BIRAC (biotech), Ministry of MSME</td></tr>
+<tr><td><strong>Angel networks</strong></td><td>High-net-worth individuals investing their <em>own</em> money at seed stage, often with mentorship</td><td>Indian Angel Network (2006), Mumbai Angels, Chennai Angels, LetsVenture (platform)</td></tr>
+<tr><td><strong>Venture capital</strong></td><td>Professional funds investing pooled money (from LPs) for equity in high-growth startups, Series A onward</td><td>Peak XV (ex-Sequoia India), Accel, Blume Ventures, Nexus, Kalaari, Elevation</td></tr>
+</tbody></table></div>
+
+<h3 class="facet">Primer · National Policies</h3>
+<div class="tbl"><table><thead><tr><th>Policy</th><th>Launched</th><th>Key facts</th></tr></thead><tbody>
+<tr><td><strong>Make in India</strong></td><td>25 Sept 2014</td><td>Makes India a global manufacturing hub; lion logo; "Zero Defect, Zero Effect"; initially 25 sectors; supported by PLI (Production-Linked Incentive) schemes from 2020; nodal: DPIIT</td></tr>
+<tr><td><strong>Digital India</strong></td><td>1 July 2015</td><td>Three vision areas: digital infrastructure as a core utility, governance and services on demand, digital empowerment of citizens; nine pillars; nodal: MeitY; examples: DigiLocker, e-Hospital, BharatNet, UMANG</td></tr>
+<tr><td><strong>Startup India</strong></td><td>16 Jan 2016</td><td>DPIIT recognition (entity ≤ 10 years old, turnover ≤ ₹100 crore in any FY, working on innovation or scalable models); 3-year income-tax holiday within the first 10 years (Sec 80-IAC, for eligible startups); self-certification for labour and environment laws; fast-tracked patents with 80% fee rebate; faster exit; <strong>Fund of Funds for Startups (₹10,000 crore, managed by SIDBI)</strong>; <strong>Startup India Seed Fund Scheme (₹945 crore, 2021)</strong></td></tr>
+<tr><td><strong>Atal Innovation Mission (AIM)</strong></td><td>2016</td><td>Flagship under <strong>NITI Aayog</strong>; <em>Atal Tinkering Labs</em> (schools, grades 6–12), <em>Atal Incubation Centres</em>, Atal New India Challenges, Atal Community Innovation Centres, ARISE (MSMEs)</td></tr>
+</tbody></table></div>
+
+<h3 class="facet">Primer · Idea Generation</h3>
+<div class="tbl"><table><thead><tr><th>Technique</th><th>Key facts</th></tr></thead><tbody>
+<tr><td><strong>Brainstorming</strong></td><td>Alex Osborn (<em>Applied Imagination</em>, 1953). Rules: <em>defer judgement</em>, go for <em>quantity</em>, welcome <em>wild ideas</em>, <em>combine and build</em> on others' ideas. Variants: brainwriting (6-3-5), reverse brainstorming, mind mapping.</td></tr>
+<tr><td><strong>Design thinking</strong></td><td>Human-centred problem solving (IDEO / Stanford d.school). Five stages: <strong>Empathise → Define → Ideate → Prototype → Test</strong>, iterative, not linear. Double Diamond (UK Design Council): Discover, Define, Develop, Deliver. The "sweet spot" balances desirability, feasibility and viability.</td></tr>
+<tr><td><strong>SCAMPER</strong></td><td>Checklist by <strong>Bob Eberle</strong> (1971), built on Osborn's questions: <strong>S</strong>ubstitute · <strong>C</strong>ombine · <strong>A</strong>dapt · <strong>M</strong>odify (magnify/minify) · <strong>P</strong>ut to other uses · <strong>E</strong>liminate · <strong>R</strong>everse/Rearrange</td></tr>
+</tbody></table></div>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 660 150" role="img" aria-label="Five stages of design thinking with iteration loop">
+<defs><marker id="mbA1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
+<g>
+<circle cx="70" cy="60" r="48" class="box2"/><text x="70" y="65" text-anchor="middle" class="hd">Empathise</text>
+<circle cx="200" cy="60" r="48" class="box"/><text x="200" y="65" text-anchor="middle" class="hd">Define</text>
+<circle cx="330" cy="60" r="48" class="box"/><text x="330" y="65" text-anchor="middle" class="hd">Ideate</text>
+<circle cx="460" cy="60" r="48" class="box"/><text x="460" y="65" text-anchor="middle" class="hd">Prototype</text>
+<circle cx="590" cy="60" r="48" class="box2"/><text x="590" y="65" text-anchor="middle" class="hd">Test</text>
+<line x1="118" y1="60" x2="150" y2="60" class="ln" marker-end="url(#mbA1)"/><line x1="248" y1="60" x2="280" y2="60" class="ln" marker-end="url(#mbA1)"/><line x1="378" y1="60" x2="410" y2="60" class="ln" marker-end="url(#mbA1)"/><line x1="508" y1="60" x2="540" y2="60" class="ln" marker-end="url(#mbA1)"/>
+<path d="M590,108 C590,145 200,145 200,112" class="lnd" marker-end="url(#mbA1)"/><text x="395" y="140" text-anchor="middle" class="small">iterate: tests send you back to redefine or re-ideate</text>
+</g></svg></div>
+<figcaption><span class="pl">Plate M1 · Design thinking (d.school model)</span> <span class="sketch">How to recognise it: five stages in order. MCQs often ask which stage comes first (Empathise) or which stage builds low-cost models (Prototype).</span></figcaption></figure>
+</div></div>
+
+<div class="sheet"><div class="prose">
+<h3 class="facet">Question Bank · Unit I</h3>
+<div class="mcq-bank">
+<div class="scoreboard"><span class="sc"></span><button type="button">Reset</button></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>Which economist described innovation as "new combinations" and introduced the idea of "creative destruction"?</p><ol class="opts"><li data-k="a">Peter Drucker</li><li data-k="b">Clayton Christensen</li><li data-k="c">Joseph Schumpeter</li><li data-k="d">Michael Porter</li></ol><div class="why"><b class="key">Answer (c).</b> Schumpeter defined innovation as new combinations of productive resources (1934) and described capitalism's "creative destruction" (1942). Drucker called innovation "the specific tool of entrepreneurs" but did not coin these terms. Christensen is known for <em>disruptive</em> innovation, and Porter for competitive strategy and the Five Forces.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>The key difference between invention and innovation is that innovation:</p><ol class="opts"><li data-k="a">Must always be patented</li><li data-k="b">Involves the successful commercial or social application of an idea</li><li data-k="c">Is always a physical product</li><li data-k="d">Happens only in R&amp;D laboratories</li></ol><div class="why"><b class="key">Answer (b).</b> An invention is a new idea or device; it becomes an innovation when it is implemented and creates value for users or markets. Patents are optional, since many innovations (business models, processes) are not patented. Innovation can be a service, process or model, not only a physical product. It also happens in the field, in firms and through users, not only in labs.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Aravind Eye Care's high-volume, assembly-line approach to cataract surgery, which cuts cost per operation dramatically, is primarily an example of:</p><ol class="opts"><li data-k="a">Process innovation</li><li data-k="b">Product innovation</li><li data-k="c">Radical technological innovation</li><li data-k="d">Open innovation</li></ol><div class="why"><b class="key">Answer (a).</b> Aravind's breakthrough is in <em>how</em> surgery is delivered (workflow, task specialisation, volume), which is a process innovation. The product (cataract surgery and lenses) existed before, so it is not product innovation. The technology is not new, so it is not radical technological innovation. It was developed internally, not through external collaboration, so it is not primarily open innovation.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>"Doing more with less", developing affordable solutions for resource-constrained customers by reducing cost and complexity, describes:</p><ol class="opts"><li data-k="a">Sustaining innovation</li><li data-k="b">Architectural innovation</li><li data-k="c">Luxury innovation</li><li data-k="d">Frugal innovation</li></ol><div class="why"><b class="key">Answer (d).</b> Frugal innovation strips a product to its essential value at a fraction of the cost (Jaipur Foot, Mitticool, ChotuKool). Sustaining innovation improves products for existing, demanding customers, usually adding features and cost. Architectural innovation reconfigures existing components into a new arrangement. "Luxury innovation" targets premium buyers, the opposite of frugality.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>Which of these is the best example of <em>business model</em> innovation?</p><ol class="opts"><li data-k="a">A faster processor chip</li><li data-k="b">A new flavour of biscuit</li><li data-k="c">Zerodha charging zero brokerage on equity delivery trades and earning through other fees</li><li data-k="d">A factory installing robotic welding arms</li></ol><div class="why"><b class="key">Answer (c).</b> Zerodha changed <em>how value is captured</em> (the revenue logic) in stock broking, which is business-model innovation. A faster chip and a new flavour are product innovations. Robotic welding is a process innovation inside manufacturing.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>According to Clayton Christensen, disruptive innovations typically:</p><ol class="opts"><li data-k="a">Begin by serving the most demanding, high-end customers</li><li data-k="b">Start at the low end or in new markets with simpler, cheaper offerings and later move up-market</li><li data-k="c">Are always based on breakthrough science</li><li data-k="d">Are launched mainly by market leaders</li></ol><div class="why"><b class="key">Answer (b).</b> Disruption starts where incumbents are not interested (low-end or non-consumers) with "good enough" products, then improves until it displaces the leaders. Serving demanding high-end customers is <em>sustaining</em> innovation. Disruption is about the business model and market entry, not necessarily breakthrough science. Incumbents usually <em>fail</em> to disrupt themselves (the innovator's dilemma), so disruptors are usually entrants.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>The concept of "open innovation", using external as well as internal ideas and paths to market, was popularised by:</p><ol class="opts"><li data-k="a">Henry Chesbrough</li><li data-k="b">Alex Osborn</li><li data-k="c">Eric Ries</li><li data-k="d">Steve Blank</li></ol><div class="why"><b class="key">Answer (a).</b> Chesbrough's <em>Open Innovation</em> (2003) introduced the idea. Osborn developed brainstorming. Ries wrote <em>The Lean Startup</em>. Blank created the customer development method.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>A "unicorn" startup is one that is:</p><ol class="opts"><li data-k="a">Profitable within its first year</li><li data-k="b">Listed on a stock exchange with a valuation of ₹1,000 crore</li><li data-k="c">Founded by a single founder</li><li data-k="d">Privately held and valued at US$1 billion or more</li></ol><div class="why"><b class="key">Answer (d).</b> Aileen Lee (2013) coined "unicorn" for <em>private</em> startups worth ≥ $1 billion. Profitability is not required, and many unicorns are loss-making. A listed company is no longer a private unicorn, and ₹1,000 crore is only about $120 million. The founder count is irrelevant.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>In terms of number of startups, India's ecosystem is generally ranked:</p><ol class="opts"><li data-k="a">First in the world</li><li data-k="b">Third, after the USA and China</li><li data-k="c">Tenth</li><li data-k="d">Fifth, after the USA, China, UK and Israel</li></ol><div class="why"><b class="key">Answer (b).</b> Government and industry reports (DPIIT, NASSCOM) describe India as the <strong>third-largest</strong> startup ecosystem. The USA remains first, so (a) is wrong. (c) and (d) understate India's scale.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>The "JAM trinity" that underpins much of India's digital innovation stands for:</p><ol class="opts"><li data-k="a">Jobs, Apprenticeship, Manufacturing</li><li data-k="b">Justice, Access, Mobility</li><li data-k="c">Jan Dhan, Aadhaar, Mobile</li><li data-k="d">Joint ventures, Angels, Mentors</li></ol><div class="why"><b class="key">Answer (c).</b> Jan Dhan bank accounts + Aadhaar biometric ID + Mobile phones made direct benefit transfers and fintech (UPI) possible at scale. The other expansions are invented distractors that sound plausible but are not the policy term.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>An entrepreneur's willingness to take risks is best described as:</p><ol class="opts"><li data-k="a">Taking calculated risks after assessing possible losses</li><li data-k="b">Gambling on outcomes with no information</li><li data-k="c">Avoiding all uncertainty</li><li data-k="d">Transferring every risk to investors</li></ol><div class="why"><b class="key">Answer (a).</b> Research on entrepreneurs (e.g. McClelland) shows a preference for <em>moderate, calculated</em> risk, where their skill influences the result. Gambling is uninformed risk. Avoiding all uncertainty makes entrepreneurship impossible. Investors share risk, but founders bear significant personal risk.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>The entrepreneurial trait of bouncing back from failures and setbacks is called:</p><ol class="opts"><li data-k="a">Creativity</li><li data-k="b">Locus of control</li><li data-k="c">Need for affiliation</li><li data-k="d">Resilience</li></ol><div class="why"><b class="key">Answer (d).</b> Resilience is recovering from setbacks and persisting. Creativity is generating new ideas. Locus of control is a belief about <em>who controls outcomes</em>. Need for affiliation (McClelland) is the desire for social relationships, which is not specifically entrepreneurial.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>An entrepreneur who believes that success depends mainly on their own actions rather than luck has:</p><ol class="opts"><li data-k="a">External locus of control</li><li data-k="b">Internal locus of control</li><li data-k="c">Fixed mindset</li><li data-k="d">High need for power</li></ol><div class="why"><b class="key">Answer (b).</b> An internal locus of control (Rotter) attributes outcomes to one's own effort, and is typical of entrepreneurs. An external locus attributes them to luck or others. A fixed mindset (Dweck) is the belief that abilities cannot grow. Need for power is about influencing others, not about causal beliefs.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>Saras Sarasvathy's effectuation principle of "affordable loss" means an entrepreneur:</p><ol class="opts"><li data-k="a">Invests only when the expected return is highest</li><li data-k="b">Borrows as much as possible to maximise upside</li><li data-k="c">Decides based on how much they can afford to lose, not on predicted returns</li><li data-k="d">Avoids partnerships to limit losses</li></ol><div class="why"><b class="key">Answer (c).</b> Effectuation replaces expected-return calculation (causal logic, option a) with a limit on acceptable downside. Heavy borrowing increases possible loss. Effectuation actually <em>encourages</em> partnerships (the "crazy quilt" principle), so (d) is wrong.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Which is the <em>most</em> accurate distinction between an incubator and an accelerator?</p><ol class="opts"><li data-k="a">Incubators nurture early-stage ideas over a longer, flexible period; accelerators run fixed-term cohorts for existing startups, usually taking equity and ending with a Demo Day</li><li data-k="b">Incubators always take more equity than accelerators</li><li data-k="c">Accelerators only work with non-profit ventures</li><li data-k="d">There is no difference; the terms are synonyms</li></ol><div class="why"><b class="key">Answer (a).</b> Incubators (e.g. SINE, IIT Madras IC) support idea-stage ventures for 1–3 years, often with little or no equity. Accelerators (e.g. Y Combinator) run 3–6-month cohorts with seed money for equity and a Demo Day. (b) is backwards, since accelerators typically take equity. (c) is false. (d) ignores real structural differences.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>High-net-worth individuals who invest their <em>own</em> money in very early-stage startups, often also mentoring them, are called:</p><ol class="opts"><li data-k="a">Venture capitalists</li><li data-k="b">Private equity firms</li><li data-k="c">Commercial bankers</li><li data-k="d">Angel investors</li></ol><div class="why"><b class="key">Answer (d).</b> Angels (e.g. members of the Indian Angel Network, Mumbai Angels) invest personal capital at seed stage. VCs invest pooled money from limited partners, usually later and in larger rounds. Private equity invests in mature companies. Commercial bankers lend against collateral rather than taking equity risk.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>The Indian Angel Network (IAN) was founded in:</p><ol class="opts"><li data-k="a">1991</li><li data-k="b">2006</li><li data-k="c">2016</li><li data-k="d">2020</li></ol><div class="why"><b class="key">Answer (b).</b> IAN began in 2006, one of India's first organised angel networks. 1991 is the year of economic liberalisation. 2016 is the Startup India launch. 2020 is associated with PLI schemes and the pandemic.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>Which government body grants "startup recognition" in India under the Startup India initiative?</p><ol class="opts"><li data-k="a">Reserve Bank of India</li><li data-k="b">SEBI</li><li data-k="c">DPIIT (Department for Promotion of Industry and Internal Trade)</li><li data-k="d">NABARD</li></ol><div class="why"><b class="key">Answer (c).</b> DPIIT (formerly DIPP) under the Ministry of Commerce &amp; Industry recognises startups. RBI regulates banking and monetary policy. SEBI regulates securities markets (including AIFs, but it does not recognise startups). NABARD is the rural development bank.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Startup India was launched on:</p><ol class="opts"><li data-k="a">16 January 2016</li><li data-k="b">25 September 2014</li><li data-k="c">1 July 2015</li><li data-k="d">15 August 2018</li></ol><div class="why"><b class="key">Answer (a).</b> Startup India launched on 16 January 2016. 25 September 2014 is <em>Make in India</em>. 1 July 2015 is <em>Digital India</em>. (d) is a distractor.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>Under DPIIT's definition, an entity can be recognised as a startup if, among other conditions, its annual turnover has not exceeded:</p><ol class="opts"><li data-k="a">₹10 crore</li><li data-k="b">₹25 crore</li><li data-k="c">₹50 crore</li><li data-k="d">₹100 crore</li></ol><div class="why"><b class="key">Answer (d).</b> The current definition (since 2019) is turnover ≤ ₹100 crore in any financial year and age ≤ 10 years from incorporation. ₹25 crore was the older (2016) limit, so option (b) may appear in older books and is a common trap. ₹10 crore and ₹50 crore were never the limit.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>The ₹10,000 crore "Fund of Funds for Startups" (FFS) under Startup India is managed by:</p><ol class="opts"><li data-k="a">NITI Aayog</li><li data-k="b">SIDBI</li><li data-k="c">State Bank of India</li><li data-k="d">IFCI</li></ol><div class="why"><b class="key">Answer (b).</b> SIDBI (Small Industries Development Bank of India) manages FFS, which invests in SEBI-registered Alternative Investment Funds (AIFs) that then invest in startups, so the government does not invest directly. NITI Aayog hosts AIM, not FFS. SBI and IFCI are not the fund managers.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>The Atal Innovation Mission (AIM) is housed under:</p><ol class="opts"><li data-k="a">Ministry of Finance</li><li data-k="b">Ministry of Education</li><li data-k="c">NITI Aayog</li><li data-k="d">Ministry of External Affairs</li></ol><div class="why"><b class="key">Answer (c).</b> AIM (2016) is NITI Aayog's flagship for innovation and entrepreneurship. The other ministries run other schemes. For example, the Ministry of Education runs Institution Innovation Councils through AICTE's innovation cell, which is a common confusion.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Atal Tinkering Labs (ATLs) are set up in:</p><ol class="opts"><li data-k="a">Schools, to nurture curiosity and innovation among students of grades 6–12</li><li data-k="b">Only IITs and IIMs</li><li data-k="c">Defence research laboratories</li><li data-k="d">Rural panchayat offices</li></ol><div class="why"><b class="key">Answer (a).</b> ATLs give school students tools such as 3D printers, robotics kits and electronics. Universities host <em>Atal Incubation Centres</em> instead, so (b) confuses the two. Defence labs and panchayats are not ATL hosts; <em>Atal Community Innovation Centres</em> serve underserved regions.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>"Zero Defect, Zero Effect" and a lion made of cogs are associated with:</p><ol class="opts"><li data-k="a">Digital India</li><li data-k="b">Startup India</li><li data-k="c">Skill India</li><li data-k="d">Make in India</li></ol><div class="why"><b class="key">Answer (d).</b> Make in India (2014) aims to make India a global manufacturing hub. Its lion logo stands for strength, and "Zero Defect, Zero Effect" means quality with no environmental harm. Digital India focuses on digital infrastructure and services. Startup India covers recognition and funding. Skill India (2015) covers vocational training.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>Which is <em>not</em> one of the three vision areas of Digital India?</p><ol class="opts"><li data-k="a">Digital infrastructure as a core utility to every citizen</li><li data-k="b">Production-linked incentives for electronics exports</li><li data-k="c">Governance and services on demand</li><li data-k="d">Digital empowerment of citizens</li></ol><div class="why"><b class="key">Answer (b).</b> PLI schemes (from 2020) belong to the manufacturing push (Make in India / Aatmanirbhar Bharat). They are not a Digital India vision area. Options (a), (c) and (d) are exactly the three official vision areas.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>The nodal ministry for Digital India is:</p><ol class="opts"><li data-k="a">Ministry of Commerce &amp; Industry</li><li data-k="b">Ministry of Communications only</li><li data-k="c">Ministry of Electronics and Information Technology (MeitY)</li><li data-k="d">Ministry of Home Affairs</li></ol><div class="why"><b class="key">Answer (c).</b> MeitY coordinates Digital India. Commerce &amp; Industry (via DPIIT) leads Make in India and Startup India. Communications (DoT) runs BharatNet, but it is not the nodal ministry for the whole programme. Home Affairs is unrelated.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Which of the following is a benefit available to DPIIT-recognised startups?</p><ol class="opts"><li data-k="a">Income-tax exemption for 3 consecutive years out of the first 10 years (subject to eligibility under Sec 80-IAC)</li><li data-k="b">Permanent exemption from GST</li><li data-k="c">Guaranteed government contracts</li><li data-k="d">Automatic listing on the NSE</li></ol><div class="why"><b class="key">Answer (a).</b> Eligible startups (with Inter-Ministerial Board approval) get a 3-year tax holiday within the first 10 years. GST still applies. Public procurement is <em>eased</em> (relaxed prior-experience and turnover norms) but not guaranteed. Listing requires meeting SEBI/exchange norms (SME platforms exist, but listing is not automatic).</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>The four basic rules of brainstorming proposed by Alex Osborn include all of the following EXCEPT:</p><ol class="opts"><li data-k="a">Defer judgement</li><li data-k="b">Go for quantity</li><li data-k="c">Encourage wild ideas</li><li data-k="d">Evaluate each idea immediately to save time</li></ol><div class="why"><b class="key">Answer (d).</b> Immediate evaluation kills creativity, so it is the <em>opposite</em> of Osborn's first rule (defer judgement). The four rules are: defer judgement, go for quantity, welcome wild or unusual ideas, and combine and improve ideas.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>In the Stanford d.school design-thinking model, the FIRST stage is:</p><ol class="opts"><li data-k="a">Define</li><li data-k="b">Empathise</li><li data-k="c">Ideate</li><li data-k="d">Prototype</li></ol><div class="why"><b class="key">Answer (b).</b> The order is Empathise → Define → Ideate → Prototype → Test. Design thinking starts by understanding users' needs and feelings. Define (the problem statement) comes second. Ideate and Prototype come later.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>In design thinking, a "point-of-view" or problem statement is created during the:</p><ol class="opts"><li data-k="a">Empathise stage</li><li data-k="b">Test stage</li><li data-k="c">Define stage</li><li data-k="d">Prototype stage</li></ol><div class="why"><b class="key">Answer (c).</b> Define synthesises the empathy research into a user-centred problem statement ("User needs X because Y"). Empathise <em>gathers</em> the insights. Prototype builds cheap models. Test gets feedback on them.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>The three lenses that good design-thinking solutions should balance are:</p><ol class="opts"><li data-k="a">Desirability, feasibility, viability</li><li data-k="b">Speed, cost, quality</li><li data-k="c">Price, product, place</li><li data-k="d">Strengths, weaknesses, opportunities</li></ol><div class="why"><b class="key">Answer (a).</b> IDEO's framework: the solution must be desirable to people, technically feasible, and economically viable. (b) is the project-management "iron triangle". (c) is part of the marketing mix (4Ps). (d) is part of SWOT.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>In SCAMPER, the letter "P" stands for:</p><ol class="opts"><li data-k="a">Prototype</li><li data-k="b">Pivot</li><li data-k="c">Price</li><li data-k="d">Put to other uses</li></ol><div class="why"><b class="key">Answer (d).</b> SCAMPER = Substitute, Combine, Adapt, Modify, <strong>Put to other uses</strong>, Eliminate, Reverse/Rearrange. Prototype is a design-thinking stage, pivot is a lean-startup term, and price is a marketing-mix element.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>A company adds a camera to a mobile phone. Which SCAMPER prompt does this best illustrate?</p><ol class="opts"><li data-k="a">Eliminate</li><li data-k="b">Combine</li><li data-k="c">Reverse</li><li data-k="d">Substitute</li></ol><div class="why"><b class="key">Answer (b).</b> Merging two products (phone + camera) into one is <em>Combine</em>. Eliminate would remove a feature (e.g. a bezel-less design removing buttons). Reverse would invert order or roles. Substitute would replace a component or material (e.g. a plastic body for metal).</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>The SCAMPER technique was developed by:</p><ol class="opts"><li data-k="a">Tim Brown</li><li data-k="b">Edward de Bono</li><li data-k="c">Bob Eberle, building on Alex Osborn's checklist</li><li data-k="d">Alexander Osterwalder</li></ol><div class="why"><b class="key">Answer (c).</b> Eberle arranged Osborn's idea-spurring questions into the SCAMPER mnemonic (1971). Tim Brown (IDEO) popularised design thinking. De Bono created lateral thinking and the Six Thinking Hats. Osterwalder created the Business Model Canvas.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Mansukhbhai Prajapati's "Mitticool", a clay refrigerator that needs no electricity, is a celebrated example of:</p><ol class="opts"><li data-k="a">Frugal (grassroots) innovation</li><li data-k="b">Disruptive platform innovation</li><li data-k="c">Luxury product innovation</li><li data-k="d">Financial innovation</li></ol><div class="why"><b class="key">Answer (a).</b> A low-cost, resource-light solution for rural users is frugal, grassroots innovation (recognised by the National Innovation Foundation). It is not a digital platform, not luxury, and not a financial product.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>"Jugaad" in the Indian innovation context most closely means:</p><ol class="opts"><li data-k="a">A formal R&amp;D process with patents</li><li data-k="b">Imitation of foreign products</li><li data-k="c">A government subsidy</li><li data-k="d">An improvised, flexible, low-cost fix made with limited resources</li></ol><div class="why"><b class="key">Answer (d).</b> Jugaad (popularised globally by Radjou, Prabhu &amp; Ahuja's <em>Jugaad Innovation</em>, 2012) means ingenious improvisation under constraints, and is an ancestor of frugal innovation. It is informal rather than formal R&amp;D, it is creative adaptation rather than copying, and it has nothing to do with subsidies.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>Which Indian initiative gave rise to UPI, DigiLocker and Aadhaar-based e-KYC, together called "India Stack"?</p><ol class="opts"><li data-k="a">Make in India</li><li data-k="b">Digital India / digital public infrastructure</li><li data-k="c">Atal Innovation Mission</li><li data-k="d">Skill India</li></ol><div class="why"><b class="key">Answer (b).</b> India Stack is the digital-public-infrastructure layer promoted under Digital India (with NPCI, UIDAI and MeitY). Make in India is about manufacturing, AIM about innovation labs and incubators, and Skill India about vocational training.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>Innovation developed first for emerging markets and later adopted in developed markets is called:</p><ol class="opts"><li data-k="a">Sustaining innovation</li><li data-k="b">Incremental innovation</li><li data-k="c">Reverse innovation</li><li data-k="d">Closed innovation</li></ol><div class="why"><b class="key">Answer (c).</b> Vijay Govindarajan's reverse innovation, e.g. GE's low-cost portable ECG built for India and later sold in the US. Sustaining and incremental describe the <em>degree</em> of change, not the direction of flow. Closed innovation relies only on internal R&amp;D.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Which is the best description of a venture capital (VC) firm?</p><ol class="opts"><li data-k="a">A fund manager investing pooled money from limited partners into high-growth startups in exchange for equity</li><li data-k="b">A bank giving collateral-backed working-capital loans</li><li data-k="c">A government grant agency</li><li data-k="d">An individual investing personal savings in friends' businesses</li></ol><div class="why"><b class="key">Answer (a).</b> VCs (general partners) raise funds from LPs (pension funds, family offices) and invest for equity, expecting a few big winners. (b) describes debt financing. (c) describes grant schemes (e.g. SISFS, BIRAC). (d) describes angel or friends-and-family money.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>The Startup India Seed Fund Scheme (SISFS, 2021) mainly provides:</p><ol class="opts"><li data-k="a">Loans to large corporations</li><li data-k="b">Subsidies for farmers</li><li data-k="c">Tax refunds on exports</li><li data-k="d">Early-stage funding for proof of concept, prototypes, product trials and market entry, disbursed through eligible incubators</li></ol><div class="why"><b class="key">Answer (d).</b> SISFS (₹945 crore) gives grants of up to ₹20 lakh for proof of concept and prototypes, and up to ₹50 lakh (convertible debentures or debt) for market entry, through selected incubators. It does not lend to corporates, subsidise farmers or refund export taxes.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>In the entrepreneurial mindset, "problem-solving" as an opportunity lens means:</p><ol class="opts"><li data-k="a">Avoiding markets with problems</li><li data-k="b">Waiting for government to fix problems</li><li data-k="c">Treating customer pain points as potential business opportunities and working to their root causes</li><li data-k="d">Solving only technical coding problems</li></ol><div class="why"><b class="key">Answer (c).</b> Entrepreneurs see unmet needs (e.g. unreliable cab availability → Ola) as openings. Avoiding problems (a) or waiting for the government (b) is the opposite. (d) is too narrow, since problems can be social, logistical or financial.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>Which pair correctly matches an Indian incubator with its host institution?</p><ol class="opts"><li data-k="a">SINE – IIM Ahmedabad</li><li data-k="b">CIIE.CO – IIM Ahmedabad</li><li data-k="c">T-Hub – IIT Delhi</li><li data-k="d">NSRCEL – IIT Kharagpur</li></ol><div class="why"><b class="key">Answer (b).</b> CIIE.CO (Centre for Innovation Incubation and Entrepreneurship) is at IIM Ahmedabad. SINE is at <em>IIT Bombay</em>; T-Hub is a Telangana government initiative in <em>Hyderabad</em>; NSRCEL is at <em>IIM Bangalore</em>.</div></div>
+
+</div>
+
+<div class="deck" id="deck-mba-u1">
+  <p class="deck-title">Flashcards · Unit I</p>
+  <p class="deck-sub">Quick facts for recall.</p>
+  <div class="fc"><div class="fc-q">Four types of innovation in the syllabus?</div><div class="fc-a">Product · Process · Frugal · Business model (e.g. Ola Electric · Aravind Eye Care · Jaipur Foot · Zerodha).</div></div>
+  <div class="fc"><div class="fc-q">Who coined these: creative destruction, disruptive innovation, open innovation, reverse innovation?</div><div class="fc-a">Schumpeter · Christensen (1997) · Chesbrough (2003) · Govindarajan.</div></div>
+  <div class="fc"><div class="fc-q">Four entrepreneurial-mindset traits in the syllabus?</div><div class="fc-a">Creativity, risk-taking (calculated), problem-solving, resilience.</div></div>
+  <div class="fc"><div class="fc-q">Incubator vs accelerator?</div><div class="fc-a">Incubator: idea stage, 1–3 years, space and mentoring, little equity. Accelerator: existing startup, 3–6-month cohort, seed money for equity, Demo Day.</div></div>
+  <div class="fc"><div class="fc-q">Launch dates: Make in India, Digital India, Startup India, AIM?</div><div class="fc-a">25 Sept 2014 · 1 July 2015 · 16 Jan 2016 · 2016 (NITI Aayog).</div></div>
+  <div class="fc"><div class="fc-q">DPIIT startup definition?</div><div class="fc-a">≤ 10 years since incorporation; turnover ≤ ₹100 crore in any FY; working on innovation or a scalable model; private ltd, LLP or registered partnership; not formed by splitting an existing business.</div></div>
+  <div class="fc"><div class="fc-q">FFS and SISFS: sizes and managers?</div><div class="fc-a">Fund of Funds: ₹10,000 crore, managed by SIDBI, invests via AIFs. Seed Fund: ₹945 crore (2021), via incubators.</div></div>
+  <div class="fc"><div class="fc-q">Osborn's four brainstorming rules?</div><div class="fc-a">Defer judgement · go for quantity · welcome wild ideas · combine and build on ideas.</div></div>
+  <div class="fc"><div class="fc-q">Five design-thinking stages?</div><div class="fc-a">Empathise → Define → Ideate → Prototype → Test (iterative). Balance desirability, feasibility, viability.</div></div>
+  <div class="fc"><div class="fc-q">Expand SCAMPER.</div><div class="fc-a">Substitute, Combine, Adapt, Modify (magnify/minify), Put to other uses, Eliminate, Reverse/Rearrange. By Bob Eberle (1971).</div></div>
+</div>
+</div></div>
+
+<!-- ======================= UNIT II ======================= -->
+<div class="chapter-card" id="mba-u2" data-short="Unit II · Opportunity &amp; Business Models">
+  <div class="ch-no">Unit Two</div>
+  <h2>Opportunity Identification &amp; Business Model Development</h2>
+  <p class="in-which">Sizing a market, testing a problem with real customers, building and learning lean, designing the business model, and choosing how to earn revenue in India.</p>
+  <p class="syll">Syllabus: market opportunity analysis in the Indian context · problem-solution fit and customer discovery · lean startup methodology · Business Model Canvas &amp; Value Proposition Canvas · revenue models (freemium, subscription, marketplace, direct sales) · social entrepreneurship and frugal innovation in India</p>
+</div>
+
+<div class="sheet"><div class="prose">
+<h3 class="facet">Primer · Market Opportunity Analysis</h3>
+<div class="formula">TAM  Total Addressable Market   = total demand for the product if 100% of the market bought it
+SAM  Serviceable Available Market = the part of TAM your model and geography can actually reach
+SOM  Serviceable Obtainable Market = the share of SAM you can realistically win soon (3–5 yrs)
+                                     TAM ⊃ SAM ⊃ SOM</div>
+<p><strong>Top-down</strong> sizing starts from an industry total and narrows down; <strong>bottom-up</strong> sizing multiplies (number of target customers × price × purchase frequency). Bottom-up is more credible to investors. Frameworks: <strong>PESTEL</strong> (Political, Economic, Social, Technological, Environmental, Legal), <strong>Porter's Five Forces</strong> (rivalry, threat of new entrants, threat of substitutes, buyer power, supplier power), SWOT, and competitor mapping.</p>
+<p><strong>Indian-context factors:</strong> high price sensitivity and value-seeking; a large young population; "India 1 / India 2 / India 3" consumer layers (from the Blume <em>Indus Valley</em> reports: a small affluent layer, a larger aspiring layer, and a vast layer with limited spending power); tier-2/3 "Bharat" growth; vernacular-first internet users; UPI and cheap data (Jio effect since 2016); cash-on-delivery culture; fragmented distribution (kirana stores); regulatory diversity across states.</p>
+
+<h3 class="facet">Primer · Problem-Solution Fit &amp; Customer Discovery</h3>
+<p><strong>Steve Blank's Customer Development</strong> (<em>The Four Steps to the Epiphany</em>): <strong>Customer Discovery → Customer Validation → Customer Creation → Company Building</strong>. Motto: <em>"Get out of the building"</em>. "No business plan survives first contact with customers." Customer discovery turns founders' hypotheses into facts through interviews: <em>Is the problem real, frequent and painful? Who has it? How do they solve it today?</em> Rob Fitzpatrick's <strong><em>The Mom Test</em></strong>: ask about past behaviour, not opinions of your idea.</p>
+<div class="tbl"><table><thead><tr><th>Fit stage</th><th>Question answered</th><th>Evidence</th></tr></thead><tbody>
+<tr><td><strong>Problem-solution fit</strong></td><td>Does a real problem exist, and does our solution address it?</td><td>Interviews, landing-page sign-ups, pre-orders</td></tr>
+<tr><td><strong>Product-market fit</strong> (Marc Andreessen: "being in a good market with a product that can satisfy that market")</td><td>Do enough customers want, use and pay for it?</td><td>Retention curves flattening, organic growth, Sean Ellis test (≥ 40% "very disappointed" without it)</td></tr>
+<tr><td><strong>Business-model / scale fit</strong></td><td>Can we acquire customers profitably?</td><td>LTV : CAC ≥ 3, payback period</td></tr>
+</tbody></table></div>
+
+<h3 class="facet">Primer · Lean Startup</h3>
+<p><strong>Eric Ries</strong>, <em>The Lean Startup</em> (2011), built on Blank's customer development and Toyota's lean manufacturing. Core ideas:</p>
+<ul>
+<li><strong>Build → Measure → Learn</strong> feedback loop, as fast as possible (plan it in reverse: decide what to learn, then what to measure, then what to build).</li>
+<li><strong>MVP (Minimum Viable Product):</strong> the version with the <em>least effort</em> that allows a full turn of the loop and gives <em>validated learning</em>. Types: concierge MVP (manual service), Wizard-of-Oz MVP (looks automated, humans behind it), landing-page / smoke-test MVP, explainer-video MVP (Dropbox).</li>
+<li><strong>Validated learning:</strong> learning backed by real customer data, not opinion.</li>
+<li><strong>Pivot or persevere:</strong> a pivot is a structured course correction to test a new hypothesis (zoom-in, zoom-out, customer-segment, platform, business-architecture, channel pivots…).</li>
+<li><strong>Innovation accounting</strong> and <strong>actionable vs vanity metrics</strong> (total sign-ups is a vanity metric; cohort retention is actionable). <strong>A/B testing</strong>, the "five whys".</li>
+</ul>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 520 300" role="img" aria-label="Build Measure Learn loop with Ideas Product Data">
+<defs><marker id="mbA2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0L10,5L0,10z" class="mk2"/></marker></defs>
+<circle cx="260" cy="60" r="44" class="box2"/><text x="260" y="58" text-anchor="middle" class="hd">IDEAS</text>
+<circle cx="420" cy="220" r="44" class="box2"/><text x="420" y="224" text-anchor="middle" class="hd">PRODUCT</text>
+<circle cx="100" cy="220" r="44" class="box2"/><text x="100" y="224" text-anchor="middle" class="hd">DATA</text>
+<path d="M300,78 C370,100 410,140 418,172" class="ln2" marker-end="url(#mbA2)"/><text x="400" y="118" class="hd">BUILD</text>
+<path d="M376,232 C310,262 210,262 146,232" class="ln2" marker-end="url(#mbA2)"/><text x="260" y="286" text-anchor="middle" class="hd">MEASURE</text>
+<path d="M102,172 C110,130 160,90 218,76" class="ln2" marker-end="url(#mbA2)"/><text x="72" y="120" class="hd">LEARN</text>
+<text x="260" y="170" text-anchor="middle" class="small">minimise total time</text><text x="260" y="186" text-anchor="middle" class="small">through the loop</text>
+</svg></div>
+<figcaption><span class="pl">Plate M2 · Ries's Build–Measure–Learn loop</span> Ideas are <em>built</em> into a product (MVP), the product is <em>measured</em> to produce data, and the data produces <em>learning</em> that updates the ideas. <span class="sketch">How to recognise it: the three nouns (Ideas, Product, Data) at the corners, the three verbs on the arrows.</span></figcaption></figure>
+
+<h3 class="facet">Primer · Business Model Canvas &amp; Value Proposition Canvas</h3>
+<figure class="plate">
+  <div class="frame"><img src="img/bmc.png" alt="The Business Model Canvas: a grid of nine blocks with key partners, key activities, key resources, value propositions, customer relationships, channels, customer segments, cost structure and revenue streams" loading="lazy"></div>
+  <figcaption><span class="pl">Plate M3 · The Business Model Canvas</span> Alexander Osterwalder &amp; Yves Pigneur, <em>Business Model Generation</em> (2010). Nine building blocks on one page. The <strong>right side</strong> (Customer Segments, Value Propositions, Channels, Customer Relationships, Revenue Streams) is about <em>value and desirability</em>. The <strong>left side</strong> (Key Partners, Key Activities, Key Resources, Cost Structure) is about <em>efficiency and feasibility</em>. <span class="sketch">How to recognise it: Value Propositions sits in the centre; Cost Structure and Revenue Streams form the bottom row.</span>
+  <span class="credit">Source: Wikimedia Commons, "Business Model Canvas.png" (openly licensed; see file page).</span></figcaption>
+</figure>
+<div class="tbl"><table><thead><tr><th>Block</th><th>Question</th><th>Swiggy example</th></tr></thead><tbody>
+<tr><td>Customer Segments</td><td>For whom do we create value?</td><td>Urban diners; restaurants; delivery partners (multi-sided)</td></tr>
+<tr><td>Value Propositions</td><td>What value do we deliver?</td><td>Wide choice, fast delivery, live tracking; demand for restaurants</td></tr>
+<tr><td>Channels</td><td>How do we reach customers?</td><td>App, website, notifications</td></tr>
+<tr><td>Customer Relationships</td><td>What relationship does each segment expect?</td><td>Self-service + support chat; Swiggy One loyalty</td></tr>
+<tr><td>Revenue Streams</td><td>How do we earn?</td><td>Restaurant commission, delivery fees, subscriptions, ads</td></tr>
+<tr><td>Key Resources</td><td>What assets are essential?</td><td>Platform tech, data, fleet network, brand</td></tr>
+<tr><td>Key Activities</td><td>What must we do well?</td><td>Logistics optimisation, onboarding, marketing</td></tr>
+<tr><td>Key Partnerships</td><td>Who helps us?</td><td>Restaurants, payment gateways, cloud providers</td></tr>
+<tr><td>Cost Structure</td><td>What are the main costs?</td><td>Delivery payouts, discounts, tech, marketing</td></tr>
+</tbody></table></div>
+<p><strong>Value Proposition Canvas</strong> (Osterwalder et al., <em>Value Proposition Design</em>, 2014) zooms into two BMC blocks. The <strong>Customer Profile</strong> (circle) has <em>Customer Jobs</em>, <em>Pains</em> and <em>Gains</em>. The <strong>Value Map</strong> (square) has <em>Products &amp; Services</em>, <em>Pain Relievers</em> and <em>Gain Creators</em>. <strong>Fit</strong> is achieved when pain relievers and gain creators match the most important pains and gains.</p>
+<figure class="plate svgplate"><div class="frame">
+<svg class="dg" viewBox="0 0 620 250" role="img" aria-label="Value Proposition Canvas: value map square and customer profile circle">
+<defs><marker id="mbA3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L10,5L0,10z" class="mk2"/></marker></defs>
+<rect x="20" y="20" width="220" height="210" class="box"/><line x1="20" y1="125" x2="130" y2="125" class="ln"/><line x1="130" y1="20" x2="130" y2="230" class="ln"/>
+<text x="185" y="120" text-anchor="middle">Products &amp;</text><text x="185" y="138" text-anchor="middle">Services</text>
+<text x="75" y="70" text-anchor="middle">Gain</text><text x="75" y="88" text-anchor="middle">Creators</text>
+<text x="75" y="172" text-anchor="middle">Pain</text><text x="75" y="190" text-anchor="middle">Relievers</text>
+<text x="130" y="248" text-anchor="middle" class="small">VALUE MAP</text>
+<circle cx="480" cy="125" r="105" class="box2"/><line x1="480" y1="125" x2="585" y2="125" class="ln"/><line x1="480" y1="125" x2="400" y2="57" class="ln"/><line x1="480" y1="125" x2="400" y2="193" class="ln"/>
+<text x="425" y="130" text-anchor="middle">Customer</text><text x="425" y="148" text-anchor="middle">Jobs</text>
+<text x="530" y="90" text-anchor="middle">Gains</text><text x="530" y="170" text-anchor="middle">Pains</text>
+<text x="480" y="248" text-anchor="middle" class="small">CUSTOMER PROFILE</text>
+<line x1="248" y1="125" x2="370" y2="125" class="ln2" marker-start="url(#mbA3)" marker-end="url(#mbA3)"/><text x="309" y="116" text-anchor="middle" class="hd">FIT</text>
+</svg></div>
+<figcaption><span class="pl">Plate M4 · Value Proposition Canvas</span> <span class="sketch">How to recognise it: square (value map) on the left, circle (customer profile) on the right. Gain creators face gains; pain relievers face pains.</span></figcaption></figure>
+
+<h3 class="facet">Primer · Revenue Models for Indian Markets</h3>
+<div class="tbl"><table><thead><tr><th>Model</th><th>How it earns</th><th>Indian examples</th><th>Watch-outs</th></tr></thead><tbody>
+<tr><td><strong>Freemium</strong></td><td>Free basic tier; paid premium features (conversion typically 2–5%)</td><td>JioSaavn, Canva, Zoho, LinkedIn, Truecaller</td><td>Free users cost money; needs a strong upgrade trigger</td></tr>
+<tr><td><strong>Subscription</strong></td><td>Recurring fee for ongoing access (monthly or annual)</td><td>Netflix/JioHotstar, Zomato Gold, Swiggy One, SaaS (Freshworks)</td><td>Churn; Indian price sensitivity leads to low-price or sachet plans</td></tr>
+<tr><td><strong>Marketplace</strong></td><td>Commission or "take rate" on transactions between buyers and sellers; listing fees; ads</td><td>Flipkart, Meesho, Swiggy/Zomato, Urban Company, OLX</td><td>Chicken-and-egg liquidity problem; disintermediation</td></tr>
+<tr><td><strong>Direct sales / D2C</strong></td><td>Sell own products directly (online or own stores), keeping the full margin</td><td>boAt, Mamaearth, Lenskart, Sugar Cosmetics</td><td>High customer-acquisition cost; inventory risk</td></tr>
+</tbody></table></div>
+<p>Also recognise: advertising, transaction or convenience fees (payments), licensing, pay-per-use, "sachet" pricing (small, affordable units, e.g. ₹1 shampoo sachets, small data packs). Key metrics: <strong>CAC</strong> (customer acquisition cost), <strong>LTV/CLV</strong> (lifetime value), <strong>ARPU</strong>, <strong>churn</strong>, <strong>GMV</strong> (gross merchandise value, for marketplaces).</p>
+
+<h3 class="facet">Primer · Social Entrepreneurship &amp; Frugal Innovation in India</h3>
+<p><strong>Social entrepreneurship</strong> applies entrepreneurial methods to social or environmental problems, measuring success by <em>impact</em> as well as, or instead of, profit. <strong>Triple bottom line</strong> (John Elkington, 1994): People, Planet, Profit. The term "social entrepreneur" was popularised by <strong>Bill Drayton</strong> (founder of Ashoka, 1980). <strong>Muhammad Yunus</strong> (Grameen Bank, microfinance, Nobel Peace Prize 2006) developed the "social business" idea. Forms in India: non-profit (Section 8 company, trust, society), for-profit social enterprise, cooperative, hybrid.</p>
+<div class="tbl"><table><thead><tr><th>Venture</th><th>Founder</th><th>Impact</th></tr></thead><tbody>
+<tr><td>SELCO India</td><td>Harish Hande</td><td>Solar energy for rural poor with doorstep financing</td></tr>
+<tr><td>Goonj</td><td>Anshu Gupta</td><td>Urban surplus material used for rural development ("Cloth for Work")</td></tr>
+<tr><td>Amul (cooperative)</td><td>Verghese Kurien</td><td>White Revolution; farmer-owned dairy value chain</td></tr>
+<tr><td>Aravind Eye Care</td><td>Dr G. Venkataswamy</td><td>Cross-subsidised, high-volume, low-cost eye surgery</td></tr>
+<tr><td>Barefoot College</td><td>Bunker Roy</td><td>Rural women trained as solar engineers</td></tr>
+<tr><td>Akshaya Patra</td><td>ISKCON Bengaluru</td><td>Mid-day meals at scale</td></tr>
+<tr><td>Jaipur Foot (BMVSS)</td><td>D.R. Mehta / P.K. Sethi</td><td>Low-cost prosthetic limb, fitted free</td></tr>
+</tbody></table></div>
+</div></div>
+
+<div class="sheet"><div class="prose">
+<h3 class="facet">Question Bank · Unit II</h3>
+<div class="mcq-bank">
+<div class="scoreboard"><span class="sc"></span><button type="button">Reset</button></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>The portion of the total market that a startup can realistically capture in the near term is called:</p><ol class="opts"><li data-k="a">TAM</li><li data-k="b">SAM</li><li data-k="c">SOM</li><li data-k="d">GMV</li></ol><div class="why"><b class="key">Answer (c).</b> SOM (Serviceable Obtainable Market) is the realistic near-term share. TAM is the entire demand, and SAM is the part your model and geography can serve. GMV (gross merchandise value) is the transaction volume on a marketplace, not a market-size tier.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Estimating market size by multiplying the number of target customers × price × purchase frequency is:</p><ol class="opts"><li data-k="a">Bottom-up sizing</li><li data-k="b">Top-down sizing</li><li data-k="c">PESTEL analysis</li><li data-k="d">Porter's Five Forces</li></ol><div class="why"><b class="key">Answer (a).</b> Building up from customer units is bottom-up, which investors usually find more credible. Top-down starts from a published industry total and applies percentages. PESTEL analyses macro-environment factors, and Five Forces analyses industry competitiveness; neither is a sizing arithmetic.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>In PESTEL analysis, the "L" stands for:</p><ol class="opts"><li data-k="a">Logistical</li><li data-k="b">Local</li><li data-k="c">Labour</li><li data-k="d">Legal</li></ol><div class="why"><b class="key">Answer (d).</b> PESTEL = Political, Economic, Social, Technological, Environmental, <strong>Legal</strong>. Logistics, locality and labour may appear <em>within</em> other factors, but they are not the named letter.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>Which is NOT one of Porter's Five Forces?</p><ol class="opts"><li data-k="a">Threat of new entrants</li><li data-k="b">Government subsidies</li><li data-k="c">Bargaining power of buyers</li><li data-k="d">Threat of substitutes</li></ol><div class="why"><b class="key">Answer (b).</b> The five forces are competitive rivalry, threat of new entrants, threat of substitutes, buyer power and supplier power. Government policy is sometimes discussed as a <em>factor</em> affecting the forces, but it is not one of the five.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>A feature that especially distinguishes consumer markets in India is:</p><ol class="opts"><li data-k="a">Uniformly high disposable income</li><li data-k="b">Negligible use of digital payments</li><li data-k="c">High price sensitivity combined with rapid digital adoption in tier-2/3 cities</li><li data-k="d">A single common language across all users</li></ol><div class="why"><b class="key">Answer (c).</b> Indian consumers are value-seeking, while UPI and cheap data have driven fast adoption beyond the metros. (a) is false because income is highly stratified ("India 1/2/3"). (b) is false because India leads the world in real-time digital payment volume. (d) is false because linguistic diversity is why vernacular-first products matter.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Steve Blank's customer development process has four steps. The correct order is:</p><ol class="opts"><li data-k="a">Customer discovery → customer validation → customer creation → company building</li><li data-k="b">Company building → customer creation → customer discovery → customer validation</li><li data-k="c">Customer validation → customer discovery → scaling → exit</li><li data-k="d">Ideation → prototyping → testing → launch</li></ol><div class="why"><b class="key">Answer (a).</b> Blank's sequence moves from finding a problem and customers (discovery), to proving a repeatable sales model (validation), to driving demand (creation), to scaling the organisation (company building). (b) and (c) scramble the order. (d) resembles design-thinking or product-development stages.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>"Get out of the building" is advice to founders to:</p><ol class="opts"><li data-k="a">Rent a larger office</li><li data-k="b">Work remotely</li><li data-k="c">Avoid investors until launch</li><li data-k="d">Talk to real potential customers instead of guessing their needs</li></ol><div class="why"><b class="key">Answer (d).</b> Blank's phrase means facts live outside, with customers, not in the founders' assumptions. It has nothing to do with office space, remote work or avoiding investors.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>"The Mom Test" (Rob Fitzpatrick) advises that during customer interviews you should:</p><ol class="opts"><li data-k="a">Ask people whether they like your idea</li><li data-k="b">Ask about their past behaviour and current problems rather than seeking compliments on your idea</li><li data-k="c">Interview only family members</li><li data-k="d">Pitch the product for the first ten minutes</li></ol><div class="why"><b class="key">Answer (b).</b> Even your mother will lie to be kind, so ask about specifics in their life ("When did you last…? How do you solve it now?"). Asking whether they like the idea (a) invites false positives. (c) misreads the title. Pitching (d) biases responses.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>Problem-solution fit is achieved when:</p><ol class="opts"><li data-k="a">The company becomes profitable</li><li data-k="b">The startup raises Series A</li><li data-k="c">There is evidence that a real, significant problem exists for a customer segment and that the proposed solution addresses it</li><li data-k="d">The product is available in all Indian states</li></ol><div class="why"><b class="key">Answer (c).</b> It is the first milestone: validated problem plus a validated solution concept (e.g. from interviews and pre-orders). Profitability (a) and Series A (b) come much later, around product-market or business-model fit. Geographic coverage (d) is a scaling outcome.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>The term "product-market fit" is most associated with:</p><ol class="opts"><li data-k="a">Marc Andreessen</li><li data-k="b">Alex Osborn</li><li data-k="c">John Elkington</li><li data-k="d">Joseph Schumpeter</li></ol><div class="why"><b class="key">Answer (a).</b> Andreessen popularised it: "being in a good market with a product that can satisfy that market". Osborn is linked to brainstorming, Elkington to the triple bottom line, and Schumpeter to creative destruction.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>The Sean Ellis test suggests product-market fit when at least what share of users say they would be "very disappointed" without the product?</p><ol class="opts"><li data-k="a">5%</li><li data-k="b">10%</li><li data-k="c">25%</li><li data-k="d">40%</li></ol><div class="why"><b class="key">Answer (d).</b> The heuristic threshold is 40%. The lower figures are distractors and would signal weak attachment.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span><em>The Lean Startup</em> (2011) was written by:</p><ol class="opts"><li data-k="a">Steve Blank</li><li data-k="b">Eric Ries</li><li data-k="c">Peter Thiel</li><li data-k="d">Alexander Osterwalder</li></ol><div class="why"><b class="key">Answer (b).</b> Eric Ries, who was Steve Blank's student and built on his customer development ideas. Blank wrote <em>The Four Steps to the Epiphany</em>. Thiel wrote <em>Zero to One</em>. Osterwalder created the Business Model Canvas.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>The core feedback loop of the lean startup is:</p><ol class="opts"><li data-k="a">Plan → Do → Check → Act</li><li data-k="b">Empathise → Define → Ideate</li><li data-k="c">Build → Measure → Learn</li><li data-k="d">Attention → Interest → Desire → Action</li></ol><div class="why"><b class="key">Answer (c).</b> Build–Measure–Learn turns ideas into products, products into data, and data into learning. PDCA (a) is Deming's quality cycle, (b) is design thinking, and AIDA (d) is an advertising model.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>A Minimum Viable Product (MVP) is best defined as:</p><ol class="opts"><li data-k="a">The version of a product that allows a team to collect the maximum validated learning about customers with the least effort</li><li data-k="b">The cheapest possible final product</li><li data-k="c">A product with all features but lower quality</li><li data-k="d">A beta version released only to investors</li></ol><div class="why"><b class="key">Answer (a).</b> This is Ries's definition: the MVP is a <em>learning</em> tool. It is not a cheap final product (b), nor a full feature set at low quality (c). It is aimed at real customers, not investors (d).</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>Dropbox validated demand with a short video showing how the product would work, before fully building it. This is an example of:</p><ol class="opts"><li data-k="a">A concierge MVP</li><li data-k="b">Product-market fit</li><li data-k="c">A pivot</li><li data-k="d">An explainer-video MVP (smoke test)</li></ol><div class="why"><b class="key">Answer (d).</b> The video MVP drove beta sign-ups from 5,000 to 75,000 overnight, which validated demand. A concierge MVP delivers the service manually to a few customers. Product-market fit is a later outcome. A pivot is a change of strategy.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>A founder personally delivers groceries ordered over WhatsApp to 20 households to test demand before building an app. This is a:</p><ol class="opts"><li data-k="a">Wizard-of-Oz MVP</li><li data-k="b">Concierge MVP</li><li data-k="c">Freemium model</li><li data-k="d">Vanity metric</li></ol><div class="why"><b class="key">Answer (b).</b> A concierge MVP openly performs the service by hand for a few customers. In a Wizard-of-Oz MVP, customers <em>believe</em> it is automated while humans work behind the scenes. Freemium is a revenue model. A vanity metric is a misleading number.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>In lean startup terminology, a "pivot" is:</p><ol class="opts"><li data-k="a">Shutting down the company</li><li data-k="b">Raising a bigger funding round</li><li data-k="c">A structured course correction to test a new fundamental hypothesis about the product, strategy or growth engine</li><li data-k="d">Hiring a new CEO</li></ol><div class="why"><b class="key">Answer (c).</b> A pivot keeps what was learned and changes one element (segment, problem, channel, model). Shutting down is not pivoting. Fundraising and CEO changes are not pivots in themselves. (Instagram pivoted from Burbn, and Paytm from mobile recharge to a payments and financial super-app.)</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Which is an <em>actionable</em> rather than a <em>vanity</em> metric?</p><ol class="opts"><li data-k="a">Week-4 retention of users who signed up in a given cohort</li><li data-k="b">Total cumulative app downloads</li><li data-k="c">Total page views since launch</li><li data-k="d">Number of social-media followers</li></ol><div class="why"><b class="key">Answer (a).</b> Cohort retention shows cause and effect and guides decisions. Cumulative downloads, page views and followers only go up and feel good, but they do not show whether the product creates lasting value.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>"Innovation accounting" in lean startup refers to:</p><ol class="opts"><li data-k="a">Tax accounting for R&amp;D expenses</li><li data-k="b">Counting patents filed</li><li data-k="c">Auditing startup books for investors</li><li data-k="d">Measuring progress through learning milestones: establish a baseline with the MVP, tune the engine, then decide to pivot or persevere</li></ol><div class="why"><b class="key">Answer (d).</b> Ries's innovation accounting has three learning milestones (baseline → tune → pivot/persevere) to hold teams accountable for validated learning. It is not tax accounting, patent counting or audit.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>The Business Model Canvas was developed by:</p><ol class="opts"><li data-k="a">Eric Ries and Steve Blank</li><li data-k="b">Alexander Osterwalder and Yves Pigneur</li><li data-k="c">Michael Porter</li><li data-k="d">Clayton Christensen</li></ol><div class="why"><b class="key">Answer (b).</b> They introduced it in <em>Business Model Generation</em> (2010). Ries and Blank are lean startup and customer development. Porter is Five Forces and value chain. Christensen is disruption.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>How many building blocks does the Business Model Canvas have?</p><ol class="opts"><li data-k="a">5</li><li data-k="b">7</li><li data-k="c">9</li><li data-k="d">12</li></ol><div class="why"><b class="key">Answer (c).</b> Nine: customer segments, value propositions, channels, customer relationships, revenue streams, key resources, key activities, key partnerships and cost structure. 5 might be confused with Porter's forces, 7 with the 7Ps of services marketing, and 12 is a distractor.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Which block sits at the centre of the Business Model Canvas?</p><ol class="opts"><li data-k="a">Value Propositions</li><li data-k="b">Customer Segments</li><li data-k="c">Key Resources</li><li data-k="d">Revenue Streams</li></ol><div class="why"><b class="key">Answer (a).</b> Value Propositions is in the middle, linking the infrastructure side (left) to the customer side (right). Customer Segments is at the far right, Key Resources is left-centre, and Revenue Streams is at the bottom right.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>Which BMC blocks make up the "efficiency" (left) side of the canvas?</p><ol class="opts"><li data-k="a">Channels, Customer Relationships, Customer Segments</li><li data-k="b">Revenue Streams and Value Propositions</li><li data-k="c">Customer Segments and Cost Structure</li><li data-k="d">Key Partners, Key Activities, Key Resources, Cost Structure</li></ol><div class="why"><b class="key">Answer (d).</b> The left side shows how the business delivers efficiently (partners, activities, resources, costs). (a) and (b) are right-side (value) blocks. (c) mixes one block from each side.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>For Swiggy, restaurants and delivery partners as well as diners appear in the Customer Segments block. This makes it a:</p><ol class="opts"><li data-k="a">Niche market model</li><li data-k="b">Multi-sided platform</li><li data-k="c">Mass market model</li><li data-k="d">Segmented single-product model</li></ol><div class="why"><b class="key">Answer (b).</b> Multi-sided platforms serve interdependent groups, and each side's value depends on the others. A niche model serves one specialised group. A mass-market model treats one broad group alike. (d) does not capture the interdependence.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>In the Value Proposition Canvas, the customer profile consists of:</p><ol class="opts"><li data-k="a">Products, services, features</li><li data-k="b">Pain relievers, gain creators, channels</li><li data-k="c">Customer jobs, pains, gains</li><li data-k="d">Revenue, cost, profit</li></ol><div class="why"><b class="key">Answer (c).</b> The circle is customer jobs, pains and gains. The square (value map) holds products and services, pain relievers and gain creators, so (a) and (b) mix up the sides, and "channels" belongs to the BMC. (d) is a financial summary, not the canvas.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>"Fit" in the Value Proposition Canvas is achieved when:</p><ol class="opts"><li data-k="a">Pain relievers and gain creators address the most important pains and gains of the customer profile</li><li data-k="b">The product has more features than competitors</li><li data-k="c">Revenue exceeds cost</li><li data-k="d">All nine BMC blocks are filled</li></ol><div class="why"><b class="key">Answer (a).</b> Fit means the value map matches what customers really care about. More features (b) can add clutter without relieving pains. Profitability (c) and a filled canvas (d) are different milestones.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>In the VPC, "customer jobs" refers to:</p><ol class="opts"><li data-k="a">The employment status of customers</li><li data-k="b">Jobs the startup will create</li><li data-k="c">Tasks the company must perform</li><li data-k="d">What customers are trying to get done in their work or life: functional, social or emotional</li></ol><div class="why"><b class="key">Answer (d).</b> The "jobs-to-be-done" idea (Christensen / Ulwick): customers "hire" products to do jobs, e.g. "get to office on time" or "look professional". It is not about employment or company tasks; company tasks are "Key Activities" in the BMC.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>A music app offers ad-supported free listening and an ad-free paid tier with downloads. This revenue model is:</p><ol class="opts"><li data-k="a">Marketplace</li><li data-k="b">Freemium</li><li data-k="c">Direct sales</li><li data-k="d">Licensing</li></ol><div class="why"><b class="key">Answer (b).</b> A free base tier plus a premium upgrade is freemium (JioSaavn, Spotify). A marketplace earns commission between two sides. Direct sales sells your own goods. Licensing charges others for rights to use IP.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>The main revenue source of a marketplace such as Meesho, Flipkart or Urban Company is:</p><ol class="opts"><li data-k="a">Manufacturing margins on its own products</li><li data-k="b">Government grants</li><li data-k="c">Commission ("take rate"), listing and service fees, and advertising charged on transactions between buyers and sellers</li><li data-k="d">Interest income from customer deposits</li></ol><div class="why"><b class="key">Answer (c).</b> Marketplaces monetise the matching of two sides. Manufacturing margin (a) belongs to D2C or brands. Grants (b) are not a business model. Deposits (d) are a banking model.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>The biggest early challenge for a new two-sided marketplace is usually:</p><ol class="opts"><li data-k="a">The chicken-and-egg problem of attracting enough buyers and sellers at the same time (liquidity)</li><li data-k="b">Holding too much inventory</li><li data-k="c">Excessive manufacturing capacity</li><li data-k="d">Patent infringement</li></ol><div class="why"><b class="key">Answer (a).</b> Buyers will not come without sellers and sellers will not come without buyers. Pure marketplaces are asset-light, so inventory (b) and manufacturing (c) are not their main issues. Patents (d) are rarely the key constraint.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>boAt, Mamaearth and Lenskart selling their own branded products through their own websites and stores is an example of:</p><ol class="opts"><li data-k="a">Freemium</li><li data-k="b">Marketplace</li><li data-k="c">Subscription only</li><li data-k="d">Direct sales / direct-to-consumer (D2C)</li></ol><div class="why"><b class="key">Answer (d).</b> D2C brands sell their own products directly and keep the full margin and the customer data. They may also list on marketplaces, but their defining model is direct sales. Freemium and subscription describe pricing structures, not product ownership.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>The biggest risk specific to subscription businesses is:</p><ol class="opts"><li data-k="a">Inventory obsolescence</li><li data-k="b">Churn: customers cancelling their recurring plan</li><li data-k="c">Import duties</li><li data-k="d">Seasonal crop failure</li></ol><div class="why"><b class="key">Answer (b).</b> Recurring revenue only has value if customers stay, so churn directly erodes LTV. Inventory (a) matters more for product sellers. Duties (c) and crops (d) are industry-specific, not model-specific.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>A healthy startup is often expected to have an LTV : CAC ratio of about:</p><ol class="opts"><li data-k="a">0.5 : 1</li><li data-k="b">1 : 1</li><li data-k="c">3 : 1 or higher</li><li data-k="d">It does not matter</li></ol><div class="why"><b class="key">Answer (c).</b> A lifetime value of at least three times the acquisition cost suggests sustainable unit economics. At 0.5:1 you lose money on every customer, and at 1:1 you only break even before overheads. Unit economics definitely matter to investors.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>"Sachet pricing", selling small, affordable units, suits Indian markets mainly because it:</p><ol class="opts"><li data-k="a">Matches low, irregular incomes and lets price-sensitive customers try or buy in small quantities</li><li data-k="b">Increases per-unit packaging efficiency</li><li data-k="c">Is required by law</li><li data-k="d">Only works for luxury goods</li></ol><div class="why"><b class="key">Answer (a).</b> From ₹1 shampoo sachets to small data packs, sachetisation lowers the entry price for "India 2/3". It usually <em>reduces</em> packaging efficiency, it is not mandated, and it is the opposite of luxury positioning.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>The "triple bottom line" concept (People, Planet, Profit) was coined by:</p><ol class="opts"><li data-k="a">Muhammad Yunus</li><li data-k="b">Bill Drayton</li><li data-k="c">C.K. Prahalad</li><li data-k="d">John Elkington</li></ol><div class="why"><b class="key">Answer (d).</b> Elkington coined it in 1994. Yunus founded Grameen Bank. Drayton founded Ashoka and popularised "social entrepreneur". Prahalad wrote <em>The Fortune at the Bottom of the Pyramid</em>.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>C.K. Prahalad's "Bottom of the Pyramid" (BoP) argument is that:</p><ol class="opts"><li data-k="a">The poor should be served only by charity</li><li data-k="b">The billions of low-income consumers are a large, profitable market if served with affordable, innovative business models</li><li data-k="c">Companies should focus only on luxury buyers</li><li data-k="d">Poverty cannot be reduced by business</li></ol><div class="why"><b class="key">Answer (b).</b> Prahalad argued that serving the BoP through frugal innovation can be both profitable and poverty-reducing. That directly contradicts (a), (c) and (d).</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>SELCO India, founded by Harish Hande, is best known for:</p><ol class="opts"><li data-k="a">Microfinance for urban traders</li><li data-k="b">Clothing recycling</li><li data-k="c">Solar energy solutions with doorstep financing for the rural poor</li><li data-k="d">Mid-day meals</li></ol><div class="why"><b class="key">Answer (c).</b> SELCO combines solar lighting with tailored financing. Clothing recycling is Goonj (Anshu Gupta). Mid-day meals is Akshaya Patra. Microfinance is associated with SKS or Bandhan, not SELCO.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Amul is an example of which social-enterprise form?</p><ol class="opts"><li data-k="a">A farmer-owned cooperative</li><li data-k="b">A government ministry</li><li data-k="c">A foreign multinational subsidiary</li><li data-k="d">A Section 8 charity</li></ol><div class="why"><b class="key">Answer (a).</b> Amul (the Gujarat Cooperative Milk Marketing Federation, led by Verghese Kurien) is owned by millions of dairy farmers. It is not a ministry, not foreign-owned, and not a Section 8 not-for-profit company.</div></div>
+
+<div class="mcq" data-answer="d"><p class="stem"><span class="qn"></span>Aravind Eye Care stays financially sustainable while treating most poor patients free or at very low cost mainly through:</p><ol class="opts"><li data-k="a">Foreign donations only</li><li data-k="b">Government ownership</li><li data-k="c">Charging all patients high fees</li><li data-k="d">Cross-subsidisation from paying patients plus high-volume, highly efficient processes</li></ol><div class="why"><b class="key">Answer (d).</b> Paying patients subsidise free ones, and assembly-line efficiency keeps unit cost very low. It is largely self-funded rather than donation-dependent, it is privately run, and it does not charge everyone high fees.</div></div>
+
+<div class="mcq" data-answer="b"><p class="stem"><span class="qn"></span>ISRO's Mars Orbiter Mission (Mangalyaan), completed for roughly ₹450 crore, is often cited as an example of:</p><ol class="opts"><li data-k="a">Luxury innovation</li><li data-k="b">Frugal engineering / frugal innovation</li><li data-k="c">Freemium pricing</li><li data-k="d">A marketplace model</li></ol><div class="why"><b class="key">Answer (b).</b> Mangalyaan reached Mars at a fraction of comparable missions' cost through reuse and lean design, which is "frugal engineering". It has nothing to do with luxury, pricing tiers or platforms.</div></div>
+
+<div class="mcq" data-answer="c"><p class="stem"><span class="qn"></span>A key difference between social entrepreneurship and traditional (commercial) entrepreneurship is that social entrepreneurship:</p><ol class="opts"><li data-k="a">Never earns revenue</li><li data-k="b">Is always run by the government</li><li data-k="c">Treats social or environmental impact as the primary mission, with financial sustainability as a means</li><li data-k="d">Does not require innovation</li></ol><div class="why"><b class="key">Answer (c).</b> Social ventures put impact first but often earn revenue (SELCO, Aravind), so (a) is wrong. They are usually private or citizen-led, so (b) is wrong. They depend heavily on innovation, especially frugal innovation, so (d) is wrong.</div></div>
+
+<div class="mcq" data-answer="a"><p class="stem"><span class="qn"></span>Which sequence best reflects the logical order of Unit II activities for a new venture?</p><ol class="opts"><li data-k="a">Market opportunity analysis → customer discovery (problem-solution fit) → MVP via Build–Measure–Learn → design the business model (BMC/VPC) and revenue model → scale</li><li data-k="b">Scale → MVP → customer discovery → market sizing</li><li data-k="c">Revenue model → exit → customer discovery</li><li data-k="d">Patent filing → IPO → market analysis</li></ol><div class="why"><b class="key">Answer (a).</b> Find a large enough opportunity, validate the problem with customers, test solutions lean, then define the business and revenue model before scaling. (In practice the steps iterate.) The other options put scaling, exits or IPOs before validation, which is how most startups fail.</div></div>
+</div>
+
+<div class="deck" id="deck-mba-u2">
+  <p class="deck-title">Flashcards · Unit II</p>
+  <p class="deck-sub">Includes cumulative cards from Unit I (↺).</p>
+  <div class="fc"><div class="fc-q">TAM, SAM, SOM?</div><div class="fc-a">Total addressable ⊃ serviceable available (what your model and geography can reach) ⊃ serviceable obtainable (realistic near-term share).</div></div>
+  <div class="fc"><div class="fc-q">Blank's four customer-development steps?</div><div class="fc-a">Customer discovery → customer validation → customer creation → company building. "Get out of the building."</div></div>
+  <div class="fc"><div class="fc-q">Problem-solution fit vs product-market fit?</div><div class="fc-a">PSF: the problem is real and the solution concept addresses it (interviews, pre-orders). PMF: a good market that wants the product (retention, 40% Sean Ellis test).</div></div>
+  <div class="fc"><div class="fc-q">Lean startup core terms?</div><div class="fc-a">Build–Measure–Learn; MVP; validated learning; pivot or persevere; innovation accounting; actionable vs vanity metrics (Eric Ries, 2011).</div></div>
+  <div class="fc"><div class="fc-q">Name the 9 BMC blocks.</div><div class="fc-a">Key Partners · Key Activities · Key Resources · Value Propositions · Customer Relationships · Channels · Customer Segments · Cost Structure · Revenue Streams (Osterwalder &amp; Pigneur, 2010).</div></div>
+  <div class="fc"><div class="fc-q">Value Proposition Canvas components?</div><div class="fc-a">Customer profile: jobs, pains, gains. Value map: products &amp; services, pain relievers, gain creators. Fit = they match.</div></div>
+  <div class="fc"><div class="fc-q">Four revenue models, with Indian examples?</div><div class="fc-a">Freemium (JioSaavn, Zoho) · Subscription (Swiggy One, OTT) · Marketplace (Flipkart, Meesho, Urban Company) · Direct sales/D2C (boAt, Lenskart).</div></div>
+  <div class="fc"><div class="fc-q">Triple bottom line, BoP, social entrepreneur: who?</div><div class="fc-a">Elkington (1994) · C.K. Prahalad · Bill Drayton (Ashoka). Microfinance: Muhammad Yunus.</div></div>
+  <div class="fc" data-from="Unit I"><div class="fc-q">How does design thinking relate to lean startup?</div><div class="fc-a">Design thinking (Empathise→Test) finds and frames the right problem and ideas; lean startup (Build–Measure–Learn with MVPs) validates and grows the solution in the market. Both are iterative and customer-centred.</div></div>
+  <div class="fc" data-from="Unit I"><div class="fc-q">Which Unit I innovation type is Zerodha's zero-brokerage model?</div><div class="fc-a">Business-model innovation: it changes how value is captured.</div></div>
+  <div class="fc" data-from="Unit I"><div class="fc-q">Which body manages Fund of Funds, and which hosts AIM?</div><div class="fc-a">SIDBI manages the ₹10,000 crore FFS; NITI Aayog hosts the Atal Innovation Mission.</div></div>
+</div>
+</div></div>
+
+<nav class="pager" aria-label="Subjects"><a class="pg-prev" href="aca.html">← Advanced Computer Architecture</a><a class="pg-home" href="index.html">Lobby</a><a class="pg-next" href="bi.html">Business Intelligence →</a></nav>
+</section>
+</main>
+<p class="footer">Created by Harshit · Printed on hotel stationery · Good luck in the examination hall</p>
+<script>
+(function(){
+  var store = {
+    get: function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+    set: function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+  };
+
+  /* ---------- theme toggle ---------- */
+  var root = document.documentElement;
+  var savedTheme = store.get('almanac-theme');
+  if (savedTheme) root.setAttribute('data-theme', savedTheme);
+  var tt = document.getElementById('themeToggle');
+  function paintToggle(){
+    var dark = root.getAttribute('data-theme') === 'dark' ||
+      (!root.getAttribute('data-theme') && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    tt.textContent = dark ? 'Day edition' : 'Night edition';
+  }
+  if (tt){
+    paintToggle();
+    tt.addEventListener('click', function(){
+      var dark = tt.textContent === 'Day edition';
+      var next = dark ? 'light' : 'dark';
+      root.setAttribute('data-theme', next); store.set('almanac-theme', next); paintToggle();
+    });
+  }
+
+  /* ---------- pages: remember where you were reading on each page ---------- */
+  var panels = Array.prototype.slice.call(document.querySelectorAll('.panel'));
+  var pageKey = 'almanac-scroll-' + (panels[0] ? panels[0].id : 'page');
+  var saveTimer = null;
+  window.addEventListener('scroll', function(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){ store.set(pageKey, Math.round(window.scrollY)); }, 250);
+  }, {passive:true});
+  if (!location.hash){
+    var y = store.get(pageKey);
+    if (y && y > 400){
+      var tip = document.createElement('button');
+      tip.type = 'button'; tip.className = 'resume';
+      tip.textContent = 'Continue where you left off ↓';
+      tip.addEventListener('click', function(){ window.scrollTo({top:y}); tip.remove(); });
+      var nav = document.querySelector('.tickets');
+      if (nav) nav.insertAdjacentElement('afterend', tip);
+      setTimeout(function(){ if (tip.isConnected) tip.remove(); }, 12000);
+    }
+  }
+
+  /* ---------- unit nav (auto) ---------- */
+  panels.forEach(function(p){
+    var nav = p.querySelector('.unit-nav');
+    if (!nav) return;
+    p.querySelectorAll('.chapter-card[id]').forEach(function(c){
+      var li = document.createElement('li'); var a = document.createElement('a');
+      a.href = '#'+c.id; a.textContent = c.dataset.short || c.querySelector('h2').textContent;
+      a.addEventListener('click', function(e){ e.preventDefault(); c.scrollIntoView({behavior:'smooth'}); });
+      li.appendChild(a); nav.appendChild(li);
+    });
+  });
+
+  /* ---------- images: graceful fallback ---------- */
+  document.querySelectorAll('.plate img').forEach(function(img){
+    function fail(){
+      var fig = img.closest('.plate'); fig.classList.add('missing');
+      var f = img.closest('.frame'); f.textContent = 'Image could not load here. Read the caption below and draw it from the sketch guide. (' + img.alt + ')';
+    }
+    if (img.complete && img.naturalWidth === 0 && img.getAttribute('src')) { fail(); }
+    else img.addEventListener('error', fail);
+  });
+
+  /* ---------- flashcards with Leitner spaced repetition ---------- */
+  document.querySelectorAll('.deck').forEach(function(deck, di){
+    var cards = Array.prototype.slice.call(deck.querySelectorAll('.fc'));
+    if (!cards.length) return;
+    var key = 'almanac-deck-' + (deck.id || di);
+    cards.forEach(function(c){
+      var q = c.querySelector('.fc-q'), a = c.querySelector('.fc-a');
+      var inner = document.createElement('div'); inner.className = 'fc-inner';
+      q.classList.add('fc-face'); a.classList.add('fc-face');
+      if (c.dataset.from){
+        var tag = document.createElement('span'); tag.className = 'from'; tag.textContent = '↺ Cumulative · ' + c.dataset.from;
+        q.insertBefore(tag, q.firstChild);
+      }
+      var s1 = document.createElement('span'); s1.className='side'; s1.textContent='Question — tap to turn';
+      var s2 = document.createElement('span'); s2.className='side'; s2.textContent='Model answer';
+      q.insertBefore(s1, q.firstChild); a.insertBefore(s2, a.firstChild);
+      inner.appendChild(q); inner.appendChild(a); c.appendChild(inner);
+      c.setAttribute('tabindex','0'); c.setAttribute('role','button'); c.setAttribute('aria-label','Flashcard. Press to flip.');
+      c.addEventListener('click', function(e){ if (e.target.closest('a')) return; c.classList.toggle('flipped'); });
+      c.addEventListener('keydown', function(e){ if (e.key===' '||e.key==='Enter'){ e.preventDefault(); c.classList.toggle('flipped'); } });
+    });
+    deck.classList.add('js');
+    var boxes = store.get(key) || {}; // card index -> box 1..3
+    var order = cards.map(function(_,i){return i;});
+    var pos = 0;
+    var ctr = document.createElement('div'); ctr.className = 'deck-controls';
+    ctr.innerHTML = '<button type="button" class="prev">← Previous</button>'+
+      '<span class="count"></span>'+
+      '<button type="button" class="flip">Turn card</button>'+
+      '<button type="button" class="next">Next →</button>'+
+      '<button type="button" class="again">Again</button>'+
+      '<button type="button" class="got">Got it</button>'+
+      '<button type="button" class="shuffle">Review weakest first</button>'+
+      '<span class="boxes"></span>';
+    deck.appendChild(ctr);
+    var count = ctr.querySelector('.count'), bx = ctr.querySelector('.boxes');
+    function render(){
+      cards.forEach(function(c){ c.classList.remove('current','flipped'); });
+      cards[order[pos]].classList.add('current');
+      count.textContent = (pos+1) + ' / ' + cards.length;
+      var b = [0,0,0,0]; cards.forEach(function(_,i){ b[boxes[i]||1]++; });
+      bx.textContent = 'Box 1 (learning): ' + b[1] + ' · Box 2 (review): ' + b[2] + ' · Box 3 (mastered): ' + b[3];
+    }
+    function go(d){ pos = (pos + d + cards.length) % cards.length; render(); }
+    ctr.querySelector('.prev').onclick = function(){ go(-1); };
+    ctr.querySelector('.next').onclick = function(){ go(1); };
+    ctr.querySelector('.flip').onclick = function(){ cards[order[pos]].classList.toggle('flipped'); };
+    ctr.querySelector('.again').onclick = function(){ boxes[order[pos]] = 1; store.set(key, boxes); go(1); };
+    ctr.querySelector('.got').onclick = function(){ var i = order[pos]; boxes[i] = Math.min(3,(boxes[i]||1)+1); store.set(key, boxes); go(1); };
+    ctr.querySelector('.shuffle').onclick = function(){
+      order = cards.map(function(_,i){return i;}).sort(function(a,b){ return ((boxes[a]||1)-(boxes[b]||1)) || (Math.random()-.5); });
+      pos = 0; render();
+    };
+    render();
+  });
+
+  /* ---------- MCQ engine ---------- */
+  document.querySelectorAll('.mcq-bank').forEach(function(bank){
+    var qs = Array.prototype.slice.call(bank.querySelectorAll('.mcq'));
+    var sb = bank.querySelector('.scoreboard');
+    var right = 0, done = 0;
+    function paint(){ if (sb) sb.querySelector('.sc').textContent = 'Score ' + right + ' / ' + done + ' answered · ' + qs.length + ' questions'; }
+    qs.forEach(function(q, i){
+      var ans = q.dataset.answer;
+      var num = q.querySelector('.qn'); if (num) num.textContent = 'Q' + (i+1) + '.';
+      q.querySelectorAll('ol.opts li').forEach(function(li){
+        if (li.dataset.k === ans) li.classList.add('is-key');
+        li.setAttribute('tabindex','0');
+        function pick(){
+          if (q.classList.contains('answered')) return;
+          q.classList.add('answered'); done++;
+          if (li.dataset.k === ans){ right++; li.classList.add('right'); }
+          else { li.classList.add('wrong'); q.querySelector('li[data-k="'+ans+'"]').classList.add('right'); }
+          paint();
+        }
+        li.addEventListener('click', pick);
+        li.addEventListener('keydown', function(e){ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); pick(); } });
+      });
+    });
+    if (sb) sb.querySelector('button').onclick = function(){
+      right = 0; done = 0;
+      qs.forEach(function(q){ q.classList.remove('answered'); q.querySelectorAll('li').forEach(function(li){ li.classList.remove('right','wrong'); }); });
+      paint();
+    };
+    paint();
+  });
+
+  /* ---------- print: open every model answer ---------- */
+  window.addEventListener('beforeprint', function(){ document.querySelectorAll('details').forEach(function(d){ d.setAttribute('open',''); }); });
+})();
+
+</script>
+</body>
+</html>
