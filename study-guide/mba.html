@@ -22,6 +22,7 @@
   --good:#3E7D5A; --good-soft:#DDEFE3;
   --bad:#A8392E;  --bad-soft:#F6DCD7;
   --fig-ground:#FFFFFF;
+  --eg-bg:#E6EFF5; --eg-line:#2F6F95;
   --shadow: 0 1px 0 rgba(44,29,40,.06), 0 10px 24px -14px rgba(44,29,40,.35);
   /* default accent (lobby) */
   --acc:#8E2F45; --acc2:#5B3A6E; --acc-soft:#F2D2D8; --acc-ink:#FFF9F2;
@@ -36,6 +37,7 @@
     --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
     --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
     --fig-ground:#F7F1EA;
+    --eg-bg:#1B2833; --eg-line:#8EC3E6;
     --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
     --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
   }
@@ -46,6 +48,7 @@
   --rule:#54404F; --rule-strong:#8C6A7C; --stamp:#E59AAE;
   --good:#8FD1A8; --good-soft:#1F3A2B; --bad:#F09A8E; --bad-soft:#452320;
   --fig-ground:#F7F1EA;
+  --eg-bg:#1B2833; --eg-line:#8EC3E6;
   --shadow: 0 10px 24px -14px rgba(0,0,0,.7);
   --acc:#E59AAE; --acc2:#C3A6DA; --acc-soft:#3A2632; --acc-ink:#1C1420;
 }
@@ -478,18 +481,75 @@ body.scrolled .fab-top{opacity:1; pointer-events:auto; transform:none}
   body.has-rail{padding-left:0}
 }
 
+.film-link{display:inline-block; margin-top:14px; font-family:var(--display); font-size:12.5px; letter-spacing:.16em; text-transform:uppercase;
+  text-decoration:none; color:var(--acc); border:1px solid var(--acc); border-radius:999px; padding:7px 14px}
+.film-link:hover{background:var(--acc); color:var(--acc-ink)}
+
+/* =====================================================================
+   "Easy read" layout (LLM page): bigger text, plain-question headings,
+   one idea per box
+   ===================================================================== */
+.prose.easy{font-size:18.5px; line-height:1.78; max-width:66ch}
+.prose.easy p{margin:0 0 1.05em}
+.prose.easy > section.topic > h3{font-size:clamp(24px,3.2vw,32px); letter-spacing:.03em; text-transform:none; line-height:1.25}
+.prose.easy h4.q{font-family:var(--display); font-weight:600; font-size:21px; letter-spacing:.01em; line-height:1.35;
+  color:var(--acc2); margin:1.9em 0 .55em; text-wrap:balance}
+.prose.easy h4.q::before{content:""; display:inline-block; width:10px; height:10px; background:var(--acc); margin-right:12px; transform:translateY(-2px) rotate(45deg)}
+.prose.easy strong{color:inherit; font-weight:700}
+.prose.easy em{font-style:italic}
+
+/* the one sentence to remember */
+.idea{background:var(--acc-soft); border:2px solid var(--acc); padding:18px 22px; margin:0 0 1.4em; font-size:19.5px; line-height:1.6}
+.idea b{display:block; font-family:var(--display); font-size:12.5px; letter-spacing:.24em; text-transform:uppercase; color:var(--acc); margin-bottom:6px}
+
+/* worked examples */
+.eg{background:var(--eg-bg); border-left:5px solid var(--eg-line); padding:14px 18px; margin:0 0 1.3em; font-size:17px; line-height:1.7}
+.eg b:first-child{display:block; font-family:var(--display); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--eg-line); margin-bottom:6px}
+.eg .formula{margin:8px 0; background:var(--paper)}
+.eg ol.steps{margin:.2em 0 0}
+
+/* new words */
+.words{border:1.5px dashed var(--rule-strong); padding:16px 20px 8px; margin:1.6em 0 1.2em; background:var(--paper)}
+.words > b{display:block; font-family:var(--display); font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--acc2); margin-bottom:10px}
+.words dl{display:grid; grid-template-columns:minmax(120px,max-content) 1fr; gap:6px 18px; margin:0 0 8px; font-size:16.5px; line-height:1.5}
+.words dt{font-weight:700}
+.words dd{margin:0; color:var(--muted)}
+@media (max-width:560px){ .words dl{grid-template-columns:1fr; gap:2px} .words dd{margin-bottom:8px} }
+
+/* exam box */
+.say{border:2px solid var(--acc2); padding:18px 22px 6px; margin:1.2em 0 1em; position:relative; background:var(--paper); font-size:16.5px; line-height:1.65}
+.say > b{position:absolute; top:-13px; left:16px; background:var(--paper); padding:0 8px; font-family:var(--display); font-size:12px;
+  letter-spacing:.2em; text-transform:uppercase; color:var(--acc2)}
+.say > b::before{content:"\270E  "}
+
+/* how-to-read box */
+.howto{border:2px solid var(--acc); padding:18px 22px 8px; margin:0 0 1.4em; background:var(--acc-soft)}
+.howto > b{display:block; font-family:var(--display); font-size:13px; letter-spacing:.22em; text-transform:uppercase; color:var(--acc); margin-bottom:8px}
+
+/* lists */
+ul.clean{list-style:none; padding-left:0; margin:0 0 1.1em}
+ul.clean > li{position:relative; padding-left:1.4em; margin-bottom:.5em}
+ul.clean > li::before{content:""; position:absolute; left:.2em; top:.72em; width:7px; height:7px; border-radius:50%; background:var(--acc)}
+ol.steps{list-style:none; counter-reset:st; padding-left:0; margin:0 0 1.2em}
+ol.steps > li{counter-increment:st; position:relative; padding-left:2.4em; margin-bottom:.55em; min-height:1.7em}
+ol.steps > li::before{content:counter(st); position:absolute; left:0; top:.1em; width:1.65em; height:1.65em; border-radius:50%;
+  background:var(--acc2); color:var(--paper); font-family:var(--display); font-size:.82em; font-weight:600; display:grid; place-items:center}
+ol.steps.tight > li{margin-bottom:.3em}
+.prose.easy .tbl table{font-size:16px}
+.prose.easy .tbl td strong{color:var(--acc2)}
+
 </style>
 </head>
 <body>
 <header class="marquee marquee-slim">
   <button class="theme-toggle" id="themeToggle" type="button">Night edition</button>
-  <div class="eyebrow"><a href="index.html">B.Tech CSE · Semester VII · Graphic Era (Deemed to be University)</a></div>
-  <h1><a href="index.html">The Mid-Semester Almanac</a></h1>
+  <div class="eyebrow"><a href="lobby.html">B.Tech CSE · Semester VII · Graphic Era (Deemed to be University)</a></div>
+  <h1><a href="lobby.html">The Mid-Semester Almanac</a></h1>
   <div class="sub">Innovation &amp; Venture Dev. · exam on 29 Sept · MBA-302</div>
   <div class="credit-line">Created by Harshit</div>
   <div class="fleuron">◆ ◆ ◆</div>
 </header>
-<nav class="tickets" aria-label="Subjects"><a class="ticket" href="index.html"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="rm.html"><span class="t-date">26 Sept</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="aca.html"><span class="t-date">28 Sept</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="mba.html" aria-current="page"><span class="t-date">29 Sept</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a><a class="ticket" href="bi.html"><span class="t-date">30 Sept</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="llm.html"><span class="t-date">03 Oct</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a></nav>
+<nav class="tickets" aria-label="Subjects"><a class="ticket" href="lobby.html"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="rm.html"><span class="t-date">26 Sept</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="aca.html"><span class="t-date">28 Sept</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="mba.html" aria-current="page"><span class="t-date">29 Sept</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a><a class="ticket" href="bi.html"><span class="t-date">30 Sept</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="llm.html"><span class="t-date">03 Oct</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a></nav>
 <main>
 <section class="panel" id="mba" data-subject="mba" data-exam="2026-09-29">
 <div class="sheet">
@@ -895,7 +955,7 @@ SOM  Serviceable Obtainable Market = the share of SAM you can realistically win 
 </div>
 </div></div>
 
-<nav class="pager" aria-label="Subjects"><a class="pg-prev" href="aca.html">← Advanced Computer Architecture</a><a class="pg-home" href="index.html">Lobby</a><a class="pg-next" href="bi.html">Business Intelligence →</a></nav>
+<nav class="pager" aria-label="Subjects"><a class="pg-prev" href="aca.html">← Advanced Computer Architecture</a><a class="pg-home" href="lobby.html">Lobby</a><a class="pg-next" href="bi.html">Business Intelligence →</a></nav>
 </section>
 </main>
 <p class="footer">Created by Harshit · Printed on hotel stationery · Good luck in the examination hall</p>

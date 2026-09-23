@@ -10,9 +10,11 @@ Mid-semester study guides for B.Tech CSE Semester VII (Graphic Era Deemed to be 
 | 28 Sept | TCS-704 Advanced Computer Architecture (Units 1–2) | [`study-guide/aca.html`](study-guide/aca.html) |
 | 29 Sept | MBA-302 Innovation & Venture Development (Units I–II, MCQ bank) | [`study-guide/mba.html`](study-guide/mba.html) |
 | 30 Sept | TCS-726 Business Intelligence (Units 1–3) | [`study-guide/bi.html`](study-guide/bi.html) |
-| 03 Oct | TCS-765 Large Language Models (Units 1–2, plus a beginner "Unit 0") | [`study-guide/llm.html`](study-guide/llm.html) |
+| 03 Oct | TCS-765 Large Language Models (Units 1–2 written for complete beginners, plus "Unit 0") | [`study-guide/llm.html`](study-guide/llm.html) |
 
 ## How to use it
+
+- **Start with the film:** `study-guide/index.html` is a 55-second animated story. Almo, the study mascot, rides the study train through one station per exam. It's written in pure WebGL2 with no libraries, images, fonts or audio. Press **Enter the Almanac** (or **Skip intro**) to reach the Lobby at `study-guide/lobby.html`.
 
 - **Offline:** download or clone the repo and open `study-guide/index.html` in any browser. Keep the `img/` folder next to the pages.
 - **Online:** turn on GitHub Pages (*Settings → Pages → Deploy from branch → `main` / root*). The site will then be at `https://harshitn87.github.io/sem-7-notes/`, and the root `index.html` forwards to the guide.
