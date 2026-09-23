@@ -14,7 +14,7 @@ Mid-semester study guides for B.Tech CSE Semester VII (Graphic Era Deemed to be 
 
 ## How to use it
 
-- **Start with the film:** `study-guide/index.html` is a 55-second animated story. Almo, the study mascot, rides the study train through one station per exam. It's written in pure WebGL2 with no libraries, images, fonts or audio. Press **Enter the Almanac** (or **Skip intro**) to reach the Lobby at `study-guide/lobby.html`.
+- **Start with the film:** `study-guide/index.html` is a 40-second animated story. Almo, the study mascot, survives a book avalanche, catches a golden ticket and bonks one exam monster per subject on the Study Express. It's written in pure WebGL2 with no libraries, images, fonts or audio. Press **Enter the Almanac** (or **Skip intro**) to reach the Lobby at `study-guide/lobby.html`.
 
 - **Offline:** download or clone the repo and open `study-guide/index.html` in any browser. Keep the `img/` folder next to the pages.
 - **Online:** turn on GitHub Pages (*Settings → Pages → Deploy from branch → `main` / root*). The site will then be at `https://harshitn87.github.io/sem-7-notes/`, and the root `index.html` forwards to the guide.

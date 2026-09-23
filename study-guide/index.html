@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Mid-Semester Almanac</title>
-<meta name="description" content="A 55-second animated story: Almo the study mascot takes the study train through all five mid-sem exams. Created by Harshit.">
+<meta name="description" content="A 40-second animated story: Almo the study mascot survives a book avalanche, catches a golden ticket and bonks five exam monsters on the Study Express. Created by Harshit.">
 <style>
   :root{
     --bg:#170F1A; --bg2:#2A1D2C; --ink:#F4E7E3; --muted:#C4ADB9; --mat:#FBF1E6; --line:#8C6A7C; --acc:#E59AAE;
@@ -20,10 +20,10 @@
   .reel{--size:min(calc(100vw - 32px), calc(100vh - 210px), 820px); width:max(280px, var(--size)); max-width:100%}
   .mat{background:var(--mat); padding:10px; border-radius:6px; box-shadow:0 30px 60px -30px rgba(0,0,0,.8);
     outline:1px solid var(--line); outline-offset:5px; position:relative}
-  canvas{display:block; width:100%; aspect-ratio:1/1; border-radius:3px; background:#2B2750; cursor:pointer}
+  canvas{display:block; width:100%; aspect-ratio:1/1; border-radius:3px; background:#241F46; cursor:pointer}
   .end{position:absolute; inset:10px; display:grid; place-items:center; pointer-events:none}
   .end[hidden]{display:none}
-  .end .box{pointer-events:auto; display:flex; flex-direction:column; gap:10px; align-items:center; transform:translateY(-30%)}
+  .end .box{pointer-events:auto; display:flex; flex-direction:column; gap:10px; align-items:center; transform:translateY(-32%)}
   .btn{font:inherit; font-size:13px; letter-spacing:.16em; text-transform:uppercase; cursor:pointer; border:0; text-decoration:none;
     padding:12px 20px; border-radius:999px; display:inline-flex; align-items:center; gap:8px}
   .btn-enter{background:#2C1D28; color:#FBF1E6; font-size:15px; padding:16px 26px; box-shadow:0 12px 26px -12px rgba(0,0,0,.7)}
@@ -61,10 +61,10 @@
 </style>
 </head>
 <body>
-<div class="kicker"><b>The Mid-Semester Almanac</b> · a 55-second story</div>
+<div class="kicker"><b>The Mid-Semester Almanac</b> · a 40-second story</div>
 <div class="reel">
   <div class="mat">
-    <canvas id="film" role="img" aria-label="Animated story: Almo the study mascot is worried about five exams, catches a golden ticket, and rides a study train through one station per exam, collecting a book at each stop, until exam day. A text version is below the film."></canvas>
+    <canvas id="film" role="img" aria-label="Animated story: Almo wakes up panicking about exams, gets buried by a book avalanche, catches a golden ticket, rides the Study Express and bonks one exam monster per subject, and arrives on exam day. A text version is below the film."></canvas>
     <div class="end" id="end" hidden><div class="box">
       <a class="btn btn-enter" href="lobby.html">Enter the Almanac →</a>
       <button class="btn btn-ghost" id="again" type="button">↺ Watch again</button>
@@ -72,10 +72,10 @@
   </div>
   <div class="bar">
     <button class="ctl" id="pp" type="button">Pause</button>
-    <div class="scrub" id="scrub" role="slider" tabindex="0" aria-label="Film position" aria-valuemin="0" aria-valuemax="55" aria-valuenow="0">
+    <div class="scrub" id="scrub" role="slider" tabindex="0" aria-label="Film position" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0">
       <div class="track"></div><div class="fill" id="fill"></div><div class="knob" id="knob"></div>
     </div>
-    <span class="clock" id="clock">0:00 / 0:55</span>
+    <span class="clock" id="clock">0:00 / 0:40</span>
     <a class="skip" href="lobby.html">Skip intro →</a>
   </div>
   <ul class="chapters" id="chapters"></ul>
@@ -89,77 +89,89 @@
 
 /* =====================================================================
    THE STORY
-   mode 0 = the night before · 1 = the golden ticket · 2 = a train station · 3 = exam day
+   mode 0 = Almo's room at night (wake-up, avalanche, golden ticket)
+   mode 1 = a station on the Study Express (one per exam)
+   mode 2 = exam day
    ===================================================================== */
-var ST = 7.0; // seconds per station
+var STN = 4.6;
 var SCENES = [
-  {key:"The night before", mode:0, len:6.5, sky:["#241F46","#4A3D70"], acc:"#8E6BB8", acc2:"#5B3A6E",
-   chip:"THE NIGHT BEFORE", title:"Almo has 5 exams in 8 days…",
-   lines:["…and absolutely no idea where to start."], tip:""},
-  {key:"The golden ticket", mode:1, len:5.5, sky:["#3A2E66","#8E6391"], acc:"#D9A441", acc2:"#5B3A6E",
-   chip:"AND THEN…", title:"A golden ticket floats down!",
-   lines:["The Mid-Semester Almanac: one stop per exam", "All aboard the study train!"], tip:""},
-  {key:"RM & IPR", mode:2, len:ST, stop:0, icon:1, sky:["#F5D2DE","#FFF3EA"], acc:"#A83F63", acc2:"#6B2D5C",
+  {key:"Wake up", mode:0, len:3.8, sky:["#241F46","#4A3D70"], acc:"#8E6BB8", acc2:"#5B3A6E",
+   chip:"RING RING!", title:"EXAMS IN 3 DAYS?!", lines:["Five subjects. One very panicked Almo."]},
+  {key:"Avalanche", mode:0, len:3.2, sky:["#241F46","#4A3D70"], acc:"#8E6BB8", acc2:"#5B3A6E",
+   chip:"UH-OH", title:"Too. Many. Books.", lines:["Where do you even start?"]},
+  {key:"Golden ticket", mode:0, len:3.5, sky:["#3A2E66","#9A6A94"], acc:"#D9A441", acc2:"#5B3A6E",
+   chip:"WAIT… WHAT'S THAT?", title:"A golden ticket!", lines:["One stop per exam. All aboard the Study Express!"]},
+  {key:"RM & IPR", mode:1, len:STN, stop:0, icon:1, sky:["#F5D2DE","#FFF3EA"], acc:"#A83F63", acc2:"#6B2D5C",
    chip:"STOP 1 · SAT 26 SEPT · TRM-701", title:"Research Methodology & IPR",
-   lines:["Unit 1 · Picking a good research problem","Unit 2 · Reading papers, plagiarism & ethics","Unit 3 · Writing reports & proposals"], tip:"Almo learns the 11 steps of research"},
-  {key:"ACA", mode:2, len:ST, stop:1, icon:2, sky:["#D3E6F2","#FFF4EA"], acc:"#C0433A", acc2:"#2F6F95",
+   lines:["Unit 1 · Picking a good research problem","Unit 2 · Literature review, plagiarism & ethics","Unit 3 · Writing reports & research proposals"]},
+  {key:"ACA", mode:1, len:STN, stop:1, icon:2, sky:["#D3E6F2","#FFF4EA"], acc:"#C0433A", acc2:"#2F6F95",
    chip:"STOP 2 · MON 28 SEPT · TCS-704", title:"Advanced Computer Architecture",
-   lines:["Unit 1 · Moore's law, power, cost & chip yield","Unit 1 · Amdahl's law & the Iron Law","Unit 2 · Caches, coherence & virtual memory"], tip:"Almo practises the cache tag / index / offset sum"},
-  {key:"MBA-302", mode:2, len:ST, stop:2, icon:3, sky:["#F3E3B3","#FFF6E6"], acc:"#A87A12", acc2:"#5E6B3A",
+   lines:["Unit 1 · Moore's law, power, cost, Amdahl & Iron Law","Unit 2 · Caches, coherence & virtual memory"]},
+  {key:"MBA-302", mode:1, len:STN, stop:2, icon:3, sky:["#F3E3B3","#FFF6E6"], acc:"#A87A12", acc2:"#5E6B3A",
    chip:"STOP 3 · TUE 29 SEPT · MBA-302 · ALL MCQs", title:"Innovation & Venture Development",
-   lines:["Unit I · Innovation & India's startup scene","Unit I · Startup India, design thinking, SCAMPER","Unit II · Lean startup & Business Model Canvas"], tip:"Almo tries all 84 practice MCQs"},
-  {key:"BI", mode:2, len:ST, stop:3, icon:4, sky:["#CDECE7","#FFF3EA"], acc:"#23857C", acc2:"#C8703F",
+   lines:["Unit I · Innovation, India's startups & SCAMPER","Unit II · Lean startup & the Business Model Canvas"]},
+  {key:"BI", mode:1, len:STN, stop:3, icon:4, sky:["#CDECE7","#FFF3EA"], acc:"#23857C", acc2:"#C8703F",
    chip:"STOP 4 · WED 30 SEPT · TCS-726", title:"Business Intelligence",
-   lines:["Unit 1 · IT in business & the Baldrige framework","Unit 2 · Structured vs unstructured data","Unit 3 · OLTP vs OLAP, cubes & warehouses"], tip:"Almo slices and dices a data cube"},
-  {key:"LLMs", mode:2, len:ST, stop:4, icon:5, sky:["#F7D9C2","#FFF4EC"], acc:"#BD5A22", acc2:"#6E4A2F",
+   lines:["Unit 1 · IT in business & the Baldrige framework","Unit 2 · Structured vs unstructured data","Unit 3 · OLTP vs OLAP, cubes & data warehouses"]},
+  {key:"LLMs", mode:1, len:STN, stop:4, icon:5, sky:["#F7D9C2","#FFF4EC"], acc:"#BD5A22", acc2:"#6E4A2F",
    chip:"STOP 5 · SAT 3 OCT · TCS-765", title:"Large Language Models",
-   lines:["Unit 0 · Machine learning from zero","Unit 1 · Transformers, attention & training","Unit 2 · Chatbots, RAG, translation & summaries"], tip:"Almo learns softmax(QKᵀ / √d) · V"},
-  {key:"Exam day", mode:3, len:8.0, sky:["#FFC9A8","#FFF1DC"], acc:"#5B3A6E", acc2:"#8E2F45",
+   lines:["Unit 1 · Transformers, attention & training","Unit 2 · Chatbots, RAG, translation & summaries"]},
+  {key:"Exam day", mode:2, len:6.3, sky:["#FFC9A8","#FFF1DC"], acc:"#5B3A6E", acc2:"#8E2F45",
    chip:"EXAM DAY", title:"Almo's ready. So are you!",
-   lines:["Flashcards, model answers & expected papers inside","Study a little every day · Created by Harshit"], tip:""}
+   lines:["Flashcards, model answers & expected papers inside","Created by Harshit"]}
 ];
 var DURATION = 0;
 SCENES.forEach(function(s){ s.t0 = DURATION; DURATION += s.len; s.t1 = DURATION; });
-var FIRST_STOP = 2, LAST_STOP = 6;
+var FIRST_STOP = 3, FINALE = SCENES.length - 1, NIGHT_END = SCENES[FIRST_STOP].t0;
+
+/* comic "pop" words, timed to the action */
+var POPS = [
+  {t:0.25, w:"RING RING!", x:0.60, y:0.25, c:"#FFD95A"},
+  {t:4.35, w:"THUD!", x:0.36, y:0.27, c:"#FF9FB0"},
+  {t:8.05, w:"TA-DA!", x:0.66, y:0.12, c:"#FFD95A"},
+  {t:SCENES[FIRST_STOP].t0 + 0.05, w:"ALL ABOARD!", x:0.5, y:0.15, c:"#FFFFFF"}
+];
+for (var si0 = FIRST_STOP; si0 < FINALE; si0++) POPS.push({t:SCENES[si0].t0 + 1.8, w:"BONK!", x:0.66, y:0.27, c:"#FFD95A"});
+POPS.push({t:SCENES[FINALE].t0 + 1.45, w:"WOOHOO!", x:0.5, y:0.16, c:"#FFD95A"});
 
 /* ---------------- transcript (also the no-WebGL fallback) ---------------- */
 var tr = document.getElementById("transcript");
 SCENES.forEach(function(s){
   var h = document.createElement("h3"); h.textContent = s.chip + " · " + s.title; tr.appendChild(h);
   var ul = document.createElement("ul");
-  s.lines.concat(s.tip ? [s.tip] : []).forEach(function(l){ var li = document.createElement("li"); li.textContent = l; ul.appendChild(li); });
+  s.lines.forEach(function(l){ var li = document.createElement("li"); li.textContent = l; ul.appendChild(li); });
+  if (s.mode === 1){ var li2 = document.createElement("li"); li2.textContent = "Almo bonks the exam monster, and it turns into a book for the wagon."; ul.appendChild(li2); }
   tr.appendChild(ul);
 });
-document.getElementById("clock").textContent = "0:00 / " + fmt(DURATION);
 function fmt(s){ s = Math.max(0, Math.floor(s + 1e-6)); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
+document.getElementById("clock").textContent = "0:00 / " + fmt(DURATION);
 function hex(c){ return [parseInt(c.slice(1,3),16)/255, parseInt(c.slice(3,5),16)/255, parseInt(c.slice(5,7),16)/255]; }
 function mix3(a, b, k){ return [a[0]+(b[0]-a[0])*k, a[1]+(b[1]-a[1])*k, a[2]+(b[2]-a[2])*k]; }
 function clamp01(x){ return Math.max(0, Math.min(1, x)); }
 function easeOut(x){ x = clamp01(x); return 1 - Math.pow(1 - x, 3); }
-function easeInOut(x){ x = clamp01(x); return x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3) / 2; }
 
 var canvas = document.getElementById("film");
 var gl = canvas.getContext("webgl2", {antialias:false, premultipliedAlpha:false, alpha:false});
-if (!gl){
-  var box = document.createElement("div"); box.className = "nogl";
-  box.textContent = "Your browser can't play this WebGL2 film, but the whole story is in \"Read the story as text\" below.";
+function fallback(msg){
+  var box = document.createElement("div"); box.className = "nogl"; box.textContent = msg;
   canvas.replaceWith(box); tr.open = true; document.querySelector(".bar").style.display = "none";
-  return;
 }
+if (!gl){ fallback("Your browser can't play this WebGL2 film, but the whole story is in \"Read the story as text\" below."); return; }
 
 /* =====================================================================
-   SHADER: everything is drawn with signed-distance shapes, no images
+   SHADER: everything is drawn with maths shapes, no image files
    ===================================================================== */
 var VS = "#version 300 es\nin vec2 p;void main(){gl_Position=vec4(p,0.,1.);}";
 var FS = [
 "#version 300 es",
 "precision highp float;",
 "out vec4 o;",
-"uniform vec2 uRes; uniform float uT,uG,uMode,uIris,uCard,uMood,uJoy,uWave;",
-"uniform float uCam,uSign,uSignPrev,uIcon,uIconPrev,uBooks,uStamp,uTicket,uSun;",
+"uniform vec2 uRes; uniform float uT,uG,uMode,uIris,uCard,uShake,uStamp;",
+"uniform float uBT,uST,uFT,uStop,uCam,uSpeed,uSign,uSignPrev,uIcon,uIconPrev,uBooks,uSun;",
 "uniform vec3 uSkyA,uSkyB,uAcc,uAcc2;",
-"uniform sampler2D uText; uniform vec4 uLine[8];",
+"uniform sampler2D uText,uPopTex; uniform vec4 uLine[8]; uniform vec4 uPop;",
 "const vec3 INK=vec3(.173,.114,.157); const vec3 CREAM=vec3(1.,.968,.93); const vec3 GOLD=vec3(1.,.8,.3);",
+"const float PI=3.14159265;",
 "float AA; float gS=1.;",
 "float hash(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}",
 "mat2 rot(float a){float c=cos(a),s=sin(a);return mat2(c,-s,s,c);}",
@@ -174,42 +186,48 @@ var FS = [
 "void putA(inout vec3 c,vec3 k,float d,float a){c=mix(c,k,cov(d)*a);}",
 "void ink(inout vec3 c,vec3 k,float d,float w){put(c,INK,d-w);put(c,k,d);}",
 "float eo(float x){x=clamp(x,0.,1.);return 1.-pow(1.-x,3.);}",
+"float win(float t,float a,float b){return clamp((t-a)/(b-a),0.,1.);}",
 "vec3 BK(int i){ if(i==0)return vec3(.659,.247,.388); if(i==1)return vec3(.753,.263,.227); if(i==2)return vec3(.659,.478,.071); if(i==3)return vec3(.137,.522,.486); return vec3(.741,.353,.133);}",
+"void star5(inout vec3 col,vec2 p,float r,vec3 c){ vec2 q=p; q.y=-q.y; ink(col,c,sdStar(q,r,.5),.003); }",
 
-/* ---- a book (used on the desk, the wagon and the final stack) ---- */
+/* a book */
 "void book(inout vec3 col,vec2 b,int i,float w){",
 "  ink(col,BK(i),sdB(b,vec2(w,.0105),.003),.0035);",
 "  put(col,vec3(1.,.97,.9),sdB(b-vec2(w-.012,0.),vec2(.007,.0065),.001));",
 "  put(col,mix(BK(i),vec3(1.),.45),sdB(b+vec2(w*.3,0.),vec2(.012,.0025),.001));",
 "}",
 
-/* ---- Almo, drawn around his feet at the origin; s = scale ---- */
-"void mascot(inout vec3 col,vec2 uv,float t,vec2 M,float s,float joy,float wave,float mood){",
+/* Almo. mood: 0 worried, 1 happy, 2 asleep, 3 shocked */
+"void mascot(inout vec3 col,vec2 uv,float t,vec2 M,float s,float joy,float wave,float mood,float arms){",
 "  gS=s; vec2 L=(uv-M)/s;",
-"  float ph=abs(sin(t*3.4)); float hop=joy*ph/s;",
+"  float ph=abs(sin(t*6.)); float hop=joy*ph/s;",
 "  float sq=1.+.10*(1.-ph)*step(.001,joy);",
 "  vec2 c=vec2(0.,-.072-hop); vec2 r=vec2(.078*sq,.070/sq);",
-"  putA(col,INK,sdE(L-vec2(0.,.004),vec2(.07*(1.-hop*4.),.011)),.16);",
+"  putA(col,INK,sdE(L-vec2(0.,.004),vec2(.07*(1.-min(hop*4.,.7)),.011)),.16);",
 "  vec2 q=L-c;",
 "  ink(col,vec3(1.,.9,.82),sdE(q-vec2(-.036,r.y-.006),vec2(.022,.012)),.004);",
 "  ink(col,vec3(1.,.9,.82),sdE(q-vec2(.036,r.y-.006),vec2(.022,.012)),.004);",
-"  float wa=wave*(.55+.45*sin(t*10.))-.35;",
-"  vec2 a1=rot(-.9-wa)*(L-(c+vec2(.066,.008)));",
-"  ink(col,CREAM,sdE(a1-vec2(.02,0.),vec2(.024,.011)),.004);",
-"  vec2 a2=rot(.9+.12*sin(t*2.))*(L-(c+vec2(-.066,.008)));",
-"  ink(col,CREAM,sdE(a2+vec2(.02,0.),vec2(.024,.011)),.004);",
+"  if(arms>.5){",
+"    float up=mood>2.5?1.:0.; float wa=wave*(.55+.45*sin(t*12.))-.35+up*1.1;",
+"    vec2 a1=rot(-.9-wa)*(L-(c+vec2(.066,.008)));",
+"    ink(col,CREAM,sdE(a1-vec2(.02,0.),vec2(.024,.011)),.004);",
+"    vec2 a2=rot(.9+.12*sin(t*2.)+up*1.1+wave*.6)*(L-(c+vec2(-.066,.008)));",
+"    ink(col,CREAM,sdE(a2+vec2(.02,0.),vec2(.024,.011)),.004); }",
 "  ink(col,CREAM,sdE(q,r),.0045);",
 "  putA(col,vec3(1.),sdE(q-vec2(-.028,-.032),vec2(.022,.013)),.6);",
 "  float bl=step(fract(t*.31+.37),.045); float ey=mix(1.,.12,bl);",
 "  for(int i=0;i<2;i++){float sd=float(i)*2.-1.; vec2 e=q-vec2(sd*.026,-.008);",
-"    put(col,INK,sdE(e,vec2(.0088,.0115*ey)));",
-"    putA(col,vec3(1.),sdC(e-vec2(-.003,-.004),.0032),1.-bl);",
-"    putA(col,vec3(1.,.52,.58),sdE(q-vec2(sd*.048,.013),vec2(.013,.0075)),.55*mood);",
+"    if(mood>1.5 && mood<2.5){ put(col,INK,max(abs(length(e-vec2(0.,-.006))-.009)-.0022,-.006-e.y+.0)); }",
+"    else if(mood>2.5){ ink(col,vec3(1.),sdC(e,.0135),.003); put(col,INK,sdC(e-vec2(-.002*sd,.001),.0055)); put(col,INK,sdS(q,vec2(sd*.014,-.036),vec2(sd*.036,-.04))-.0022); }",
+"    else { put(col,INK,sdE(e,vec2(.0088,.0115*ey))); putA(col,vec3(1.),sdC(e-vec2(-.003,-.004),.0032),1.-bl); }",
+"    if(mood>.5 && mood<2.5) putA(col,vec3(1.,.52,.58),sdE(q-vec2(sd*.048,.013),vec2(.013,.0075)),.55);",
 "    if(mood<.5) put(col,INK,sdS(q,vec2(sd*.014,-.030),vec2(sd*.036,-.023))-.0022); }",
 "  vec2 m=q-vec2(0.,.014);",
-"  if(mood>.5) put(col,INK,max(abs(length(m-vec2(0.,-.006))-.012)-.0024,-.006-m.y));",
-"  else { put(col,INK,abs(sdE(m-vec2(0.,.004),vec2(.0075,.0058)))-.0022);",
-"    vec2 dr=q-vec2(.07,-.045+.006*sin(t*5.)); put(col,vec3(.55,.8,1.),min(sdC(dr,.0085),sdS(dr,vec2(0.,-.004),vec2(0.,-.02))-.003)); }",
+"  if(mood>.5 && mood<1.5) put(col,INK,max(abs(length(m-vec2(0.,-.006))-.012)-.0024,-.006-m.y));",
+"  else if(mood>1.5 && mood<2.5) put(col,INK,sdS(m,vec2(-.006,.002),vec2(.006,.002))-.002);",
+"  else if(mood>2.5){ ink(col,vec3(.55,.2,.28),sdE(m-vec2(0.,.006),vec2(.011,.014)),.0025); }",
+"  else put(col,INK,abs(sdE(m-vec2(0.,.004),vec2(.0075,.0058)))-.0022);",
+"  if(mood<.5 || mood>2.5){ vec2 dr=q-vec2(.07,-.045+.006*sin(t*5.)); put(col,vec3(.55,.8,1.),min(sdC(dr,.0085),sdS(dr,vec2(0.,-.004),vec2(0.,-.02))-.003)); }",
 "  vec2 hc=c+vec2(0.,-r.y+.006); vec2 cq=L-hc;",
 "  put(col,INK,sdB(cq-vec2(0.,.002),vec2(.032,.011),.004));",
 "  put(col,INK,(abs(cq.x)/.066+abs(cq.y+.014)/.02-1.)*.019);",
@@ -219,7 +237,7 @@ var FS = [
 "  gS=1.;",
 "}",
 
-/* ---- the golden ticket ---- */
+/* the golden ticket */
 "void ticket(inout vec3 col,vec2 p,float glow){",
 "  col+=GOLD*.5*glow*exp(-26.*length(p));",
 "  float d=sdB(p,vec2(.05,.028),.006); d=max(d,-sdC(abs(p)-vec2(.05,0.),.009));",
@@ -228,7 +246,7 @@ var FS = [
 "  vec2 sq=p; sq.y=-sq.y; put(col,INK,sdStar(sq,.012,.5));",
 "}",
 
-/* ---- subject props: id 1 magnifier, 2 chip, 3 bulb, 4 cube, 5 chat, 6 star ---- */
+/* subject badges: 1 magnifier, 2 chip, 3 bulb, 4 cube, 5 chat, 6 star */
 "void icon(inout vec3 col,vec2 p,float id,float t,float s){",
 "  gS=s; p/=s;",
 "  if(id<5.5){ put(col,vec3(1.),sdC(p,.118)); putA(col,uAcc,abs(sdC(p,.118))-.0035,.9); }",
@@ -238,30 +256,23 @@ var FS = [
 "    vec2 q=rot(.22*sin(t*1.7))*(p+vec2(.012,.004)); vec2 l=q+vec2(.014,.014);",
 "    put(col,INK,sdS(q,vec2(.025,.025),vec2(.068,.068))-.013); put(col,uAcc2,sdS(q,vec2(.03,.03),vec2(.064,.064))-.009);",
 "    put(col,INK,sdC(l,.052)); put(col,uAcc2,sdC(l,.047)); put(col,vec3(.86,.94,1.),sdC(l,.036));",
-"    putA(col,vec3(1.),sdE(l+vec2(.014,.014),vec2(.012,.007)),.9);",
 "  } else if(id<2.5){",
 "    vec2 q=p; float pul=.5+.5*sin(t*3.);",
 "    for(int k=0;k<2;k++){ vec2 pq=k==0?q:q.yx; float px=mod(pq.x+.011,.022)-.011;",
 "      float pin=sdB(vec2(px,abs(pq.y)-.071),vec2(.0045,.012),.002); pin=max(pin,abs(pq.x)-.05); put(col,vec3(.62,.62,.66),pin); }",
 "    ink(col,uAcc2,sdB(q,vec2(.058),.012),.004);",
-"    put(col,mix(uAcc2,vec3(1.),.18),sdB(q,vec2(.048),.009));",
 "    ink(col,mix(uAcc,vec3(1.),.25*pul),sdB(q,vec2(.028),.006),.003);",
-"    col+=uAcc*.25*pul*exp(-60.*max(sdB(q,vec2(.028),.006),0.));",
 "  } else if(id<3.5){",
 "    vec2 q=p; float pul=.6+.4*sin(t*3.2);",
 "    for(int k=0;k<8;k++){ float an=float(k)*.785398+t*.35; vec2 dr=vec2(cos(an),sin(an));",
 "      putA(col,GOLD,sdS(q+vec2(0.,.012),dr*.066,dr*(.082+.008*pul))-.0035,.9); }",
-"    col+=GOLD*.3*pul*exp(-18.*length(q+vec2(0.,.012)));",
 "    ink(col,mix(vec3(1.,.94,.62),vec3(1.,.98,.85),pul),sdC(q+vec2(0.,.012),.047),.0045);",
-"    putA(col,vec3(1.),sdE(q+vec2(.018,.03),vec2(.012,.008)),.8);",
-"    put(col,uAcc,sdS(q,vec2(-.012,.008),vec2(-.004,-.006))-.002); put(col,uAcc,sdS(q,vec2(-.004,-.006),vec2(.004,.008))-.002); put(col,uAcc,sdS(q,vec2(.004,.008),vec2(.012,-.006))-.002);",
 "    ink(col,vec3(1.,.95,.86),sdB(q-vec2(0.,.044),vec2(.022,.01),.004),.003);",
 "    ink(col,vec3(.66,.66,.7),sdB(q-vec2(0.,.064),vec2(.019,.012),.005),.003);",
 "  } else if(id<4.5){",
 "    vec2 q=p-vec2(0.,.004); float R=.064; float dh=sdHex(q.yx,R*.866);",
 "    put(col,INK,dh-.0045);",
 "    vec3 fc; if(q.y< -.57735*abs(q.x)) fc=mix(uAcc,vec3(1.),.45); else if(q.x<0.) fc=uAcc; else fc=mix(uAcc,INK,.32);",
-"    float sl=fract(t*.3); if(q.x>0. && q.y> -.57735*abs(q.x) && abs(q.x/(R*.866)-sl)<.09) fc=mix(fc,vec3(1.,.9,.5),.7);",
 "    put(col,fc,dh);",
 "    float g=min(min(sdS(q,vec2(0.),vec2(0.,R)),sdS(q,vec2(0.),vec2(-.866*R,-.5*R))),sdS(q,vec2(0.),vec2(.866*R,-.5*R)));",
 "    put(col,INK,max(g-.0025,dh));",
@@ -274,147 +285,210 @@ var FS = [
 "      put(col,mix(uAcc,uAcc2,fi*.5),sdC(q-vec2(-.032+fi*.032,-.008-b),.0105)); }",
 "  } else {",
 "    vec2 q=rot(.25*sin(t*1.5))*p; vec2 sq=q; sq.y=-sq.y; float sp=1.+.05*sin(t*5.);",
-"    col+=GOLD*.35*exp(-10.*length(p)*s);",
+"    col+=GOLD*.3*exp(-10.*length(p)*s);",
 "    ink(col,vec3(1.,.82,.3),sdStar(sq/sp,.078,.5)*sp,.0045);",
 "    put(col,INK,sdE(q-vec2(-.016,-.006),vec2(.0055,.0075))); put(col,INK,sdE(q-vec2(.016,-.006),vec2(.0055,.0075)));",
 "    vec2 m=q-vec2(0.,.012); put(col,INK,max(abs(length(m-vec2(0.,-.005))-.01)-.002,-.005-m.y));",
-"    putA(col,vec3(1.,.52,.58),sdE(q-vec2(-.03,.008),vec2(.009,.005)),.6); putA(col,vec3(1.,.52,.58),sdE(q-vec2(.03,.008),vec2(.009,.005)),.6);",
 "  }",
 "  gS=1.;",
 "}",
 
-/* ---- station sign on a post ---- */
-"void stationSign(inout vec3 col,vec2 uv,float x,float id,float t){",
-"  if(x<-.2||x>1.2) return;",
-"  vec2 b=vec2(x,.27);",
-"  ink(col,vec3(.55,.38,.26),sdB(uv-vec2(x,.37),vec2(.007,.1),.003),.003);",
-"  icon(col,uv-b,id,t,.72);",
-"  vec2 pl=uv-vec2(x,.365); ink(col,vec3(1.,.97,.9),sdB(pl,vec2(.045,.013),.004),.003);",
-"  for(int i=0;i<3;i++) put(col,uAcc,sdB(pl-vec2(-.024+float(i)*.024,0.),vec2(.006,.0025),.001));",
+/* a grumpy exam monster, wearing its subject's badge */
+"void monster(inout vec3 col,vec2 uv,vec2 P,float t,float squash,float flash,float id){",
+"  vec2 q=uv-P; q.x/=1.+.18*squash; q.y/=1.-.25*squash; q.y+=.25*squash*.055;",
+"  vec3 body=mix(mix(uAcc,INK,.15),vec3(1.),flash);",
+"  ink(col,body,sdC(q-vec2(-.03,-.1),.012),.003); ink(col,body,sdC(q-vec2(.03,-.1),.012),.003);",
+"  ink(col,body,sdE(q-vec2(0.,-.05),vec2(.058,.052)),.0045);",
+"  ink(col,body,sdE(q-vec2(-.03,-.002),vec2(.014,.008)),.003); ink(col,body,sdE(q-vec2(.03,-.002),vec2(.014,.008)),.003);",
+"  for(int i=0;i<2;i++){ float sd=float(i)*2.-1.; vec2 e=q-vec2(sd*.02,-.07);",
+"    ink(col,vec3(1.),sdC(e,.0105),.0025); put(col,INK,sdC(e-vec2(-.004,.002),.005));",
+"    put(col,INK,sdS(q,vec2(sd*.008,-.078),vec2(sd*.032,-.092))-.0035); }",
+"  vec2 m=q-vec2(0.,-.045); put(col,INK,sdB(m,vec2(.02,.006),.004));",
+"  put(col,vec3(1.),sdB(m-vec2(-.009,-.003),vec2(.004,.003),.001)); put(col,vec3(1.),sdB(m-vec2(.009,-.003),vec2(.004,.003),.001));",
+"  if(flash<.5) icon(col,q-vec2(0.,-.018),id,t,.19);",
 "}",
 
-/* ---- the study train ---- */
-"void train(inout vec3 col,vec2 uv,float t,float moving){",
-"  float X=.36, Y=.468; float wob=.0025*sin(t*18.)*moving;",
-"  for(int i=0;i<6;i++){ float fi=float(i); float ph=fract(uG*.55+fi/6.);",
-"    vec2 c=vec2(X+.085-ph*(.05+.16*moving),Y-.135-ph*.11+.01*sin(fi*3.+uG));",
-"    putA(col,vec3(1.),sdC(uv-c,.009+.022*ph),(1.-ph)*.85); }",
-"  vec2 W=vec2(X-.2,Y);",
+/* station: platform, post, badge, and dots for the stop number */
+"void station(inout vec3 col,vec2 uv,float x,float id,float t,float n){",
+"  if(x<-.25||x>1.25) return;",
+"  ink(col,vec3(.93,.88,.82),sdB(uv-vec2(x,.458),vec2(.11,.01),.003),.003);",
+"  ink(col,vec3(.55,.38,.26),sdB(uv-vec2(x+.03,.40),vec2(.006,.05),.003),.003);",
+"  icon(col,uv-vec2(x+.03,.265),id,t,.62);",
+"  vec2 pl=uv-vec2(x+.03,.37); ink(col,vec3(1.,.97,.9),sdB(pl,vec2(.05,.014),.005),.003);",
+"  for(int i=0;i<5;i++){ float fi=float(i); if(fi>=n) break; put(col,uAcc,sdC(pl-vec2((fi-(n-1.)*.5)*.018,0.),.0055)); }",
+"}",
+
+/* the Study Express */
+"void train(inout vec3 col,vec2 uv,float t,float moving,float cheer){",
+"  float X=.36, Y=.468; float wob=.0025*sin(t*22.)*moving; vec2 B=vec2(X,Y+wob);",
+"  vec2 CH=B+vec2(.075,-.14);",
+"  for(int i=0;i<7;i++){ float fi=float(i); float ph=fract(uG*.9+fi/7.);",
+"    vec2 c=CH+vec2(-ph*(.04+.3*moving)+.006*sin(fi*2.3+uG*2.),-ph*(.1-.05*moving));",
+"    putA(col,vec3(1.),sdC(uv-c,.008+.022*ph),(1.-ph)*.9); }",
+"  vec2 W=vec2(X-.215,Y);",
+"  put(col,INK,sdS(uv,vec2(X-.165,Y-.03),vec2(X-.11,Y-.03))-.0028);",
 "  ink(col,vec3(.55,.38,.26),sdB(uv-W-vec2(0.,-.03+wob),vec2(.062,.012),.004),.003);",
-"  for(int i=0;i<5;i++){ float fi=float(i); float e=clamp(uBooks-fi,0.,1.); if(e<=0.) continue;",
-"    vec2 bp=uv-W-vec2(.006*(mod(fi,2.)*2.-1.),-.053-fi*.022-(1.-eo(e))*.25+wob);",
-"    book(col,bp,i,.048-.003*fi); }",
+"  for(int i=0;i<5;i++){ float fi=float(i); if(fi>=uBooks) break;",
+"    book(col,uv-W-vec2(.006*(mod(fi,2.)*2.-1.),-.053-fi*.022+wob),i,.048-.003*fi); }",
 "  for(int i=0;i<2;i++){ vec2 wc=uv-W-vec2(-.035+float(i)*.07,-.012); float a=uCam*38.;",
 "    ink(col,vec3(.35,.3,.36),sdC(wc,.014),.003); put(col,INK,sdC(wc,.004));",
 "    put(col,INK,sdS(rot(a)*wc,vec2(-.011,0.),vec2(.011,0.))-.0015); }",
-"  put(col,INK,sdS(uv,vec2(X-.14,Y-.03),vec2(X-.1,Y-.03))-.003);",
-"  vec2 B=vec2(X,Y+wob);",
-"  ink(col,mix(uAcc2,INK,.2),sdB(uv-B-vec2(-.052,-.098),vec2(.05,.05),.008),.004);",
-"  mascot(col,uv,t,B+vec2(-.05,-.056),.62,.006*moving+.004,0.,1.);",
-"  ink(col,uAcc2,sdB(uv-B-vec2(-.052,-.062),vec2(.05,.028),.006),.004);",
-"  put(col,mix(uAcc2,vec3(1.),.35),sdB(uv-B-vec2(-.052,-.07),vec2(.036,.004),.002));",
-"  ink(col,uAcc,sdB(uv-B-vec2(.04,-.066),vec2(.07,.03),.03),.004);",
-"  for(int i=0;i<2;i++) put(col,mix(uAcc,vec3(1.),.4),sdB(uv-B-vec2(.018+float(i)*.04,-.066),vec2(.004,.029),.002));",
-"  ink(col,INK,sdB(uv-B-vec2(.088,-.108),vec2(.012,.02),.004),.001);",
-"  ink(col,INK,sdB(uv-B-vec2(.088,-.13),vec2(.018,.006),.003),.001);",
-"  col+=vec3(1.,.9,.5)*.35*exp(-60.*length(uv-B-vec2(.112,-.07)));",
-"  ink(col,vec3(1.,.93,.6),sdC(uv-B-vec2(.112,-.07),.009),.003);",
-"  put(col,INK,sdB(uv-B-vec2(.01,-.034),vec2(.11,.009),.003));",
-"  for(int i=0;i<3;i++){ vec2 wc=uv-B-vec2(-.06+float(i)*.06,-.018); float a=uCam*38.;",
-"    ink(col,mix(uAcc,INK,.35),sdC(wc,.02),.0035); put(col,INK,sdC(wc,.005));",
-"    put(col,INK,sdS(rot(a)*wc,vec2(-.016,0.),vec2(.016,0.))-.0018); put(col,INK,sdS(rot(a+1.57)*wc,vec2(-.016,0.),vec2(.016,0.))-.0018); }",
+"  ink(col,mix(uAcc2,INK,.35),sdB(uv-B-vec2(-.108,-.12),vec2(.0035,.036),.001),.002);",
+"  ink(col,mix(uAcc2,INK,.35),sdB(uv-B-vec2(-.032,-.12),vec2(.0035,.036),.001),.002);",
+"  mascot(col,uv,t,B+vec2(-.07,-.055-.02*cheer),.55,.006*moving+.012*cheer,0.,1.,0.);",
+"  ink(col,mix(uAcc2,INK,.25),sdB(uv-B-vec2(-.07,-.163),vec2(.056,.0075),.004),.003);",
+"  ink(col,uAcc2,sdB(uv-B-vec2(-.07,-.066),vec2(.045,.02),.005),.004);",
+"  put(col,mix(uAcc2,vec3(1.),.4),sdB(uv-B-vec2(-.07,-.07),vec2(.03,.0035),.002));",
+"  ink(col,uAcc,sdB(uv-B-vec2(.038,-.068),vec2(.062,.026),.026),.004);",
+"  for(int i=0;i<2;i++) put(col,mix(uAcc,vec3(1.),.4),sdB(uv-B-vec2(.02+float(i)*.036,-.068),vec2(.0035,.025),.002));",
+"  ink(col,INK,sdB(uv-B-vec2(.075,-.108),vec2(.01,.018),.003),.001);",
+"  ink(col,INK,sdB(uv-B-vec2(.075,-.128),vec2(.016,.005),.003),.001);",
+"  col+=vec3(1.,.9,.5)*.3*exp(-60.*length(uv-B-vec2(.106,-.072)));",
+"  ink(col,vec3(1.,.93,.6),sdC(uv-B-vec2(.104,-.072),.008),.003);",
+"  put(col,INK,sdB(uv-B-vec2(-.01,-.04),vec2(.118,.008),.003));",
+"  put(col,INK,sdS(uv,B+vec2(.108,-.035),B+vec2(.128,-.008))-.003);",
+"  for(int i=0;i<3;i++){ vec2 wc=uv-B-vec2(-.085+float(i)*.062,-.019); float a=uCam*38.;",
+"    ink(col,mix(uAcc,INK,.35),sdC(wc,.019),.0035); put(col,mix(uAcc,vec3(1.),.35),sdC(wc,.011)); put(col,INK,sdC(wc,.0045));",
+"    for(int k=0;k<3;k++) put(col,INK,sdS(rot(a+float(k)*1.047)*wc,vec2(-.011,0.),vec2(.011,0.))-.0014); }",
+"  if(moving>.3){ for(int i=0;i<4;i++){ float fi=float(i); vec2 sp=uv-B-vec2(.13+.02*fi,-.01-.004*fi);",
+"    putA(col,GOLD,sdC(sp-vec2(.01*sin(uG*40.+fi),0.),.004),moving*(.5+.5*sin(uG*50.+fi*2.))); } }",
+"}",
+
+/* a poof of sparkles */
+"void poof(inout vec3 col,vec2 uv,vec2 P,float k){",
+"  if(k<=0.||k>=1.) return;",
+"  for(int i=0;i<10;i++){ float a=float(i)*.628; vec2 c=P+vec2(cos(a),sin(a))*(.02+.09*eo(k));",
+"    putA(col,i%2==0?vec3(1.):GOLD,sdC(uv-c,.012*(1.-k)+.002),1.-k); }",
+"  putA(col,vec3(1.),abs(sdC(uv-P,.1*eo(k)))-.004*(1.-k),1.-k);",
 "}",
 
 "void main(){",
-"  vec2 uv=vec2(gl_FragCoord.x,uRes.y-gl_FragCoord.y)/uRes; AA=1.3/uRes.x; float t=uT;",
-"  bool night=uMode<1.5;",
+"  vec2 uv=vec2(gl_FragCoord.x,uRes.y-gl_FragCoord.y)/uRes; AA=1.3/uRes.x;",
+"  vec2 raw=uv;",
+"  uv+=uShake*.012*vec2(sin(uG*93.),cos(uG*71.));",
+"  bool night=uMode<.5;",
+"  float t=uT; float cam=uCam;",
 "  vec3 col=mix(uSkyA,uSkyB,smoothstep(0.,.56,uv.y));",
-"  float cam=uCam;",
-/* sky: moon + stars at night, sun otherwise */
 "  if(night){",
-"    vec2 mp=uv-vec2(.82,.11); col+=vec3(1.,.95,.8)*.18*exp(-9.*length(mp));",
+"    vec2 mp=uv-vec2(.84,.1); col+=vec3(1.,.95,.8)*.16*exp(-9.*length(mp));",
 "    put(col,vec3(1.,.96,.85),max(sdC(mp,.045),-sdC(mp-vec2(.02,-.012),.04)));",
-"    for(int i=0;i<24;i++){float fi=float(i); vec2 c=vec2(hash(vec2(fi,4.1)),.02+.38*hash(vec2(fi,5.3))); float tw=.4+.6*pow(max(0.,sin(uG*2.+fi*1.9)),3.);",
+"    for(int i=0;i<24;i++){float fi=float(i); vec2 c=vec2(hash(vec2(fi,4.1)),.02+.36*hash(vec2(fi,5.3))); float tw=.4+.6*pow(max(0.,sin(uG*2.+fi*1.9)),3.);",
 "      vec2 q=uv-c; float d=min(sdB(q,vec2(.009*tw,.0014),.001),sdB(q,vec2(.0014,.009*tw),.001)); putA(col,vec3(1.,.97,.85),min(d,sdC(q,.0025)),tw); }",
 "  } else {",
-"    vec2 sp=uv-vec2(.8,.12+uSun); col+=vec3(1.,.85,.6)*.22*exp(-6.*length(sp)); put(col,vec3(1.,.93,.7),sdC(sp,.05));",
-"    for(int i=0;i<3;i++){float fi=float(i); float x=fract(.15+fi*.37+uG*.006*(1.+fi*.3)-cam*.06)*1.4-.2; vec2 q=uv-vec2(x,.07+fi*.085);",
+"    vec2 sp=uv-vec2(.8,.12+uSun); col+=vec3(1.,.85,.6)*.2*exp(-6.*length(sp)); put(col,vec3(1.,.93,.7),sdC(sp,.05));",
+"    for(int i=0;i<3;i++){float fi=float(i); float x=fract(.15+fi*.37+uG*.006*(1.+fi*.3)-cam*.08)*1.4-.2; vec2 q=uv-vec2(x,.07+fi*.08);",
 "      float d=min(min(sdC(q,.033),sdC(q-vec2(.038,.008),.026)),min(sdC(q+vec2(.038,-.01),.023),sdB(q-vec2(0.,.017),vec2(.062,.014),.014)));",
 "      putA(col,vec3(1.),d,.9);}",
 "  }",
-/* hills with parallax */
 "  vec3 hA=night?mix(uSkyB,INK,.35):mix(uAcc,vec3(1.),.74); vec3 hB=night?mix(uSkyB,INK,.55):mix(uAcc,vec3(1.),.58);",
 "  float x1=uv.x+cam*.25, x2=uv.x+cam*.55;",
 "  put(col,hA,.43+.022*sin(x1*7.+1.3)+.009*sin(x1*17.+2.)-uv.y);",
 "  put(col,hB,.462+.014*sin(x2*5.+4.)-uv.y);",
-/* ground, rails and sleepers (only on the journey and exam day) */
-"  if(uMode>1.5){",
-"    put(col,night?hB:mix(uAcc,vec3(1.),.52),.47-uv.y);",
-"    float xs=mod(uv.x+cam,.05)-.025; put(col,vec3(.55,.38,.26),sdB(vec2(xs,uv.y-.482),vec2(.008,.005),.002));",
-"    put(col,INK,abs(uv.y-.4745)-.0025);",
-"    for(int i=0;i<8;i++){float fi=float(i); float x=fract(.06+fi*.137-cam*.9+(uMode>2.5?0.:0.))*1.1-.05; vec2 q=uv-vec2(x,.5+.012*hash(vec2(fi,2.)));",
-"      q=rot(.12*sin(uG*1.4+fi))*q; for(int k=0;k<5;k++){float a=float(k)*1.2566; put(col,vec3(1.,.97,.92),sdC(q-.0075*vec2(cos(a),sin(a)),.0055));}",
-"      put(col,mix(uAcc,GOLD,.5),sdC(q,.0045)); }",
-"  } else { put(col,hB,.505-uv.y); }",
+"  if(uSpeed>.01){ for(int i=0;i<16;i++){ float fi=float(i); float y=.04+.42*hash(vec2(fi,11.)); float x=fract(hash(vec2(fi,12.))-uG*(1.5+hash(vec2(fi,13.))))*1.5-.25;",
+"      putA(col,vec3(1.),sdS(uv,vec2(x,y),vec2(x+.14,y))-.0018,.55*uSpeed); } }",
 
-/* ---- scene contents ---- */
-"  if(uMode<.5 || (uMode<1.5)){",
-"    vec2 D=vec2(.66,.47);",
+/* ---------- Almo's room ---------- */
+"  if(night){",
+"    put(col,hB,.505-uv.y);",
+"    float bt=uBT; vec2 D=vec2(.66,.47);",
 "    ink(col,vec3(.55,.38,.26),sdB(uv-D-vec2(-.1,.02),vec2(.006,.028),.002),.002); ink(col,vec3(.55,.38,.26),sdB(uv-D-vec2(.1,.02),vec2(.006,.028),.002),.002);",
 "    ink(col,vec3(.62,.44,.3),sdB(uv-D,vec2(.125,.009),.003),.003);",
-"    float calm=uMode>.5?eo(t-3.):0.;",
-"    for(int i=0;i<5;i++){ float fi=float(i); float wb=(1.-calm)*.05*fi*sin(t*3.2+fi*.4);",
-"      vec2 bp=uv-D-vec2(.012*(mod(fi,2.)*2.-1.)+wb*.4,-.021-fi*.0215); bp=rot(wb)*bp; book(col,bp,i,.07-.004*fi); }",
-"    col+=vec3(1.,.9,.6)*.12*exp(-14.*length(uv-vec2(.62,.33)));",
-"    float held=uMode>.5?eo((t-2.6)/.6):0.;",
-"    vec2 Mm=vec2(.3,.505);",
-"    mascot(col,uv,t,Mm,1.,uJoy,uWave,uMood);",
-"    if(uMode>.5){",
-"      float k=clamp(uTicket,0.,1.); vec2 start=vec2(.62,-.08); vec2 end_=Mm+vec2(.095,-.2-.02*sin(t*3.));",
-"      vec2 tp=mix(start,end_,eo(k))+vec2(.06*sin(k*9.)*(1.-k),0.);",
-"      vec2 tq=rot(.4*sin(k*7.)*(1.-k)+.15*sin(t*3.)*k)*(uv-tp);",
-"      ticket(col,tq,.7+.3*sin(t*5.));",
-"      for(int i=0;i<8;i++){float fi=float(i); float a=fi*.785+t; float r=.07+.02*sin(t*4.+fi); vec2 q=uv-tp-r*vec2(cos(a),sin(a));",
-"        putA(col,GOLD,min(sdB(q,vec2(.008,.0012),.001),sdB(q,vec2(.0012,.008),.001)),.8*k); }",
-"    }",
+"    float ring=win(bt,.2,.3)*(1.-win(bt,2.6,3.1));",
+"    vec2 C=vec2(.56,.426-.012*abs(sin(bt*38.))*ring); vec2 cq=rot(.35*sin(bt*40.)*ring)*(uv-C);",
+"    for(int i=0;i<2;i++){ float sd=float(i)*2.-1.; ink(col,GOLD,sdC(cq-vec2(sd*.02,-.027),.011),.003); ink(col,INK,sdS(cq,vec2(sd*.012,.025),vec2(sd*.02,.036))-.003,.0); }",
+"    ink(col,vec3(.9,.35,.4),sdC(cq,.028),.004); put(col,vec3(1.,.98,.94),sdC(cq,.02));",
+"    put(col,INK,sdS(cq,vec2(0.),vec2(0.,-.013))-.002); put(col,INK,sdS(cq,vec2(0.),rot(bt*6.)*vec2(.011,0.))-.002);",
+"    for(int k=0;k<3;k++){ float fk=float(k); float rr=.042+fk*.014+.004*sin(bt*30.);",
+"      for(int i=0;i<2;i++){ float sd=float(i)*2.-1.; vec2 aq=(uv-C)*vec2(sd,1.); float ang=atan(aq.y,aq.x);",
+"        putA(col,GOLD,max(abs(length(aq)-rr)-.0022,abs(ang+.1)-.55),ring*(.9-fk*.25)); } }",
+"    float hop=0.; if(bt>.55&&bt<1.25) hop=.11*sin(PI*(bt-.55)/.7);",
+"    if(bt>8.&&bt<8.75) hop=.13*sin(PI*(bt-8.)/.75);",
+"    float mood=bt<.55?2.:(bt<8.?(bt>4.6?0.:3.):1.);",
+"    float trem=(mood>2.5&&bt>1.25)?.003*sin(bt*70.):0.;",
+"    vec2 M=vec2(.3+trem,.505-hop);",
+"    mascot(col,uv,bt,M,1.,bt>8.75?.02:0.,bt>8.?win(bt,8.2,8.5):0.,mood,1.);",
+"    if(bt<.55){ for(int i=0;i<3;i++){ float fi=float(i); float ph=fract(bt*1.2+fi/3.); vec2 z=uv-(vec2(.36,.36)+ph*vec2(.05,-.09)); float s=.008+.01*ph;",
+"      float d=min(min(sdS(z,vec2(-s,-s),vec2(s,-s)),sdS(z,vec2(s,-s),vec2(-s,s))),sdS(z,vec2(-s,s),vec2(s,s)))-.0022; putA(col,vec3(1.),d,1.-ph); } }",
+"    for(int i=0;i<5;i++){ float fi=float(i); int k=4-i; float fk=float(k);",
+"      vec2 pd=D+vec2(.012*(mod(fi,2.)*2.-1.),-.021-fi*.0215);",
+"      vec2 pa=vec2(.30+.014*(mod(fk,2.)*2.-1.),.494-fk*.023);",
+"      float f=win(bt,3.95+.12*fk,4.4+.12*fk); float g=win(bt,8.,8.8);",
+"      float sway=(1.-f)*.05*fi*sin(bt*6.)*win(bt,.6,1.6);",
+"      vec2 pos=mix(pd,pa,eo(f)); pos.y-=.16*sin(PI*f); float ang=sway+f*(.1*(mod(fk,2.)*2.-1.))+2.5*sin(PI*f)*(mod(fi,2.)*2.-1.);",
+"      vec2 dir=vec2((mod(fk,2.)*2.-1.)*(.35+.15*fk),-.9);",
+"      pos+=dir*g*.8+vec2(0.,1.4*g*g); ang+=g*6.*(mod(fk,2.)*2.-1.);",
+"      book(col,rot(ang)*(uv-pos),i,.07-.004*fi); }",
+"    if(bt>7.){ float k=win(bt,7.,8.); vec2 st=vec2(1.05,-.05), en=vec2(.37,.3);",
+"      vec2 tp=k<1.?mix(st,en,k):M+vec2(.1,-.19);",
+"      if(k<1.) for(int i=1;i<12;i++){ float fi=float(i); vec2 c=mix(st,en,max(0.,k-fi*.025)); putA(col,GOLD,sdC(uv-c,.012-fi*.0009),.6*(1.-fi/12.)); }",
+"      ticket(col,rot(k<1.?k*12.:.15*sin(bt*4.))*(uv-tp),.8+.2*sin(bt*6.));",
+"      if(k>=1.) for(int i=0;i<8;i++){float fi=float(i); float a=fi*.785+bt*2.; vec2 q=uv-tp-(.07+.02*sin(bt*5.+fi))*vec2(cos(a),sin(a));",
+"        putA(col,GOLD,min(sdB(q,vec2(.008,.0012),.001),sdB(q,vec2(.0012,.008),.001)),.85); } }",
 "  }",
-"  if(uMode>1.5 && uMode<2.5){",
-"    stationSign(col,uv,uSignPrev,uIconPrev,t); stationSign(col,uv,uSign,uIcon,t);",
-"    train(col,uv,t,uWave);",
-"  }",
-"  if(uMode>2.5){",
-"    vec2 S=vec2(.66,.47);",
-"    for(int i=0;i<5;i++){float fi=float(i); vec2 bp=uv-S-vec2(.008*(mod(fi,2.)*2.-1.),-.012-fi*.0215); book(col,bp,i,.07-.004*fi);}",
-"    icon(col,uv-vec2(.66,.285+.008*sin(t*2.)),6.,t,.85);",
-"    mascot(col,uv,t,vec2(.32,.47),1.,uJoy,uWave,1.);",
-"    for(int i=0;i<44;i++){ float fi=float(i); float sp=.6+hash(vec2(fi,8.));",
-"      vec2 c=vec2(hash(vec2(fi,1.7))+.04*sin(uG*2.+fi),fract(hash(vec2(fi,2.9))+t*.11*sp)*1.15-.1);",
-"      vec2 q=rot(uG*3.*sp+fi)*(uv-c); putA(col,BK(int(mod(fi,5.))),sdB(q,vec2(.008,.004),.001),.95); }",
-"  }",
-"  for(int i=0;i<8;i++){float fi=float(i); vec2 c=vec2(hash(vec2(fi,4.7)),.05+.35*hash(vec2(fi,6.3))); float tw=pow(max(0.,sin(uG*1.8+fi*1.7)),6.);",
-"    if(night) continue; vec2 q=uv-c; float d=min(sdB(q,vec2(.012*tw,.0017),.001),sdB(q,vec2(.0017,.012*tw),.001)); putA(col,vec3(1.),d,tw);}",
 
-/* ---- the ticket-shaped caption card ---- */
+/* ---------- the Study Express ---------- */
+"  if(uMode>.5){",
+"    put(col,mix(uAcc,vec3(1.),.52),.47-uv.y);",
+"    float xs=mod(uv.x+cam,.05)-.025; put(col,vec3(.55,.38,.26),sdB(vec2(xs,uv.y-.482),vec2(.008,.005),.002));",
+"    put(col,INK,abs(uv.y-.4745)-.0025);",
+"    for(int i=0;i<8;i++){float fi=float(i); float x=fract(.06+fi*.137-cam*.9)*1.1-.05; vec2 q=uv-vec2(x,.5+.012*hash(vec2(fi,2.)));",
+"      q=rot(.12*sin(uG*1.4+fi))*q; for(int k=0;k<5;k++){float a=float(k)*1.2566; put(col,vec3(1.,.97,.92),sdC(q-.0075*vec2(cos(a),sin(a)),.0055));}",
+"      put(col,mix(uAcc,GOLD,.5),sdC(q,.0045)); }",
+"  }",
+"  if(uMode>.5&&uMode<1.5){",
+"    float st=uST;",
+"    station(col,uv,uSignPrev,uIconPrev,t,uStop); station(col,uv,uSign,uIcon,t,uStop+1.);",
+"    vec2 Mo=vec2(uSign-.055,.448);",
+"    float up=eo(win(st,.75,1.05)); float hit=win(st,1.8,1.95);",
+"    if(st>.75&&st<1.95){ float sq=hit>0.?.8*sin(PI*hit):(1.-up)*.6+.12*sin(st*18.)*step(1.05,st);",
+"      monster(col,uv,Mo+vec2(.004*sin(st*40.)*step(1.05,st),(1.-up)*.07),t,sq,step(.01,hit),uIcon); }",
+"    poof(col,uv,Mo+vec2(0.,-.05),win(st,1.85,2.35));",
+"    if(st>1.4&&st<1.82){ float k=win(st,1.4,1.8); vec2 a=vec2(.3,.33), b=Mo+vec2(0.,-.06);",
+"      vec2 pp=mix(a,b,k)-vec2(0.,.12*sin(PI*k));",
+"      for(int i=1;i<7;i++){ float fi=float(i); float kk=max(0.,k-fi*.04); vec2 c=mix(a,b,kk)-vec2(0.,.12*sin(PI*kk)); putA(col,GOLD,sdC(uv-c,.009-fi*.001),.5*(1.-fi/7.)); }",
+"      star5(col,rot(st*14.)*(uv-pp),.022,GOLD); }",
+"    train(col,uv,t,uSpeed,step(1.8,st)*(1.-step(2.8,st)));",
+"    if(st>1.95&&st<2.7){ float k=win(st,1.95,2.65); vec2 a=Mo+vec2(0.,-.05); vec2 b=vec2(.145,.415-uStop*.022);",
+"      vec2 pp=mix(a,b,eo(k))-vec2(0.,.16*sin(PI*k)); book(col,rot(k*9.)*(uv-pp),int(uStop),.048-.003*uStop); }",
+"  }",
+
+/* ---------- exam day ---------- */
+"  if(uMode>1.5){",
+"    float ft=uFT;",
+"    station(col,uv,uSign,6.,t,0.);",
+"    float out_=win(ft,.95,1.45);",
+"    train(col,uv,t,uSpeed,0.);",
+"    vec2 J=mix(vec2(.29,.41),vec2(.63,.448),eo(out_))-vec2(0.,.14*sin(PI*out_));",
+"    if(ft>.95) mascot(col,uv,t,J,1.,ft>1.45?.035:0.,ft>1.45?1.:0.,1.,1.);",
+"    if(ft>1.4){ for(int i=0;i<60;i++){ float fi=float(i); float side=mod(fi,2.)*2.-1.; float k=ft-1.4-.01*fi;",
+"        if(k<0.) continue; vec2 v0=vec2(-side*(.12+.25*hash(vec2(fi,3.))),-(.55+.35*hash(vec2(fi,4.))));",
+"        vec2 c=vec2(side>0.?.96:.04,.47)+v0*k+vec2(0.,.45*k*k); c.x+=.02*sin(k*6.+fi);",
+"        vec2 q=rot(uG*4.+fi)*(uv-c); putA(col,BK(int(mod(fi,5.))),sdB(q,vec2(.009,.0045),.001),.95); } }",
+"  }",
+
+/* ---------- ticket-shaped caption card ---------- */
 "  vec2 cp=uv-vec2(.5,.745);",
 "  float cd=sdB(cp,vec2(.43,.19),.035); cd=max(cd,-sdC(abs(cp)-vec2(.43,0.),.022));",
 "  float sh=sdB(cp-vec2(0.,.012),vec2(.43,.19),.035);",
 "  col=mix(col,col*.72,(1.-smoothstep(-.012,.02,sh))*.5*uCard);",
 "  putA(col,vec3(1.,.992,.972),cd,uCard);",
 "  putA(col,uAcc,abs(cd+.008)-.0018,uCard);",
-/* the station stamp on the card */
-"  if(uStamp>0.){ float e=eo(uStamp/.35); float sc=mix(2.2,1.,e); vec2 sp=rot(-.3+ .3*(1.-e))*(uv-vec2(.86,.60))/sc;",
-"    float a=clamp(uStamp/.2,0.,1.)*.85*uCard; float ring=abs(sdC(sp,.036))-.004; float ring2=abs(sdC(sp,.028))-.0015;",
-"    putA(col,uAcc,min(ring,ring2),a); vec2 ss=sp; ss.y=-ss.y; putA(col,uAcc,sdStar(ss,.016,.45),a); }",
+"  if(uStamp>0.){ float e=eo(uStamp/.25); float sc=mix(2.4,1.,e); vec2 sp=rot(-.3+.4*(1.-e))*(uv-vec2(.86,.60))/sc;",
+"    float a=clamp(uStamp/.12,0.,1.)*.9*uCard; putA(col,uAcc,min(abs(sdC(sp,.036))-.004,abs(sdC(sp,.028))-.0015),a);",
+"    vec2 ss=sp; ss.y=-ss.y; putA(col,uAcc,sdStar(ss,.016,.45),a); }",
 "  vec4 tx=vec4(0.);",
 "  for(int i=0;i<8;i++){vec4 L=uLine[i]; if(L.z<=.001) continue; float sy=uv.y-(1.-L.z)*.028;",
 "    if(sy>=L.x && sy<=L.y){ vec4 s=texture(uText,vec2(uv.x,sy)); tx=vec4(s.rgb,s.a*L.z);} }",
 "  col=mix(col,tx.rgb,tx.a);",
-/* iris wipe, vignette, grain */
-"  vec2 ic=vec2(.34,.38); float dd=length(uv-ic)-uIris*1.3;",
+/* ---------- comic pop word ---------- */
+"  if(uPop.w>.001){ vec2 pq=rot(-.12)*(uv-uPop.xy)/uPop.z; vec2 tc=pq/vec2(.62,.155)+.5;",
+"    if(tc.x>0.&&tc.x<1.&&tc.y>0.&&tc.y<1.){ vec4 s=texture(uPopTex,tc); col=mix(col,s.rgb,s.a*uPop.w);} }",
+/* ---------- iris, vignette, grain ---------- */
+"  float dd=length(raw-vec2(.34,.38))-uIris*1.3;",
 "  col=mix(col,vec3(.09,.06,.1),smoothstep(-AA,AA,dd));",
 "  if(uIris>.002 && uIris<.998) col=mix(col,uAcc,1.-smoothstep(0.,AA*2.,abs(dd)-.004));",
-"  col*=1.-.16*pow(length(uv-.5)*1.3,2.6);",
-"  col+=(hash(uv*uRes+fract(uG*7.)*100.)-.5)*.022;",
+"  col*=1.-.16*pow(length(raw-.5)*1.3,2.6);",
+"  col+=(hash(raw*uRes+fract(uG*7.)*100.)-.5)*.022;",
 "  o=vec4(col,1.);",
 "}"
 ].join("\n");
@@ -432,31 +506,34 @@ try {
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
 } catch (err) {
   console.error(err);
-  var fb = document.createElement("div"); fb.className = "nogl";
-  fb.textContent = "The film couldn't start on this device, but the whole story is in \"Read the story as text\" below.";
-  canvas.replaceWith(fb); tr.open = true; document.querySelector(".bar").style.display = "none";
+  fallback("The film couldn't start on this device, but the whole story is in \"Read the story as text\" below.");
   return;
 }
 gl.useProgram(prog);
-var vao = gl.createVertexArray(); gl.bindVertexArray(vao);
+gl.bindVertexArray(gl.createVertexArray());
 gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
 gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 3,-1, -1,3]), gl.STATIC_DRAW);
 var ploc = gl.getAttribLocation(prog, "p"); gl.enableVertexAttribArray(ploc); gl.vertexAttribPointer(ploc, 2, gl.FLOAT, false, 0, 0);
 var U = {};
-("uRes uT uG uMode uIris uCard uMood uJoy uWave uCam uSign uSignPrev uIcon uIconPrev uBooks uStamp uTicket uSun " +
- "uSkyA uSkyB uAcc uAcc2 uText uLine").split(" ").forEach(function(n){ U[n] = gl.getUniformLocation(prog, n); });
+("uRes uT uG uMode uIris uCard uShake uStamp uBT uST uFT uStop uCam uSpeed uSign uSignPrev uIcon uIconPrev uBooks uSun " +
+ "uSkyA uSkyB uAcc uAcc2 uText uPopTex uLine uPop").split(" ").forEach(function(n){ U[n] = gl.getUniformLocation(prog, n); });
 
 /* =====================================================================
-   CAPTIONS: drawn with the computer's own fonts into a texture
+   TEXT: captions and comic words, drawn with the computer's own fonts
    ===================================================================== */
-var tex = gl.createTexture();
-gl.bindTexture(gl.TEXTURE_2D, tex);
-[gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER].forEach(function(k){ gl.texParameteri(gl.TEXTURE_2D, k, gl.LINEAR); });
-[gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach(function(k){ gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE); });
+function makeTex(){
+  var t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+  [gl.TEXTURE_MIN_FILTER, gl.TEXTURE_MAG_FILTER].forEach(function(k){ gl.texParameteri(gl.TEXTURE_2D, k, gl.LINEAR); });
+  [gl.TEXTURE_WRAP_S, gl.TEXTURE_WRAP_T].forEach(function(k){ gl.texParameteri(gl.TEXTURE_2D, k, gl.CLAMP_TO_EDGE); });
+  return t;
+}
 gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
+var tex = makeTex(), popTex = makeTex();
 var tc = document.createElement("canvas"), tx = tc.getContext("2d");
+var pc = document.createElement("canvas"), px = pc.getContext("2d"); pc.width = 1024; pc.height = 256;
 var FONT = '"Segoe UI","Trebuchet MS",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif';
-var lineBoxes = [], textFor = -1, textSize = 0;
+var HEAVY = '"Arial Black","Segoe UI Black",Impact,"Helvetica Neue",Arial,sans-serif';
+var lineBoxes = [], textFor = -1, textSize = 0, popFor = -1;
 
 function fit(txt, weight, size, maxW){
   var s = size;
@@ -472,43 +549,53 @@ function drawText(si){
   var cs = fit(sc.chip, "700", S * 0.021, maxW * 0.9);
   tx.font = "700 " + Math.round(cs) + "px " + FONT;
   if ("letterSpacing" in tx) tx.letterSpacing = Math.round(cs * 0.14) + "px";
-  var cw = tx.measureText(sc.chip).width + cs * 2.4, cy = S * 0.588, chh = cs * 2.0;
-  tx.fillStyle = sc.mode < 2 ? "#5B3A6E" : acc; roundRect(S / 2 - cw / 2, cy - chh / 2, cw, chh, chh / 2); tx.fill();
+  var cw = tx.measureText(sc.chip).width + cs * 2.4, cy = S * 0.59, chh = cs * 2.0;
+  tx.fillStyle = sc.mode === 0 ? "#5B3A6E" : acc; roundRect(S / 2 - cw / 2, cy - chh / 2, cw, chh, chh / 2); tx.fill();
   tx.fillStyle = "#FFF9F2"; tx.fillText(sc.chip, S / 2 + cs * 0.07, cy + 1);
   if ("letterSpacing" in tx) tx.letterSpacing = "0px";
   lineBoxes.push([(cy - chh / 2 - 4) / S, (cy + chh / 2 + 4) / S]);
-  var ts = fit(sc.title, "800", S * 0.05, maxW), ty = S * 0.652;
+  var big = sc.mode !== 1;
+  var ts = fit(sc.title, "800", S * (big ? 0.058 : 0.05), maxW), ty = S * (big ? 0.67 : 0.66);
   tx.font = "800 " + Math.round(ts) + "px " + FONT; tx.fillStyle = ink; tx.fillText(sc.title, S / 2, ty);
   lineBoxes.push([(ty - ts * 0.72) / S, (ty + ts * 0.72) / S]);
-  var n = sc.lines.length, top = S * 0.726, gap = n > 2 ? S * 0.052 : S * 0.058;
+  var n = sc.lines.length, top = S * (big ? 0.76 : (n > 2 ? 0.735 : 0.75)), gap = n > 2 ? S * 0.054 : S * 0.062;
   sc.lines.forEach(function(line, i){
     var y = top + i * gap, parts = line.split(" · "), pre = parts.length > 1 && /^Unit /.test(parts[0]) ? parts.shift() + " · " : "", rest = parts.join(" · ");
-    var bs = fit(pre + rest, "600", S * 0.03, maxW - S * 0.04);
+    var bs = fit(pre + rest, "600", S * 0.031, maxW - S * 0.04);
+    var restFont = (pre ? "500 " : "italic 500 ") + Math.round(bs) + "px " + FONT;
     tx.font = "800 " + Math.round(bs) + "px " + FONT; var w1 = tx.measureText(pre).width;
-    tx.font = (sc.mode < 2 || sc.mode === 3 ? "italic 500 " : "500 ") + Math.round(bs) + "px " + FONT; var w2 = tx.measureText(rest).width;
+    tx.font = restFont; var w2 = tx.measureText(rest).width;
     var x0 = S / 2 - (w1 + w2) / 2 + (pre ? S * 0.014 : 0);
     if (pre){ tx.fillStyle = acc; tx.beginPath(); tx.arc(x0 - S * 0.022, y, S * 0.0075, 0, Math.PI * 2); tx.fill(); }
     tx.textAlign = "left";
     tx.font = "800 " + Math.round(bs) + "px " + FONT; tx.fillStyle = acc; tx.fillText(pre, x0, y);
-    tx.font = (sc.mode < 2 || sc.mode === 3 ? "italic 500 " : "500 ") + Math.round(bs) + "px " + FONT; tx.fillStyle = ink; tx.fillText(rest, x0 + w1, y);
+    tx.font = restFont; tx.fillStyle = ink; tx.fillText(rest, x0 + w1, y);
     tx.textAlign = "center";
     lineBoxes.push([(y - bs * 0.75) / S, (y + bs * 0.75) / S]);
   });
-  if (sc.tip){
-    var tsz = fit(sc.tip, "italic 500", S * 0.024, maxW), tpy = S * 0.893;
-    tx.font = "italic 500 " + Math.round(tsz) + "px " + FONT; tx.fillStyle = "#7A6170"; tx.fillText("✦  " + sc.tip + "  ✦", S / 2, tpy);
-    lineBoxes.push([(tpy - tsz * 0.8) / S, (tpy + tsz * 0.8) / S]);
-  }
   gl.bindTexture(gl.TEXTURE_2D, tex);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, tc);
+}
+function drawPop(i){
+  var p = POPS[i], W = pc.width, H = pc.height;
+  px.clearRect(0, 0, W, H); px.textAlign = "center"; px.textBaseline = "middle";
+  var s = 150;
+  do { px.font = "900 " + s + "px " + HEAVY; if (px.measureText(p.w).width < W * 0.86) break; s -= 6; } while (s > 40);
+  px.lineJoin = "round";
+  px.lineWidth = s * 0.26; px.strokeStyle = "#2C1D28"; px.strokeText(p.w, W / 2 + 8, H / 2 + 10);
+  px.fillStyle = "#2C1D28"; px.fillText(p.w, W / 2 + 8, H / 2 + 10);
+  px.lineWidth = s * 0.2; px.strokeText(p.w, W / 2, H / 2);
+  px.fillStyle = p.c; px.fillText(p.w, W / 2, H / 2);
+  gl.bindTexture(gl.TEXTURE_2D, popTex);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, pc);
 }
 
 function resize(){
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
   var css = canvas.getBoundingClientRect().width || 600;
-  var px = Math.max(320, Math.min(1800, Math.round(css * dpr)));
-  if (canvas.width !== px){ canvas.width = canvas.height = px; }
-  var ts = Math.min(2048, px);
+  var pxs = Math.max(320, Math.min(1800, Math.round(css * dpr)));
+  if (canvas.width !== pxs){ canvas.width = canvas.height = pxs; }
+  var ts = Math.min(2048, pxs);
   if (textSize !== ts){ tc.width = tc.height = ts; textSize = ts; textFor = -1; }
   gl.viewport(0, 0, canvas.width, canvas.height);
 }
@@ -522,7 +609,7 @@ var playing = !matchMedia("(prefers-reduced-motion: reduce)").matches;
 var pp = document.getElementById("pp"), fillEl = document.getElementById("fill"), knob = document.getElementById("knob");
 var clock = document.getElementById("clock"), scrub = document.getElementById("scrub"), endEl = document.getElementById("end");
 var chapters = document.getElementById("chapters");
-scrub.setAttribute("aria-valuemax", DURATION);
+scrub.setAttribute("aria-valuemax", Math.round(DURATION));
 SCENES.forEach(function(s, i){
   var li = document.createElement("li"), b = document.createElement("button");
   b.type = "button"; b.innerHTML = '<span class="dot" style="background:' + s.acc + '"></span>' + s.key;
@@ -554,69 +641,78 @@ document.addEventListener("keydown", function(e){
 var lineBuf = new Float32Array(32);
 function uni3(n, v){ gl.uniform3fv(U[n], v); }
 
-/* everything the shader needs at film time T */
 function render(){
   var si = 0; for (var i = 0; i < SCENES.length; i++) if (T >= SCENES[i].t0) si = i;
   var sc = SCENES[si], lt = T - sc.t0, len = sc.len;
   if (textFor !== si){ drawText(si); textFor = si; }
 
-  /* iris: opens the film, and wipes into the train ride and into exam day */
+  /* iris: opens the film, wipes from the bedroom onto the train */
   var iris = 1;
-  if (si === 0) iris = easeOut(lt / 1.2);
-  if (si === 1) iris = easeOut((len - lt) / 0.6);
-  if (si === FIRST_STOP) iris = easeOut(lt / 0.7);
-  if (si === LAST_STOP) iris = easeOut((len - lt) / 0.6);
-  if (si === SCENES.length - 1) iris = easeOut(lt / 0.7);
+  if (si === 0) iris = easeOut(lt / 0.8);
+  if (si === FIRST_STOP - 1) iris = easeOut((len - lt) / 0.5);
+  if (si === FIRST_STOP) iris = easeOut(lt / 0.5);
 
-  /* colours: at each station, blend from the last station's colours as the train pulls in */
   var skyA = hex(sc.sky[0]), skyB = hex(sc.sky[1]), acc = hex(sc.acc), acc2 = hex(sc.acc2);
-  if (sc.mode === 2 && si > FIRST_STOP){
-    var pv = SCENES[si - 1], k = easeInOut(lt / 1.3);
-    skyA = mix3(hex(pv.sky[0]), skyA, k); skyB = mix3(hex(pv.sky[1]), skyB, k);
-    acc = mix3(hex(pv.acc), acc, k); acc2 = mix3(hex(pv.acc2), acc2, k);
+  var prev = si > 0 ? SCENES[si - 1] : null;
+  if (prev && sc.mode !== 0 && prev.mode !== 0){
+    var k = easeOut(lt / 0.7);
+    skyA = mix3(hex(prev.sky[0]), skyA, k); skyB = mix3(hex(prev.sky[1]), skyB, k);
+    acc = mix3(hex(prev.acc), acc, k); acc2 = mix3(hex(prev.acc2), acc2, k);
   }
 
-  /* the train ride: the camera slides between stations, slowing in and pulling away */
-  var cam = 0, moving = 0, stopIdx = 0;
+  /* camera, speed and cargo on the train */
+  var cam = 0, speed = 0, stop = 0, books = 0, stamp = 0, shake = 0;
+  if (sc.mode === 1){
+    stop = sc.stop;
+    if (lt < 0.8){ cam = stop - 0.6 * (1 - easeOut(lt / 0.8)); speed = 1 - lt / 0.8; }
+    else if (lt > len - 0.6){ var q = (lt - (len - 0.6)) / 0.6; cam = stop + 0.4 * q * q; speed = q; }
+    else cam = stop;
+    books = stop + (lt > 2.65 ? 1 : 0);
+    stamp = Math.max(0, lt - 2.0);
+    if (lt > 1.8 && lt < 2.1) shake = 1 - (lt - 1.8) / 0.3;
+  }
   if (sc.mode === 2){
-    stopIdx = sc.stop;
-    if (lt < 1.3){ cam = stopIdx - 0.5 * (1 - easeOut(lt / 1.3)); moving = 1 - lt / 1.3; }
-    else if (lt > len - 1.3){ var q = (lt - (len - 1.3)) / 1.3; cam = stopIdx + 0.5 * q * q * q; moving = q; }
-    else cam = stopIdx;
+    stop = 5; cam = 4.4 + 0.6 * easeOut(lt / 0.95); speed = 1 - clamp01(lt / 0.95); books = 5;
   }
-  var books = 0;
-  if (sc.mode === 2) books = stopIdx + clamp01((lt - 2.0) / 0.8);
-  if (sc.mode === 3) books = 5;
+  if (sc.mode === 0){
+    if (T > 4.3 && T < 4.75) shake = 1 - (T - 4.3) / 0.45;
+    if (T > 0.3 && T < 2.8) shake = Math.max(shake, 0.18);
+  }
+  var signX = sc.mode === 2 ? 0.6 + (5 - cam) : 0.72 + stop - cam;
 
-  /* Almo's mood: worried at night, delighted once he has the ticket */
-  var mood = sc.mode === 0 ? 0 : sc.mode === 1 ? (lt > 3.1 ? 1 : 0) : 1;
-  var joy = sc.mode === 0 ? 0.0 : sc.mode === 1 ? (lt > 3.1 ? 0.03 : 0.0) : sc.mode === 3 ? 0.05 : 0.02;
-  var wave = sc.mode === 1 ? clamp01(1 - Math.abs(lt - 3.8) / 1.2) : sc.mode === 3 ? clamp01(1 - Math.abs(lt - 1.8) / 1.5) : moving;
-
-  /* caption timing */
-  var rv = sc.mode === 2 ? [1.0, 1.3, 1.9, 2.5, 3.1] : [0.5, 0.9, 1.9, 2.8];
-  var tipAt = sc.mode === 2 ? 3.7 : 3.6;
+  /* captions */
+  var cardAt = sc.mode === 1 ? 0.45 : 0.1;
   lineBuf.fill(0);
   for (var j = 0; j < lineBoxes.length && j < 8; j++){
-    var at = j < rv.length && !(sc.tip && j === lineBoxes.length - 1) ? rv[j] : tipAt;
-    if (sc.mode === 1 && j >= 2) at = 3.4 + (j - 2) * 0.8;
-    lineBuf[j * 4] = lineBoxes[j][0]; lineBuf[j * 4 + 1] = lineBoxes[j][1]; lineBuf[j * 4 + 2] = easeOut((lt - at) / 0.5);
+    var at = cardAt + 0.1 + (j === 0 ? 0 : j === 1 ? 0.15 : 0.3 + 0.15 * (j - 2));
+    if (sc.mode === 0 && j >= 2) at += 0.35;
+    lineBuf[j * 4] = lineBoxes[j][0]; lineBuf[j * 4 + 1] = lineBoxes[j][1]; lineBuf[j * 4 + 2] = easeOut((lt - at) / 0.35);
+  }
+
+  /* comic pop words */
+  var pop = [0, 0, 1, 0];
+  for (var pi = 0; pi < POPS.length; pi++){
+    var pk = T - POPS[pi].t;
+    if (pk >= 0 && pk < 0.95){
+      if (popFor !== pi){ drawPop(pi); popFor = pi; }
+      var sgrow = pk < 0.16 ? 1.3 * easeOut(pk / 0.16) : 1.3 - 0.3 * easeOut((pk - 0.16) / 0.2);
+      pop = [POPS[pi].x, POPS[pi].y, sgrow, pk > 0.75 ? 1 - (pk - 0.75) / 0.2 : 1];
+    }
   }
 
   gl.uniform2f(U.uRes, canvas.width, canvas.height);
   gl.uniform1f(U.uT, lt); gl.uniform1f(U.uG, G); gl.uniform1f(U.uMode, sc.mode); gl.uniform1f(U.uIris, iris);
-  gl.uniform1f(U.uCard, easeOut((lt - (sc.mode === 2 ? 0.7 : 0.2)) / 0.4));
-  gl.uniform1f(U.uMood, mood); gl.uniform1f(U.uJoy, joy); gl.uniform1f(U.uWave, wave);
-  gl.uniform1f(U.uCam, cam);
-  gl.uniform1f(U.uSign, 0.74 + stopIdx - cam); gl.uniform1f(U.uSignPrev, stopIdx > 0 ? 0.74 + stopIdx - 1 - cam : -9);
-  gl.uniform1f(U.uIcon, sc.icon || 1); gl.uniform1f(U.uIconPrev, si > FIRST_STOP ? SCENES[si - 1].icon : 1);
+  gl.uniform1f(U.uCard, easeOut((lt - cardAt) / 0.3)); gl.uniform1f(U.uShake, shake); gl.uniform1f(U.uStamp, stamp);
+  gl.uniform1f(U.uBT, T); gl.uniform1f(U.uST, lt); gl.uniform1f(U.uFT, lt);
+  gl.uniform1f(U.uStop, stop); gl.uniform1f(U.uCam, cam); gl.uniform1f(U.uSpeed, speed);
+  gl.uniform1f(U.uSign, signX); gl.uniform1f(U.uSignPrev, stop > 0 && sc.mode === 1 ? signX - 1 : -9);
+  gl.uniform1f(U.uIcon, sc.icon || 1); gl.uniform1f(U.uIconPrev, prev && prev.icon ? prev.icon : 1);
   gl.uniform1f(U.uBooks, books);
-  gl.uniform1f(U.uStamp, sc.mode === 2 ? Math.max(0, lt - 1.55) : 0);
-  gl.uniform1f(U.uTicket, sc.mode === 1 ? (lt - 0.4) / 2.8 : 0);
-  gl.uniform1f(U.uSun, sc.mode === 3 ? 0.3 * (1 - easeOut(lt / 3)) : 0);
+  gl.uniform1f(U.uSun, sc.mode === 2 ? 0.3 * (1 - easeOut(lt / 2.5)) : 0);
   uni3("uSkyA", skyA); uni3("uSkyB", skyB); uni3("uAcc", acc); uni3("uAcc2", acc2);
-  gl.uniform4fv(U.uLine, lineBuf);
+  gl.uniform4fv(U.uLine, lineBuf); gl.uniform4f(U.uPop, pop[0], pop[1], pop[2], pop[3]);
   gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, tex); gl.uniform1i(U.uText, 0);
+  gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, popTex); gl.uniform1i(U.uPopTex, 1);
   gl.drawArrays(gl.TRIANGLES, 0, 3);
 
   var f = T / DURATION * 100; fillEl.style.width = f + "%"; knob.style.left = f + "%";
