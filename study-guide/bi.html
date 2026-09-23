@@ -559,10 +559,147 @@ ol.steps.tight > li{margin-bottom:.3em}
     <div class="meta">Units 1–3 · IT in business, types of digital data, OLTP &amp; OLAP (with the data-warehouse lectures)</div>
     <ul class="unit-nav"></ul>
   </div>
-  <div class="prose">
+  <div class="prose easy">
+    <div class="howto">
+      <b>How to read this page</b>
+      <ol class="steps">
+        <li><strong>New to business or databases?</strong> Start with <strong>Unit 0</strong>. In about 20 minutes it covers how a business is organised, data vs information, what a database table is, the difference between recording data and analysing it, and what "business intelligence" means, using everyday examples.</li>
+        <li>Then work through the units in order. Each topic opens with a boxed definition. Learn that wording, because examiners look for it, and end each topic with its evaluator's checklist.</li>
+        <li>Finish each unit with its flashcard deck.</li>
+      </ol>
+    </div>
     <p class="tip"><b>What the 2023 paper shows.</b> The BI mid-sem (TIT-721, Oct 2023) had 5 × (a/b) questions of 10 marks. Q1–Q3(a) were Unit 1 (CO1): IT applications in a university, the Malcolm Baldrige framework (asked <em>twice</em>, as 1(b) and 2(b)), business process management, and the connected world. Q3(b)–Q5(a) were Unit 2 (CO2): unstructured-data growth, why web pages are unstructured, XML to structured, and backup and recovery. Q5(b) was Unit 3 (CO3): OLTP vs ERP and OLTP queries. The questions are <em>applied</em> ("your university", "what according to you"), so answers must give examples as well as definitions. Your syllabus now covers three units, so expect more OLAP questions this year. The professor also taught data warehousing and integration (slides and Assignments 3–4), which is covered here as § 3.6–3.8.</p>
   </div>
 </div>
+
+<!-- ======================= UNIT 0 : FROM ZERO ======================= -->
+<div class="chapter-card" id="bi-u0" data-short="Unit 0 · Business &amp; Data from Zero">
+  <div class="ch-no">Unit Zero · Before We Begin</div>
+  <h2>Business and Data from Zero</h2>
+  <p class="in-which">How a business works, what data is, and why businesses keep two very different kinds of database, explained with a tea shop.</p>
+  <p class="syll">Not a syllabus unit by itself, but every idea here (departments, business process, data vs information, table, row, column, transaction, report, structured and unstructured data) appears in Units 1–3 and in exam answers. Read it once slowly. It takes about 20 minutes.</p>
+</div>
+
+<div class="sheet"><div class="prose easy">
+
+<section class="topic" id="bi-z1">
+<h3><span class="tno">Step 0.1</span>How a business is organised: from tea stall to company</h3>
+<div class="idea"><b>The big idea</b>A business is a group of people doing different <strong>jobs (functions)</strong> that link together into <strong>chains of steps (processes)</strong> to deliver something a customer pays for. IT exists to make those jobs and chains faster, cheaper and better informed.</div>
+<p>Imagine Ravi's tea stall. On day one, Ravi does everything himself: buys milk, makes tea, takes money, counts the cash. Ten years later "Ravi's Chai" has 50 shops, and the jobs have split into <strong>departments</strong>:</p>
+<div class="tbl"><table><thead><tr><th>Function (department)</th><th>What it does at Ravi's Chai</th></tr></thead><tbody>
+<tr><td>Purchasing / supply chain</td><td>Buys milk, tea leaves and cups from suppliers</td></tr>
+<tr><td>Operations / production</td><td>Makes the tea in every shop</td></tr>
+<tr><td>Sales &amp; marketing</td><td>Sells tea, runs offers, handles customers</td></tr>
+<tr><td>Finance &amp; accounts</td><td>Tracks money in and out, pays bills, files taxes</td></tr>
+<tr><td>Human resources (HR)</td><td>Hires, trains and pays staff</td></tr>
+</tbody></table></div>
+<p>A <strong>business process</strong> is a sequence of steps that crosses these departments to get something done.</p>
+<div class="eg"><b>Example: "order to cash"</b>Customer orders a tea → shop makes it → customer pays → cash is recorded → accounts adds it to the day's sales. Five steps, three departments, one process.</div>
+<div class="words"><b>New words</b><dl>
+<dt>Enterprise</dt><dd>A business organisation, usually a large one</dd>
+<dt>Function</dt><dd>One kind of job done in the business (sales, finance, HR…)</dd>
+<dt>Business process</dt><dd>A chain of steps, often across departments, that produces a result for a customer</dd>
+</dl></div>
+</section>
+
+<section class="topic" id="bi-z2">
+<h3><span class="tno">Step 0.2</span>Data, information, knowledge</h3>
+<div class="idea"><b>The big idea</b><strong>Data</strong> is raw facts. <strong>Information</strong> is data organised so it means something. <strong>Knowledge</strong> is understanding what to do about it. Business intelligence is the machinery that climbs this ladder.</div>
+<div class="eg"><b>Example</b><strong>Data:</strong> "Shop 12, 7:05 am, 1 masala chai, ₹20" (thousands of lines like this).<br><strong>Information:</strong> "Shop 12 sells 40% of its tea between 7 and 9 am."<br><strong>Knowledge / decision:</strong> "Put two staff on the morning shift at Shop 12 and one in the afternoon."</div>
+<div class="words"><b>New words</b><dl>
+<dt>Data</dt><dd>Raw, unorganised facts and figures</dd>
+<dt>Information</dt><dd>Data processed and organised so it is meaningful</dd>
+<dt>Knowledge</dt><dd>Understanding gained from information, used to make decisions</dd>
+</dl></div>
+</section>
+
+<section class="topic" id="bi-z3">
+<h3><span class="tno">Step 0.3</span>What a database is: tables, rows and columns</h3>
+<div class="idea"><b>The big idea</b>A <strong>database</strong> stores data in <strong>tables</strong>, like a set of very disciplined spreadsheets. Each <strong>row</strong> is one thing (one sale), each <strong>column</strong> is one fact about it (time, item, price). You ask it questions in a language called <strong>SQL</strong>.</div>
+<div class="tbl"><table><thead><tr><th>sale_id</th><th>shop</th><th>time</th><th>item</th><th>price (₹)</th></tr></thead><tbody>
+<tr><td>90231</td><td>12</td><td>07:05</td><td>Masala chai</td><td>20</td></tr>
+<tr><td>90232</td><td>12</td><td>07:06</td><td>Samosa</td><td>15</td></tr>
+<tr><td>90233</td><td>4</td><td>07:06</td><td>Masala chai</td><td>20</td></tr>
+</tbody></table></div>
+<ul class="clean">
+<li>The <strong>schema</strong> is the fixed design of the table: these five columns, in this order, with these types (number, time, text).</li>
+<li>The <strong>primary key</strong> (sale_id) is a column whose value is different for every row, so each row can be found exactly.</li>
+<li>A question in SQL looks like: <code>SELECT SUM(price) FROM sales WHERE shop = 12;</code> meaning "total sales at shop 12".</li>
+</ul>
+<div class="words"><b>New words</b><dl>
+<dt>Database / DBMS</dt><dd>An organised store of data / the software that manages it (e.g. MySQL, Oracle)</dd>
+<dt>Table, row, column</dt><dd>A grid of data; one record; one attribute of every record</dd>
+<dt>Schema</dt><dd>The fixed design of the tables: which columns and what types</dd>
+<dt>Primary key</dt><dd>A column that uniquely identifies each row</dd>
+<dt>SQL</dt><dd>Structured Query Language, used to ask a database questions</dd>
+</dl></div>
+</section>
+
+<section class="topic" id="bi-z4">
+<h3><span class="tno">Step 0.4</span>Two jobs for data: running the business vs understanding it</h3>
+<div class="idea"><b>The big idea</b>Businesses use data for two very different jobs. <strong>Running the business</strong> means recording each sale the moment it happens: lots of tiny, fast updates. <strong>Understanding the business</strong> means asking big questions over years of data: few, slow, heavy reads. They need different systems: <strong>OLTP</strong> for the first, <strong>OLAP</strong> and the <strong>data warehouse</strong> for the second (Unit 3).</div>
+<div class="tbl"><table><thead><tr><th></th><th>Running the business (OLTP)</th><th>Understanding the business (OLAP)</th></tr></thead><tbody>
+<tr><td>At Ravi's Chai</td><td>The billing machine at the counter</td><td>The owner's monthly report and dashboard</td></tr>
+<tr><td>Typical question</td><td>"Record this ₹20 sale." "Is Shop 12 out of milk?"</td><td>"Which shops grew fastest in the last 3 years, by month and by product?"</td></tr>
+<tr><td>Work</td><td>Thousands of tiny inserts and updates per minute</td><td>A few huge read-only queries over millions of rows</td></tr>
+<tr><td>Data</td><td>Current, detailed</td><td>Historical, summarised</td></tr>
+<tr><td>Users</td><td>Cashiers, clerks</td><td>Managers, analysts</td></tr>
+</tbody></table></div>
+<p>Why not use one system? Because the owner's giant 3-year report would slow down every cashier's billing. So data is copied regularly from the OLTP systems into a separate <strong>data warehouse</strong>, where it is cleaned and arranged for analysis. That copying is called <strong>ETL</strong> (Extract, Transform, Load).</p>
+<div class="eg"><b>The data cube in one line</b>OLAP thinks of sales as a cube with three sides (<strong>dimensions</strong>): <em>shop × product × month</em>. Each little box holds a number (a <strong>measure</strong>, e.g. total sales). "Slicing" the cube means fixing one side ("only March"); "drilling down" means going from year to month to day.</div>
+<div class="words"><b>New words</b><dl>
+<dt>Transaction</dt><dd>One small unit of business work recorded in the database (a sale, a payment)</dd>
+<dt>OLTP</dt><dd>On-Line Transaction Processing: systems that record day-to-day transactions</dd>
+<dt>OLAP</dt><dd>On-Line Analytical Processing: systems for analysing large amounts of historical data</dd>
+<dt>Data warehouse</dt><dd>A separate store of cleaned, historical data from across the business, built for analysis</dd>
+<dt>ETL</dt><dd>Extract, Transform, Load: copying data from source systems into the warehouse</dd>
+<dt>Dimension / measure</dt><dd>A way to slice data (shop, product, time) / the number being analysed (sales)</dd>
+</dl></div>
+</section>
+
+<section class="topic" id="bi-z5">
+<h3><span class="tno">Step 0.5</span>Structured, semi-structured and unstructured data</h3>
+<div class="idea"><b>The big idea</b>Some data fits neatly into tables (<strong>structured</strong>). Some has labels but no fixed table shape (<strong>semi-structured</strong>). Most data in the world has no fixed shape at all (<strong>unstructured</strong>): chats, photos, videos, emails. Unit 2 is about all three.</div>
+<div class="tbl"><table><thead><tr><th>Type</th><th>Everyday example at Ravi's Chai</th><th>Easy to search?</th></tr></thead><tbody>
+<tr><td><strong>Structured</strong></td><td>The sales table above</td><td>Yes: fixed columns, SQL works</td></tr>
+<tr><td><strong>Semi-structured</strong></td><td>An online order sent as XML or JSON: <code>&lt;order&gt;&lt;item&gt;chai&lt;/item&gt;&lt;qty&gt;2&lt;/qty&gt;&lt;/order&gt;</code></td><td>Partly: labels (tags) say what each value is, but orders can have different fields</td></tr>
+<tr><td><strong>Unstructured</strong></td><td>Customer reviews, WhatsApp complaints, CCTV video, photos of receipts</td><td>No: needs text mining, image analysis and so on</td></tr>
+</tbody></table></div>
+<div class="words"><b>New words</b><dl>
+<dt>Structured data</dt><dd>Data in a fixed format of rows and columns</dd>
+<dt>Semi-structured data</dt><dd>Data with tags or labels but no rigid schema (XML, JSON, email headers)</dd>
+<dt>Unstructured data</dt><dd>Data with no predefined format (text, images, audio, video)</dd>
+<dt>XML</dt><dd>eXtensible Markup Language: text with &lt;tags&gt; that label each piece of data</dd>
+</dl></div>
+</section>
+
+<section class="topic" id="bi-z6">
+<h3><span class="tno">Step 0.6</span>So what is "Business Intelligence"?</h3>
+<div class="idea"><b>The big idea</b><strong>Business Intelligence (BI)</strong> is the set of processes and tools that turns a business's raw data into information and decisions: collect it, store it in a warehouse, analyse it (OLAP, reports, dashboards), and act on it.</div>
+<ol class="steps">
+<li><strong>Collect:</strong> transactions from OLTP systems (billing, ERP, CRM), plus outside data.</li>
+<li><strong>Integrate and store:</strong> ETL into a data warehouse or data marts.</li>
+<li><strong>Analyse:</strong> OLAP cubes, reports, dashboards, data mining.</li>
+<li><strong>Decide and act:</strong> managers use the insights, then measure the results, which feeds back into step 1.</li>
+</ol>
+<p><strong>How to use this in the exam:</strong> BI questions are often <em>applied</em> ("in your university…", "what according to you…"). Give the definition, then an example from a place you know (your college, a shop, a bank), exactly as the tea shop was used here.</p>
+</section>
+
+<div class="deck" id="deck-bi-u0">
+  <p class="deck-title">Flashcards · Unit Zero</p>
+  <p class="deck-sub">If you can answer these in your own words, you're ready for Unit 1.</p>
+  <div class="fc"><div class="fc-q">What is a business process? Give an example.</div><div class="fc-a">A chain of steps, often across departments, that delivers a result. Order to cash: order → make → pay → record → add to accounts.</div></div>
+  <div class="fc"><div class="fc-q">Data vs information vs knowledge?</div><div class="fc-a">Raw facts (each sale) → organised meaning (40% of sales are 7–9 am) → a decision (add staff in the morning).</div></div>
+  <div class="fc"><div class="fc-q">Row, column, schema, primary key?</div><div class="fc-a">Row = one record; column = one attribute; schema = the fixed table design; primary key = a column unique for every row.</div></div>
+  <div class="fc"><div class="fc-q">OLTP vs OLAP in one line each?</div><div class="fc-a">OLTP records day-to-day transactions (many tiny fast updates). OLAP analyses historical data (few huge read-only queries).</div></div>
+  <div class="fc"><div class="fc-q">Why keep a separate data warehouse?</div><div class="fc-a">Heavy analysis would slow down the transaction systems, and analysis needs cleaned, historical data from many sources in one place.</div></div>
+  <div class="fc"><div class="fc-q">What does ETL stand for?</div><div class="fc-a">Extract, Transform, Load: copying data from source systems, cleaning it, and loading it into the warehouse.</div></div>
+  <div class="fc"><div class="fc-q">Dimension vs measure?</div><div class="fc-a">Dimension = a way to slice the data (shop, product, month). Measure = the number being analysed (sales amount).</div></div>
+  <div class="fc"><div class="fc-q">Structured, semi-structured, unstructured: one example each?</div><div class="fc-a">A sales table; an XML/JSON order; customer reviews, photos or video.</div></div>
+  <div class="fc"><div class="fc-q">What is Business Intelligence?</div><div class="fc-a">Processes and tools that turn raw business data into information and decisions: collect, integrate, analyse, act.</div></div>
+</div>
+
+</div></div>
 
 <!-- ======================= UNIT 1 ======================= -->
 <div class="chapter-card" id="bi-u1" data-short="Unit 1 · IT in Business">
