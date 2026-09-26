@@ -570,7 +570,7 @@ ol.steps.tight > li{margin-bottom:.3em}
         <li>The <strong>"How to write it in the exam"</strong> box tells you exactly what to put in a 10-mark answer.</li>
       </ol>
     </div>
-    <p class="tip"><b>What the past papers show.</b> Q1 to Q3(a) come from Unit 1, and Q3(b) to Q5 come from Unit 2. <strong>Four questions appeared in both 2022 and 2023:</strong> the wafer-yield numerical (§ 1.7), Amdahl's law (§ 1.11), the <em>16-way set-associative tag/index/offset</em> numerical, which was word-for-word identical both years (§ 2.3), and virtual memory (§ 2.8). Learn those four first. Almost every question pair includes a numerical, so practise the worked examples with a pen.</p>
+    <p class="tip"><b>What the past papers show (2022, 2023, 2025).</b> <strong>Asked in all three years:</strong> Amdahl's law (§ 1.11) and virtual memory (§ 2.8). <strong>Asked in two of the three:</strong> the wafer-yield numerical (§ 1.7), the 16-way tag/index/offset numerical (§ 2.3), Flynn's classification (§ 1.4), cache coherence (§ 2.7), Moore's law (§ 1.3), cache mapping and organisation (§ 2.2), and AMAT (§ 2.3–2.4). Learn those first. <strong>2025 changed the style:</strong> more "apply it" questions, such as "the clock doubles but memory doesn't; show why the gain falls short", a two-level cache AMAT, and dependability linked to power and cost. So know the <em>reasons</em> behind each formula, not just the formula. Every 2025 question is solved in its own topic and collected in <a href="#aca-pyq">Past Papers, Solved</a>, along with the end-sem questions that fall inside Units 1–2.</p>
   </div>
 </div>
 
@@ -844,6 +844,7 @@ ol.steps.tight > li{margin-bottom:.3em}
 
 <h4 class="q">What is the "myopic view" of architecture?</h4>
 <p>"Myopic" means short-sighted. The myopic view says computer architecture is <em>only</em> about designing the instruction set. The modern view says architecture is the <strong>ISA + organisation + hardware</strong>, designed together to hit targets for performance, power, cost and reliability. A beautiful ISA on a chip nobody can afford to build is a failure.</p>
+<div class="eg"><b>Asked in 2025 as a scenario</b>"An architect improves performance only by raising the clock speed, ignoring the memory hierarchy and power." This is the myopic view in action: tuning one part in isolation. Doubling the clock gives only about 1.14× (because memory doesn't get faster) and doubles the power or worse. The full solved answer is in <a href="#aca-pyq-clock25">§ 1.9</a>.</div>
 
 <h4 class="q">What kinds of computers are there, and what does each care about?</h4>
 <div class="tbl"><table><thead><tr><th>Class</th><th>What matters most</th><th>Example</th></tr></thead><tbody>
@@ -915,6 +916,8 @@ The real Pentium II had about 7.5 million, so the rule was close.</div>
 <li><strong>Power management:</strong> lowering voltage and speed when idle (DVFS), turbo boost, switching off unused parts ("dark silicon").</li>
 </ol>
 
+<div class="eg"><b>Asked in 2025: "Define Moore's law. Discuss its applications and limitations in the modern era."</b>Use three blocks. <strong>Definition</strong> with the formula and the 386 SX example. <strong>Applications</strong>: cheaper computing, the transistor budget spent on caches and cores, and roadmap planning for the whole industry. <strong>Limitations</strong>: the atomic limit, the power wall, the ILP and memory walls, and cost per transistor no longer falling. Finish with how the industry adapted (multicore, memory hierarchy, specialisation, chiplets).</div>
+
 <h4 class="q">So is Moore's law dead?</h4>
 <p>Only half. Transistor counts are still rising (through 3D stacking and density), but the <em>cost per transistor</em> has stopped falling at the newest nodes, and <em>single-core speed</em> now improves by under 5% a year instead of about 50%. The "free speed-up" for software is over. It was also partly a <em>self-fulfilling prophecy</em>: companies planned their roadmaps around it.</p>
 
@@ -975,6 +978,8 @@ The real Pentium II had about 7.5 million, so the rule was close.</div>
 <tr><td>Scaling</td><td>Everyone shares one memory bandwidth, so it doesn't scale far</td><td>Bandwidth grows with the number of processors</td></tr>
 <tr><td>Used in</td><td>Single-socket multicore chips</td><td>Multi-socket servers (Intel Nehalem, AMD EPYC)</td></tr>
 </tbody></table></div>
+
+<div class="eg"><b>Asked in 2025 mid-sem and Dec 2025 end-sem: "Classify parallel computers with suitable diagrams and examples."</b>Give Flynn's four classes, each with its own small diagram (one control unit feeding one or many processing units), one line of definition and one real example. Then add the memory-based split for MIMD (UMA vs NUMA, one diagram each) and the professor's parallelism table. For the end-sem 20-mark version, also add the historical role and the criticisms below.</div>
 
 <h4 class="q">What role did Flynn's classification play in history? (asked in 2022)</h4>
 <p>It gave everyone a <strong>shared vocabulary</strong> for parallel computers, and each class matches a period of history:</p>
@@ -1217,6 +1222,16 @@ Die B: dies/wafer = π(15)²/1 − π·30/√2 = 706.86 − 66.64 ≈ 640
 <li><strong>Volume:</strong> design and mask costs are hundreds of millions of dollars at 3 nm, and only huge sales can pay for them.</li>
 </ul>
 
+<h5 id="aca-es-yield">End-sem Dec 2025 Q1(b): how fabrication yield affects cost, power and speed</h5>
+<p><em>Discuss fabrication yield and its impact on processor cost, power consumption, and speed.</em></p>
+<p><strong>Key point first:</strong> no two dies come out exactly alike. Tiny variations across the wafer (a little thicker here, a little narrower there) mean some dies switch faster, some leak more current, and some don't work at all. "Yield" is really about this whole spread, not just working vs broken.</p>
+<div class="tbl"><table><thead><tr><th>Impact on</th><th>What happens</th><th>What designers and makers do</th></tr></thead><tbody>
+<tr><td><strong>Cost</strong></td><td>Cost of die = wafer cost ÷ (dies per wafer × yield). A bigger die means fewer dies <em>and</em> a lower yield, so cost rises roughly with area⁴.</td><td>Keep dies small; use chiplets; add spare parts (redundant cache rows, spare cores) so a defect can be switched around instead of scrapping the die.</td></tr>
+<tr><td><strong>Speed</strong></td><td>Dies from the same wafer reach different top clock speeds. Also, a low-yield process forces a smaller die, which means less cache and fewer cores, so less performance.</td><td><strong>Speed binning:</strong> test every die at several clock rates and sell the fast ones as the premium model and the slower ones as cheaper models. Chiplets let a product use more total silicon (more cores and cache) without the yield penalty of one huge die.</td></tr>
+<tr><td><strong>Power</strong></td><td>Leaky dies draw more static power; some dies need a higher voltage to reach the target clock, and dynamic power grows with V². A die that runs too hot fails its TDP target.</td><td><strong>Power binning:</strong> sell cool, efficient dies as low-power laptop parts and leakier ones at lower clocks or in desktops. Disabling defective cores also removes their power draw.</td></tr>
+</tbody></table></div>
+<p><strong>Conclusion to write:</strong> yield ties cost, speed and power together through die size and process variation. That is why architects budget die area carefully, why one design ships as many models (binning), and why the industry moved to chiplets. Use the Bose-Einstein formula and one numerical from above to support the cost part.</p>
+
 <div class="words"><b>New words in this topic</b><dl>
 <dt>Wafer / die</dt><dd>Round silicon disc / one chip cut from it</dd>
 <dt>Die yield</dt><dd>Fraction of dies that work</dd>
@@ -1275,6 +1290,18 @@ If MTTR = 24 h: Availability = 43,500 / (43,500 + 24) = 0.99945</div>
 
 <h4 class="q">What does this look like in the real world?</h4>
 <p>"Five nines" (99.999%) availability allows only about <strong>5.26 minutes of downtime a year</strong>. Cloud providers reach it through redundancy (RAID disks, copies of servers, several data centres), not by having perfect parts. As transistors shrink, cosmic rays and ageing cause more random errors, so memories use <strong>ECC</strong> (error-correcting codes). Also, real parts don't fail at a constant rate: they follow a <em>bathtub curve</em> (many early failures, a calm middle, then wear-out).</p>
+
+<h5 id="aca-pyq-depend25">PYQ 2025 Q4(a): how energy, power and cost influence dependability</h5>
+<p><em>What is dependability in computer architecture? Discuss how energy, power, and cost influence dependability.</em></p>
+<p><strong>Start with the definition:</strong> dependability is how far a system can be trusted to deliver the service it promised (its SLA), measured by <strong>reliability</strong> (MTTF) and <strong>availability</strong> (MTTF / (MTTF + MTTR)). Give the two-state diagram and the formulas above. Then take each factor in turn:</p>
+<ol class="steps">
+<li><strong>Power → heat → failures.</strong> Every watt becomes heat. Hotter chips fail sooner: wear-out effects like electromigration (metal atoms slowly pushed along wires) speed up with temperature, and a common rule of thumb is that failure rates roughly double for every 10 °C rise. Leakage (static power) also rises exponentially with temperature, making things hotter still. So high-power designs need fans and power supplies, and in the disk example above, the fan and power supply were the <em>least</em> reliable parts.</li>
+<li><strong>Peak power → malfunctions.</strong> If a chip draws more current than the supply can give, the voltage droops and the chip computes wrong answers (§ 1.6). The power-delivery system must be built for peak demand, not average.</li>
+<li><strong>Saving energy by lowering voltage → less safety margin.</strong> Lower voltages save energy (E ∝ V²), but a transistor at low voltage holds less charge, so a cosmic-ray strike or electrical noise can flip a bit more easily (a <em>soft error</em>). Near-threshold designs trade reliability for efficiency, which is why memories add <strong>ECC</strong>.</li>
+<li><strong>Redundancy costs energy.</strong> The main tool for dependability is redundancy: RAID disks, duplicate power supplies, replicated servers. Every spare part uses energy too, so battery devices can afford little of it, while data centres pay for it.</li>
+<li><strong>Cost: dependability is bought.</strong> ECC memory, server-grade parts with higher MTTF, spare cores, RAID and multi-site backups all cost money. Designers weigh that against the <em>cost of downtime</em>: a bank or airline pays for "five nines" (≈ 5.26 minutes down per year), while a cheap gadget does not. On the manufacturing side, spare rows or cores improve yield (§ 1.7) and keep chips working despite defects.</li>
+</ol>
+<p><strong>Conclusion:</strong> dependability is a trade-off. Less power means less heat and fewer failures, but lower voltage means more soft errors. More redundancy means higher availability, but it costs more energy and money. Architects choose the balance according to what the SLA demands.</p>
 
 <div class="words"><b>New words in this topic</b><dl>
 <dt>SLA / SLO</dt><dd>Service Level Agreement / Objective: the promised quality of service</dd>
@@ -1370,6 +1397,34 @@ The paper gives no clock rate, so STATE ONE, e.g.:
   f = 2 GHz  (Tclock = 0.5 ns) → Texec = 7.5 µs
   f = 500 MHz (Tclock = 2 ns)  → Texec = 30 µs</div>
 <p>For full marks: write the general formula, the cycle count (15,000), a clearly <em>stated</em> clock rate, and the answer with units. Add one line on how changing f or CPI changes the answer.</p>
+
+<h5 id="aca-pyq-clock25">PYQ 2025 Q1(a): doubling the clock when memory doesn't get faster</h5>
+<p><em>A computer architect improves performance only by increasing clock speed, ignoring memory hierarchy and power. (i) If the clock speed is doubled but memory access latency stays the same, explain quantitatively (using the CPU performance equation) why the expected gain is not fully achieved. (ii) Relate this to the Myopic View of Computer Architecture and discuss why it is problematic for long-term growth.</em></p>
+<p><strong>The idea in words:</strong> memory latency is fixed in <em>nanoseconds</em>. When each clock beat gets shorter, a memory miss costs <em>more beats</em>. So the CPI goes up, and only the "computing" part of the time shrinks.</p>
+<p><strong>(i) The CPU performance equation with memory stalls:</strong></p>
+<div class="formula">CPU time = IC × (CPI_execution + Memory accesses/instr × Miss rate × Miss penalty) × Clock cycle time
+
+State assumptions: CPI_execution = 1.0, 1.5 memory accesses/instr, miss rate = 2%,
+memory latency = 100 ns (does NOT change).
+
+Before: f = 1 GHz → cycle = 1 ns → miss penalty = 100 ns / 1 ns = 100 cycles
+  CPI  = 1.0 + 1.5 × 0.02 × 100 = 1.0 + 3.0 = 4.0
+  Time per instruction = 4.0 × 1 ns = 4.0 ns
+
+After: f = 2 GHz → cycle = 0.5 ns → miss penalty = 100 ns / 0.5 ns = 200 cycles
+  CPI  = 1.0 + 1.5 × 0.02 × 200 = 1.0 + 6.0 = 7.0
+  Time per instruction = 7.0 × 0.5 ns = 3.5 ns
+
+Speedup = 4.0 / 3.5 = 1.14   (not the 2.0 expected)</div>
+<p><strong>Why:</strong> the clock only speeds up the 1 ns of computing per instruction; the 3 ns of memory waiting stays 3 ns. This is exactly Amdahl's law (§ 1.11): only 25% of the time was improved, 2×, so Speedup = 1 / (0.75 + 0.25/2) = 1 / 0.875 = <strong>1.14</strong>. The more memory-bound the program, the smaller the gain.</p>
+<p><strong>Power makes it worse:</strong> dynamic power = ½·C·V²·f, so doubling f alone doubles the power. In practice a faster clock also needs a higher voltage, so power rises much faster (roughly with f³ if V rises in step with f). This is the power wall that killed the 10 GHz Pentium 4 plans (§ 1.6).</p>
+<p><strong>(ii) The myopic view:</strong> the myopic (short-sighted) view treats architecture as one isolated knob, here the clock rate, instead of the whole system: ISA + organisation + memory hierarchy + power + cost (§ 1.2). It fails long-term because:</p>
+<ul class="clean">
+<li><strong>Memory wall:</strong> processor speed grew ~50%/yr and DRAM latency only ~7%/yr, so a faster clock just waits faster. Real gains came from caches, prefetching and multilevel hierarchies.</li>
+<li><strong>Power wall:</strong> a chip can't be cooled past its TDP, so clock growth stopped at about 3–5 GHz around 2005.</li>
+<li><strong>Cost and dependability:</strong> hotter chips need expensive cooling and fail sooner (§ 1.8).</li>
+<li><strong>What works instead:</strong> balanced design. Make the common case fast (Amdahl), improve the memory hierarchy, use parallelism (multicore, SIMD), and optimise performance <em>per watt</em>.</li>
+</ul>
 
 <h4 class="q">Which performance measures exist, and which is the "ultimate" one? (asked in 2022)</h4>
 <div class="tbl"><table><thead><tr><th>Measure</th><th>What it is</th><th>Problem / relation to real run time</th></tr></thead><tbody>
@@ -1493,6 +1548,19 @@ Bob gets 3.48 &lt; 3.8, so no pay raise.
 Parallel fraction actually needed for 3.8:
   3.8 = 1/[(1−P) + P/4]  ⇒  P = (1 − 1/3.8)/(1 − 1/4) = 0.9825 → 98.25% parallel</div>
 
+<h5 id="aca-pyq-amdahl25">PYQ 2025 Q3(a): 40% parallel on 4 processors</h5>
+<p><em>A program spends 40% of its execution time in a part that can be parallelized. Using Amdahl's Law, calculate the theoretical speedup when using 4 processors.</em></p>
+<div class="formula">P = 0.40 (parallel fraction), n = 4
+Speedup = 1 / [(1 − P) + P/n]
+        = 1 / [0.60 + 0.40/4]
+        = 1 / [0.60 + 0.10]
+        = 1 / 0.70
+        = 1.43
+
+Upper limit (n → ∞): 1 / (1 − 0.40) = 1 / 0.60 = 1.67
+Efficiency on 4 processors = 1.43 / 4 = 36%</div>
+<p><strong>Say what it means:</strong> four processors give only 1.43×, and even infinitely many could never beat 1.67×, because 60% of the program is serial. For a 10-mark answer, add the statement, the derivation (above) and one line on "make the common case fast": here, shrinking the serial 60% matters far more than adding processors.</p>
+
 <h4 class="q">What does it teach designers? And what is Lhadma's law?</h4>
 <ul class="clean">
 <li><strong>Use Amdahl's law to decide which improvement is worth making.</strong></li>
@@ -1537,6 +1605,10 @@ Parallel fraction actually needed for 3.8:
   <div class="fc"><div class="fc-q">Three types of non-real benchmarks?</div><div class="fc-a">Kernels (Livermore Loops, LINPACK), toy programs (Sieve, Puzzle, Quicksort), synthetic (Whetstone, Dhrystone). Standard suite: SPEC; SPECratio combined by geometric mean.</div></div>
   <div class="fc"><div class="fc-q">Amdahl's law formula and Bob's answer?</div><div class="fc-a">Speedup = 1/[(1−F) + F/S]; for n processors 1/[(1−P) + P/n]. Bob: 1/(0.05 + 0.95/4) = 3.48 (&lt; 3.8). Needs 98.25% parallel.</div></div>
   <div class="fc"><div class="fc-q">What is Lhadma's law?</div><div class="fc-a">The corollary of Amdahl's law (the name is Amdahl spelled backwards): while making the common case fast, do not make the uncommon case worse.</div></div>
+  <div class="fc"><div class="fc-q">PYQ 2025: clock doubled, memory latency unchanged. Why not 2× faster?</div><div class="fc-a">Miss penalty in cycles doubles (100 → 200), so CPI rises 4 → 7. Time per instruction 4 ns → 3.5 ns: only 1.14×. Only the compute part sped up (Amdahl). The myopic view ignores the memory and power walls.</div></div>
+  <div class="fc"><div class="fc-q">PYQ 2025: 40% parallel, 4 processors. Amdahl speedup?</div><div class="fc-a">1 / (0.6 + 0.4/4) = 1/0.7 = 1.43. Maximum with infinite processors = 1/0.6 = 1.67.</div></div>
+  <div class="fc"><div class="fc-q">PYQ 2025: how do power, energy and cost affect dependability?</div><div class="fc-a">Power → heat → faster wear-out (≈2× failure rate per +10 °C); peak power → voltage droop errors; low voltage saves energy but raises soft errors (ECC); redundancy raises availability but costs energy and money.</div></div>
+  <div class="fc"><div class="fc-q">End-sem 2025: yield's effect on cost, speed and power?</div><div class="fc-a">Cost: wafer cost / (dies × yield), ∝ area⁴. Speed: dies vary, so speed binning; low yield forces smaller dies (less cache and fewer cores). Power: leaky or high-voltage dies run hot, so power binning. Fixes: chiplets, spare cores and rows.</div></div>
 </div>
 
 </div></div>
@@ -1587,6 +1659,20 @@ Parallel fraction actually needed for 3.8:
 <li><strong>Temporal locality (time):</strong> something used recently will probably be used again soon: a loop counter, a function called again and again. Caches use this by <em>keeping</em> recently used data.</li>
 <li><strong>Spatial locality (space):</strong> things stored next to each other are usually used close together in time: walking through an array, instructions one after another. Caches use this by fetching a whole <em>block</em> of neighbours at once.</li>
 </ul>
+<h5 id="aca-pyq-locality25">PYQ 2025 Q2(b): temporal vs spatial locality, with examples</h5>
+<p>One tiny loop shows both kinds:</p>
+<div class="formula">sum = 0;
+for (i = 0; i &lt; 1000; i++)
+    sum = sum + a[i];</div>
+<div class="tbl"><table><thead><tr><th></th><th>Temporal locality</th><th>Spatial locality</th></tr></thead><tbody>
+<tr><td>Meaning</td><td>The <em>same</em> item is used again soon</td><td>Items at <em>nearby</em> addresses are used soon</td></tr>
+<tr><td>In the loop (data)</td><td><code>sum</code> and <code>i</code>: read and written 1,000 times</td><td><code>a[0], a[1], a[2]…</code>: next to each other in memory</td></tr>
+<tr><td>In the loop (code)</td><td>The loop's instructions run again every iteration</td><td>Instructions sit one after another and run in order</td></tr>
+<tr><td>How the cache exploits it</td><td>Keep recently used blocks (LRU replacement)</td><td>Fetch a whole <em>block</em> on a miss; prefetch the next block</td></tr>
+<tr><td>Hurt by</td><td>A cache too small to keep the reused data</td><td>Blocks too small, or jumping through memory (column-wise access, linked lists)</td></tr>
+</tbody></table></div>
+<p>With 32-byte blocks and 4-byte integers, reading <code>a[0]</code> misses once and brings in <code>a[0]</code>–<code>a[7]</code>, so the next 7 reads hit: a 1-in-8 miss rate purely from spatial locality.</p>
+
 <p>The professor's recipe: keep everything on disk; copy recently used (and nearby) items into the smaller DRAM main memory; copy the most recently used (and nearby) items into the even smaller SRAM cache next to the CPU.</p>
 
 <h4 class="q">The three properties: inclusion, coherence, locality</h4>
@@ -1706,6 +1792,18 @@ Address        = |  TAG  |  SET INDEX (log2 sets)  |  OFFSET (log2 block size)  
 <li><strong>On a write miss:</strong> <em>write-allocate</em> (bring the block into the cache first; usually with write-back) or <em>no-write-allocate</em> (write straight to memory; usually with write-through).</li>
 <li><strong>Replacement:</strong> LRU (throw out the least recently used; best but costly), FIFO (oldest first), random (cheap, nearly as good when k is large).</li>
 </ul>
+<h5 id="aca-pyq-org25">PYQ 2025 Q4(b): cache organisations and how they affect performance</h5>
+<p><em>Describe different cache memory organizations. Explain how they affect system performance.</em> Frame the answer with <strong>AMAT = Hit time + Miss rate × Miss penalty</strong>, then show which term each choice moves:</p>
+<div class="tbl"><table><thead><tr><th>Organisation choice</th><th>Options</th><th>Effect on performance</th></tr></thead><tbody>
+<tr><td>Mapping</td><td>Direct / set-associative / fully associative</td><td>More associativity → fewer conflict misses (miss rate ↓) but slower, costlier hits (hit time ↑)</td></tr>
+<tr><td>Split or unified</td><td>Separate instruction and data caches (L1-I + L1-D) vs one shared cache</td><td>Split lets the pipeline fetch an instruction and data in the same cycle (no clash); unified shares space flexibly, so it's used for L2/L3</td></tr>
+<tr><td>Number of levels</td><td>L1 only vs L1 + L2 (+ L3)</td><td>Extra levels cut the miss penalty: see the <a href="#aca-pyq-l2amat25">2025 two-level AMAT</a> (11 ns → 2.5 ns)</td></tr>
+<tr><td>Block size</td><td>Small vs large</td><td>Larger blocks use spatial locality (fewer compulsory misses) but raise the miss penalty and, past a point, the miss rate</td></tr>
+<tr><td>Write policy</td><td>Write-through vs write-back</td><td>Write-back saves memory traffic; write-through is simpler and keeps memory up to date</td></tr>
+<tr><td>Replacement</td><td>LRU / FIFO / random</td><td>LRU keeps the most useful blocks (miss rate ↓) but costs hardware</td></tr>
+</tbody></table></div>
+<p>Close with: <em>execution time is the final measure</em>. That's why real chips pick a small, fast, 8-way L1 and bigger, 16-way L2/L3.</p>
+
 <p><strong>Critical point:</strong> more associativity lowers the miss rate but slows every hit, and "execution time is the only final measure". So real chips use a small, fast, lower-associativity L1 and bigger, more associative L2/L3.</p>
 
 <div class="words"><b>New words in this topic</b><dl>
@@ -1885,6 +1983,27 @@ Global miss rate = misses in this cache / accesses generated BY THE CPU   (Miss 
 AMAT = 1 + 0.04 × (10 + 0.5 × 200) = 1 + 0.04 × 110 = <strong>5.4 cycles</strong>. Without L2 it would be 1 + 0.04 × 200 = 9 cycles.<br>
 Global L2 miss rate = 0.04 × 0.5 = 2%. The L2 <em>local</em> rate (50%) looks bad only because L1 already caught all the easy hits, so the global rate is the fairer number.</div>
 
+<h5 id="aca-pyq-l2amat25">PYQ 2025 Q1(b): two-level cache AMAT</h5>
+<p><em>L1 hit time = 1 ns, hit rate = 90%. L2 hit time = 10 ns, hit rate = 95% (for the remaining 10%). Main memory access time = 100 ns. Calculate the average memory access time.</em></p>
+<p><strong>Plan:</strong> every access pays L1. The 10% that miss L1 pay L2. The 5% of <em>those</em> that also miss L2 pay memory.</p>
+<div class="formula">Miss rate_L1 = 1 − 0.90 = 0.10;   local Miss rate_L2 = 1 − 0.95 = 0.05
+
+AMAT = Hit time_L1 + Miss rate_L1 × (Hit time_L2 + Miss rate_L2 × Memory time)
+     = 1 + 0.10 × (10 + 0.05 × 100)
+     = 1 + 0.10 × (10 + 5)
+     = 1 + 1.5
+     = 2.5 ns
+
+Check by counting every path:
+  90%   hit L1          : 0.900 × 1             = 0.900
+  9.5%  miss L1, hit L2 : 0.095 × (1 + 10)      = 1.045
+  0.5%  miss both       : 0.005 × (1 + 10 + 100) = 0.555
+                                           total = 2.500 ns ✓
+
+Global L2 miss rate = 0.10 × 0.05 = 0.5%
+Without L2: 1 + 0.10 × 100 = 11 ns  → L2 makes memory 4.4× faster on average</div>
+<p><strong>If you are told the levels are searched in parallel</strong> (each access pays only the time of the level that finally serves it): 0.90 × 1 + 0.095 × 10 + 0.005 × 100 = 0.9 + 0.95 + 0.5 = <strong>2.35 ns</strong>. The question gives no such hint, so use the standard <strong>2.5 ns</strong>, and write one line naming the model.</p>
+
 <h5>5 · Giving read misses priority over writes</h5>
 <p>The CPU is usually <em>waiting</em> for a read, but not for a write. So let reads jump the queue.</p>
 <ul class="clean">
@@ -1990,6 +2109,7 @@ After:  for jj+=B, for kk+=B, for i, for j in [jj, min(jj+B−1,N)] { r=0;
 <tr><td>Compiler optimisations</td><td>Miss rate</td><td>Rearrange code for locality</td></tr>
 </tbody></table></div>
 <p>Pick any five. For each: definition, how it works, a tiny example or diagram, and the <em>factor</em> (hit time, miss rate or miss penalty). Start the answer with the AMAT equation.</p>
+<p><strong>End-sem Dec 2025 Q2(c) asked the same thing "in detail"</strong> ("Discuss the optimization techniques for cache performance"). For that version, organise by the three levers: <em>reduce miss rate</em> (block size, cache size, associativity, victim cache, prefetching, compiler techniques), <em>reduce miss penalty</em> (multilevel caches with the AMAT example, read priority over writes), <em>reduce hit time</em> (small simple L1, avoiding translation / VIPT). Include the 3 C's table and at least one numerical.</p>
 <p><strong>Critical point:</strong> hardware tricks cost chip area and power; compiler tricks are free at run time but only work on predictable loop code (matrices), not pointer-heavy code. Libraries like BLAS and cuDNN rely on blocking ("tiling"), which is why a naive triple-loop matrix multiply can be 10–100× slower than a library call.</p>
 
 <div class="words"><b>New words in this topic</b><dl>
@@ -2151,6 +2271,22 @@ After:  for jj+=B, for kk+=B, for i, for j in [jj, min(jj+B−1,N)] { r=0;
 </ul>
 <p>Memory-consistency models (sequential consistency vs relaxed models with fences) define what ordering of reads and writes other cores are guaranteed to see.</p>
 
+<h5 id="aca-pyq-sync25">PYQ 2025 Q3(b): coherence plus ONE synchronisation mechanism, explained fully</h5>
+<p><em>What is the cache coherence problem in multiprocessor systems? Explain one synchronization mechanism used to handle it.</em> Answer the first half with the definition, the dual-core example and a protocol (snoopy write-invalidate or directory) from above. For the second half, pick the <strong>spin lock built on an atomic exchange</strong>, because it shows coherence and synchronisation working together.</p>
+<div class="formula">lock:    while (1) {
+             while (L == 1) ;                 // 1. spin reading L: hits in MY cache, no bus traffic
+             if (atomic_exchange(&amp;L, 1) == 0) // 2. L looked free: atomically write 1, read old value
+                 break;                       //    old value 0 → I got the lock
+         }
+         ... critical section (update shared data) ...
+unlock:  L = 0;                               // 3. this write invalidates every waiter's cached copy of L</div>
+<ol class="steps">
+<li><strong>Waiting is cheap.</strong> Each waiting core keeps a copy of L in its own cache and keeps reading it. Every read is a cache hit, so the bus stays quiet.</li>
+<li><strong>Unlock uses coherence.</strong> The owner writes L = 0. The write-invalidate protocol removes every other cached copy of L.</li>
+<li><strong>The race is fair and safe.</strong> Waiters miss, re-read L = 0, and all try <code>atomic_exchange</code>. It reads and writes in one unbreakable step, so exactly one core sees the old value 0 and enters; the rest see 1 and go back to spinning.</li>
+</ol>
+<p>This is "<strong>test-and-test-and-set</strong>". The plain version (calling atomic_exchange in a tight loop) writes on every attempt, so the lock line bounces between caches and floods the bus. Other mechanisms you could choose instead: <strong>LL/SC</strong> (load-linked / store-conditional: the store fails if anyone else wrote the location in between; used by ARM, MIPS, RISC-V), <strong>barriers</strong> and <strong>semaphores</strong>.</p>
+
 <h4 class="q">Real world, and a trap: false sharing</h4>
 <p>Modern chips mix both approaches. Intel's L3 keeps "core valid" bits recording which cores might have a line, so invalidations go only to those cores (a directory inside a snoopy design). <strong>False sharing:</strong> two threads write to <em>different</em> variables that happen to sit in the <em>same</em> 64-byte cache line. The line keeps bouncing between their caches, which can make a program 10× slower. Fix: pad the variables onto separate lines.</p>
 <p><strong>Critical point:</strong> snooping is simple and fast but <em>doesn't scale</em> (broadcasting to every core gets expensive; bus systems top out around 8–32 cores). Directories scale but need extra storage (a bit per processor per block) and add delay. Software schemes avoid hardware cost but are cautious. Real designs snoop inside a chip and use directories between chips.</p>
@@ -2275,6 +2411,17 @@ OPT : F  F  F  F  H  F  H  F  H  H  F  H  H   →  7 faults
 <tr><td>Very useful when many programs run at once</td><td>Uses up hard-disk space</td></tr>
 <tr><td>Protection, relocation and sharing</td><td>Can make the system unstable: "thrashing" when the working set is bigger than RAM</td></tr>
 </tbody></table></div>
+<h5 id="aca-pyq-vm25">PYQ 2025 Q5(b): how virtual memory helps use memory efficiently</h5>
+<p><em>Explain the working principle of Virtual Memory. How does it help in efficient memory utilization?</em> For the working principle, use the five-step mapper diagram, the page table and the TLB above. For the utilisation half, give these points:</p>
+<ol class="steps">
+<li><strong>Demand paging:</strong> only pages a program actually touches are loaded. A 2 GB program that uses 200 MB at a time occupies only 200 MB of RAM.</li>
+<li><strong>No external fragmentation:</strong> memory is handed out in equal-size frames, and a process's pages can go in <em>any</em> free frames, scattered anywhere. No large free gap is ever needed. The only waste is inside a process's last, partly filled page (internal fragmentation, about half a page on average).</li>
+<li><strong>Sharing:</strong> pages used by many processes (shared libraries, program code) are kept once in RAM and mapped into every process. Copy-on-write lets a new process share its parent's pages until one of them writes.</li>
+<li><strong>Swapping idle pages out:</strong> pages not used recently go to disk (chosen by LRU-style replacement), freeing frames for pages that are actively used.</li>
+<li><strong>More programs at once:</strong> points 1–4 together let more processes fit in RAM, so the CPU always has something ready to run (higher multiprogramming and CPU utilisation).</li>
+</ol>
+<p><strong>Limit:</strong> if the working sets of all processes exceed RAM, the system <em>thrashes</em>, spending its time swapping. So efficiency holds only while locality holds.</p>
+
 <p><strong>Critical point:</strong> virtual memory is the <em>same idea as a cache</em>, one level further down: a page is a block, a page fault is a miss, and the page table is a fully associative placement map. A page fault costs millions of cycles, so VM is fully associative, write-back and run by software (the OS). <strong>Thrashing</strong> (constant faulting because working sets don't fit) makes a system crawl; the cure is more RAM, fewer processes, or working-set-aware scheduling.</p>
 
 <div class="words"><b>New words in this topic</b><dl>
@@ -2350,14 +2497,143 @@ OPT : F  F  F  F  H  F  H  F  H  H  F  H  H   →  7 faults
   <div class="fc" data-from="Unit 1"><div class="fc-q">Which Unit 1 trend makes caches necessary?</div><div class="fc-a">Bandwidth vs latency: memory latency improved only 6–8× while processor bandwidth improved 10,000–25,000×. The memory wall.</div></div>
   <div class="fc" data-from="Unit 1"><div class="fc-q">Apply Amdahl: a cache speeds up memory access 10×, and memory is 40% of time. Overall speedup?</div><div class="fc-a">1 / (0.6 + 0.4/10) = 1/0.64 = 1.5625×.</div></div>
   <div class="fc" data-from="Unit 1"><div class="fc-q">Why are larger dies costly (cost of an IC)?</div><div class="fc-a">Fewer dies per wafer <em>and</em> lower Bose-Einstein yield 1/(1+D·A)^N, so die cost ∝ area⁴. This is one reason cache area is precious.</div></div>
+  <div class="fc"><div class="fc-q">PYQ 2025: L1 1 ns / 90% hit, L2 10 ns / 95% hit, memory 100 ns. AMAT?</div><div class="fc-a">1 + 0.10 × (10 + 0.05 × 100) = 1 + 0.1 × 15 = 2.5 ns. (Without L2: 1 + 0.1 × 100 = 11 ns.)</div></div>
+  <div class="fc"><div class="fc-q">PYQ 2025: temporal vs spatial locality, with one example each?</div><div class="fc-a">Temporal: the same item is reused soon (sum, i in a loop), so keep recent blocks. Spatial: nearby addresses are used soon (a[0], a[1], a[2]…), so fetch whole blocks.</div></div>
+  <div class="fc"><div class="fc-q">PYQ 2025: one synchronization mechanism, and how it uses coherence?</div><div class="fc-a">Test-and-test-and-set spin lock: spin reading the lock in your own cache (no bus traffic); the unlock write invalidates all copies; waiters miss, see 0, and race with an atomic exchange; one wins.</div></div>
+  <div class="fc"><div class="fc-q">PYQ 2025: how does virtual memory improve memory utilisation?</div><div class="fc-a">Demand paging (load only used pages), fixed-size pages (no external fragmentation; any free frame works), sharing (one copy of library code), swapping idle pages out, so more processes fit. Risk: thrashing.</div></div>
 </div>
+
+</div></div>
+
+<div class="chapter-card" id="aca-pyq" data-short="Past Papers, Solved">
+  <div class="ch-no">The Archive</div>
+  <h2>Past Papers, Solved</h2>
+  <p class="in-which">Which topics keep coming back, the full 2025 mid-sem paper with answers, and the December 2025 end-sem questions that fall inside Units 1–2.</p>
+</div>
+<div class="sheet"><div class="prose easy">
+
+<section class="topic" id="aca-pyq-map">
+<h3><span class="tno">P.1</span>Which topics keep coming back?</h3>
+<div class="idea"><b>The big idea</b><strong>Amdahl's law and virtual memory were asked in every mid-sem year.</strong> Flynn, coherence, cache mapping, Moore's law, wafer yield and AMAT were asked in two of the three. The end-sem also repeats Flynn, yield, Amdahl, coherence, mapping and cache optimisation, so these topics matter for both exams.</div>
+<div class="tbl"><table><thead><tr><th>Topic</th><th>Mid 2022</th><th>Mid 2023</th><th>Mid 2025</th><th>End Dec 2025</th><th>Where</th></tr></thead><tbody>
+<tr><td><strong>Amdahl's law</strong></td><td>✓ Bob</td><td>✓ derive</td><td>✓ 40%, 4 CPUs</td><td>✓ implications</td><td><a href="#aca-amdahl">§ 1.11</a></td></tr>
+<tr><td><strong>Virtual memory</strong></td><td>✓ translation</td><td>✓ PTE, TLB</td><td>✓ utilisation</td><td></td><td><a href="#aca-vm">§ 2.8</a></td></tr>
+<tr><td>Flynn / parallel classes</td><td>✓ history</td><td></td><td>✓ SISD…MIMD</td><td>✓ with diagrams</td><td><a href="#aca-flynn">§ 1.4</a></td></tr>
+<tr><td>Cache coherence (+ sync)</td><td>✓ SW + HW</td><td></td><td>✓ + one sync</td><td>✓ + sync</td><td><a href="#aca-coherence">§ 2.7</a></td></tr>
+<tr><td>Cache mapping / organisation</td><td></td><td>✓ compare</td><td>✓ organisations</td><td>✓ 3 mappings</td><td><a href="#aca-cachebasics">§ 2.2</a></td></tr>
+<tr><td>Wafer yield &amp; cost</td><td>✓ numerical</td><td>✓ numerical</td><td></td><td>✓ cost, power, speed</td><td><a href="#aca-cost">§ 1.7</a></td></tr>
+<tr><td>Moore's law</td><td></td><td>✓ adaptation</td><td>✓ apps, limits</td><td></td><td><a href="#aca-moore">§ 1.3</a></td></tr>
+<tr><td>AMAT</td><td>✓ 1 level</td><td></td><td>✓ 2 levels</td><td></td><td><a href="#aca-pyq-amat">§ 2.3</a>, <a href="#aca-pyq-l2amat25">§ 2.4</a></td></tr>
+<tr><td>Tag / index / offset</td><td>✓ 16-way</td><td>✓ 16-way + 245,678</td><td></td><td></td><td><a href="#aca-cachenum">§ 2.3</a></td></tr>
+<tr><td>Cache optimisations</td><td>✓ five</td><td></td><td></td><td>✓ in detail</td><td><a href="#aca-cacheopt">§ 2.4</a>, <a href="#aca-advopt">§ 2.5</a></td></tr>
+<tr><td>Memory hierarchy / locality</td><td></td><td>✓ evolution</td><td>✓ temporal vs spatial</td><td></td><td><a href="#aca-hier">§ 2.1</a></td></tr>
+<tr><td>CPU time, CPI, performance</td><td>✓ measures</td><td>✓ CPI × IC</td><td>✓ clock doubled</td><td></td><td><a href="#aca-perf">§ 1.9</a></td></tr>
+<tr><td>Myopic view</td><td></td><td></td><td>✓</td><td></td><td><a href="#aca-history">§ 1.2</a></td></tr>
+<tr><td>Dependability (+ power, cost)</td><td></td><td></td><td>✓</td><td></td><td><a href="#aca-depend">§ 1.8</a></td></tr>
+<tr><td>ISA &amp; five stages</td><td>✓</td><td></td><td></td><td></td><td><a href="#aca-define">§ 1.1</a></td></tr>
+<tr><td>Technology advancements</td><td></td><td>✓</td><td></td><td></td><td><a href="#aca-techtrends">§ 1.5</a></td></tr>
+</tbody></table></div>
+<p>Not asked in any of these papers so far: benchmarks (§ 1.10), memory technology (§ 2.6) and virtual machines (§ 2.9). Read them once, but they're the lowest priority.</p>
+</section>
+
+<section class="topic" id="aca-pyq-2025">
+<h3><span class="tno">P.2</span>Mid-Semester Examination 2025, solved</h3>
+<div class="paper-head">
+  <div class="ph1">TCS-704 · B.Tech Semester VII · Mid Semester Examination 2025</div>
+  <div class="ph2">Advanced Computer Architecture</div>
+  <div class="ph3">Time: 90 minutes · Maximum Marks: 50 · Answer all questions, choosing one sub-question each · each carries 10 marks</div>
+</div>
+
+<div class="qblock"><div class="qno">Question 1 · CO3</div>
+<p><strong>(a)</strong> A computer architect decides to improve system performance only by increasing clock speed without considering memory hierarchy or power constraints. (i) If the clock speed is doubled but memory access latency remains the same, explain quantitatively (using the CPU performance equation) why the expected performance gain is not fully achieved. (ii) Relate this scenario to the Myopic View of Computer Architecture and discuss why such an approach is problematic for long-term growth.</p>
+<details class="model"><summary>Answer · 1(a)</summary><div class="ans">
+<p class="marks">[CPU equation with stalls 2] + [Numerical 4] + [Power 1] + [Myopic view and long-term problems 3]</p>
+<p>CPU time = IC × (CPI_exec + accesses/instr × miss rate × miss penalty) × cycle time. With 100 ns memory: at 1 GHz, CPI = 1 + 1.5 × 0.02 × 100 = 4 → 4 ns/instr; at 2 GHz the penalty becomes 200 cycles, CPI = 7 → 3.5 ns/instr. Speedup = <strong>1.14, not 2</strong> (Amdahl: only the 25% compute share got faster). Power ∝ V²f rises 2× or more. Myopic view = optimising one knob in isolation; it hits the memory wall and power wall. Balanced design (caches, parallelism, performance per watt) is the answer.</p>
+<p>Full working: <a href="#aca-pyq-clock25">§ 1.9</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> A CPU has a two-level cache hierarchy: L1 hit time = 1 ns, hit rate = 90%; L2 hit time = 10 ns, hit rate = 95% (for the remaining 10%); main memory access time = 100 ns. Calculate the average memory access time.</p>
+<details class="model"><summary>Answer · 1(b)</summary><div class="ans">
+<div class="formula">AMAT = 1 + 0.10 × (10 + 0.05 × 100) = 1 + 0.10 × 15 = 2.5 ns</div>
+<p>Show the path check (0.900 + 1.045 + 0.555 = 2.5), the global miss rate (0.5%) and the no-L2 comparison (11 ns). Full working: <a href="#aca-pyq-l2amat25">§ 2.4</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 2 · CO1</div>
+<p><strong>(a)</strong> Classify parallel computers with suitable examples. Explain the differences between SISD, SIMD, MISD, and MIMD.</p>
+<details class="model"><summary>Answer blueprint · 2(a)</summary><div class="ans">
+<p class="marks">[Flynn's basis 1] + [Four classes with diagram and example 6] + [Comparison table 2] + [UMA/NUMA or parallelism types 1]</p>
+<p>Flynn 1966: instruction streams × data streams, drawn as a 2×2 grid. SISD (uniprocessor, early PCs), SIMD (GPUs, AVX, vector processors), MISD (fault-tolerant voting computers, systolic arrays), MIMD (multicore CPUs, clusters). Finish with a table comparing instruction streams, data streams, parallelism type, examples and use. Content: <a href="#aca-flynn">§ 1.4</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Differentiate between temporal locality and spatial locality. Illustrate each with an example.</p>
+<details class="model"><summary>Answer blueprint · 2(b)</summary><div class="ans">
+<p>Definitions, the <code>sum += a[i]</code> loop (sum and i = temporal; a[i] = spatial), the comparison table, how caches exploit each (LRU vs whole blocks and prefetching), and the 1-in-8 miss example. Content: <a href="#aca-pyq-locality25">§ 2.1</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 3 · CO3</div>
+<p><strong>(a)</strong> A program spends 40% of its execution time in a part that can be parallelized. Using Amdahl's Law, calculate the theoretical speedup when using 4 processors.</p>
+<details class="model"><summary>Answer · 3(a)</summary><div class="ans">
+<div class="formula">Speedup = 1 / [(1 − 0.4) + 0.4/4] = 1 / 0.7 = 1.43     (limit 1/0.6 = 1.67)</div>
+<p>Add the statement, the derivation and the "serial 60% dominates" interpretation. Content: <a href="#aca-pyq-amdahl25">§ 1.11</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> What is the cache coherence problem in multiprocessor systems? Explain one synchronization mechanism used to handle it.</p>
+<details class="model"><summary>Answer blueprint · 3(b)</summary><div class="ans">
+<p class="marks">[Definition + diagram 2] + [Why it occurs 2] + [Protocol, e.g. snoopy invalidate 2] + [One sync mechanism in detail 4]</p>
+<p>Definition, dual-core picture, causes, a protocol, then the test-and-test-and-set spin lock with its code and three steps. Content: <a href="#aca-pyq-sync25">§ 2.7</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 4 · CO1</div>
+<p><strong>(a)</strong> What is dependability in computer architecture? Discuss how energy, power, and cost influence dependability.</p>
+<details class="model"><summary>Answer blueprint · 4(a)</summary><div class="ans">
+<p class="marks">[Definition, SLA states, MTTF/MTTR/availability 4] + [Power &amp; heat 2] + [Energy / voltage &amp; soft errors 2] + [Cost of redundancy 2]</p>
+<p>Content: <a href="#aca-pyq-depend25">§ 1.8</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Describe different cache memory organizations. Explain how they affect system performance.</p>
+<details class="model"><summary>Answer blueprint · 4(b)</summary><div class="ans">
+<p>The three mappings with diagrams and address splits, then the organisation-choice table (mapping, split/unified, levels, block size, write policy, replacement), each tied to a term of AMAT. Content: <a href="#aca-pyq-org25">§ 2.2</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">Question 5 · CO1 / CO2</div>
+<p><strong>(a)</strong> Define Moore's Law. Discuss its applications and limitations in the modern era of computing.</p>
+<details class="model"><summary>Answer blueprint · 5(a)</summary><div class="ans">
+<p>Definition + formula + example → applications → limitations (atomic limit, power, ILP and memory walls, cost per transistor) → industry adaptations. Content: <a href="#aca-moore">§ 1.3</a>.</p></div></details>
+<div class="or">— OR —</div>
+<p><strong>(b)</strong> Explain the working principle of Virtual Memory. How does it help in efficient memory utilization?</p>
+<details class="model"><summary>Answer blueprint · 5(b)</summary><div class="ans">
+<p>Definition, five-step mapper diagram, page table and TLB, then the five utilisation points (demand paging, no external fragmentation, sharing, swapping, more programs at once) and the thrashing limit. Content: <a href="#aca-pyq-vm25">§ 2.8</a>.</p></div></details>
+</div>
+</section>
+
+<section class="topic" id="aca-pyq-end25">
+<h3><span class="tno">P.3</span>End-Semester December 2025: the Units 1–2 questions</h3>
+<div class="idea"><b>The big idea</b>The end-sem paper covers the whole course. Only its <strong>Q1 and Q2</strong> are on mid-sem topics; they are listed here with answer plans. End-sem sub-questions are worth 10 marks each (two per 20-mark question), the same size as a mid-sem answer.</div>
+
+<div class="qblock"><div class="qno">End-sem Question 1</div>
+<p><strong>(a)</strong> Discuss the classification of parallel computers with suitable diagrams and examples. <span class="pyq-tag">CO1</span></p>
+<details class="model"><summary>Answer plan · 1(a)</summary><div class="ans"><p>Flynn's four classes, each with its own diagram; UMA vs NUMA diagrams; the professor's hardware/software parallelism table; the historical role and criticisms. Content: <a href="#aca-flynn">§ 1.4</a>.</p></div></details>
+<p><strong>(b)</strong> Discuss fabrication yield and its impact on processor cost, power consumption, and speed. <span class="pyq-tag">CO2</span></p>
+<details class="model"><summary>Answer plan · 1(b)</summary><div class="ans"><p>How chips are made; the cost and Bose-Einstein yield formulas; one numerical; then the cost / speed / power table (binning, chiplets, spare cores). Content: <a href="#aca-es-yield">§ 1.7</a>.</p></div></details>
+<p><strong>(c)</strong> Describe Amdahl's Law and its implications on system performance improvement. Illustrate with an example. <span class="pyq-tag">CO1</span></p>
+<details class="model"><summary>Answer plan · 1(c)</summary><div class="ans"><p>Statement, both formulas, derivation and limit 1/(1−P), the saturating graph, an example (Bob's 3.48, or 40% → 1.43), then the implications: make the common case fast, Lhadma's law, diminishing returns, Gustafson. Content: <a href="#aca-amdahl">§ 1.11</a>.</p></div></details>
+</div>
+
+<div class="qblock"><div class="qno">End-sem Question 2</div>
+<p><strong>(a)</strong> Explain different cache coherence and synchronization mechanisms used in multiprocessor systems. <span class="pyq-tag">CO2</span></p>
+<details class="model"><summary>Answer plan · 2(a)</summary><div class="ans"><p>The problem; WT-update, WT-invalidate, WB ownership; compiler (software); directory (6 steps); snoopy (invalidate vs update, MESI); then synchronisation: atomic primitives, spin locks (test-and-test-and-set), LL/SC, barriers, semaphores. Content: <a href="#aca-coherence">§ 2.7</a>.</p></div></details>
+<p><strong>(b)</strong> Explain cache memory mapping techniques: direct, associative, and set-associative mapping. <span class="pyq-tag">CO2</span></p>
+<details class="model"><summary>Answer plan · 2(b)</summary><div class="ans"><p>For each mapping: rule, address split, comparators, diagram, pros and cons; the comparison table; a small tag/index/offset example. Content: <a href="#aca-cachebasics">§ 2.2</a>, <a href="#aca-cachenum">§ 2.3</a>.</p></div></details>
+<p><strong>(c)</strong> Discuss the optimization techniques for cache performance in detail. <span class="pyq-tag">CO3</span></p>
+<details class="model"><summary>Answer plan · 2(c)</summary><div class="ans"><p>AMAT and the 3 C's; the six basic optimisations grouped by lever; the advanced ones (victim cache, pseudo-associative, prefetching, compiler techniques); the two-level AMAT numerical. Content: <a href="#aca-cacheopt">§ 2.4</a>, <a href="#aca-advopt">§ 2.5</a>.</p></div></details>
+</div>
+
+<div class="note-box"><b class="h">Left out on purpose: not in the mid-sem syllabus</b>
+End-sem Q3–Q5 are from the later units: pipeline hazards (data, branch, resource), dynamic instruction scheduling, arithmetic pipelines, branch prediction, static vs dynamic scheduling for ILP, vector architectures, detailed SIMD machine design, message passing vs shared memory, and multiple-issue processors. None of these is in Units 1–2, so they won't be on the mid-sem. <em>One overlap:</em> end-sem Q5(a), "the architecture and working of a SIMD system", goes deeper than you need now. For the mid-sem, the SIMD part of Flynn's classification (one control unit broadcasting to many processing elements, each with its own data) is enough.</div>
+</section>
 
 </div></div>
 
 <div class="chapter-card" id="aca-exam" data-short="Expected Paper">
   <div class="ch-no">The Examination Hall</div>
   <h2>Expected Question Paper</h2>
-  <p class="in-which">Built from the 2022 and 2023 papers, keeping their CO pattern and their mix of theory and numericals.</p>
+  <p class="in-which">Built from the 2022, 2023 and 2025 papers, keeping their CO pattern and their mix of theory, numericals and 2025-style "apply it" questions.</p>
 </div>
 <div class="sheet"><div class="prose">
 <div class="paper-head">
@@ -2365,7 +2641,7 @@ OPT : F  F  F  F  H  F  H  F  H  H  F  H  H   →  7 faults
   <div class="ph2">Advanced Computer Architecture</div>
   <div class="ph3">Time: 1½ Hours · Maximum Marks: 50 · Answer all questions choosing any one sub-question · each carries 10 marks</div>
 </div>
-<p class="tip"><b>PYQ pattern.</b> Topics that appeared in <strong>both</strong> years are the most likely to come again: yield/cost numerical · Amdahl · 16-way tag/index/offset · virtual memory. Topics that appeared <strong>once</strong> are likely to be set as the (a)/(b) alternative: ISA stages, performance measures, Flynn, coherence, five optimisations, AMAT, Moore adaptation, CPI time, memory hierarchy, mapping comparison, TLB, address breakdown. Where a numerical has already been set, a new one with different numbers is likely, so practise the <em>method</em>.</p>
+<p class="tip"><b>PYQ pattern.</b> <strong>Asked in all three years (2022, 2023, 2025):</strong> Amdahl and virtual memory, so expect both again. <strong>Asked in two years:</strong> wafer yield, 16-way tag/index/offset, Flynn, coherence, Moore's law, cache mapping/organisation and AMAT. 2025 added scenario questions (clock doubled with memory unchanged; dependability vs power and cost), so expect at least one "apply the formula to a situation" question. Where a numerical has already been set, a new one with different numbers is likely, so practise the <em>method</em>. All three real papers are mapped in <a href="#aca-pyq-map">Past Papers, Solved</a>.</p>
 
 <div class="qblock"><div class="qno">Question 1 · CO1</div>
 <p><strong>(a)</strong> Elaborate the importance of the instruction set architecture in computer architecture. Illustrate the five stages of an instruction's execution. <span class="pyq-tag">PYQ 2022</span></p>
@@ -2379,7 +2655,7 @@ OPT : F  F  F  F  H  F  H  F  H  H  F  H  H   →  7 faults
 </ol>
 <p>Content: <a href="#aca-define">§ 1.1</a>.</p></div></details>
 <div class="or">— OR —</div>
-<p><strong>(b)</strong> Examine the adaptation and diversification strategies used by the semiconductor industry in response to the challenges to Moore's Law. Highlight the emergence of multi-core processors and innovations in memory hierarchies. <span class="pyq-tag">PYQ 2023</span></p>
+<p><strong>(b)</strong> Examine the adaptation and diversification strategies used by the semiconductor industry in response to the challenges to Moore's Law. Highlight the emergence of multi-core processors and innovations in memory hierarchies. <span class="pyq-tag">PYQ 2023</span> <span class="pyq-tag">Moore also 2025</span></p>
 <details class="model"><summary>Model answer blueprint · 1(b)</summary><div class="ans">
 <p class="marks">[Moore's law + equation 2] + [The challenges 2] + [Strategies 4] + [Evaluation 2]</p>
 <ol>
@@ -2408,7 +2684,7 @@ Cost/good die: 5000/376.9 = $13.27 |  5000/108.3 = $46.18</div>
 <p>Doubling the die area gives about 3.5× the cost per good die: fewer dies <em>and</em> lower yield, so die cost ∝ area⁴ (roughly). This is why architects budget die area carefully and why chiplets exist. <em>Also practise the two real PYQ versions: <a href="#aca-pyq-wafer22">2022</a> (0.5738 / 0.2854) and <a href="#aca-pyq-wafer23">2023</a> (0.8513, $1,000,000, $2.35).</em></p>
 </div></details>
 <div class="or">— OR —</div>
-<p><strong>(b)</strong> State and derive Amdahl's law. Bob is asked to write a program that achieves a speedup of 3.8 on 4 processors. He makes it 95% parallel. Assuming the problem size stays the same and ignoring communication costs, what speedup will Bob actually get? <span class="pyq-tag">PYQ 2022 + 2023</span></p>
+<p><strong>(b)</strong> State and derive Amdahl's law. Bob is asked to write a program that achieves a speedup of 3.8 on 4 processors. He makes it 95% parallel. Assuming the problem size stays the same and ignoring communication costs, what speedup will Bob actually get? <span class="pyq-tag">PYQ 2022 + 2023</span> <span class="pyq-tag">Amdahl also 2025</span></p>
 <details class="model"><summary>Model answer blueprint · 2(b)</summary><div class="ans">
 <p class="marks">[Statement + general formula 2] + [Derivation 4] + [Numerical 2] + [Implications 2]</p>
 <ol>
@@ -2421,7 +2697,7 @@ Cost/good die: 5000/376.9 = $13.27 |  5000/108.3 = $46.18</div>
 </div>
 
 <div class="qblock"><div class="qno">Question 3 · CO1 / CO2</div>
-<p><strong>(a)</strong> Critically analyse the role of Flynn's classification in the history of computer evolution. <span class="pyq-tag">PYQ 2022</span> &nbsp;<em>Likely alternative:</em> What performance measures are available to evaluate processors, and how does each relate to the ultimate measure of performance? <span class="pyq-tag">PYQ 2022</span></p>
+<p><strong>(a)</strong> Critically analyse the role of Flynn's classification in the history of computer evolution. <span class="pyq-tag">PYQ 2022</span> <span class="pyq-tag">Flynn also 2025</span> &nbsp;<em>Likely alternative:</em> What performance measures are available to evaluate processors, and how does each relate to the ultimate measure of performance? <span class="pyq-tag">PYQ 2022</span></p>
 <details class="model"><summary>Model answer blueprint · 3(a)</summary><div class="ans">
 <p class="marks">[Taxonomy + 2×2 diagram 4] + [Historical role 3] + [Critique 3]</p>
 <ol>
@@ -2432,7 +2708,7 @@ Cost/good die: 5000/376.9 = $13.27 |  5000/108.3 = $46.18</div>
 <p><em>Performance-measures variant:</em> Iron Law, then a table of clock rate, CPI, MIPS, MFLOPS, throughput, response time and SPEC with "relation to execution time", ending with: execution time of real programs is the only reliable measure (<a href="#aca-perf">§ 1.9</a>).</p>
 <p>Content: <a href="#aca-flynn">§ 1.4</a>.</p></div></details>
 <div class="or">— OR —</div>
-<p><strong>(b)</strong> Examine the role of memory hierarchy in computer architecture. How has memory-subsystem design evolved over time to bridge the speed gap between processors and memory, and what trade-offs have architects faced? <span class="pyq-tag">PYQ 2023</span></p>
+<p><strong>(b)</strong> Examine the role of memory hierarchy in computer architecture. How has memory-subsystem design evolved over time to bridge the speed gap between processors and memory, and what trade-offs have architects faced? <span class="pyq-tag">PYQ 2023</span> <span class="pyq-tag">locality 2025</span></p>
 <details class="model"><summary>Model answer blueprint · 3(b)</summary><div class="ans">
 <p class="marks">[Role + pyramid 3] + [Locality 2] + [Evolution 3] + [Trade-offs 2]</p>
 <ol>
@@ -2445,7 +2721,7 @@ Cost/good die: 5000/376.9 = $13.27 |  5000/108.3 = $46.18</div>
 </div>
 
 <div class="qblock"><div class="qno">Question 4 · CO2</div>
-<p><strong>(a)</strong> What is the cache coherence problem? Why does it occur? Explain its software and hardware based solutions in detail. <span class="pyq-tag">PYQ 2022</span></p>
+<p><strong>(a)</strong> What is the cache coherence problem? Why does it occur? Explain its software and hardware based solutions in detail. <span class="pyq-tag">PYQ 2022</span> <span class="pyq-tag">coherence + sync 2025</span></p>
 <details class="model"><summary>Model answer blueprint · 4(a)</summary><div class="ans">
 <p class="marks">[Definition + diagram 2] + [Causes 2] + [Software 1] + [Directory 2½] + [Snoopy 2½]</p>
 <ol>
@@ -2457,7 +2733,7 @@ Cost/good die: 5000/376.9 = $13.27 |  5000/108.3 = $46.18</div>
 </ol>
 <p>Content: <a href="#aca-coherence">§ 2.7</a>.</p></div></details>
 <div class="or">— OR —</div>
-<p><strong>(b)</strong> Compare and contrast the three cache mapping techniques in terms of hit rate, hardware complexity and suitability for different workloads, with diagrams. <span class="pyq-tag">PYQ 2023</span> &nbsp;<em>Likely alternative:</em> Discuss any five cache optimisation techniques and the factors they optimise. <span class="pyq-tag">PYQ 2022</span></p>
+<p><strong>(b)</strong> Compare and contrast the three cache mapping techniques in terms of hit rate, hardware complexity and suitability for different workloads, with diagrams. <span class="pyq-tag">PYQ 2023</span> <span class="pyq-tag">organisations 2025</span> &nbsp;<em>Likely alternative:</em> Discuss any five cache optimisation techniques and the factors they optimise. <span class="pyq-tag">PYQ 2022</span></p>
 <details class="model"><summary>Model answer blueprint · 4(b)</summary><div class="ans">
 <p class="marks">[3 mappings with diagrams + address splits 6] + [Comparison table 3] + [Conclusion 1]</p>
 <ol>
@@ -2480,7 +2756,7 @@ Tag   = 64 − 10 − 5                           → Tag = 49 bits</div>
 <p>Draw the address bar: <code>| Tag 49 | Index 10 | Offset 5 |</code>. Add one line on how the lookup works: the index selects a set, 16 comparators check the tags, and the offset selects the half-word. For the sibling question see <a href="#aca-pyq-245678">§ 2.3</a> (sets 512; 4 lines/set; 5/9/18 bits; offset 14, index 509, tag 14).</p>
 </div></details>
 <div class="or">— OR —</div>
-<p><strong>(b)</strong> What is virtual memory? Why is it necessary for address translation? Explore its key components (page table, PTE and TLB): explain how the page table maps virtual to physical addresses, the role of the TLB in caching translations, and its advantages for memory access latency. <span class="pyq-tag">PYQ 2022 + 2023</span></p>
+<p><strong>(b)</strong> What is virtual memory? Why is it necessary for address translation? Explore its key components (page table, PTE and TLB): explain how the page table maps virtual to physical addresses, the role of the TLB in caching translations, and its advantages for memory access latency. <span class="pyq-tag">PYQ 2022 + 2023</span> <span class="pyq-tag">VM also 2025</span></p>
 <details class="model"><summary>Model answer blueprint · 5(b)</summary><div class="ans">
 <p class="marks">[Definition + need 2] + [5-step mapper diagram 2] + [Page table + PTE 2] + [TLB diagram + EAT 3] + [Replacement / pros and cons 1]</p>
 <ol>
@@ -2494,7 +2770,7 @@ Tag   = 64 − 10 − 5                           → Tag = 49 bits</div>
 </div>
 
 <div class="note-box"><b class="h">Other PYQ sub-questions to practise</b>
-<a href="#aca-pyq-amat">AMAT, 5 ns / 20 ns / 75% → 8.75 ns</a> (2022) · <a href="#aca-pyq-cpi23">CPI 1.5 × 10,000 instructions</a> (2023) · <a href="#aca-techtrends">technological advancements behind processor performance</a> (2023) · <a href="#aca-perf">performance measures vs the ultimate measure</a> (2022) · <a href="#aca-advopt">five cache optimisations</a> (2022).</div>
+<a href="#aca-pyq-amat">AMAT, 5 ns / 20 ns / 75% → 8.75 ns</a> (2022) · <a href="#aca-pyq-cpi23">CPI 1.5 × 10,000 instructions</a> (2023) · <a href="#aca-techtrends">technological advancements behind processor performance</a> (2023) · <a href="#aca-perf">performance measures vs the ultimate measure</a> (2022) · <a href="#aca-advopt">five cache optimisations</a> (2022) · <a href="#aca-pyq-clock25">clock doubled, memory unchanged → 1.14×</a> (2025) · <a href="#aca-pyq-l2amat25">two-level AMAT → 2.5 ns</a> (2025) · <a href="#aca-pyq-amdahl25">Amdahl 40% on 4 CPUs → 1.43</a> (2025) · <a href="#aca-pyq-depend25">dependability vs energy, power and cost</a> (2025) · <a href="#aca-es-yield">yield vs cost, power and speed</a> (end-sem 2025).</div>
 </div></div>
 
 <nav class="pager" aria-label="Subjects"><a class="pg-prev" href="rm.html">← Research Methodology &amp; IPR</a><a class="pg-home" href="lobby.html">Lobby</a><a class="pg-next" href="mba.html">Innovation &amp; Venture Dev. →</a></nav>
