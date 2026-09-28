@@ -538,6 +538,12 @@ ol.steps.tight > li{margin-bottom:.3em}
 .prose.easy .tbl table{font-size:16px}
 .prose.easy .tbl td strong{color:var(--acc2)}
 
+/* ---- MCQ statement lists and match-the-following tables ---- */
+.mcq ul.mcq-list{list-style:none; padding:0 0 0 4px; margin:-4px 0 10px; display:grid; gap:2px}
+.mcq ul.mcq-list li{font-weight:400}
+.mcq .mcq-tbl{margin:0 0 10px}
+.mcq .mcq-tbl table{font-size:15px}
+
 </style>
 </head>
 <body>
@@ -1612,7 +1618,7 @@ ol.steps.tight > li{margin-bottom:.3em}
   }
   function mcqStats(pid){
     var right = 0, done = 0;
-    for (var i = 0; i < 4; i++){ var s = store.get('almanac-mcq-' + pid + '-' + i) || {}; Object.keys(s).forEach(function(k){ done++; if (s[k][1]) right++; }); }
+    for (var i = 0; i < 4; i++){ var s = store.get('almanac-mcq-' + pid + '-' + i) || {}; Object.keys(s).forEach(function(k){ if (k === '_v') return; done++; if (s[k][1]) right++; }); }
     return {right:right, done:done};
   }
 
@@ -1952,6 +1958,8 @@ ol.steps.tight > li{margin-bottom:.3em}
     var sb = bank.querySelector('.scoreboard');
     var skey = 'almanac-mcq-' + pid + '-' + bi;
     var saved = store.get(skey) || {};
+    var ver = bank.dataset.v || '';
+    if (ver && saved._v !== ver){ saved = { _v: ver }; store.set(skey, saved); }  // question set changed: drop stale answers
     var right = 0, done = 0;
     function paint(){
       if (!sb) return;
@@ -1980,7 +1988,7 @@ ol.steps.tight > li{margin-bottom:.3em}
       if (saved[i]){ var li0 = q.querySelector('li[data-k="' + saved[i][0] + '"]'); if (li0) pick(li0, true); }
     });
     if (sb) sb.querySelector('button').onclick = function(){
-      right = 0; done = 0; saved = {}; store.set(skey, saved);
+      right = 0; done = 0; saved = ver ? { _v: ver } : {}; store.set(skey, saved);
       qs.forEach(function(q){ q.classList.remove('answered'); $all('li', q).forEach(function(li){ li.classList.remove('right', 'wrong'); }); });
       paint();
     };
