@@ -939,6 +939,14 @@ ol.steps.tight > li{margin-bottom:.3em}
 <h4 class="q">Why is structured data "easy"? (5 quick points)</h4>
 <p>Memory hook: <strong>D-S-I-S-A</strong>, "Do Someone's Interesting Stories Again": <strong>D</strong>ML (insert, update, delete are simple) · <strong>S</strong>ecurity (encryption, access control) · <strong>I</strong>ndexing (fast search) · <strong>S</strong>calability (partition and replicate) · <strong>A</strong>CID transactions (Atomicity, Consistency, Isolation, Durability).</p>
 <p><strong>Sources:</strong> databases (Oracle, MySQL, SQL Server), spreadsheets, OLTP systems (banking, POS, reservations), sensors that write fixed-format readings, web forms.</p>
+<h4 class="q">Hassle-free retrieval: why finding structured data is easy</h4>
+<p>You say <em>what</em> you want in <strong>SQL</strong> and the database works out <em>how</em> to fetch it, using indexes. Results are exact and repeatable. Three kinds of retrieval come for free:</p>
+<ul class="clean">
+<li><strong>By attribute:</strong> <code>SELECT * FROM student WHERE branch = 'CSE';</code></li>
+<li><strong>By aggregation:</strong> <code>SELECT branch, AVG(marks) FROM result GROUP BY branch;</code></li>
+<li><strong>By joining tables:</strong> student and result linked through the roll number key.</li>
+</ul>
+<p>BI tools and data-mining algorithms also read structured data directly, with no conversion.</p>
 <p><strong>Limitation:</strong> the structure must be decided in advance and changing it is costly. Reviews, photos and videos simply do not fit, and that is the other 80–90% of all data.</p>
 <div class="words"><b>New words</b><dl>
 <dt>Schema</dt><dd>The fixed design of a table: column names and types</dd>
@@ -993,7 +1001,7 @@ ol.steps.tight > li{margin-bottom:.3em}
 <section class="topic" id="bi-unstructured">
 <h3><span class="tno">§ 2.3</span>Challenges in storing unstructured data <span class="pyq-tag">Assignment 1 · Q3</span></h3>
 <div class="idea"><b>The big idea</b>Unstructured data is <strong>big, messy and unlabelled</strong>. It takes a lot of space, has no fields to search on, and there is no clean way to find "the row" to update or delete. Every one of the six challenges comes back to <strong>"no structure"</strong> or <strong>"too much of it"</strong>.</div>
-<h4 class="q">The six challenges (assignment list, answer all six)</h4>
+<h4 class="q">The six challenges (learn all six)</h4>
 <div class="tbl"><table><thead><tr><th>Challenge</th><th>Why it happens</th><th>Everyday example</th></tr></thead><tbody>
 <tr><td><strong>1. Storage space</strong></td><td>Images, audio and video files are huge and growing fast</td><td>A single lecture video is bigger than a whole year of marks</td></tr>
 <tr><td><strong>2. Scalability</strong></td><td>As volume grows, storage cost and management effort grow with it</td><td>A university adds thousands of lecture videos every semester</td></tr>
@@ -1002,7 +1010,7 @@ ol.steps.tight > li{margin-bottom:.3em}
 <tr><td><strong>5. Update and delete</strong></td><td>No clear structure, so it is hard to locate exactly what to change or remove</td><td>Deleting one student's photo from every folder it was copied to</td></tr>
 <tr><td><strong>6. Indexing and searching</strong></td><td>No predefined attributes or naming rules, so indexes are error-prone and searches inaccurate; worse as volume grows</td><td>Searching videos: only the file name is indexed, and it is "VID_0231.mp4"</td></tr>
 </tbody></table></div>
-<p class="tip"><b>Memory hook: S-S-R-S-U-I</b> for the order in the assignment: <strong>S</strong>pace, <strong>S</strong>calability, <strong>R</strong>etrieval, <strong>S</strong>ecurity, <strong>U</strong>pdate/delete, <strong>I</strong>ndexing.</p>
+<p class="tip"><b>Memory hook: S-S-R-S-U-I</b> for the order of the six challenges: <strong>S</strong>pace, <strong>S</strong>calability, <strong>R</strong>etrieval, <strong>S</strong>ecurity, <strong>U</strong>pdate/delete, <strong>I</strong>ndexing.</p>
 <h4 class="q">How do we manage unstructured data?</h4>
 <ul class="clean">
 <li><strong>Indexing:</strong> a small identifier that lets you jump to a big item without scanning everything. Text can be indexed on words; audio and video mostly on file name (which fails if naming rules are not followed).</li>
@@ -1021,6 +1029,15 @@ ol.steps.tight > li{margin-bottom:.3em}
 </tbody></table></div>
 <h4 class="q">How do we get information out of unstructured data?</h4>
 <p>Normal search cannot understand meaning, so tools are used: <strong>text mining</strong> (groups and classifies text using grammar and synonyms), <strong>automatic tagging</strong>, managed <strong>taxonomies</strong>, <strong>NLP and machine learning</strong> (entity extraction, sentiment), format converters, and <strong>UIMA</strong> (IBM's Unstructured Information Management Architecture: annotators tag text and write the result to a structured store).</p>
+<h4 class="q">Extracting information: problem and solution</h4>
+<div class="tbl"><table><thead><tr><th>Problem</th><th>Solution</th></tr></thead><tbody>
+<tr><td><strong>Interpretation:</strong> ordinary search cannot understand meaning</td><td><strong>Text mining</strong> that groups and classifies text using grammar, context and synonyms</td></tr>
+<tr><td><strong>Taxonomy:</strong> different naming conventions across the organisation</td><td>Automatically managed <strong>taxonomies</strong> (hierarchies of groups)</td></tr>
+<tr><td><strong>Indexing:</strong> programs must understand meaning before they can tag</td><td><strong>Automatic tagging</strong> in a virtual repository (for example Documentum)</td></tr>
+<tr><td><strong>Deriving meaning:</strong> programs cannot infer structure by themselves</td><td>NLP and machine learning: entity extraction, sentiment, topics; <strong>UIMA</strong> (§ 2.5)</td></tr>
+<tr><td><strong>File formats:</strong> more and more of them</td><td>Format converters; platforms such as XOLAP that read email and XML</td></tr>
+<tr><td><strong>Tags:</strong> manual tagging cannot keep up with the volume</td><td>Auto-tagging and machine-learning classifiers</td></tr>
+</tbody></table></div>
 <div class="say"><b>10-mark answer</b>
 <p>Define unstructured data (1½) → the six challenges, each with a reason and an example (5) → management techniques: indexing, tags, taxonomy, CAS (1½) → solutions: change format, BLOB, XML, CAS, object storage (1½) → one line on UIMA / text mining (½).</p></div>
 </section>
@@ -1180,7 +1197,7 @@ STUDENT( roll PK | name | branch | phone      | email       )
 </tbody></table></div>
 <p><strong>Overall strategy for the company:</strong> keep <em>structured</em> data in an RDBMS/warehouse; hold semi-structured data in XML/document stores; put unstructured files in object storage or a data lake with <strong>metadata, tagging and a search index</strong>; add <strong>backup, deduplication and access control</strong> across all; and use text mining/UIMA to extract structured facts that BI can analyse.</p>
 <div class="say"><b>Answer template for any "identify the data" case (all three cases)</b>
-<p>① A three-column table sorting every item → ② "Structured because…" (typed attributes, fixed columns, SQL) → ③ "Unstructured is hard because…" (no fields to index, free text or pixels, needs interpretation, large, mixed formats, missing metadata, security) → ④ for Q6, one storage method per type.</p></div>
+<p>① A three-column table sorting every item → ② "Structured because…" (typed attributes, fixed columns, SQL) → ③ "Unstructured is hard because…" (no fields to index, free text or pixels, needs interpretation, large, mixed formats, missing metadata, security) → ④ for the company case, one storage method per type.</p></div>
 </section>
 
 <div class="deck" id="deck-bi-u2">
@@ -1233,7 +1250,7 @@ STUDENT( roll PK | name | branch | phone      | email       )
 <div class="eg"><b>Example 1: ATM / core banking</b>You withdraw ₹2,000. The system checks your balance, debits your account, logs the transaction and gives you cash. If any step fails, <strong>all steps are undone</strong> (atomicity). Thousands of customers do this at once without seeing each other's data (isolation).</div>
 <div class="eg"><b>Example 2: IRCTC railway reservation</b>You book berth 32 on the 12:30 train. The system must check it is free, mark it taken and issue a PNR, while thousands of people compete for the same seat. Two people must never get the same berth.</div>
 <p>More: supermarket billing (POS), online order placement, college fee payment and course registration, hotel booking.</p>
-<h4 class="q">Queries OLTP handles easily vs queries it cannot (asked in 2023)</h4>
+<h4 class="q">OLTP queries: what it handles easily, and what it cannot answer (asked in 2023)</h4>
 <div class="formula">-- EASY: point lookups and small updates on current data, in milliseconds
 SELECT balance FROM account WHERE acc_no = 'SB1029';
 UPDATE account SET balance = balance - 2000 WHERE acc_no = 'SB1029';
@@ -1287,10 +1304,10 @@ SELECT * FROM student WHERE roll_no = 2201;</div>
 </tbody></table></div>
 <h4 class="q">The cube: one, two, three dimensions and beyond</h4>
 <div class="tbl"><table><thead><tr><th>Dimensions</th><th>Shape</th><th>Example</th></tr></thead><tbody>
-<tr><td><strong>1-D</strong></td><td>A list</td><td>Sales by product: Laptops 120, Phones 340</td></tr>
-<tr><td><strong>2-D</strong></td><td>A table (cross-tab)</td><td>Product × region</td></tr>
-<tr><td><strong>3-D</strong></td><td>A <strong>cube</strong></td><td>Product × region × quarter; each cell is one product, one region, one quarter</td></tr>
-<tr><td><strong>4-D or more</strong></td><td>A <strong>hypercube</strong></td><td>Add customer type and channel. It cannot be drawn but OLAP shows 2-D or 3-D slices of it</td></tr>
+<tr><td><strong>One-dimensional (1-D)</strong></td><td>A list</td><td>Sales by product: Laptops 120, Phones 340</td></tr>
+<tr><td><strong>Two-dimensional (2-D)</strong></td><td>A table (cross-tab)</td><td>Product × region</td></tr>
+<tr><td><strong>Three-dimensional (3-D)</strong></td><td>A <strong>cube</strong></td><td>Product × region × quarter; each cell is one product, one region, one quarter</td></tr>
+<tr><td><strong>Beyond the third dimension (4-D or more)</strong></td><td>A <strong>hypercube</strong></td><td>Add customer type and channel. It cannot be drawn but OLAP shows 2-D or 3-D slices of it</td></tr>
 </tbody></table></div>
 <figure class="plate">
   <div class="frame"><img src="img/olap-cube.png" alt="OLAP cube with three dimensions: products, cities and time" loading="lazy"></div>
@@ -1348,11 +1365,11 @@ SELECT * FROM student WHERE roll_no = 2201;</div>
 </section>
 
 <section class="topic" id="bi-models">
-<h3><span class="tno">§ 3.4</span>Star schema, snowflake schema and fact constellation <span class="pyq-tag">Assignment 2 · Q4</span></h3>
-<div class="idea"><b>The big idea</b>OLAP data is stored in a <strong>fact table</strong> (the numbers: sales, cost) surrounded by <strong>dimension tables</strong> (the descriptions: who, what, where, when). The three schemas differ only in <em>how the dimensions are arranged</em>.</div>
+<h3><span class="tno">§ 3.4</span>Data models for OLTP and OLAP: ER, star, snowflake and fact constellation <span class="pyq-tag">Assignment 2 · Q4</span></h3>
 <h4 class="q">The OLTP data model: normalised ER</h4>
 <p>OLTP databases use <strong>Entity-Relationship modelling, normalised to 3NF</strong>: each fact is stored once, in many small linked tables. This avoids insert, update and delete anomalies and keeps writes fast and consistent. The price is that analytical queries need many joins, which is why OLAP uses the dimensional models below.</p>
 <h4 class="q">The OLAP data model: dimensional</h4>
+<div class="idea"><b>The big idea</b>OLAP data is stored in a <strong>fact table</strong> (the numbers: sales, cost) surrounded by <strong>dimension tables</strong> (the descriptions: who, what, where, when). The three schemas differ only in <em>how the dimensions are arranged</em>.</div>
 <h4 class="q">Fact vs dimension</h4>
 <div class="tbl"><table><thead><tr><th></th><th>Fact table</th><th>Dimension table</th></tr></thead><tbody>
 <tr><td><strong>Holds</strong></td><td><em>Measures</em>: numeric, additive values (sales_amount, units_sold) plus foreign keys to every dimension</td><td>Descriptive attributes and hierarchies (product name, brand, category; city, state)</td></tr>
