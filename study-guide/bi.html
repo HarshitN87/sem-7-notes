@@ -1026,26 +1026,20 @@ ol.steps.tight > li{margin-bottom:.3em}
 </section>
 
 <section class="topic" id="bi-semi">
-<h3><span class="tno">§ 2.4</span>Semi-structured Data, OEM &amp; XML <span class="pyq-tag">2023 Q4(b)</span></h3>
-<div class="facet">I · Definition</div>
-<div class="defn"><b>Professor's definition</b>Semi-structured data does not conform to a formal data model and cannot be stored in rows and columns as in a database. It does, however, have <em>tags and markers</em> that help group the data and describe how it is stored, giving some metadata, though not enough for full management and automation. Similar entities are grouped and organised in a <em>hierarchy</em>, and the attributes within a group <em>may or may not be the same</em>.</div>
-<div class="facet">II · Characteristics &amp; Sources</div>
-<ul>
-<li><strong>Inconsistent structure:</strong> records of the same type can have different fields (one customer has 2 phones, another has none).</li>
-<li><strong>Self-describing:</strong> label/value pairs; the schema is blended with the data.</li>
-<li><strong>Hierarchical or nested</strong> (tree or graph).</li>
-<li>Data objects may have different attributes, not known in advance.</li>
-</ul>
-<p><strong>Sources:</strong> <strong>XML</strong> (web services, SOAP), <strong>JSON</strong> (REST APIs, MongoDB, Couchbase), <strong>email</strong> (structured headers + unstructured body), HTML, TCP/IP packets, zipped files, binary executables, <em>integration of data from heterogeneous sources</em>, NoSQL stores, log files, EDI messages.</p>
-<div class="facet">III · Managing, Modelling (OEM), Storing &amp; Extracting</div>
-<p><strong>Managing semi-structured data</strong> (professor's three approaches):</p>
-<ol>
-<li><strong>Schemas:</strong> describe the structure and constraints (XML Schema/XSD, DTD, JSON Schema). The problem is that requirements change constantly, and changes in data force changes in the schema.</li>
-<li><strong>Graph-based data models:</strong> a "schema-less" or <em>self-describing</em> approach. Relationships and hierarchies are a tree-like graph, where vertices contain objects or entities and leaves contain data. <strong>OEM</strong> is the classic example.</li>
-<li><strong>XML:</strong> widely used to store and exchange semi-structured data; user-defined tags store data in hierarchical or nested form; the schema is <em>not tightly coupled</em> to the data.</li>
+<h3><span class="tno">§ 2.4</span>Semi-structured data, OEM and XML <span class="pyq-tag">2023 Q4(b)</span></h3>
+<div class="idea"><b>The big idea</b>Semi-structured data <strong>labels its own contents</strong> with tags, so you can tell what each value is, but it does not force every record into the same shape. It is the middle ground between a rigid table and a pile of free text.</div>
+<h4 class="q">Definition to write</h4>
+<div class="defn"><b>Semi-structured data</b>Data that does not conform to a formal data model and cannot be stored in rows and columns like a database, but has <em>tags and markers</em> that group the data and describe how it is stored. Similar entities are grouped in a <em>hierarchy</em>, and the attributes within a group <em>may or may not be the same</em>.</div>
+<p><strong>Characteristics:</strong> inconsistent structure (one customer has two phones, another none) · self-describing (label/value pairs) · hierarchical or nested (tree or graph) · attributes not known in advance.</p>
+<p><strong>Sources:</strong> XML (web services), JSON (REST APIs, MongoDB), email (structured headers, free-text body), HTML, log files, data merged from different systems.</p>
+<h4 class="q">How do we manage it? Three approaches</h4>
+<ol class="steps tight">
+<li><strong>Schemas</strong> (XSD, DTD, JSON Schema) describe the structure. The catch: requirements keep changing, and every change in the data forces a change in the schema.</li>
+<li><strong>Graph-based models</strong> are "schema-less" and self-describing: the data is a tree or graph, with objects at the nodes and values at the leaves. <strong>OEM</strong> is the classic example.</li>
+<li><strong>XML</strong> stores and exchanges data in nested, user-defined tags, with the schema not tightly tied to the data.</li>
 </ol>
-<h5>OEM: the Object Exchange Model</h5>
-<p>OEM was proposed in Stanford's <em>TSIMMIS</em> project (Papakonstantinou, Garcia-Molina &amp; Widom, 1995) to exchange data between heterogeneous sources. Data is a <strong>labelled directed graph</strong>. Each object has an <strong>object ID (OID)</strong>, a <strong>label</strong> (what it is, e.g. "name"), a <strong>type</strong>, and a <strong>value</strong>. <em>Atomic</em> objects hold a value (string, integer); <em>complex</em> objects hold a set of references to sub-objects. There is no schema: labels travel with the data.</p>
+<h4 class="q">OEM: the Object Exchange Model</h4>
+<p>OEM came from Stanford's <em>TSIMMIS</em> project (1995) to exchange data between different sources. The data is a <strong>labelled directed graph</strong>. Every object has four things, easy to remember as <strong>OLTV</strong>: an <strong>O</strong>bject ID (&amp;1, &amp;2), a <strong>L</strong>abel (what it is, e.g. "name"), a <strong>T</strong>ype and a <strong>V</strong>alue. <em>Atomic</em> objects hold a plain value (a string or number). <em>Complex</em> objects hold references to other objects.</p>
 <figure class="plate svgplate"><div class="frame">
 <svg class="dg" viewBox="0 0 660 270" role="img" aria-label="OEM graph of a university with students having different attributes">
 <defs><marker id="biA4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
@@ -1063,39 +1057,78 @@ ol.steps.tight > li{margin-bottom:.3em}
 <line x1="502" y1="126" x2="590" y2="200" class="ln" marker-end="url(#biA4)"/><text x="550" y="158">email</text><text x="560" y="220">r@geu…</text>
 </g>
 <text x="330" y="258" text-anchor="middle" class="small">Both students share name and roll; one has a phone and the other an email, which is irregular structure.</text>
-</svg></div>
-<figcaption><span class="pl">Plate C5 · An OEM graph</span> Nodes are objects (&amp;OIDs); edge labels say what the child is; leaves hold atomic values. <span class="sketch">How to sketch: a root, two child nodes, labelled edges to leaf values, with the two children having different labels.</span></figcaption></figure>
-<p><strong>Challenges in storing semi-structured data:</strong> storage cost (tags repeat with every record); an RDBMS cannot handle it directly because the structure is irregular; irregular and partial structure (some fields missing); implicit structure (the schema is not declared); evolving schemas; the distinction between schema and data is blurred (a label is both); queries become less efficient.</p>
-<p><strong>Possible solutions:</strong> special-purpose DBMSs (XML-native databases such as BaseX, MarkLogic; document stores such as MongoDB); mapping to an RDBMS (shredding XML into tables, or JSON columns in PostgreSQL); OEM/graph storage; XML with schemas where possible.</p>
-<p><strong>Extracting information:</strong> <em>challenges</em>: data is often in flat files, comes from heterogeneous sources, and is incomplete or irrelevant. <em>Solutions</em>: indexing (XML indexes), OEM-based querying (Lorel), XML query languages (<strong>XPath, XQuery</strong>, XSLT), mining tools.</p>
-<div class="facet">IV · XML as a Solution, and Converting XML to Structured Form (PYQ 2023 Q4b)</div>
-<p><strong>XML (eXtensible Markup Language, W3C, 1998)</strong> lets users define their own tags, nests data hierarchically, is self-describing, platform-independent and human-readable, and can be validated with a DTD or XSD. This makes it a standard for exchanging semi-structured data between heterogeneous systems (the hospital's HL7 messages, GST e-invoices, RSS). <strong>Yes, XML can be converted into structured format</strong> by mapping elements to tables, repeated elements to rows, and child elements or attributes to columns ("shredding"):</p>
+</svg>
+</div>
+<figcaption><span class="pl">Plate · An OEM graph</span> Nodes are objects; edge labels say what each child is; leaves hold values. Both students have a name and roll number, but one has a phone and the other an email. <span class="sketch">How to sketch: a root, two child nodes, labelled edges to leaves, with the two children having different labels.</span></figcaption></figure>
+<h4 class="q">Challenges and solutions</h4>
+<div class="tbl"><table><thead><tr><th>Challenge</th><th>Possible solution</th></tr></thead><tbody>
+<tr><td>Irregular and partial structure; structure is implicit; schema keeps changing</td><td>OEM or graph storage; document stores such as MongoDB</td></tr>
+<tr><td>An RDBMS cannot hold it directly</td><td>XML-native databases (BaseX, MarkLogic), or map it into RDBMS tables, or JSON columns</td></tr>
+<tr><td>Tags repeat in every record, so storage cost is high</td><td>Compression; binary formats</td></tr>
+<tr><td>Extracting information: flat files, many sources, incomplete data</td><td>Indexing, OEM-based queries (Lorel), <strong>XPath and XQuery</strong>, mining tools</td></tr>
+</tbody></table></div>
+<h4 class="q">XML as a solution, and converting XML to structured form (2023 Q4b)</h4>
+<p><strong>XML</strong> (eXtensible Markup Language, W3C 1998) lets you invent your own tags, nest data, is self-describing, human-readable and platform-independent, and can be checked against a DTD or XSD. It is the standard way for different systems to swap semi-structured data (hospital HL7 messages, GST e-invoices). <strong>Yes, XML can be converted to a structured format</strong> by turning each repeating element into a table row:</p>
 <div class="formula">&lt;students&gt;
-  &lt;student roll="2201"&gt;
-     &lt;name&gt;Asha&lt;/name&gt; &lt;branch&gt;CSE&lt;/branch&gt;
-     &lt;phone&gt;98xxxx1111&lt;/phone&gt;
-  &lt;/student&gt;
-  &lt;student roll="2202"&gt;
-     &lt;name&gt;Ravi&lt;/name&gt; &lt;branch&gt;IT&lt;/branch&gt;
-     &lt;email&gt;r@geu.ac.in&lt;/email&gt;
-  &lt;/student&gt;
+  &lt;student roll="2201"&gt;&lt;name&gt;Asha&lt;/name&gt; &lt;branch&gt;CSE&lt;/branch&gt; &lt;phone&gt;98xxxx1111&lt;/phone&gt;&lt;/student&gt;
+  &lt;student roll="2202"&gt;&lt;name&gt;Ravi&lt;/name&gt; &lt;branch&gt;IT&lt;/branch&gt;  &lt;email&gt;r@geu.ac.in&lt;/email&gt;&lt;/student&gt;
 &lt;/students&gt;
-
-                ↓ shred (XPath /students/student)
-
+                ↓ shred with XPath /students/student
 STUDENT( roll PK | name | branch | phone      | email       )
          2201    | Asha | CSE    | 98xxxx1111 | NULL
          2202    | Ravi | IT     | NULL       | r@geu.ac.in</div>
-<p><strong>Steps:</strong> (1) study or infer the XML schema (XSD); (2) map each repeating element to a table and each leaf or attribute to a column, choosing a key; (3) flatten nested repeating groups into child tables with foreign keys (e.g. a student with many courses gives a STUDENT_COURSE table); (4) handle missing elements as NULLs; (5) load with tools (SQL Server <code>OPENXML</code>, Oracle XMLTABLE, Python <code>pandas.read_xml</code>, ETL tools). <strong>Caveats:</strong> deep or irregular nesting produces many sparse columns or tables, and some hierarchy semantics are lost, so an XML-native database may be preferable when the structure changes often.</p>
-<div class="facet">V · Critical Evaluation</div>
-<p>JSON has largely replaced XML for web APIs (lighter, native to JavaScript), but XML still dominates in documents, enterprise integration and regulated data exchange. Semi-structured data is the <em>bridge</em> in BI: much of what enters a data warehouse through ETL arrives as XML or JSON from APIs and must be parsed and conformed to the dimensional model (Unit 3).</p>
-<div class="checklist"><ul><li>Professor's definition (tags/markers, hierarchy, attributes may differ).</li><li>Characteristics and sources (XML, JSON, email, heterogeneous integration).</li><li>Three management approaches: schemas, graph models, XML.</li><li>OEM: TSIMMIS, OID/label/type/value, atomic vs complex, with a graph diagram.</li><li>Storage challenges and solutions; XPath/XQuery; a worked XML → table conversion.</li></ul></div>
+<ol class="steps tight">
+<li>Study the XML schema (XSD), or infer it from the data.</li>
+<li>Map each <strong>repeating element to a table</strong> and each <strong>leaf or attribute to a column</strong>; choose a key.</li>
+<li>Flatten nested repeating groups into <strong>child tables with a foreign key</strong> (a student with many courses gives STUDENT_COURSE).</li>
+<li>Turn missing elements into <strong>NULL</strong>.</li>
+<li>Load with a tool: SQL Server OPENXML, Oracle XMLTABLE, Python pandas.read_xml, or an ETL tool.</li>
+</ol>
+<p><strong>Caveat:</strong> deep or irregular nesting gives many sparse tables and loses some hierarchy, so an XML-native database can be better when the structure changes often. In BI, this is exactly how XML from partners enters the warehouse through ETL.</p>
+<div class="say"><b>10-mark answer</b>
+<p>Definition and characteristics (2) → XML features and why it suits exchange (2) → the XML-to-table example with the five steps (4) → OEM: OLTV, atomic vs complex, graph sketch (2). For a "management" question, add the three approaches and the challenge table.</p></div>
 </section>
 
 <section class="topic" id="bi-extra23">
-<h3><span class="tno">§ 2.5</span>Unstructured data in practice: UIMA, best practices, backup and web pages <span class="pyq-tag">2023 Q3(b), Q4(a), Q5(a)</span></h3>
-<div class="facet">UIMA: Unstructured Information Management Architecture</div>
-<div class="defn"><b>UIMA</b>An open, industry-standard architecture and framework (developed by IBM, now <strong>Apache UIMA</strong>, standardised by <strong>OASIS</strong> in 2009) for building applications that <em>analyse large volumes of unstructured content</em> (text, audio, video) to discover knowledge relevant to an end user. It famously powered parts of <strong>IBM Watson</strong>, which won <em>Jeopardy!</em> in 2011.</div>
+<h3><span class="tno">§ 2.5</span>Unstructured data in practice: best practices, backup, web pages and UIMA <span class="pyq-tag">2023 Q3(b), Q4(a), Q5(a)</span></h3>
+<h4 class="q">Best practices for managing the growth of unstructured data (2023 Q3b)</h4>
+<div class="idea"><b>The big idea</b>Unstructured data grows 40–60% a year. Managing it means <strong>know what you have, label it, keep only what is worth keeping, store it cheaply, and make it findable and safe</strong>.</div>
+<ol class="steps tight">
+<li><strong>Discover and classify:</strong> take an inventory; classify by type, owner, sensitivity and value.</li>
+<li><strong>Tag at creation:</strong> use metadata, naming conventions and templates.</li>
+<li><strong>Set lifecycle and retention rules:</strong> keep, archive or delete by age, value and legal need.</li>
+<li><strong>Tier the storage:</strong> move cold data to cheaper storage or the cloud; use object stores to scale.</li>
+<li><strong>Deduplicate and compress;</strong> remove ROT data (Redundant, Obsolete, Trivial).</li>
+<li><strong>Centralise</strong> in a content-management system (SharePoint, Documentum) or a data lake, not scattered drives.</li>
+<li><strong>Index and enable enterprise search;</strong> apply text mining, NLP and UIMA.</li>
+<li><strong>Govern and secure:</strong> access control, encryption, data-loss prevention, audit, privacy law.</li>
+<li><strong>Monitor growth</strong> with storage analytics and quotas.</li>
+<li><strong>Convert where possible:</strong> OCR scans, transcribe audio, extract form data into tables.</li>
+</ol>
+<h4 class="q">Impact on backup and recovery (2023 Q5a)</h4>
+<div class="tbl"><table><thead><tr><th>Problem</th><th>Why</th></tr></thead><tbody>
+<tr><td><strong>Volume and growth</strong></td><td>TBs to PBs; full backups overflow the backup window</td></tr>
+<tr><td><strong>Many small files</strong></td><td>Millions of emails and images; scanning file by file is slow</td></tr>
+<tr><td><strong>Duplication</strong></td><td>The same attachment is stored many times, inflating backups</td></tr>
+<tr><td><strong>Cost</strong></td><td>Storage, bandwidth, cloud egress and retention all rise</td></tr>
+<tr><td><strong>Slow, blind recovery</strong></td><td>Restoring huge file shares takes long (RTO), and finding one file ("the 2021 contract") is hard without metadata</td></tr>
+<tr><td><strong>Consistency</strong></td><td>Files are open during backup; no transactional guarantee as in a database</td></tr>
+<tr><td><strong>Compliance and security</strong></td><td>Hidden personal data in PDFs, "dark data" nobody knows about; backups must be encrypted and deleted by policy</td></tr>
+<tr><td><strong>Ransomware</strong></td><td>Targets file shares, so immutable, offline copies are needed</td></tr>
+</tbody></table></div>
+<p><strong>Remedies:</strong> incremental-forever backup and snapshots, deduplication and compression, tiering, classification before backup, CAS or WORM for compliance archives, cloud object storage with versioning, and the <strong>3-2-1 rule</strong> (3 copies, 2 media types, 1 off-site).</p>
+<h4 class="q">Why are web pages unstructured even though HTML has structure? (2023 Q4a)</h4>
+<div class="idea"><b>The big idea</b>HTML's structure is about <strong>looks, not meaning</strong>. Tags say how to <em>display</em> something, never what it <em>is</em>.</div>
+<div class="eg"><b>Example</b>A price and a phone number both sit in a plain <code>&lt;span&gt;</code>. The tag tells the browser to show text, not that one is money and the other a phone number.</div>
+<ul class="clean">
+<li>The content inside the tags is <strong>free text, images and media</strong> with no data model.</li>
+<li>There is <strong>no common schema</strong>: two shops arrange the same product information differently, and the same site changes after a redesign.</li>
+<li>HTML is often <strong>malformed</strong> and content is built dynamically by JavaScript.</li>
+<li>You <strong>cannot query</strong> "all laptops under ₹50,000" across pages without scraping or NLP.</li>
+</ul>
+<p>Fixes add meaning: schema.org microdata, JSON-LD and RDF. Some authors call web pages semi-structured because of the markup, so state your position and reason.</p>
+<h4 class="q">UIMA: making unstructured data usable</h4>
+<div class="defn"><b>UIMA</b>Unstructured Information Management Architecture: an open framework (IBM, now Apache, OASIS standard 2009) for building applications that analyse large volumes of unstructured content (text, audio, video) to discover knowledge. It powered parts of IBM Watson, which won <em>Jeopardy!</em> in 2011.</div>
 <figure class="plate svgplate"><div class="frame">
 <svg class="dg" viewBox="0 0 680 230" role="img" aria-label="UIMA pipeline: collection reader, analysis engines with annotators operating on CAS, CAS consumers to structured stores">
 <defs><marker id="biA3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" class="mk"/></marker></defs>
@@ -1109,45 +1142,12 @@ STUDENT( roll PK | name | branch | phone      | email       )
 <rect x="305" y="152" width="170" height="28" class="box3"/><text x="390" y="171" text-anchor="middle" class="small">CAS: Common Analysis Structure</text>
 <rect x="520" y="80" width="150" height="60" class="box"/><text x="595" y="105" text-anchor="middle">CAS Consumers</text><text x="595" y="122" text-anchor="middle" class="small">→ DB · index · warehouse</text>
 <line x1="120" y1="110" x2="147" y2="110" class="ln" marker-end="url(#biA3)"/><line x1="260" y1="110" x2="287" y2="110" class="ln" marker-end="url(#biA3)"/><line x1="490" y1="110" x2="517" y2="110" class="ln" marker-end="url(#biA3)"/>
-</svg></div>
-<figcaption><span class="pl">Plate C4 · The UIMA pipeline</span> A <em>Collection Reader</em> feeds documents to <em>Analysis Engines</em> made of <em>Annotators</em>. Each annotator adds metadata (tokens, entities, sentiment) to a shared <em>CAS (Common Analysis Structure)</em>. <em>CAS Consumers</em> write the resulting structured output to databases, search indexes or the warehouse. (Do not confuse this CAS with Content Addressable Storage.)
-<span class="sketch">How to sketch: Docs → Reader → [AE box with 3–4 annotators over a CAS strip] → Consumers → DB.</span></figcaption></figure>
-<p><strong>Why UIMA matters:</strong> it separates analysis components (reusable, pluggable annotators written by different teams) from the framework that runs them (scaled out across machines), and it turns unstructured text into <em>structured</em> annotations that BI and search can use.</p>
-<div class="facet">IV · Impact of Unstructured Data on Backup &amp; Recovery (PYQ 2023 Q5a)</div>
-<ul>
-<li><strong>Volume and growth:</strong> backup windows overflow because TB–PB of files grow 40–60% a year, and full backups take too long.</li>
-<li><strong>Many small files and deep folder trees:</strong> file-by-file scanning is slow (millions of emails, images); the metadata overhead dominates.</li>
-<li><strong>Duplication:</strong> the same attachment is stored many times, inflating backup size. The solution is deduplication.</li>
-<li><strong>Cost:</strong> storage, network bandwidth, cloud egress and retention costs rise.</li>
-<li><strong>Recovery time and point objectives (RTO/RPO):</strong> restoring huge unindexed file shares is slow, and finding <em>one</em> needed file ("the contract from 2021") is hard without metadata.</li>
-<li><strong>Consistency:</strong> files open during backup; no transactional guarantees as in a DB.</li>
-<li><strong>Compliance and security:</strong> unstructured data holds hidden sensitive information (PII in PDFs), so backups must be encrypted, retained or deleted by policy (DPDP Act, legal hold); "dark data" is backed up without anyone knowing what it is.</li>
-<li><strong>Ransomware</strong> targets file shares, so immutable, air-gapped copies are needed.</li>
-</ul>
-<p><strong>Responses:</strong> incremental-forever backup and snapshots, deduplication and compression, tiering (hot/cold/archive), classification before backup, CAS or WORM for compliance archives, cloud object storage with versioning, and the 3-2-1 rule (3 copies, 2 media, 1 off-site).</p>
-<div class="facet">IV-b · Best Practices for Managing the Growth of Unstructured Data (PYQ 2023 Q3b)</div>
-<ol>
-<li><strong>Discover and classify</strong> what exists: data inventory, auto-classification by type, owner, sensitivity and value.</li>
-<li><strong>Apply metadata and tagging at creation</strong>, with naming conventions and document templates.</li>
-<li><strong>Define information-lifecycle and retention policies:</strong> keep, archive or delete by age, value and legal need.</li>
-<li><strong>Tiered storage:</strong> move cold data to cheaper storage or the cloud; use object stores for scale.</li>
-<li><strong>Deduplicate and compress</strong>; remove ROT data (Redundant, Obsolete, Trivial).</li>
-<li><strong>Centralise</strong> in content-management systems (SharePoint, Documentum) or data lakes rather than scattered drives.</li>
-<li><strong>Index and enable enterprise search</strong>; apply text mining, NLP and UIMA to extract structure.</li>
-<li><strong>Govern and secure:</strong> access controls, encryption, DLP, audit; comply with privacy law.</li>
-<li><strong>Monitor growth</strong> with storage analytics and quotas; budget capacity.</li>
-<li><strong>Convert where possible:</strong> OCR scans, transcribe audio, extract data from forms into structured stores.</li>
-</ol>
-<div class="facet">V · Web Pages: Unstructured Despite HTML (PYQ 2023 Q4a)</div>
-<p>HTML <em>does</em> have rich structure, but it is structure of <strong>presentation</strong>, not <strong>meaning</strong>. Tags such as <code>&lt;div&gt;</code>, <code>&lt;p&gt;</code>, <code>&lt;h1&gt;</code>, <code>&lt;table&gt;</code> say how to <em>display</em> content, not what it <em>is</em>. A price and a phone number both sit in plain <code>&lt;span&gt;</code>s. So:</p>
-<ul>
-<li>The <strong>content inside the tags is free text, images and media</strong> with no data model, and its meaning must be interpreted.</li>
-<li>There is <strong>no fixed schema across pages</strong>: two product pages from different sites (or the same site after a redesign) arrange the same information differently.</li>
-<li>HTML is often <strong>not well-formed</strong> (browsers tolerate missing closing tags), and content is generated dynamically by JavaScript.</li>
-<li>You cannot run SQL-like queries such as "all laptops under ₹50,000" across web pages. You need scraping, wrappers or NLP.</li>
-</ul>
-<p>So web pages are usually treated as <strong>unstructured</strong> (some texts say semi-structured, since the markup gives partial structure). Semantic efforts such as <em>schema.org microdata / JSON-LD</em> and RDF add meaning-level tags precisely to fix this gap.</p>
-<div class="checklist"><ul><li>Professor's definition (no rows/columns, no data model, no rules, unpredictable).</li><li>Bitmap vs textual objects; sources list.</li><li>Management: indexing, tags/metadata, taxonomy, CAS, each with its difficulty.</li><li>Six storage challenges plus five solutions; the extraction challenge/solution table.</li><li>UIMA definition, components and diagram; backup impact; best practices; the HTML paradox.</li></ul></div>
+</svg>
+</div>
+<figcaption><span class="pl">Plate · The UIMA pipeline</span> A <em>Collection Reader</em> feeds documents to <em>Analysis Engines</em> built from <em>Annotators</em> (tokeniser, entity finder, sentiment). Each annotator writes to a shared <em>CAS (Common Analysis Structure)</em>. <em>CAS Consumers</em> save the structured result to a database, index or warehouse. (This CAS is not Content Addressable Storage.) <span class="sketch">How to sketch: Docs → Reader → [engine box with annotators over a CAS strip] → Consumers → DB.</span></figcaption></figure>
+<p><strong>Why it matters:</strong> reusable annotators plug into a framework that scales across machines, and the output is <em>structured</em> data that BI and search can use.</p>
+<div class="say"><b>10-mark answer</b>
+<p><strong>Best practices:</strong> problem in a line (1) → ten practices (6) → three practices explained with examples (2) → link to metadata and UIMA (1). <strong>Backup:</strong> the eight problems (5) → remedies including 3-2-1 (3) → one example (2). <strong>Web pages:</strong> presentation vs meaning with the span example (3) → four reasons (4) → fixes and your position (3).</p></div>
 </section>
 
 <section class="topic" id="bi-a1cases">
