@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The Mid-Semester Almanac</title>
-<meta name="description" content="A 40-second animated story: Almo the study mascot survives a book avalanche, catches a golden ticket and bonks five exam monsters on the Study Express. Created by Harshit.">
+<title>The End-Semester Almanac</title>
+<meta name="description" content="A 40-second animated story: Almo the study mascot survives a full-syllabus book avalanche, catches a golden ticket and bonks five end-sem exam monsters on the Study Express. Created by Harshit.">
 <style>
   :root{
     --bg:#170F1A; --bg2:#2A1D2C; --ink:#F4E7E3; --muted:#C4ADB9; --mat:#FBF1E6; --line:#8C6A7C; --acc:#E59AAE;
@@ -61,10 +61,10 @@
 </style>
 </head>
 <body>
-<div class="kicker"><b>The Mid-Semester Almanac</b> · a 40-second story</div>
+<div class="kicker"><b>The End-Semester Almanac</b> · a 40-second story</div>
 <div class="reel">
   <div class="mat">
-    <canvas id="film" role="img" aria-label="Animated story: Almo wakes up panicking about exams, gets buried by a book avalanche, catches a golden ticket, rides the Study Express and bonks one exam monster per subject, and arrives on exam day. A text version is below the film."></canvas>
+    <canvas id="film" role="img" aria-label="Animated story: Almo wakes up panicking about end-semester exams, gets buried by a full-syllabus book avalanche, catches a golden ticket, rides the Study Express and bonks one exam monster per subject across all units, and arrives ready on exam day. A text version is below the film."></canvas>
     <div class="end" id="end" hidden><div class="box">
       <a class="btn btn-enter" href="lobby.html">Enter the Almanac →</a>
       <button class="btn btn-ghost" id="again" type="button">↺ Watch again</button>
@@ -88,7 +88,7 @@
 "use strict";
 
 /* =====================================================================
-   THE STORY
+   THE STORY (End-Semester Full-Syllabus Edition)
    mode 0 = Almo's room at night (wake-up, avalanche, golden ticket)
    mode 1 = a station on the Study Express (one per exam)
    mode 2 = exam day
@@ -96,29 +96,29 @@
 var STN = 4.6;
 var SCENES = [
   {key:"Wake up", mode:0, len:3.8, sky:["#241F46","#4A3D70"], acc:"#8E6BB8", acc2:"#5B3A6E",
-   chip:"RING RING!", title:"EXAMS IN 3 DAYS?!", lines:["Five subjects. One very panicked Almo."]},
+   chip:"RING RING!", title:"END-SEMS ALREADY?!", lines:["Five subjects. Full syllabus. One very panicked Almo."]},
   {key:"Avalanche", mode:0, len:3.2, sky:["#241F46","#4A3D70"], acc:"#8E6BB8", acc2:"#5B3A6E",
-   chip:"UH-OH", title:"Too. Many. Books.", lines:["Where do you even start?"]},
+   chip:"UH-OH", title:"All. Five. Units.", lines:["Mid-sem was just the warm-up. Where do you even start?"]},
   {key:"Golden ticket", mode:0, len:3.5, sky:["#3A2E66","#9A6A94"], acc:"#D9A441", acc2:"#5B3A6E",
-   chip:"WAIT… WHAT'S THAT?", title:"A golden ticket!", lines:["One stop per exam. All aboard the Study Express!"]},
-  {key:"RM & IPR", mode:1, len:STN, stop:0, icon:1, sky:["#F5D2DE","#FFF3EA"], acc:"#A83F63", acc2:"#6B2D5C",
-   chip:"STOP 1 · SAT 26 SEPT · TRM-701", title:"Research Methodology & IPR",
-   lines:["Unit 1 · Picking a good research problem","Unit 2 · Literature review, plagiarism & ethics","Unit 3 · Writing reports & research proposals"]},
-  {key:"ACA", mode:1, len:STN, stop:1, icon:2, sky:["#D3E6F2","#FFF4EA"], acc:"#C0433A", acc2:"#2F6F95",
-   chip:"STOP 2 · MON 28 SEPT · TCS-704", title:"Advanced Computer Architecture",
-   lines:["Unit 1 · Moore's law, power, cost, Amdahl & Iron Law","Unit 2 · Caches, coherence & virtual memory"]},
-  {key:"MBA-302", mode:1, len:STN, stop:2, icon:3, sky:["#F3E3B3","#FFF6E6"], acc:"#A87A12", acc2:"#5E6B3A",
-   chip:"STOP 3 · TUE 29 SEPT · MBA-302 · ALL MCQs", title:"Innovation & Venture Development",
-   lines:["Unit I · Innovation, India's startups & SCAMPER","Unit II · Lean startup & the Business Model Canvas"]},
+   chip:"WAIT… WHAT'S THAT?", title:"A golden ticket!", lines:["Full syllabus, five stops. All aboard the Study Express!"]},
+  {key:"ACA", mode:1, len:STN, stop:0, icon:2, sky:["#D3E6F2","#FFF4EA"], acc:"#C0433A", acc2:"#2F6F95",
+   chip:"STOP 1 · TCS-704 · 3 HRS · UNITS 1–5", title:"Advanced Computer Architecture",
+   lines:["Units 1–2 · Trends, Amdahl's Law, caches & virtual memory","Units 3–4 · Pipelines, hazards, ILP & dynamic scheduling","Unit 5 · Multiprocessors, SIMD & vector architectures"]},
+  {key:"RM & IPR", mode:1, len:STN, stop:1, icon:1, sky:["#F5D2DE","#FFF3EA"], acc:"#A83F63", acc2:"#6B2D5C",
+   chip:"STOP 2 · TRM-701 · 3 HRS · UNITS 1–5", title:"Research Methodology & IPR",
+   lines:["Units 1–2 · Research problem, literature, plagiarism & ethics","Unit 3 · Technical writing, reports & research proposals","Units 4–5 · Patents, copyright, PCT, licensing & GI"]},
+  {key:"LLMs", mode:1, len:STN, stop:2, icon:5, sky:["#F7D9C2","#FFF4EC"], acc:"#BD5A22", acc2:"#6E4A2F",
+   chip:"STOP 3 · TCS-765 · 3 HRS · UNITS 1–5", title:"Large Language Models",
+   lines:["Units 1–2 · Transformers, training, chatbots & translation","Unit 3 · Fine-tuning, domain adaptation & case studies","Units 4–5 · Ethics, bias, regulation & future scalability"]},
   {key:"BI", mode:1, len:STN, stop:3, icon:4, sky:["#CDECE7","#FFF3EA"], acc:"#23857C", acc2:"#C8703F",
-   chip:"STOP 4 · WED 30 SEPT · TCS-726", title:"Business Intelligence",
-   lines:["Unit 1 · IT in business & the Baldrige framework","Unit 2 · Structured vs unstructured data","Unit 3 · OLTP vs OLAP, cubes & data warehouses"]},
-  {key:"LLMs", mode:1, len:STN, stop:4, icon:5, sky:["#F7D9C2","#FFF4EC"], acc:"#BD5A22", acc2:"#6E4A2F",
-   chip:"STOP 5 · SAT 3 OCT · TCS-765", title:"Large Language Models",
-   lines:["Unit 1 · Transformers, attention & training","Unit 2 · Chatbots, RAG, translation & summaries"]},
+   chip:"STOP 4 · TCS-726 · 3 HRS · UNITS 1–5", title:"Business Intelligence",
+   lines:["Units 1–2 · Baldrige framework & digital data types","Units 3–4 · OLTP vs OLAP, cubes, BI framework & tools","Unit 5 · Data warehouses, KPIs, dashboards & ERP BI"]},
+  {key:"MBA-302", mode:1, len:STN, stop:4, icon:3, sky:["#F3E3B3","#FFF6E6"], acc:"#A87A12", acc2:"#5E6B3A",
+   chip:"STOP 5 · MBA-302 · UNITS I–IV", title:"Innovation & Venture Development",
+   lines:["Units I–II · Ecosystem, SCAMPER, lean startup & BMC","Unit III · Seed–Series D financing, valuation & pitch decks","Unit IV · Scaling, growth hacking, tech enablers & exits"]},
   {key:"Exam day", mode:2, len:6.3, sky:["#FFC9A8","#FFF1DC"], acc:"#5B3A6E", acc2:"#8E2F45",
-   chip:"EXAM DAY", title:"Almo's ready. So are you!",
-   lines:["Flashcards, model answers & expected papers inside","Created by Harshit"]}
+   chip:"END-SEM DAY", title:"Almo's ready. So are you!",
+   lines:["Full-syllabus notes, flashcards & 3-hr papers inside","Created by Harshit"]}
 ];
 var DURATION = 0;
 SCENES.forEach(function(s){ s.t0 = DURATION; DURATION += s.len; s.t1 = DURATION; });
@@ -187,7 +187,8 @@ var FS = [
 "void ink(inout vec3 c,vec3 k,float d,float w){put(c,INK,d-w);put(c,k,d);}",
 "float eo(float x){x=clamp(x,0.,1.);return 1.-pow(1.-x,3.);}",
 "float win(float t,float a,float b){return clamp((t-a)/(b-a),0.,1.);}",
-"vec3 BK(int i){ if(i==0)return vec3(.659,.247,.388); if(i==1)return vec3(.753,.263,.227); if(i==2)return vec3(.659,.478,.071); if(i==3)return vec3(.137,.522,.486); return vec3(.741,.353,.133);}",
+/* book colors ordered to match stops 0..4: ACA, RM, LLM, BI, MBA */
+"vec3 BK(int i){ if(i==0)return vec3(.753,.263,.227); if(i==1)return vec3(.659,.247,.388); if(i==2)return vec3(.741,.353,.133); if(i==3)return vec3(.137,.522,.486); return vec3(.659,.478,.071);}",
 "void star5(inout vec3 col,vec2 p,float r,vec3 c){ vec2 q=p; q.y=-q.y; ink(col,c,sdStar(q,r,.5),.003); }",
 
 /* a book */
@@ -560,7 +561,7 @@ function drawText(si){
   lineBoxes.push([(ty - ts * 0.72) / S, (ty + ts * 0.72) / S]);
   var n = sc.lines.length, top = S * (big ? 0.76 : (n > 2 ? 0.735 : 0.75)), gap = n > 2 ? S * 0.054 : S * 0.062;
   sc.lines.forEach(function(line, i){
-    var y = top + i * gap, parts = line.split(" · "), pre = parts.length > 1 && /^Unit /.test(parts[0]) ? parts.shift() + " · " : "", rest = parts.join(" · ");
+    var y = top + i * gap, parts = line.split(" · "), pre = parts.length > 1 && /^Units? /.test(parts[0]) ? parts.shift() + " · " : "", rest = parts.join(" · ");
     var bs = fit(pre + rest, "600", S * 0.031, maxW - S * 0.04);
     var restFont = (pre ? "500 " : "italic 500 ") + Math.round(bs) + "px " + FONT;
     tx.font = "800 " + Math.round(bs) + "px " + FONT; var w1 = tx.measureText(pre).width;

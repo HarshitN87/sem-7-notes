@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>The Mid-Semester Almanac</title>
-<meta name="description" content="Mid-semester study guide, B.Tech CSE Semester VII: The Lobby">
+<title>The End-Semester Almanac</title>
+<meta name="description" content="End-semester study guide, B.Tech CSE Semester VII: The Lobby">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Courier+Prime&display=swap">
 <style>
-/* ============ The Mid-Semester Almanac — tokens ============ */
+/* ============ The End-Semester Almanac — tokens ============ */
 :root{
   color-scheme: light;
   --ground:#F4DEDC;          /* blush wallpaper */
@@ -206,6 +206,7 @@ p{margin:0 0 1em}
 .qblock{border-top:1px solid var(--rule-strong); padding-top:10px; margin-top:22px}
 .qblock > .qno{font-family:var(--display); letter-spacing:.2em; text-transform:uppercase; font-size:13px; color:var(--acc)}
 .pyq-tag{display:inline-block; font-family:var(--mono); font-size:11.5px; border:1px solid var(--acc); color:var(--acc); padding:0 6px; margin-left:6px; vertical-align:middle}
+.new-tag{display:inline-block; font-family:var(--mono); font-size:10.5px; background:var(--acc); color:var(--acc-ink); padding:1px 6px; margin-left:6px; vertical-align:middle; letter-spacing:.04em}
 details.model{border:1px solid var(--rule-strong); background:var(--paper); margin:10px 0}
 details.model > summary{cursor:pointer; list-style:none; padding:12px 16px 12px 46px; position:relative; font-weight:600}
 details.model > summary::-webkit-details-marker{display:none}
@@ -340,7 +341,7 @@ kbd{font-family:var(--mono); font-size:11px; border:1px solid currentColor; bord
 .board-title{text-align:center; padding-block:6px 10px}
 .board-title .code{font-family:var(--mono); color:var(--acc); letter-spacing:.14em}
 .board-title h2{font-size:clamp(28px,4.4vw,44px); letter-spacing:.12em; text-transform:uppercase; margin:.25em 0 .2em; color:var(--acc2)}
-.board-title .meta{font-style:italic; color:var(--muted); max-width:56ch; margin:0 auto}
+.board-title .meta{font-style:italic; color:var(--muted); max-width:58ch; margin:0 auto}
 .board{margin:26px 0 8px; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink)}
 .board-row{display:grid; grid-template-columns:92px minmax(0,1fr) 128px 200px 84px; gap:18px; align-items:center;
   padding:16px 14px 16px 22px; border-bottom:1px dashed var(--rule-strong); text-decoration:none; color:var(--ink);
@@ -349,9 +350,9 @@ kbd{font-family:var(--mono); font-size:11px; border:1px solid currentColor; bord
 .board-row::before{content:""; position:absolute; left:0; top:12px; bottom:12px; width:5px; background:var(--acc)}
 .board-row:hover{background:var(--acc-soft)}
 .board-row:hover .b-go{color:var(--acc); transform:translateX(3px)}
-.b-date{display:grid; justify-items:center; padding:6px 0; border:1px solid var(--acc); background:var(--paper); line-height:1}
-.b-day{font-family:var(--display); font-size:30px; font-weight:500; color:var(--acc)}
-.b-mon{font-family:var(--display); font-size:11px; letter-spacing:.28em; text-transform:uppercase; margin-top:4px}
+.b-date{display:grid; justify-items:center; padding:8px 0; border:1px solid var(--acc); background:var(--paper); line-height:1}
+.b-day{font-family:var(--display); font-size:26px; font-weight:500; color:var(--acc)}
+.b-mon{font-family:var(--display); font-size:11px; letter-spacing:.24em; text-transform:uppercase; margin-top:4px}
 .b-wd{font-family:var(--mono); font-size:11px; color:var(--muted); margin-top:3px}
 .b-subj{display:grid; gap:2px; min-width:0}
 .b-code{font-family:var(--mono); font-size:12px; color:var(--acc); letter-spacing:.08em}
@@ -370,7 +371,7 @@ kbd{font-family:var(--mono); font-size:11px; border:1px solid currentColor; bord
 @media (max-width:860px){
   .board-row{grid-template-columns:78px minmax(0,1fr); grid-template-areas:"d s" "d w" "p p"; gap:10px 16px}
   .b-date{grid-area:d; align-self:start} .b-subj{grid-area:s} .b-when{grid-area:w} .b-prog{grid-area:p} .b-go{display:none}
-  .b-day{font-size:26px}
+  .b-day{font-size:24px}
 }
 
 /* ---- subject pages: contents rail ---- */
@@ -550,53 +551,56 @@ ol.steps.tight > li{margin-bottom:.3em}
 <header class="marquee">
   <button class="theme-toggle" id="themeToggle" type="button">Night edition</button>
   <div class="eyebrow"><a href="lobby.html">B.Tech CSE · Semester VII · Graphic Era (Deemed to be University)</a></div>
-  <h1><a href="lobby.html">The Mid-Semester Almanac</a></h1>
-  <div class="sub">Five subjects, eight days, one study guide: 26 September to 3 October</div>
+  <h1><a href="lobby.html">The End-Semester Almanac</a></h1>
+  <div class="sub">Five subjects, full syllabus, one study guide · End-Semester Examinations (SEE)</div>
   <div class="credit-line">Created by Harshit</div>
   <div class="fleuron">◆ ◆ ◆</div>
 </header>
-<nav class="tickets" aria-label="Subjects"><a class="ticket" href="lobby.html" aria-current="page"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="rm.html"><span class="t-date">26 Sept</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="aca.html"><span class="t-date">28 Sept</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="mba.html"><span class="t-date">29 Sept</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a><a class="ticket" href="bi.html"><span class="t-date">30 Sept</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="llm.html"><span class="t-date">03 Oct</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a></nav>
+<nav class="tickets" aria-label="Subjects"><a class="ticket" href="lobby.html" aria-current="page"><span class="t-date">Start here</span><span class="t-name">The Lobby</span><span class="t-code">Guide</span></a><a class="ticket" href="aca.html"><span class="t-date">Units 1–5</span><span class="t-name">Advanced Computer Architecture</span><span class="t-code">TCS-704</span></a><a class="ticket" href="rm.html"><span class="t-date">Units 1–5</span><span class="t-name">Research Methodology &amp; IPR</span><span class="t-code">TRM-701</span></a><a class="ticket" href="llm.html"><span class="t-date">Units 1–5</span><span class="t-name">Large Language Models</span><span class="t-code">TCS-765</span></a><a class="ticket" href="bi.html"><span class="t-date">Units 1–5</span><span class="t-name">Business Intelligence</span><span class="t-code">TCS-726</span></a><a class="ticket" href="mba.html"><span class="t-date">Units I–IV</span><span class="t-name">Innovation &amp; Venture Dev.</span><span class="t-code">MBA-302</span></a></nav>
 <main>
 <section class="panel" id="lobby" data-subject="lobby">
 <div class="sheet">
   <div class="board-title">
-    <div class="code">DEPARTURES · THE MID-SEMESTER LINE</div>
-    <h2>Your Exam Timetable</h2>
-    <div class="meta">Five stops, in order. The next exam is highlighted, and your progress on each subject is shown on the right.</div>
+    <div class="code">DEPARTURES · THE END-SEMESTER LINE</div>
+    <h2>Full-Syllabus Exam Timetable</h2>
+    <div class="meta">Five papers, complete syllabus. Once the datesheet is out, add each exam date to <code>data-exam</code> to activate live countdowns and highlight your next paper.</div>
     <a class="film-link" href="index.html">▶ Watch the 40-second intro story</a>
   </div>
+
+  <!-- Set data-exam="YYYY-MM-DD" on each row once the official End-Sem datesheet is published.
+       Update data-topics / data-cards / data-mcq as you finalize each subject's full-syllabus page. -->
   <div class="board" role="list">
-    <a class="board-row" role="listitem" href="rm.html" data-subject="rm" data-sid="rm" data-exam="2026-09-26" data-topics="23" data-cards="45" data-decks="deck-rm-u0,deck-rm-u1,deck-rm-u2,deck-rm-u3" data-mcq="0">
-      <span class="b-date"><span class="b-day">26</span><span class="b-mon">Sept</span><span class="b-wd">Sat</span></span>
-      <span class="b-subj"><span class="b-code">TRM-701</span><span class="b-name">Research Methodology &amp; IPR</span><span class="b-units">Units 1–3 · the research problem · literature, plagiarism &amp; ethics · technical writing &amp; proposals</span></span>
+    <a class="board-row" role="listitem" href="aca.html" data-subject="aca" data-sid="aca" data-exam="2026-12-04" data-topics="50" data-cards="100" data-decks="deck-aca-u0,deck-aca-u1,deck-aca-u2,deck-aca-u3,deck-aca-u4,deck-aca-u5" data-mcq="0">
+      <span class="b-date"><span class="b-day">SEE</span><span class="b-mon">3 Hrs</span><span class="b-wd">45 hrs</span></span>
+      <span class="b-subj"><span class="b-code">TCS-704 · CORE (DC)</span><span class="b-name">Advanced Computer Architecture</span><span class="b-units">Units 1–5 · trends &amp; laws · memory &amp; caches · pipelines &amp; hazards · ILP &amp; dynamic scheduling · multiprocessors, SIMD &amp; vector architectures</span></span>
       <span class="b-when"><span class="chip countdown">&nbsp;</span></span>
       <span class="b-prog"><span class="meter"><i></i></span><span class="b-prog-t">&nbsp;</span></span>
       <span class="b-go" aria-hidden="true">Board →</span>
     </a>
-    <a class="board-row" role="listitem" href="aca.html" data-subject="aca" data-sid="aca" data-exam="2026-09-28" data-topics="29" data-cards="55" data-decks="deck-aca-u0,deck-aca-u1,deck-aca-u2" data-mcq="0">
-      <span class="b-date"><span class="b-day">28</span><span class="b-mon">Sept</span><span class="b-wd">Mon</span></span>
-      <span class="b-subj"><span class="b-code">TCS-704</span><span class="b-name">Advanced Computer Architecture</span><span class="b-units">Units 1–2 · trends, cost, power &amp; performance laws · memory hierarchy, caches, coherence, virtual memory</span></span>
+    <a class="board-row" role="listitem" href="rm.html" data-subject="rm" data-sid="rm" data-exam="2026-11-26" data-topics="40" data-cards="80" data-decks="deck-rm-u0,deck-rm-u1,deck-rm-u2,deck-rm-u3,deck-rm-u4,deck-rm-u5" data-mcq="0">
+      <span class="b-date"><span class="b-day">SEE</span><span class="b-mon">3 Hrs</span><span class="b-wd">5 Units</span></span>
+      <span class="b-subj"><span class="b-code">TRM-701 · CORE (DC)</span><span class="b-name">Research Methodology &amp; IPR</span><span class="b-units">Units 1–5 · research problem · literature, plagiarism &amp; ethics · technical writing &amp; proposals · patents, designs, copyright &amp; PCT · patent rights, licensing, GI &amp; case studies</span></span>
       <span class="b-when"><span class="chip countdown">&nbsp;</span></span>
       <span class="b-prog"><span class="meter"><i></i></span><span class="b-prog-t">&nbsp;</span></span>
       <span class="b-go" aria-hidden="true">Board →</span>
     </a>
-    <a class="board-row" role="listitem" href="mba.html" data-subject="mba" data-sid="mba" data-exam="2026-09-29" data-topics="24" data-cards="57" data-decks="deck-mba-u0,deck-mba-u1,deck-mba-u2" data-mcq="300">
-      <span class="b-date"><span class="b-day">29</span><span class="b-mon">Sept</span><span class="b-wd">Tue</span></span>
-      <span class="b-subj"><span class="b-code">MBA-302</span><span class="b-name">Innovation &amp; Venture Development</span><span class="b-units">Units I–II · 84-question MCQ bank · ecosystem, policy, lean startup, business models</span></span>
+    <a class="board-row" role="listitem" href="llm.html" data-subject="llm" data-sid="llm" data-exam="2026-11-28" data-topics="45" data-cards="85" data-decks="deck-llm-u0,deck-llm-u1,deck-llm-u2,deck-llm-u3,deck-llm-u4,deck-llm-u5" data-mcq="0">
+      <span class="b-date"><span class="b-day">ESE</span><span class="b-mon">3 Hrs</span><span class="b-wd">46 hrs</span></span>
+      <span class="b-subj"><span class="b-code">TCS-765 · SPECIALISATION (DSC)</span><span class="b-name">Large Language Models</span><span class="b-units">Units 1–5 · transformers &amp; training · NLU/NLG, chatbots &amp; translation · fine-tuning &amp; domain adaptation · ethics, bias &amp; regulation · future trends, scalability &amp; sustainability</span></span>
       <span class="b-when"><span class="chip countdown">&nbsp;</span></span>
       <span class="b-prog"><span class="meter"><i></i></span><span class="b-prog-t">&nbsp;</span></span>
       <span class="b-go" aria-hidden="true">Board →</span>
     </a>
-    <a class="board-row" role="listitem" href="bi.html" data-subject="bi" data-sid="bi" data-exam="2026-09-30" data-topics="24" data-cards="52" data-decks="deck-bi-u0,deck-bi-u1,deck-bi-u2,deck-bi-u3" data-mcq="0">
-      <span class="b-date"><span class="b-day">30</span><span class="b-mon">Sept</span><span class="b-wd">Wed</span></span>
-      <span class="b-subj"><span class="b-code">TCS-726</span><span class="b-name">Business Intelligence</span><span class="b-units">Units 1–3 · IT in business &amp; Baldrige · types of digital data · OLTP, OLAP &amp; the warehouse</span></span>
+    <a class="board-row" role="listitem" href="bi.html" data-subject="bi" data-sid="bi" data-exam="2026-12-09" data-topics="45" data-cards="85" data-decks="deck-bi-u0,deck-bi-u1,deck-bi-u2,deck-bi-u3,deck-bi-u4,deck-bi-u5" data-mcq="0">
+      <span class="b-date"><span class="b-day">SEE</span><span class="b-mon">3 Hrs</span><span class="b-wd">45 hrs</span></span>
+      <span class="b-subj"><span class="b-code">TCS-726 · ELECTIVE (DE)</span><span class="b-name">Business Intelligence</span><span class="b-units">Units 1–5 · IT in business &amp; Baldrige · digital data types · OLTP, OLAP &amp; architectures · BI framework, roles &amp; tools · data warehouses, dimensional modeling, KPIs, reporting &amp; cloud/ERP BI</span></span>
       <span class="b-when"><span class="chip countdown">&nbsp;</span></span>
       <span class="b-prog"><span class="meter"><i></i></span><span class="b-prog-t">&nbsp;</span></span>
       <span class="b-go" aria-hidden="true">Board →</span>
     </a>
-    <a class="board-row" role="listitem" href="llm.html" data-subject="llm" data-sid="llm" data-exam="2026-10-03" data-topics="25" data-cards="43" data-decks="deck-llm-u0,deck-llm-u1,deck-llm-u2" data-mcq="0">
-      <span class="b-date"><span class="b-day">03</span><span class="b-mon">Oct</span><span class="b-wd">Sat</span></span>
-      <span class="b-subj"><span class="b-code">TCS-765</span><span class="b-name">Large Language Models</span><span class="b-units">Unit 0 from zero · Units 1–2 · transformers &amp; training · NLU/NLG, assistants, translation</span></span>
+    <a class="board-row" role="listitem" href="mba.html" data-subject="mba" data-sid="mba" data-exam="2026-11-30" data-topics="42" data-cards="95" data-decks="deck-mba-u0,deck-mba-u1,deck-mba-u2,deck-mba-u3,deck-mba-u4" data-mcq="450">
+      <span class="b-date"><span class="b-day">SEE</span><span class="b-mon">Full</span><span class="b-wd">4 Units</span></span>
+      <span class="b-subj"><span class="b-code">MBA-302 · MANAGEMENT</span><span class="b-name">Innovation &amp; Venture Development</span><span class="b-units">Units I–IV · innovation, mindset &amp; ecosystem · lean startup, BMC &amp; revenue models · financing, valuation, legal &amp; pitch decks · scaling, growth hacking, tech enablers &amp; exits</span></span>
       <span class="b-when"><span class="chip countdown">&nbsp;</span></span>
       <span class="b-prog"><span class="meter"><i></i></span><span class="b-prog-t">&nbsp;</span></span>
       <span class="b-go" aria-hidden="true">Board →</span>
@@ -604,27 +608,79 @@ ol.steps.tight > li{margin-bottom:.3em}
   </div>
 
   <div class="prose">
-    <h3 class="facet">The shape of the examination</h3>
-    <p>Three real mid-semester papers were supplied: <strong>TCS-704 Advanced Computer Architecture (Oct 2022 and Oct 2023)</strong> and <strong>TIT-721 Business Intelligence (Oct 2023)</strong>. All three follow the same format, and every theory paper in this Almanac uses it:</p>
+    <h3 class="facet">The shape of the end-semester examination</h3>
+    <p>Unlike the 1½-hour mid-semester test, every CSE End-Semester Examination (SEE / ESE) is a <strong>full-syllabus, 3-hour theory paper</strong> carrying <strong>50% of your total course grade</strong>—double the weight of the mid-semester exam (evaluation split: <strong>25% CIE · 25% MSE · 50% SEE</strong>).</p>
     <div class="paper-head">
-      <div class="ph1">B. Tech. (CSE) (Seventh Semester) · Mid Semester Examination</div>
-      <div class="ph2">Time: 1½ Hours · Maximum Marks: 50</div>
-      <div class="ph3">Note: (i) Answer all the questions by choosing any <em>one</em> of the sub-questions. (ii) Each sub-question carries 10 marks.</div>
+      <div class="ph1">B. Tech. (CSE) (Seventh Semester) · End Semester Examination</div>
+      <div class="ph2">Time: 3 Hours · Weightage: 50% (CIE 25 / MSE 25 / SEE 50)</div>
+      <div class="ph3">Coverage: Full Syllabus (Units 1–5 · CO1–CO6) · Internal choice across all units</div>
     </div>
-    <p>So each paper has <strong>five questions, each with an internal choice (a) OR (b), and each worth 10 marks</strong>. There is no short-answer section. Every answer you write is a 10-mark answer, and you have about <strong>18 minutes per answer</strong>. That is why every topic here follows the same six-part structure: definition, first principles, mechanism, real-world case, critical evaluation, and the evaluator's checklist. Learn that structure and you can write a full-length answer on any of these topics.</p>
-    <p>The questions on each paper are tagged with the course outcome they test (CO1 for Unit 1, CO2 for Unit 2, and so on). In the ACA papers Q1–Q3 are mostly Unit 1 and Q3(b)–Q5 are Unit 2. The BI paper follows the same pattern: CO1 for Q1–Q3(a), CO2 for Q3(b)–Q5(a), and CO3 for Q5(b). The expected-question papers in this guide copy that split.</p>
+    <p>Because the paper spans all five units (four for MBA-302), <strong>post-midsem units carry the highest marginal payoff</strong>: they were not examined in September and routinely anchor the longer design, analysis, and case-study questions. At 3 hours for a five-unit paper, budget roughly <strong>30–32 minutes per unit-block</strong>, leaving 15–20 minutes at the end for diagrams, numerical checks, and formula verification.</p>
+    <p>Every topic in this Almanac keeps the same six-part structure—definition, first principles, mechanism, real-world case, critical evaluation, and the evaluator's checklist—so whether a question asks for a 5-mark short note or a 20-mark full-unit essay, you can scale your answer up or down cleanly.</p>
 
-    <div class="note-box"><b class="h">A note on the sources</b>The file named <code>TCS726 2023 pyq.pdf</code> is a <strong>Business Intelligence</strong> paper (TIT-721), not Research Methodology. No Research Methodology &amp; IPR paper was supplied. The RM &amp; IPR questions in this guide are written from your professor's notes and use the same 5 × (a/b) format. The ACA and BI questions reproduce and extend the actual paper questions, marked <span class="pyq-tag">PYQ 2022</span> or <span class="pyq-tag">PYQ 2023</span>.</div>
+    <h3 class="facet">Full syllabus &amp; post-midsem additions</h3>
+    <div class="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Subject</th>
+            <th>Hours / Split</th>
+            <th>Full End-Sem Scope</th>
+            <th>New Post-Midsem Focus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>TCS-704</code></td>
+            <td><strong>Advanced Computer Architecture</strong></td>
+            <td>45 hrs · 25/25/50</td>
+            <td>Units 1–5 (CO1–CO6)</td>
+            <td><strong>Units 3–5:</strong> Pipelines &amp; hazards, ILP &amp; dynamic scheduling, multiprocessors, SIMD &amp; vector architectures</td>
+          </tr>
+          <tr>
+            <td><code>TRM-701</code></td>
+            <td><strong>Research Methodology &amp; IPR</strong></td>
+            <td>3:0:0 · 25/25/50</td>
+            <td>Units 1–5 (CO1–CO6)</td>
+            <td><strong>Units 4–5:</strong> Patents, designs, copyright, PCT procedure, patent rights, licensing, GI, software/bio IPR &amp; IIT case studies</td>
+          </tr>
+          <tr>
+            <td><code>TCS-765</code></td>
+            <td><strong>Large Language Models</strong></td>
+            <td>46 hrs · 25/25/50</td>
+            <td>Units 1–5 (CO1–CO6)</td>
+            <td><strong>Units 3–5:</strong> Fine-tuning &amp; domain adaptation, ethics/bias/regulation, emerging trends, scalability &amp; environmental impact</td>
+          </tr>
+          <tr>
+            <td><code>TCS-726</code></td>
+            <td><strong>Business Intelligence</strong></td>
+            <td>45 hrs · 25/25/50</td>
+            <td>Units 1–5 (CO1–CO6)</td>
+            <td><strong>Units 4–5:</strong> BI component framework, roles &amp; tools, data warehouses, dimensional modeling, KPIs, dashboards &amp; cloud/ERP BI</td>
+          </tr>
+          <tr>
+            <td><code>MBA-302</code></td>
+            <td><strong>Innovation &amp; Venture Dev.</strong></td>
+            <td>MBA norms</td>
+            <td>Units I–IV (LO i–iv)</td>
+            <td><strong>Units III–IV:</strong> Seed–Series D financing, valuation, legal/IP, pitch decks, scaling, growth hacking, tech enablers &amp; exits</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <h3 class="facet">How to use this Almanac</h3>
+    <div class="note-box"><b class="h">A note on the syllabus &amp; sources</b>All five subject roadmaps in this End-Semester edition are aligned directly with the official <code>Combined_Syllabus_Sem_VII.pdf</code> (Graphic Era Deemed to be University, CSE Semester VII). Textbook references—such as Hennessy &amp; Patterson and Kai Hwang for ACA, Prasad &amp; Acharya for BI, and Raj Arun / Auffarth / Alto for LLMs—are reflected in the topic checklists and model answers.</div>
+
+    <h3 class="facet">How to use this Almanac for End-Sem</h3>
     <ul>
-      <li><strong>First read (the night before each exam):</strong> go through the guide for that subject. The <em>Evaluator's Checklist</em> box in each topic lists the terms, formulas and diagrams an examiner looks for.</li>
-      <li><strong>Active recall:</strong> each unit ends with a <em>flashcard deck</em>. Tap a card to turn it over. Use <em>Got it</em> and <em>Again</em> to move cards between three Leitner boxes, then use <em>Review weakest first</em>. Decks in Unit 2 and Unit 3 include <em>cumulative</em> cards (marked ↺) that go back over earlier units.</li>
-      <li><strong>Exam simulation:</strong> each theory subject ends with a full expected paper. Try each question with a timer (18 minutes), then open the model answer blueprint and compare it with yours.</li>
-      <li><strong>MBA-302</strong> is 100% multiple choice, so its guide is a scored question bank. Each question has four options, and each explanation says why the right answer is right and why the others are wrong.</li>
-      <li><strong>Diagrams:</strong> every plate has a <em>How to sketch</em> line, which is the version you can draw in about 90 seconds in the exam hall.</li>
-      <li><strong>Getting around:</strong> each subject has its own page. Use the ticket bar at the top to jump between subjects, the unit buttons under each subject's title to jump to a unit, and the links at the bottom of each page to go to the previous or next subject. Each page remembers where you stopped reading.</li>
-      <li><strong>Printing:</strong> open a subject's page and use your browser's print command. The print styles open every model answer and list every flashcard.</li>
+      <li><strong>Start with post-midsem units first:</strong> lock in Units 3–5 (ACA, LLM), Units 4–5 (RM, BI), and Units III–IV (MBA-302) before doing a fast refresh of the earlier mid-sem units.</li>
+      <li><strong>Active recall across all units:</strong> each unit ends with a <em>flashcard deck</em>. Tap a card to turn it over, grade yourself with <em>Got it</em> or <em>Again</em> across three Leitner boxes, and use <em>Review weakest first</em>. Later decks include <em>cumulative</em> cards (marked ↺) that pull in earlier units so nothing fades before exam day.</li>
+      <li><strong>3-hour exam simulation:</strong> each theory subject ends with a full-syllabus expected paper. Practice writing under a 3-hour timer (~30 minutes per unit), then open the model answer blueprints and compare against the <em>Evaluator's Checklist</em>.</li>
+      <li><strong>MBA-302</strong> covers the complete venture lifecycle from idea generation to IPO/M&amp;A exits (Units I–IV), pairing concept summaries with a scored MCQ bank explaining both right and wrong options.</li>
+      <li><strong>Diagrams &amp; architectures:</strong> every plate includes a <em>How to sketch</em> line—essential for high-scoring end-sem answers on pipelines, Tomasulo/ILP, cache coherence, OLAP/DW star schemas, and transformer/fine-tuning blocks.</li>
+      <li><strong>Separate End-Sem progress:</strong> your revised topics, flashcard boxes, MCQ scores, and scroll positions are stored independently from the mid-sem edition so you start with a clean slate.</li>
+      <li><strong>Printing:</strong> open any subject page and print from your browser; print styles automatically expand all model answers and lay out every flashcard.</li>
     </ul>
   </div>
 </div>
@@ -632,9 +688,10 @@ ol.steps.tight > li{margin-bottom:.3em}
 
 </section>
 </main>
-<p class="footer">Created by Harshit · Printed on hotel stationery · Good luck in the examination hall</p>
+<p class="footer">Created by Harshit · End-Semester Edition · Printed on hotel stationery · Good luck in the examination hall</p>
 <script>
 (function(){
+  var PREFIX = 'endsem-almanac-';
   var store = {
     get: function(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
     set: function(k,v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
@@ -643,12 +700,21 @@ ol.steps.tight > li{margin-bottom:.3em}
   function $all(sel, root){ return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
   /* ---------- exam countdown (shared by lobby and subject pages) ---------- */
+  var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
+  var DAYS   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  function parseIso(iso){
+    if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+    var p = iso.split('-');
+    return new Date(+p[0], +p[1]-1, +p[2]);
+  }
   function daysUntil(iso){
-    var p = iso.split('-'), exam = new Date(+p[0], +p[1]-1, +p[2]);
+    var exam = parseIso(iso);
+    if (!exam) return null;
     var now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     return Math.round((exam - today) / 86400000);
   }
   function countdownText(d){
+    if (d === null) return 'Date TBD';
     if (d < 0) return 'Done';
     if (d === 0) return 'Today';
     if (d === 1) return 'Tomorrow';
@@ -656,18 +722,18 @@ ol.steps.tight > li{margin-bottom:.3em}
   }
 
   /* ---------- progress bookkeeping (localStorage) ---------- */
-  function revisedList(pid){ return store.get('almanac-rev-' + pid) || []; }
+  function revisedList(pid){ return store.get(PREFIX + 'rev-' + pid) || []; }
   function deckMastery(ids){
-    var m = 0; ids.forEach(function(id){ var b = store.get('almanac-deck-' + id) || {}; Object.keys(b).forEach(function(k){ if (b[k] >= 3) m++; }); });
+    var m = 0; ids.forEach(function(id){ var b = store.get(PREFIX + 'deck-' + id) || {}; Object.keys(b).forEach(function(k){ if (b[k] >= 3) m++; }); });
     return m;
   }
   function mcqStats(pid){
     var right = 0, done = 0;
-    for (var i = 0; i < 4; i++){ var s = store.get('almanac-mcq-' + pid + '-' + i) || {}; Object.keys(s).forEach(function(k){ if (k === '_v') return; done++; if (s[k][1]) right++; }); }
+    for (var i = 0; i < 6; i++){ var s = store.get(PREFIX + 'mcq-' + pid + '-' + i) || {}; Object.keys(s).forEach(function(k){ if (k === '_v') return; done++; if (s[k][1]) right++; }); }
     return {right:right, done:done};
   }
 
-  /* ---------- theme toggle ---------- */
+  /* ---------- theme toggle (shared with midsem edition) ---------- */
   var root = document.documentElement;
   var savedTheme = store.get('almanac-theme');
   if (savedTheme) root.setAttribute('data-theme', savedTheme);
@@ -693,12 +759,21 @@ ol.steps.tight > li{margin-bottom:.3em}
   if (board){
     var nextMarked = false;
     $all('.board-row', board).forEach(function(row){
+      var dt = parseIso(row.dataset.exam);
+      if (dt){
+        var bd = row.querySelector('.b-day'), bm = row.querySelector('.b-mon'), bw = row.querySelector('.b-wd');
+        if (bd) bd.textContent = String(dt.getDate()).padStart(2, '0');
+        if (bm) bm.textContent = MONTHS[dt.getMonth()];
+        if (bw) bw.textContent = DAYS[dt.getDay()];
+      }
       var d = daysUntil(row.dataset.exam);
       var chip = row.querySelector('.countdown');
       chip.textContent = countdownText(d);
-      if (d < 0) row.classList.add('is-past');
-      if (d >= 0 && !nextMarked){ row.classList.add('is-next'); nextMarked = true; }
-      if (d >= 0 && d <= 1) chip.classList.add('urgent');
+      if (d !== null){
+        if (d < 0) row.classList.add('is-past');
+        if (d >= 0 && !nextMarked){ row.classList.add('is-next'); nextMarked = true; }
+        if (d >= 0 && d <= 1) chip.classList.add('urgent');
+      }
       var sid = row.dataset.sid, topics = +row.dataset.topics || 0, cards = +row.dataset.cards || 0;
       var decks = (row.dataset.decks || '').split(',').filter(Boolean);
       var rev = revisedList(sid).length, mast = deckMastery(decks);
@@ -741,10 +816,11 @@ ol.steps.tight > li{margin-bottom:.3em}
     $all('.prog-bar i').forEach(function(x){ x.style.width = (topics.length ? Math.round(n / topics.length * 100) : 0) + '%'; });
   }
 
-  if (panel && panel.dataset.exam && subjTitle){
+  if (panel && subjTitle){
     chipRow = el('div', 'chip-row');
-    var d = daysUntil(panel.dataset.exam);
-    var c1 = el('span', 'chip countdown' + (d >= 0 && d <= 1 ? ' urgent' : ''), d < 0 ? 'Exam done' : 'Exam ' + countdownText(d).toLowerCase());
+    var d = daysUntil(panel.dataset.exam || '');
+    var label = d === null ? 'Exam date TBD' : (d < 0 ? 'Exam done' : 'Exam ' + countdownText(d).toLowerCase());
+    var c1 = el('span', 'chip countdown' + (d !== null && d >= 0 && d <= 1 ? ' urgent' : ''), label);
     chipRow.appendChild(c1);
     if (topics.length){ var c2 = el('span', 'chip'); c2.appendChild(el('span', 'prog-count')); chipRow.appendChild(c2); }
     subjTitle.insertBefore(chipRow, unitNav);
@@ -759,7 +835,7 @@ ol.steps.tight > li{margin-bottom:.3em}
       b.addEventListener('click', function(){
         var rev = revisedList(pid), i = rev.indexOf(t.id);
         if (i > -1) rev.splice(i, 1); else rev.push(t.id);
-        store.set('almanac-rev-' + pid, rev); paintProgress();
+        store.set(PREFIX + 'rev-' + pid, rev); paintProgress();
       });
       foot.appendChild(b); t.appendChild(foot);
     });
@@ -851,7 +927,7 @@ ol.steps.tight > li{margin-bottom:.3em}
   }
 
   /* ---------- remember where you were reading ---------- */
-  var pageKey = 'almanac-scroll-' + pid, saveTimer = null;
+  var pageKey = PREFIX + 'scroll-' + pid, saveTimer = null;
   window.addEventListener('scroll', function(){
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function(){ store.set(pageKey, Math.round(window.scrollY)); }, 250);
@@ -902,7 +978,7 @@ ol.steps.tight > li{margin-bottom:.3em}
     o.type = c.type = 'button';
     o.onclick = function(){ $all('details.model', box).forEach(function(d){ d.open = true; }); };
     c.onclick = function(){ $all('details.model', box).forEach(function(d){ d.open = false; }); };
-    bar.appendChild(el('span', 'answers-hint', 'Try each question for 18 minutes before opening its answer.'));
+    bar.appendChild(el('span', 'answers-hint', 'Budget ~30 minutes per full-unit block before opening the model answer.'));
     bar.appendChild(o); bar.appendChild(c);
     ph.insertAdjacentElement('afterend', bar);
   });
@@ -911,7 +987,7 @@ ol.steps.tight > li{margin-bottom:.3em}
   $all('.deck').forEach(function(deck, di){
     var cards = $all('.fc', deck);
     if (!cards.length) return;
-    var key = 'almanac-deck-' + (deck.id || di);
+    var key = PREFIX + 'deck-' + (deck.id || di);
     cards.forEach(function(c){
       var q = c.querySelector('.fc-q'), a = c.querySelector('.fc-a');
       var inner = el('div', 'fc-inner');
@@ -1001,7 +1077,7 @@ ol.steps.tight > li{margin-bottom:.3em}
   $all('.mcq-bank').forEach(function(bank, bi){
     var qs = $all('.mcq', bank);
     var sb = bank.querySelector('.scoreboard');
-    var skey = 'almanac-mcq-' + pid + '-' + bi;
+    var skey = PREFIX + 'mcq-' + pid + '-' + bi;
     var saved = store.get(skey) || {};
     var ver = bank.dataset.v || '';
     if (ver && saved._v !== ver){ saved = { _v: ver }; store.set(skey, saved); }  // question set changed: drop stale answers
@@ -1052,7 +1128,6 @@ ol.steps.tight > li{margin-bottom:.3em}
   /* ---------- print: open every model answer ---------- */
   window.addEventListener('beforeprint', function(){ $all('details').forEach(function(d){ d.setAttribute('open', ''); }); });
 })();
-
 </script>
 </body>
 </html>
